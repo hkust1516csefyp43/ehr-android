@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">EHR testing</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="triage">Triage</string>
+    <string name="consultation">Consultation</string>
+    <string name="pharmacy">Pharmacy</string>
+</resources>
