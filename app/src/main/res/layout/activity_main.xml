@@ -10,6 +10,7 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
@@ -31,11 +32,20 @@
 
         </android.support.design.widget.AppBarLayout>
 
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <!-- TODO move FAB within a fragment -->
         <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/floatingactionbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"/>
+            android:layout_margin="16dp"
+            app:fab_colorNormal="@color/primary_color"
+            app:fab_colorPressed="@color/primary_light_color"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

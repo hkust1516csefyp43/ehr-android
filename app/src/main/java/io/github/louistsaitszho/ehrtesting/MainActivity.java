@@ -3,8 +3,12 @@ package io.github.louistsaitszho.ehrtesting;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.melnykov.fab.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,9 +16,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+        tb.setTitle(R.string.triage);
+        tb.setBackgroundColor(getResources().getColor(R.color.primary_color));
+        tb.setCollapsible(true);
+        tb.setSubtitle("Village name"); //TODO get it dynamically
+
         TabLayout tl = (TabLayout) findViewById(R.id.tablayout);
         tl.addTab(tl.newTab().setText(R.string.queue));
         tl.addTab(tl.newTab().setText(R.string.finished));
+        tl.setBackgroundColor(getResources().getColor(R.color.primary_color));
+
+        //Attach FAB to Recycler View to enable auto hide
+        RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingactionbutton);
+        fab.attachToRecyclerView(rv);
 
     }
 
