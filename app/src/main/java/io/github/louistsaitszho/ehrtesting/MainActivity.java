@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.melnykov.fab.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingactionbutton);
         fab.attachToRecyclerView(rv);
+
+        ImageView ivProfilePic = (ImageView) findViewById(R.id.iv_profile_pic);
+        //TODO get and set the actual image. If image does not exist, load drawable
+        if (ivProfilePic != null) {
+            TextDrawable drawable = TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRound("A", getResources().getColor(R.color.accent_color));
+            ivProfilePic.setImageDrawable(drawable);    //You can't use Glide with set drawable image
+        }
 
     }
 
