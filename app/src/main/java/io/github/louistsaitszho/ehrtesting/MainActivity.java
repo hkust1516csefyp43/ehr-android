@@ -1,5 +1,6 @@
 package io.github.louistsaitszho.ehrtesting;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,13 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.MaterialIcons;
+import com.joanzapata.iconify.fonts.MaterialModule;
 import com.melnykov.fab.FloatingActionButton;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingactionbutton);
         fab.attachToRecyclerView(rv);
+        fab.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
 
         ImageView ivProfilePic = (ImageView) findViewById(R.id.iv_profile_pic);
         //TODO get and set the actual image. If image does not exist, load drawable
@@ -52,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        Iconify.with(new MaterialModule());
+        menu.findItem(R.id.action_search).setIcon(new IconDrawable(this, MaterialIcons.md_search).actionBarSize());
         return true;
     }
 
