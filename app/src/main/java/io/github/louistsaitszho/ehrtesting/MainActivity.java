@@ -20,7 +20,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-        tb.setTitle(R.string.triage);
+        setSupportActionBar(tb);
+//        tb.setTitle(R.string.triage);
+        getSupportActionBar().setTitle(getResources().getString(R.string.triage));
         tb.setBackgroundColor(getResources().getColor(R.color.primary_color));
         tb.setCollapsible(true);
         tb.setSubtitle("Village name"); //TODO get it dynamically
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
             ivProfilePic.setImageDrawable(drawable);    //You can't use Glide with set drawable image
         }
 
+        //TODO transparent status bar padding
+        //http://blog.raffaeu.com/archive/2015/04/11/android-and-the-transparent-status-bar.aspx
     }
 
     @Override
@@ -59,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
