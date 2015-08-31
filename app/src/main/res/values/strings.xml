@@ -7,4 +7,7 @@
     <string name="triage">Triage</string>
     <string name="consultation">Consultation</string>
     <string name="pharmacy">Pharmacy</string>
+
+    <string name="queue">Queue</string>
+    <string name="finished">Finish</string>
 </resources>

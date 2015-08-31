@@ -1,7 +1,8 @@
 package io.github.louistsaitszho.ehrtesting;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -11,6 +12,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TabLayout tl = (TabLayout) findViewById(R.id.tablayout);
+        tl.addTab(tl.newTab().setText(R.string.queue));
+        tl.addTab(tl.newTab().setText(R.string.finished));
+
     }
 
     @Override
