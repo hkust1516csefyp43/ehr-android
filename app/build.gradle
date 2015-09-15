@@ -43,9 +43,10 @@ dependencies {
     //A super useful image loader
     compile 'com.github.bumptech.glide:glide:3.6.1'
     //great icon sets
-    compile 'com.joanzapata.iconify:android-iconify-material:2.0.8'
     compile 'com.mikepenz:iconics-core:1.7.4@aar'
     compile 'com.mikepenz:google-material-typeface:1.2.0.1@aar'
+    compile 'com.mikepenz:community-material-typeface:1.1.70.3@aar'
+    compile 'com.mikepenz:fontawesome-typeface:4.4.0.1@aar'
     //Parse (Crash report)
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')

@@ -14,11 +14,9 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.MaterialIcons;
-import com.joanzapata.iconify.fonts.MaterialModule;
 import com.melnykov.fab.FloatingActionButton;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -45,12 +43,38 @@ public class MainActivity extends AppCompatActivity {
         tb.setCollapsible(true);
         tb.setSubtitle("Village name"); //TODO get it dynamically
 
-        PrimaryDrawerItem triage = new PrimaryDrawerItem().withName(R.string.triage).withIdentifier(1);
-        PrimaryDrawerItem consultation = new PrimaryDrawerItem().withName(R.string.consultation).withIdentifier(2);
-        PrimaryDrawerItem pharmacy = new PrimaryDrawerItem().withName(R.string.pharmacy).withIdentifier(3);
+        PrimaryDrawerItem triage = new PrimaryDrawerItem()
+                .withName(R.string.triage)
+                .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).paddingDp(2))
+                .withIdentifier(1);
+        PrimaryDrawerItem consultation = new PrimaryDrawerItem()
+                .withName(R.string.consultation)
+                .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).paddingDp(2))
+                .withIdentifier(2);
+        PrimaryDrawerItem pharmacy = new PrimaryDrawerItem()
+                .withName(R.string.pharmacy)
+                .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).paddingDp(2))
+                .withIdentifier(3);
 
-        SecondaryDrawerItem settings = new SecondaryDrawerItem().withName(R.string.settings).withIdentifier(4);
-        SecondaryDrawerItem about = new SecondaryDrawerItem().withName(R.string.about).withIdentifier(5);
+        PrimaryDrawerItem inventory = new PrimaryDrawerItem()
+                .withName(R.string.inventory)
+                .withIcon(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_medkit).color(Color.GRAY).paddingDp(2))
+                .withIdentifier(4);
+        PrimaryDrawerItem adminDashboard = new PrimaryDrawerItem()
+                .withName(R.string.admin_dashboard)
+                .withIcon(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_male).color(Color.GRAY).paddingDp(2))
+                .withIdentifier(5);
+
+        SecondaryDrawerItem settings = new SecondaryDrawerItem()
+                .withName(R.string.settings)
+                .withIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).paddingDp(2))
+                .withIdentifier(6);
+        SecondaryDrawerItem about = new SecondaryDrawerItem()
+                .withName(R.string.about)
+                .withIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_info).color(Color.GRAY).paddingDp(2))
+                .withIdentifier(7);
+
+        DividerDrawerItem ddi = new DividerDrawerItem();
 
         AccountHeader ah = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -58,15 +82,16 @@ public class MainActivity extends AppCompatActivity {
                 .addProfiles(new ProfileDrawerItem()
                         //TODO get and set the actual image. If image does not exist, load drawable
                         .withIcon(TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRound("LT", ContextCompat.getColor(this, R.color.accent_color)))
-                        .withName("Louis Tsai")
-                        .withEmail("louis993546@gmail.com"))
+                        .withName("Louis Tsai M.D.")
+                        .withEmail("louis@email.com"))
+                .withSelectionListEnabledForSingleProfile(false)
                 .build();
 
         Drawer drawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(tb)
                 .withSelectedItem(-1)
-                .addDrawerItems(triage, consultation, pharmacy, new DividerDrawerItem(), settings, about)
+                .addDrawerItems(triage, consultation, pharmacy, ddi, inventory, adminDashboard, ddi, settings, about)
                 .withAccountHeader(ah)
                 .build();
 
@@ -110,8 +135,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        Iconify.with(new MaterialModule());
-        menu.findItem(R.id.action_search).setIcon(new IconDrawable(this, MaterialIcons.md_search).actionBarSize());
+        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).color(Color.BLACK).actionBar().paddingDp(2));
         return true;
     }
 
