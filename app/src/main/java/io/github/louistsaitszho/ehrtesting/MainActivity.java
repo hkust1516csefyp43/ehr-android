@@ -27,6 +27,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,11 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
-//        tb.setTitle(R.string.triage);
         getSupportActionBar().setTitle(getResources().getString(R.string.triage));
         tb.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
         tb.setCollapsible(true);
         tb.setSubtitle("Village name"); //TODO get it dynamically
+        tb.setTitleTextColor(ContextCompat.getColor(this, R.color.text_color));
+        tb.setSubtitleTextColor(ContextCompat.getColor(this, R.color.text_color));
 
         PrimaryDrawerItem triage = new PrimaryDrawerItem()
                 .withName(R.string.triage)
@@ -85,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
                         .withName("Louis Tsai M.D.")
                         .withEmail("louis@email.com"))
                 .withSelectionListEnabledForSingleProfile(false)
+                .withProfileImagesClickable(false)
+                .withOnAccountHeaderSelectionViewClickListener(new AccountHeader.OnAccountHeaderSelectionViewClickListener() {
+                    @Override
+                    public boolean onClick(View view, IProfile iProfile) {
+                        //TODO ProfileActivity
+                        return false;
+                    }
+                })
                 .build();
 
         Drawer drawer = new DrawerBuilder()
@@ -135,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).color(Color.BLACK).actionBar().paddingDp(2));
+        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).color(ContextCompat.getColor(this, R.color.text_color)).actionBar().paddingDp(2));
         return true;
     }
 
