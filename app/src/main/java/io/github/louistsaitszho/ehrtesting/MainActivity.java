@@ -3,11 +3,13 @@ package io.github.louistsaitszho.ehrtesting;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -18,6 +20,14 @@ import com.joanzapata.iconify.fonts.MaterialModule;
 import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +40,32 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(tb);
 //        tb.setTitle(R.string.triage);
         getSupportActionBar().setTitle(getResources().getString(R.string.triage));
-        tb.setBackgroundColor(getResources().getColor(R.color.primary_color));
+        tb.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
         tb.setCollapsible(true);
         tb.setSubtitle("Village name"); //TODO get it dynamically
+
+        PrimaryDrawerItem triage = new PrimaryDrawerItem().withName(R.string.triage).withIdentifier(1);
+        PrimaryDrawerItem consultation = new PrimaryDrawerItem().withName(R.string.consultation).withIdentifier(2);
+        PrimaryDrawerItem pharmacy = new PrimaryDrawerItem().withName(R.string.pharmacy).withIdentifier(3);
+
+        SecondaryDrawerItem settings = new SecondaryDrawerItem().withName(R.string.settings).withIdentifier(4);
+        SecondaryDrawerItem about = new SecondaryDrawerItem().withName(R.string.about).withIdentifier(5);
+
+        AccountHeader ah = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header_background)
+                .addProfiles(new ProfileDrawerItem()
+                        .withName("Louis Tsai")
+                        .withEmail("louis993546@gmail.com"))
+                .build();
+
+        Drawer drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(tb)
+                .withSelectedItem(-1)
+                .addDrawerItems(triage, consultation, pharmacy, new DividerDrawerItem(), settings, about)
+                .withAccountHeader(ah)
+                .build();
 
         TabLayout tl = (TabLayout) findViewById(R.id.tablayout);
         tl.addTab(tl.newTab().setText(R.string.queue));
@@ -44,6 +77,14 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingactionbutton);
         fab.attachToRecyclerView(rv);
         fab.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
+
+        //Crash test for parse
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                throw new RuntimeException("Test Exception!");
+            }
+        });
 
         ImageView ivProfilePic = (ImageView) findViewById(R.id.iv_profile_pic);
         //TODO get and set the actual image. If image does not exist, load drawable
