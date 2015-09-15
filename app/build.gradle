@@ -50,8 +50,10 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile fileTree(dir: 'libs', include: 'ParseCrashReporting-*.jar')
-
+    //Material design drawer
     compile('com.mikepenz:materialdrawer:4.0.8@aar') {
         transitive = true
     }
+    //material design dialog
+    compile 'com.afollestad:material-dialogs:0.7.9.1'
 }

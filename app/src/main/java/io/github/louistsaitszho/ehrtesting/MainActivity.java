@@ -1,5 +1,6 @@
 package io.github.louistsaitszho.ehrtesting;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -10,8 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.header_background)
                 .addProfiles(new ProfileDrawerItem()
+                        //TODO get and set the actual image. If image does not exist, load drawable
+                        .withIcon(TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRound("LT", ContextCompat.getColor(this, R.color.accent_color)))
                         .withName("Louis Tsai")
                         .withEmail("louis993546@gmail.com"))
                 .build();
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tl = (TabLayout) findViewById(R.id.tablayout);
         tl.addTab(tl.newTab().setText(R.string.queue));
         tl.addTab(tl.newTab().setText(R.string.finished));
-        tl.setBackgroundColor(getResources().getColor(R.color.primary_color));
+        tl.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
 
         //Attach FAB to Recycler View to enable auto hide
         RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
@@ -79,19 +82,25 @@ public class MainActivity extends AppCompatActivity {
         fab.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
 
         //Crash test for parse
+        final Context context = this;   //Is there a better way to do this -_-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                throw new RuntimeException("Test Exception!");
+                new MaterialDialog.Builder(context)
+                        .title("This is going to crash")
+                        .content("Confirm to crash this thing to test Parse crash report")
+                        .positiveText("Yes")
+                        .negativeText("No")
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                super.onPositive(dialog);
+                                throw new RuntimeException("Test Exception!");
+                            }
+                        })
+                        .show();
             }
         });
-
-        ImageView ivProfilePic = (ImageView) findViewById(R.id.iv_profile_pic);
-        //TODO get and set the actual image. If image does not exist, load drawable
-        if (ivProfilePic != null) {
-            TextDrawable drawable = TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRound("A", getResources().getColor(R.color.accent_color));
-            ivProfilePic.setImageDrawable(drawable);    //You can't use Glide with set drawable image
-        }
 
         //TODO transparent status bar padding
         //http://blog.raffaeu.com/archive/2015/04/11/android-and-the-transparent-status-bar.aspx
