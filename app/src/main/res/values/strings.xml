@@ -16,6 +16,6 @@
 
     <string name="queue">Queue</string>
     <string name="finished">Finish</string>
-    <string name="admin_dashboard">Admin Dashbaord</string>
+    <string name="admin">Admin</string>
 
 </resources>

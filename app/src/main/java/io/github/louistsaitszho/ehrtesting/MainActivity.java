@@ -27,6 +27,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,33 +49,33 @@ public class MainActivity extends AppCompatActivity {
         PrimaryDrawerItem triage = new PrimaryDrawerItem()
                 .withName(R.string.triage)
                 .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(1);
+                .withIdentifier(Consts.ID_TRIAGE);
         PrimaryDrawerItem consultation = new PrimaryDrawerItem()
                 .withName(R.string.consultation)
                 .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(2);
+                .withIdentifier(Consts.ID_CONSULTATION);
         PrimaryDrawerItem pharmacy = new PrimaryDrawerItem()
                 .withName(R.string.pharmacy)
                 .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(3);
+                .withIdentifier(Consts.ID_PHARMACY);
 
         PrimaryDrawerItem inventory = new PrimaryDrawerItem()
                 .withName(R.string.inventory)
                 .withIcon(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_medkit).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(4);
+                .withIdentifier(Consts.ID_INVENTORY);
         PrimaryDrawerItem adminDashboard = new PrimaryDrawerItem()
-                .withName(R.string.admin_dashboard)
+                .withName(R.string.admin)
                 .withIcon(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_male).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(5);
+                .withIdentifier(Consts.ID_ADMIN);
 
         SecondaryDrawerItem settings = new SecondaryDrawerItem()
                 .withName(R.string.settings)
                 .withIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(6);
+                .withIdentifier(Consts.ID_SETTINGS);
         SecondaryDrawerItem about = new SecondaryDrawerItem()
                 .withName(R.string.about)
                 .withIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_info).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(7);
+                .withIdentifier(Consts.ID_ABOUT);
 
         DividerDrawerItem ddi = new DividerDrawerItem();
 
@@ -97,17 +98,51 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .build();
 
-        Drawer drawer = new DrawerBuilder()
+        new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(tb)
-                .withSelectedItem(-1)
+                .withActionBarDrawerToggleAnimated(true)
                 .addDrawerItems(triage, consultation, pharmacy, ddi, inventory, adminDashboard, ddi, settings, about)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
+                        switch (iDrawerItem.getIdentifier()) {
+                            case Consts.ID_TRIAGE:
+                                getSupportActionBar().setTitle(getResources().getString(R.string.triage));
+                                break;
+                            case Consts.ID_CONSULTATION:
+                                getSupportActionBar().setTitle(getResources().getString(R.string.consultation));
+                                break;
+                            case Consts.ID_PHARMACY:
+                                getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
+                                break;
+                            case Consts.ID_INVENTORY:
+                                getSupportActionBar().setTitle(getResources().getString(R.string.inventory));
+                                break;
+                            case Consts.ID_ADMIN:
+                                getSupportActionBar().setTitle(getResources().getString(R.string.admin));
+                                getSupportActionBar().setSubtitle(null);
+                                break;
+                            case Consts.ID_SETTINGS:
+                                getSupportActionBar().setTitle(getResources().getString(R.string.settings));
+                                getSupportActionBar().setSubtitle(null);
+                                break;
+                            case Consts.ID_ABOUT:
+                                getSupportActionBar().setTitle(getResources().getString(R.string.about));
+                                getSupportActionBar().setSubtitle(null);
+                                break;
+                        }
+                        return false;
+                    }
+                })
                 .withAccountHeader(ah)
                 .build();
 
         TabLayout tl = (TabLayout) findViewById(R.id.tablayout);
-        tl.addTab(tl.newTab().setText(R.string.queue));
-        tl.addTab(tl.newTab().setText(R.string.finished));
+        String queuePlusNo = getString(R.string.queue) + "(12)";
+        String finishedPlusNo = getString(R.string.finished) + "(24)";
+        tl.addTab(tl.newTab().setText(queuePlusNo));
+        tl.addTab(tl.newTab().setText(finishedPlusNo));
         tl.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
 
         //Attach FAB to Recycler View to enable auto hide
@@ -145,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).color(ContextCompat.getColor(this, R.color.text_color)).actionBar().paddingDp(2));
+        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).actionBar().paddingDp(2));
         return true;
     }
 
