@@ -13,8 +13,19 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        heroku {
+            applicationId "io.github.louistsaitszho.ehrtesting.heroku"
+            versionName "1.0h"
+        }
+        webstorm {
+            applicationId "io.github.louistsaitszho.ehrtesting.webstorm"
+            versionName "1.0w"
         }
     }
 }

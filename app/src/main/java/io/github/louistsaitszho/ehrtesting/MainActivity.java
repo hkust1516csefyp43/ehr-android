@@ -31,10 +31,14 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class MainActivity extends AppCompatActivity {
+    //TODO create a util to get theme color according to package
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        if (getApplicationContext().getPackageName().compareTo(Consts.PACKAGE_HEROKU) == 0) {
+//            super.setTheme(R.style.HerokuTheme);
+//        }
         setContentView(R.layout.activity_main);
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
@@ -180,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).actionBar().paddingDp(2));
+        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).color(Color.WHITE).actionBar().paddingDp(2));
         return true;
     }
 

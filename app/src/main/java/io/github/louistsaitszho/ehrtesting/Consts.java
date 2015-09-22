@@ -11,4 +11,7 @@ public class Consts {
     public final static int ID_ADMIN = 6;
     public final static int ID_SETTINGS = 7;
     public final static int ID_ABOUT = 8;
+
+    public final static String PACKAGE_HEROKU = "io.github.louistsaitszho.ehrtesting.heroku";
+    public final static String PACKAGE_WEBSTORM = "io.github.louistsaitszho.ehrtesting.webstorm";
 }
