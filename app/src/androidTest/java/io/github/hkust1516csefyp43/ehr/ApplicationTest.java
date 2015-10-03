@@ -1,4 +1,4 @@
-package io.github.louistsaitszho.ehrtesting;
+package io.github.hkust1516csefyp43.ehr;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

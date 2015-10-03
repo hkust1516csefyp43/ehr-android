@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "io.github.louistsaitszho.ehrtesting"
+        applicationId "io.github.hkust1516csefyp43.ehr"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
@@ -20,11 +20,11 @@ android {
     }
     productFlavors {
         heroku {
-            applicationId "io.github.louistsaitszho.ehrtesting.heroku"
+            applicationId "io.github.hkust1516csefyp43.ehr.heroku"
             versionName "1.0h"
         }
         webstorm {
-            applicationId "io.github.louistsaitszho.ehrtesting.webstorm"
+            applicationId "io.github.hkust1516csefyp43.ehr.webstorm"
             versionName "1.0w"
         }
     }
@@ -33,6 +33,7 @@ android {
 repositories {
     maven {
         url 'http://dl.bintray.com/amulyakhare/maven'
+        url "https://oss.sonatype.org/content/repositories/snapshots"
         mavenCentral()
     }
 }
@@ -69,4 +70,5 @@ dependencies {
     //Snackbar
     compile 'com.github.mrengineer13:snackbar:1.2.0'
 //    compile 'com.github.amlcurran.showcaseview:library:5.0.0'
+    compile 'com.quinny898.library.persistentsearch:library:1.1.0-SNAPSHOT'
 }

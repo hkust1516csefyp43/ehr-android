@@ -1,4 +1,4 @@
-package io.github.louistsaitszho.ehrtesting;
+package io.github.hkust1516csefyp43.ehr;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -36,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getApplicationContext().getPackageName().compareTo(Consts.PACKAGE_HEROKU) == 0) {
-//            super.setTheme(R.style.HerokuTheme);
-//        }
         setContentView(R.layout.activity_main);
 
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
@@ -46,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.triage));
         tb.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
         tb.setCollapsible(true);
-        tb.setSubtitle("Village name"); //TODO get it dynamically
+        tb.setSubtitle("Cannal Side"); //TODO get it dynamically
         tb.setTitleTextColor(ContextCompat.getColor(this, R.color.text_color));
         tb.setSubtitleTextColor(ContextCompat.getColor(this, R.color.text_color));
 
@@ -160,31 +157,34 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MaterialDialog.Builder(context)
-                        .title("This is going to crash")
-                        .content("Confirm to crash this thing to test Parse crash report")
-                        .positiveText("Yes")
-                        .negativeText("No")
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                super.onPositive(dialog);
-                                throw new RuntimeException("Test Exception!");
-                            }
-                        })
-                        .show();
+//                new MaterialDialog.Builder(context)
+//                        .title("This is going to crash")
+//                        .content("Confirm to crash this thing to test Parse crash report")
+//                        .positiveText("Yes")
+//                        .negativeText("No")
+//                        .callback(new MaterialDialog.ButtonCallback() {
+//                            @Override
+//                            public void onPositive(MaterialDialog dialog) {
+//                                super.onPositive(dialog);
+//                                throw new RuntimeException("Test Exception!");
+//                            }
+//                        })
+//                        .show();
             }
         });
-
-        //TODO transparent status bar padding
-        //http://blog.raffaeu.com/archive/2015/04/11/android-and-the-transparent-status-bar.aspx
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).color(Color.WHITE).actionBar().paddingDp(2));
+        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                return false;
+            }
+        });
         return true;
     }
 

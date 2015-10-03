@@ -1,4 +1,4 @@
-package io.github.louistsaitszho.ehrtesting;
+package io.github.hkust1516csefyp43.ehr;
 
 import android.app.Application;
 
@@ -12,7 +12,7 @@ public class application extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ParseCrashReporting.enable(this);
-        Parse.initialize(this, "LavYuwYH6JGN7MdH26XC87atMcAGgmEeSjcBdiy5", "1C9v0QxgVdwvTwOH3DlC34P9TFcLzzOiYYmM6Ix2");
+//        ParseCrashReporting.enable(this);
+//        Parse.initialize(this, "LavYuwYH6JGN7MdH26XC87atMcAGgmEeSjcBdiy5", "1C9v0QxgVdwvTwOH3DlC34P9TFcLzzOiYYmM6Ix2");
     }
 }

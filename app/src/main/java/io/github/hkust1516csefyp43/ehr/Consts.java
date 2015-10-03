@@ -1,4 +1,4 @@
-package io.github.louistsaitszho.ehrtesting;
+package io.github.hkust1516csefyp43.ehr;
 
 /**
  * Created by Louis on 17/9/15.
@@ -12,6 +12,6 @@ public class Consts {
     public final static int ID_SETTINGS = 7;
     public final static int ID_ABOUT = 8;
 
-    public final static String PACKAGE_HEROKU = "io.github.louistsaitszho.ehrtesting.heroku";
-    public final static String PACKAGE_WEBSTORM = "io.github.louistsaitszho.ehrtesting.webstorm";
+    public final static String PACKAGE_HEROKU = "io.github.hkust1516csefyp43.ehr.heroku";
+    public final static String PACKAGE_WEBSTORM = "io.github.hkust1516csefyp43.ehr.webstorm";
 }
