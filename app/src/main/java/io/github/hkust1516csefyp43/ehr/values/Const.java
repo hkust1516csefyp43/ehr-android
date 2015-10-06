@@ -1,9 +1,9 @@
-package io.github.hkust1516csefyp43.ehr;
+package io.github.hkust1516csefyp43.ehr.values;
 
 /**
  * Created by Louis on 17/9/15.
  */
-public class Consts {
+public class Const {
     public final static int ID_TRIAGE = 1;
     public final static int ID_CONSULTATION = 2;
     public final static int ID_PHARMACY = 3;

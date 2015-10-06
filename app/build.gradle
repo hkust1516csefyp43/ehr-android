@@ -71,4 +71,5 @@ dependencies {
     compile 'com.github.mrengineer13:snackbar:1.2.0'
 //    compile 'com.github.amlcurran.showcaseview:library:5.0.0'
     compile 'com.quinny898.library.persistentsearch:library:1.1.0-SNAPSHOT'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
 }

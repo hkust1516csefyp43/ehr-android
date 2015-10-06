@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -29,6 +28,8 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+
+import io.github.hkust1516csefyp43.ehr.values.Const;
 
 public class MainActivity extends AppCompatActivity {
     //TODO create a util to get theme color according to package
@@ -50,33 +51,33 @@ public class MainActivity extends AppCompatActivity {
         PrimaryDrawerItem triage = new PrimaryDrawerItem()
                 .withName(R.string.triage)
                 .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(Consts.ID_TRIAGE);
+                .withIdentifier(Const.ID_TRIAGE);
         PrimaryDrawerItem consultation = new PrimaryDrawerItem()
                 .withName(R.string.consultation)
                 .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(Consts.ID_CONSULTATION);
+                .withIdentifier(Const.ID_CONSULTATION);
         PrimaryDrawerItem pharmacy = new PrimaryDrawerItem()
                 .withName(R.string.pharmacy)
                 .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(Consts.ID_PHARMACY);
+                .withIdentifier(Const.ID_PHARMACY);
 
         PrimaryDrawerItem inventory = new PrimaryDrawerItem()
                 .withName(R.string.inventory)
                 .withIcon(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_medkit).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(Consts.ID_INVENTORY);
+                .withIdentifier(Const.ID_INVENTORY);
         PrimaryDrawerItem adminDashboard = new PrimaryDrawerItem()
                 .withName(R.string.admin)
                 .withIcon(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_male).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(Consts.ID_ADMIN);
+                .withIdentifier(Const.ID_ADMIN);
 
         SecondaryDrawerItem settings = new SecondaryDrawerItem()
                 .withName(R.string.settings)
                 .withIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(Consts.ID_SETTINGS);
+                .withIdentifier(Const.ID_SETTINGS);
         SecondaryDrawerItem about = new SecondaryDrawerItem()
                 .withName(R.string.about)
                 .withIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_info).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(Consts.ID_ABOUT);
+                .withIdentifier(Const.ID_ABOUT);
 
         DividerDrawerItem ddi = new DividerDrawerItem();
 
@@ -108,27 +109,27 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
                         switch (iDrawerItem.getIdentifier()) {
-                            case Consts.ID_TRIAGE:
+                            case Const.ID_TRIAGE:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.triage));
                                 break;
-                            case Consts.ID_CONSULTATION:
+                            case Const.ID_CONSULTATION:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.consultation));
                                 break;
-                            case Consts.ID_PHARMACY:
+                            case Const.ID_PHARMACY:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
                                 break;
-                            case Consts.ID_INVENTORY:
+                            case Const.ID_INVENTORY:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.inventory));
                                 break;
-                            case Consts.ID_ADMIN:
+                            case Const.ID_ADMIN:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.admin));
                                 getSupportActionBar().setSubtitle(null);
                                 break;
-                            case Consts.ID_SETTINGS:
+                            case Const.ID_SETTINGS:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.settings));
                                 getSupportActionBar().setSubtitle(null);
                                 break;
-                            case Consts.ID_ABOUT:
+                            case Const.ID_ABOUT:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.about));
                                 getSupportActionBar().setSubtitle(null);
                                 break;
