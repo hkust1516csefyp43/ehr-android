@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.ehr;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -153,11 +154,11 @@ public class MainActivity extends AppCompatActivity {
         fab.attachToRecyclerView(rv);
         fab.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
 
-        //Crash test for parse
         final Context context = this;   //Is there a better way to do this -_-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//              Crash test for parse
 //                new MaterialDialog.Builder(context)
 //                        .title("This is going to crash")
 //                        .content("Confirm to crash this thing to test Parse crash report")
