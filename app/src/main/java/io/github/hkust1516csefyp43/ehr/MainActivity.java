@@ -2,9 +2,14 @@ package io.github.hkust1516csefyp43.ehr;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +21,6 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.SearchEvent;
-import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -33,15 +37,23 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import io.github.hkust1516csefyp43.ehr.value.Const;
+import io.github.hkust1516csefyp43.ehr.view.RecyclerViewFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerViewFragment.OnFragmentInteractionListener {
     //TODO create a util to get theme color according to package
+
+    public final static int PAGES = 2;
+
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /**
+         * Setup the toolbar (the horizontal bar on the top)
+         */
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
         getSupportActionBar().setTitle(getResources().getString(R.string.triage));
@@ -51,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
         tb.setTitleTextColor(ContextCompat.getColor(this, R.color.text_color));
         tb.setSubtitleTextColor(ContextCompat.getColor(this, R.color.text_color));
 
+        /**
+         * Create navigation view (i.e. drawer)
+         */
+        //Define each drawer item + diveder
         PrimaryDrawerItem triage = new PrimaryDrawerItem()
                 .withName(R.string.triage)
                 .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).paddingDp(2))
@@ -84,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         DividerDrawerItem ddi = new DividerDrawerItem();
 
+        //define account header (who is using the app)
         AccountHeader ah = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.header_background)
@@ -98,11 +115,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onClick(View view, IProfile iProfile) {
                         //TODO ProfileActivity
+                        Answers.getInstance().logContentView(new ContentViewEvent()
+                                .putContentName("Profile account header")
+                                .putContentType("Profile")
+                                .putContentId("profile_header"));
                         return false;
                     }
                 })
                 .build();
 
+        //Build the drawer
         new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(tb)
@@ -176,6 +198,10 @@ public class MainActivity extends AppCompatActivity {
                 .putContentType("Station")
                 .putContentId("triage"));
 
+
+        /**
+         * Initiate the tabs
+         */
         TabLayout tl = (TabLayout) findViewById(R.id.tablayout);
         String queuePlusNo = getString(R.string.queue) + "(12)";
         String finishedPlusNo = getString(R.string.finished) + "(24)";
@@ -183,32 +209,43 @@ public class MainActivity extends AppCompatActivity {
         tl.addTab(tl.newTab().setText(finishedPlusNo));
         tl.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
 
-        //Attach FAB to Recycler View to enable auto hide
-        RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingactionbutton);
-        fab.attachToRecyclerView(rv);
-        fab.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
+        /**
+         * Setup viewpager adaptor + viewpager fragments
+         */
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(rvAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
 
-        final Context context = this;   //Is there a better way to do this -_-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//              Crash test for parse
-//                new MaterialDialog.Builder(context)
-//                        .title("This is going to crash")
-//                        .content("Confirm to crash this thing to test Parse crash report")
-//                        .positiveText("Yes")
-//                        .negativeText("No")
-//                        .callback(new MaterialDialog.ButtonCallback() {
-//                            @Override
-//                            public void onPositive(MaterialDialog dialog) {
-//                                super.onPositive(dialog);
-//                                throw new RuntimeException("Test Exception!");
-//                            }
-//                        })
-//                        .show();
-            }
-        });
+        /**
+         * TODO move everything below here into fragment
+         */
+//        //Attach FAB to Recycler View to enable auto hide
+//        RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingactionbutton);
+//        fab.attachToRecyclerView(rv);
+//        fab.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
+//
+//        final Context context = this;   //Is there a better way to do this -_-
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////              Crash test for parse
+////                new MaterialDialog.Builder(context)
+////                        .title("This is going to crash")
+////                        .content("Confirm to crash this thing to test Parse crash report")
+////                        .positiveText("Yes")
+////                        .negativeText("No")
+////                        .callback(new MaterialDialog.ButtonCallback() {
+////                            @Override
+////                            public void onPositive(MaterialDialog dialog) {
+////                                super.onPositive(dialog);
+////                                throw new RuntimeException("Test Exception!");
+////                            }
+////                        })
+////                        .show();
+//            }
+//        });
     }
 
     @Override
@@ -243,4 +280,34 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        //TODO ?
+    }
+
+    public class recyclerViewAdapter extends FragmentStatePagerAdapter {
+
+        public recyclerViewAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return RecyclerViewFragment.newInstance("case", "0");
+                case 1:
+                    return RecyclerViewFragment.newInstance("case", "1");
+                default:
+                    return RecyclerViewFragment.newInstance("case", "default");
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+    }
+
 }
