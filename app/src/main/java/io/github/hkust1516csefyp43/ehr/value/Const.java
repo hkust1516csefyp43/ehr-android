@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr.values;
+package io.github.hkust1516csefyp43.ehr.value;
 
 /**
  * Created by Louis on 17/9/15.
@@ -14,4 +14,7 @@ public class Const {
 
     public final static String PACKAGE_HEROKU = "io.github.hkust1516csefyp43.ehr.heroku";
     public final static String PACKAGE_WEBSTORM = "io.github.hkust1516csefyp43.ehr.webstorm";
+
+    public final static String API_HEROKU = "https://ehr-api.heroku.com/v1";
+    public final static String API_WEBSTORM = "http://localhost:3000/v1";
 }

@@ -1,7 +1,6 @@
 package io.github.hkust1516csefyp43.ehr;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -30,7 +29,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import io.github.hkust1516csefyp43.ehr.values.Const;
+import io.github.hkust1516csefyp43.ehr.value.Const;
 
 public class MainActivity extends AppCompatActivity {
     //TODO create a util to get theme color according to package

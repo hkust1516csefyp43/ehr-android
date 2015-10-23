@@ -12,8 +12,5 @@ public class application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-        //TODO setup a Parse account with hkust1516csefyp43@gmail.com
-//        ParseCrashReporting.enable(this);
-//        Parse.initialize(this, "LavYuwYH6JGN7MdH26XC87atMcAGgmEeSjcBdiy5", "1C9v0QxgVdwvTwOH3DlC34P9TFcLzzOiYYmM6Ix2");
     }
 }
