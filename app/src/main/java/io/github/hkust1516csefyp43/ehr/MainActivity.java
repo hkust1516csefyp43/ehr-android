@@ -13,6 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.SearchEvent;
 import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -111,27 +114,55 @@ public class MainActivity extends AppCompatActivity {
                         switch (iDrawerItem.getIdentifier()) {
                             case Const.ID_TRIAGE:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.triage));
+                                Answers.getInstance().logContentView(new ContentViewEvent()
+                                        .putContentName("Triage")
+                                        .putContentType("Station")
+                                        .putContentId("triage"));
                                 break;
                             case Const.ID_CONSULTATION:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.consultation));
+                                Answers.getInstance().logContentView(new ContentViewEvent()
+                                        .putContentName("Consultation")
+                                        .putContentType("Station")
+                                        .putContentId("consultation"));
                                 break;
                             case Const.ID_PHARMACY:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
+                                Answers.getInstance().logContentView(new ContentViewEvent()
+                                        .putContentName("Pharmacy")
+                                        .putContentType("Station")
+                                        .putContentId("pharmacy"));
                                 break;
                             case Const.ID_INVENTORY:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.inventory));
+                                Answers.getInstance().logContentView(new ContentViewEvent()
+                                        .putContentName("Inventory")
+                                        .putContentType("Admin")
+                                        .putContentId("inventory"));
                                 break;
                             case Const.ID_ADMIN:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.admin));
                                 getSupportActionBar().setSubtitle(null);
+                                Answers.getInstance().logContentView(new ContentViewEvent()
+                                        .putContentName("Admin")
+                                        .putContentType("Admin")
+                                        .putContentId("admin"));
                                 break;
                             case Const.ID_SETTINGS:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.settings));
                                 getSupportActionBar().setSubtitle(null);
+                                Answers.getInstance().logContentView(new ContentViewEvent()
+                                        .putContentName("Settings")
+                                        .putContentType("Settings & About")
+                                        .putContentId("settings"));
                                 break;
                             case Const.ID_ABOUT:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.about));
                                 getSupportActionBar().setSubtitle(null);
+                                Answers.getInstance().logContentView(new ContentViewEvent()
+                                        .putContentName("About")
+                                        .putContentType("Settings & About")
+                                        .putContentId("about"));
                                 break;
                         }
                         return false;
@@ -139,6 +170,11 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .withAccountHeader(ah)
                 .build();
+
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Triage")
+                .putContentType("Station")
+                .putContentId("triage"));
 
         TabLayout tl = (TabLayout) findViewById(R.id.tablayout);
         String queuePlusNo = getString(R.string.queue) + "(12)";
@@ -182,7 +218,11 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-
+                Answers.getInstance().logSearch(new SearchEvent());
+                Answers.getInstance().logContentView(new ContentViewEvent()
+                        .putContentName("Search")
+                        .putContentType("Search")
+                        .putContentId("search"));
                 return false;
             }
         });
