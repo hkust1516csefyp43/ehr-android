@@ -1,6 +1,5 @@
 package io.github.hkust1516csefyp43.ehr;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,8 +10,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
     //TODO create a util to get theme color according to package
 
     public final static int PAGES = 2;
-
+    public final String TAG = getClass().getSimpleName();
     private ViewPager viewPager;
 
     @Override
@@ -216,36 +215,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
         viewPager.setAdapter(rvAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
-
-        /**
-         * TODO move everything below here into fragment
-         */
-//        //Attach FAB to Recycler View to enable auto hide
-//        RecyclerView rv = (RecyclerView) findViewById(R.id.recyclerview);
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingactionbutton);
-//        fab.attachToRecyclerView(rv);
-//        fab.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
-//
-//        final Context context = this;   //Is there a better way to do this -_-
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////              Crash test for parse
-////                new MaterialDialog.Builder(context)
-////                        .title("This is going to crash")
-////                        .content("Confirm to crash this thing to test Parse crash report")
-////                        .positiveText("Yes")
-////                        .negativeText("No")
-////                        .callback(new MaterialDialog.ButtonCallback() {
-////                            @Override
-////                            public void onPositive(MaterialDialog dialog) {
-////                                super.onPositive(dialog);
-////                                throw new RuntimeException("Test Exception!");
-////                            }
-////                        })
-////                        .show();
-//            }
-//        });
     }
 
     @Override
@@ -267,21 +236,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onFragmentInteraction(Uri uri) {
         //TODO ?
     }
@@ -296,10 +250,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
+                    Log.d(TAG, "1");
                     return RecyclerViewFragment.newInstance("case", "0");
                 case 1:
+                    Log.d(TAG, "2");
                     return RecyclerViewFragment.newInstance("case", "1");
                 default:
+                    Log.d(TAG, "default");
                     return RecyclerViewFragment.newInstance("case", "default");
             }
         }

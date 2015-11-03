@@ -1,55 +1,81 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/recyclerview"-->
+    <!-- TODO check how CoordinatorLayout works first -->
+    <!--<android.support.design.widget.CoordinatorLayout-->
+    <!--id-->
         <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"/>-->
+    <!--android:layout_height="match_parent">-->
 
-        <android.support.design.widget.AppBarLayout
+    <!--&lt;!&ndash;<android.support.v7.widget.RecyclerView&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/recyclerview"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="match_parent"/>&ndash;&gt;-->
+
+    <!--<android.support.design.widget.AppBarLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--<android.support.v7.widget.Toolbar-->
+    <!--android:id="@+id/toolbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/primary_dark_color"-->
+    <!--app:layout_scrollFlags="scroll|enterAlways"/>-->
+
+    <!--<android.support.design.widget.TabLayout-->
+    <!--android:id="@+id/tablayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:layout_scrollFlags="scroll|enterAlways"-->
+    <!--app:tabGravity="fill"-->
+    <!--app:tabMaxWidth="0dp"-->
+    <!--app:tabMode="fixed"/>-->
+
+    <!--</android.support.design.widget.AppBarLayout>-->
+
+    <!--&lt;!&ndash; TODO move FAB within a fragment &ndash;&gt;-->
+    <!--&lt;!&ndash;<com.melnykov.fab.FloatingActionButton&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/floatingactionbutton"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_gravity="bottom|right"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_margin="16dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;app:fab_colorNormal="@color/primary_color"&ndash;&gt;-->
+    <!--&lt;!&ndash;app:fab_colorPressed="@color/primary_light_color"/>&ndash;&gt;-->
+
+    <!--</android.support.design.widget.CoordinatorLayout>-->
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/primary_dark_color"
+            app:layout_scrollFlags="scroll|enterAlways"/>
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/primary_dark_color"
-                app:layout_scrollFlags="scroll|enterAlways"/>
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tablayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:tabGravity="fill"
-                app:tabMaxWidth="0dp"
-                app:tabMode="fixed"/>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tablayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"/>
 
-        <!-- TODO move FAB within a fragment -->
-        <!--<com.melnykov.fab.FloatingActionButton-->
-        <!--android:id="@+id/floatingactionbutton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|right"-->
-        <!--android:layout_margin="16dp"-->
-        <!--app:fab_colorNormal="@color/primary_color"-->
-        <!--app:fab_colorPressed="@color/primary_light_color"/>-->
+    </android.support.design.widget.AppBarLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-</RelativeLayout>
+</LinearLayout>
