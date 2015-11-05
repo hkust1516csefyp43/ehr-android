@@ -38,6 +38,10 @@ android {
             applicationId "io.github.hkust1516csefyp43.ehr.webstorm"
             versionName "1.0w"
         }
+        raspberry {
+            applicationId "io.github.hkust1516csefyp43.ehr.raspberry"
+            versionName "1.0r"
+        }
     }
 }
 

@@ -1,12 +1,31 @@
-package io.github.hkust1516csefyp43.ehr.util;
+package io.github.hkust1516csefyp43.ehr;
+
+import android.content.Context;
+
+import java.util.Locale;
 
 import io.github.hkust1516csefyp43.ehr.pojo.Person;
 
 /**
- * Utils related to String
- * Created by Louis on 6/10/15.
+ * Created by Louis on 5/11/15.
  */
-public class StringUtil {
+public class Utils {
+    private String packageName;
+
+    public static Locale getDefaultLocale() {
+        return Locale.ENGLISH;
+    }
+
+    public String getPackageName(Context context) {
+        if (packageName == null) {
+            packageName = context.getPackageName();
+        }
+        return packageName;
+    }
+
+    public void setPackageName(String pn) {
+        packageName = pn;
+    }
 
     public String getTextDrawableText(Person p) {
         if (p != null) {
@@ -27,5 +46,4 @@ public class StringUtil {
         } else
             return "?";
     }
-
 }

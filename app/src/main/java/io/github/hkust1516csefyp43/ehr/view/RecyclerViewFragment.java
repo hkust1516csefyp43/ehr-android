@@ -121,7 +121,7 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        rv.setAdapter(new PatientCardRecyclerViewAdapter());
+        rv.setAdapter(new PatientCardRecyclerViewAdapter(getContext()));
     }
 
     @Override

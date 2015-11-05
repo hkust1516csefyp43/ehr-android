@@ -38,16 +38,6 @@
 
     <!--</android.support.design.widget.AppBarLayout>-->
 
-    <!--&lt;!&ndash; TODO move FAB within a fragment &ndash;&gt;-->
-    <!--&lt;!&ndash;<com.melnykov.fab.FloatingActionButton&ndash;&gt;-->
-    <!--&lt;!&ndash;android:id="@+id/floatingactionbutton"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_gravity="bottom|right"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_margin="16dp"&ndash;&gt;-->
-    <!--&lt;!&ndash;app:fab_colorNormal="@color/primary_color"&ndash;&gt;-->
-    <!--&lt;!&ndash;app:fab_colorPressed="@color/primary_light_color"/>&ndash;&gt;-->
-
     <!--</android.support.design.widget.CoordinatorLayout>-->
 
     <android.support.design.widget.AppBarLayout
@@ -59,13 +49,14 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary_dark_color"
+            android:background="@color/primary_color"
             app:layout_scrollFlags="scroll|enterAlways"/>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/primary_color"
             app:layout_scrollFlags="scroll|enterAlways"
             app:tabGravity="fill"
             app:tabMaxWidth="0dp"
