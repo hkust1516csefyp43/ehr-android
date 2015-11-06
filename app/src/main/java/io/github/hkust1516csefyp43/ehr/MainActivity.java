@@ -1,6 +1,5 @@
 package io.github.hkust1516csefyp43.ehr;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -18,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
@@ -246,6 +244,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         //TODO ?
     }
 
+    public void openAbout() {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
+
     public class recyclerViewAdapter extends FragmentStatePagerAdapter {
 
         public recyclerViewAdapter(FragmentManager fm) {
@@ -271,11 +274,5 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         public int getCount() {
             return 2;
         }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void openAbout() {
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
     }
 }
