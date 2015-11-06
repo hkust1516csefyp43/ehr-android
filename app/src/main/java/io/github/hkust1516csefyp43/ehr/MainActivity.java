@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.ehr;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -130,8 +132,9 @@ public class MainActivity extends AppCompatActivity {
                                 getSupportActionBar().setSubtitle(null);
                                 break;
                             case Const.ID_ABOUT:
-                                getSupportActionBar().setTitle(getResources().getString(R.string.about));
-                                getSupportActionBar().setSubtitle(null);
+                                openAbout();
+//                                getSupportActionBar().setTitle(getResources().getString(R.string.about));
+//                                getSupportActionBar().setSubtitle(null);
                                 break;
                         }
                         return false;
@@ -202,5 +205,10 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openAbout() {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
     }
 }
