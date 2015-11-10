@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         /**
          * Create navigation view (i.e. drawer)
          */
-        //Define each drawer item + diveder
+        //Define each drawer item + divider
         PrimaryDrawerItem triage = new PrimaryDrawerItem()
                 .withName(R.string.triage)
                 .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).paddingDp(2))
@@ -97,6 +97,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
                 .withName(R.string.about)
                 .withIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_info).color(Color.GRAY).paddingDp(2))
                 .withIdentifier(Const.ID_ABOUT);
+        SecondaryDrawerItem logout = new SecondaryDrawerItem()
+                .withName(R.string.logout)
+                .withIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_local_phone).color(Color.GRAY).paddingDp(2))
+                .withIdentifier(Const.ID_LOGOUT);
 
         DividerDrawerItem ddi = new DividerDrawerItem();
 
@@ -129,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
                 .withActivity(this)
                 .withToolbar(tb)
                 .withActionBarDrawerToggleAnimated(true)
-                .addDrawerItems(triage, consultation, pharmacy, ddi, inventory, adminDashboard, ddi, settings, about)
+                .addDrawerItems(triage, consultation, pharmacy, ddi, inventory, adminDashboard, ddi, settings, about, logout)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
@@ -189,6 +193,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
                                         .putContentType("Settings & About")
                                         .putContentId("about"));
                                 break;
+                            case Const.ID_LOGOUT:
+                                openLogin();
+                                getSupportActionBar().setTitle(getResources().getString(R.string.settings));
+                                getSupportActionBar().setSubtitle(null);
+                                Answers.getInstance().logContentView(new ContentViewEvent()
+                                        .putContentName("Logout")
+                                        .putContentType("Logout")
+                                        .putContentId("logout"));
+                                break;
+
                         }
                         return false;
                     }
@@ -246,6 +260,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
 
     public void openAbout() {
         Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
+
+    public void openLogin(){
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
