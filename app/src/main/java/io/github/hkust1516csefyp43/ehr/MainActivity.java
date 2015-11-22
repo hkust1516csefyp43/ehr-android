@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
                                         .putContentId("about"));
                                 break;
                             case Const.ID_LOGOUT:
-                                openLogin();
+//                                openLogin();
                                 getSupportActionBar().setTitle(getResources().getString(R.string.settings));
                                 getSupportActionBar().setSubtitle(null);
                                 Answers.getInstance().logContentView(new ContentViewEvent()
@@ -263,10 +263,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         startActivity(intent);
     }
 
-    public void openLogin(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
+//    public void openLogin(){
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        startActivity(intent);
+//    }
 
     public class recyclerViewAdapter extends FragmentStatePagerAdapter {
 
