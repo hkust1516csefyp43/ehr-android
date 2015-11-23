@@ -37,19 +37,22 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import io.github.hkust1516csefyp43.ehr.value.Const;
-import io.github.hkust1516csefyp43.ehr.view.RecyclerViewFragment;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 
+@ContentView(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements RecyclerViewFragment.OnFragmentInteractionListener {
     //TODO create a util to get theme color according to package
 
     public final static int PAGES = 2;
     public final String TAG = getClass().getSimpleName();
+    @InjectView(R.id.viewpager)
     private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
 
         /**
          * Setup the toolbar (the horizontal bar on the top)
@@ -194,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
                                         .putContentId("about"));
                                 break;
                             case Const.ID_LOGOUT:
-//                                openLogin();
+                                openLogin();
                                 getSupportActionBar().setTitle(getResources().getString(R.string.settings));
                                 getSupportActionBar().setSubtitle(null);
                                 Answers.getInstance().logContentView(new ContentViewEvent()
@@ -229,7 +232,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         /**
          * Setup viewpager adaptor + viewpager fragments
          */
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
         recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
         viewPager.setAdapter(rvAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
@@ -263,10 +265,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         startActivity(intent);
     }
 
-//    public void openLogin(){
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        startActivity(intent);
-//    }
+    public void openLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
 
     public class recyclerViewAdapter extends FragmentStatePagerAdapter {
 
