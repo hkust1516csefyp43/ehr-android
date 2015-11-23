@@ -12,11 +12,11 @@ public interface MyApiEndpointInterface {
     // Request method and URL specified in the annotation
     // Callback for the parsed response is the last parameter
 
-    @GET("/chief_complain/")
+    @GET("v1/chief_complain/")
     Call<List<Chief_complain>> getChiefComplains(@Query("token") String token, @Query("diagnosis_id") String diagnosisId, @Query("name") String name, @Query("sort_by") String sortBy);
 //    Call<Chief_complain> getChiefComplains(@Query("token") String token, @Query("diagnosis_id") String diagnosisId, @Query("name") String name, @Query("sort_by") String sortBy);
 
-    @GET("/chief_complain/{id}")
+    @GET("v1/chief_complain/{id}")
     Call<Chief_complain> getChiefComplain(@Path("id") String id, @Query("token") String token);
 
 //    @GET("/user/{username}")

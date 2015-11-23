@@ -30,15 +30,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
-
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-@ContentView(R.layout.activity_login)
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
@@ -59,19 +55,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    @InjectView(R.id.email)
     private AutoCompleteTextView mEmailView;
-    @InjectView(R.id.password)
     private EditText mPasswordView;
-    @InjectView(R.id.login_progress)
     private View mProgressView;
-    @InjectView(R.id.login_form)
     private View mLoginFormView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mPasswordView = (EditText) findViewById(R.id.password);
+        mProgressView = findViewById(R.id.login_progress);
+        mLoginFormView = findViewById(R.id.login_form);
+
         // Set up the login form.
         populateAutoComplete();
 

@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,6 +22,8 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.SearchEvent;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -36,35 +39,68 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import io.github.hkust1516csefyp43.ehr.value.Const;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
+import java.util.List;
 
-@ContentView(R.layout.activity_main)
+import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
+import io.github.hkust1516csefyp43.ehr.value.Const;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
+
 public class MainActivity extends AppCompatActivity implements RecyclerViewFragment.OnFragmentInteractionListener {
     //TODO create a util to get theme color according to package
 
     public final static int PAGES = 2;
     public final String TAG = getClass().getSimpleName();
-    @InjectView(R.id.viewpager)
     private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
+
+        MyApiEndpointInterface apiService = retrofit.create(MyApiEndpointInterface.class);
+
+        Call<List<Chief_complain>> call = apiService.getChiefComplains("hihi", null, null, null);
+
+        call.enqueue(new Callback<List<Chief_complain>>() {
+            @Override
+            public void onResponse(Response<List<Chief_complain>> response, Retrofit retrofit) {
+                Log.d("qqq: ", response.toString());
+                if (response.body() != null) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        Log.d("qqq1: ", response.body().get(i).toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
 
         /**
          * Setup the toolbar (the horizontal bar on the top)
          */
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(tb);
-        getSupportActionBar().setTitle(getResources().getString(R.string.triage));
-        tb.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
-        tb.setCollapsible(true);
-        tb.setSubtitle("Cannal Side"); //TODO get it dynamically
-        tb.setTitleTextColor(ContextCompat.getColor(this, R.color.text_color));
-        tb.setSubtitleTextColor(ContextCompat.getColor(this, R.color.text_color));
+        if (tb != null) {
+            setSupportActionBar(tb);
+            tb.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
+            tb.setCollapsible(true);
+            tb.setSubtitle("Cannal Side"); //TODO get it dynamically
+            tb.setTitleTextColor(ContextCompat.getColor(this, R.color.text_color));
+            tb.setSubtitleTextColor(ContextCompat.getColor(this, R.color.text_color));
+        }
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setTitle(getResources().getString(R.string.triage));
+        }
 
         /**
          * Create navigation view (i.e. drawer)
@@ -233,8 +269,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
          * Setup viewpager adaptor + viewpager fragments
          */
         recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(rvAdapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        if (viewPager != null) {
+            viewPager.setAdapter(rvAdapter);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
+        }
     }
 
     @Override

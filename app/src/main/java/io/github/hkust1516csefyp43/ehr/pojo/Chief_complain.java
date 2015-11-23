@@ -22,4 +22,16 @@ public class Chief_complain {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+//        return super.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("id: ");
+        sb.append(id);
+        sb.append("; ");
+        sb.append("name: ");
+        sb.append(name);
+        return sb.toString();
+    }
 }

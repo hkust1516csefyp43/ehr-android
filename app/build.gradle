@@ -98,6 +98,6 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') { transitive = true }
     compile('com.vincentbrison.openlibraries.android:dualcache:2.2.2@jar') { transitive = true }
     //roboguice
-    compile 'org.roboguice:roboguice:3.+'
-    provided 'org.roboguice:roboblender:3.+'
+    compile 'org.roboguice:roboguice:3.0.1'
+    provided 'org.roboguice:roboblender:3.0.1'
 }
