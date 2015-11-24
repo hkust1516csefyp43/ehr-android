@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr;
+package io.github.hkust1516csefyp43.ehr.view;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -14,6 +14,7 @@ import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.PatientCardRecyclerViewAdapter;
 
 /**

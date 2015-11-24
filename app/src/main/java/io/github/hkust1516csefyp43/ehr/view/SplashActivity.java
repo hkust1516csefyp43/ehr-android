@@ -1,10 +1,11 @@
-package io.github.hkust1516csefyp43.ehr;
+package io.github.hkust1516csefyp43.ehr.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 
 /**

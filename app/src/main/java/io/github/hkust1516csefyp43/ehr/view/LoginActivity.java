@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr;
+package io.github.hkust1516csefyp43.ehr.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,6 +29,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.github.hkust1516csefyp43.ehr.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 

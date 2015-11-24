@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr;
+package io.github.hkust1516csefyp43.ehr.view;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -41,7 +41,10 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.List;
 
+import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.apiEndpointInterface;
 import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
+import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import retrofit.Call;
 import retrofit.Callback;
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
 
-        MyApiEndpointInterface apiService = retrofit.create(MyApiEndpointInterface.class);
+        apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
 
         Call<List<Chief_complain>> call = apiService.getChiefComplains("hihi", null, null, null);
 
@@ -82,6 +85,24 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
             @Override
             public void onFailure(Throwable t) {
 
+            }
+        });
+
+        Call<List<Patient>> call2 = apiService.getPatients("hihi", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        call2.enqueue(new Callback<List<Patient>>() {
+            @Override
+            public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+                Log.d("qqq: ", response.toString());
+                if (response.body() != null) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        Log.d("qqq2: ", response.body().get(i).toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
             }
         });
 
