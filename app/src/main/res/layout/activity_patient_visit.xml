@@ -1,31 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="io.github.hkust1516csefyp43.ehr.view.PatientVisitActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
+        android:id="@+id/ablPatientVisit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/tbPatientVisit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary_color"
             app:layout_scrollFlags="scroll|enterAlways"/>
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout"
+            android:id="@+id/tlPatientVisit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/primary_color"
             app:layout_scrollFlags="scroll|enterAlways"
             app:tabGravity="fill"
             app:tabMaxWidth="0dp"
-            app:tabMode="fixed"/>
+            app:tabMode="scrollable"/>
 
     </android.support.design.widget.AppBarLayout>
 

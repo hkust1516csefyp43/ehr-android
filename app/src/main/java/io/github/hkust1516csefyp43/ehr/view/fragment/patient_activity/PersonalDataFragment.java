@@ -1,38 +1,28 @@
-package io.github.hkust1516csefyp43.ehr.view;
+package io.github.hkust1516csefyp43.ehr.view.fragment.patient_activity;
 
-import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.melnykov.fab.FloatingActionButton;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
-
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.adapter.PatientCardRecyclerViewAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RecyclerViewFragment.OnFragmentInteractionListener} interface
+ * {@link PersonalDataFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link RecyclerViewFragment#newInstance} factory method to
+ * Use the {@link PersonalDataFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecyclerViewFragment extends android.support.v4.app.Fragment {
+public class PersonalDataFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private RecyclerView rv;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -40,7 +30,7 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public RecyclerViewFragment() {
+    public PersonalDataFragment() {
         // Required empty public constructor
     }
 
@@ -50,11 +40,11 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment RecyclerViewFragment.
+     * @return A new instance of fragment PersonalDataFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RecyclerViewFragment newInstance(String param1, String param2) {
-        RecyclerViewFragment fragment = new RecyclerViewFragment();
+    public static PersonalDataFragment newInstance(String param1, String param2) {
+        PersonalDataFragment fragment = new PersonalDataFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,8 +62,10 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_personal_data, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -86,33 +78,11 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try {
+        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //Attach FAB to Recycler View to enable auto hide
-        rv = (RecyclerView) getView().findViewById(R.id.recyclerView);
-        if (rv != null) {
-            FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.floatingactionbutton);
-            fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    newPatient();
-                }
-            });
-
-            LinearLayoutManager lm = new LinearLayoutManager(getContext());
-            lm.setOrientation(LinearLayoutManager.VERTICAL);
-            rv.setLayoutManager(lm);
-            fab.attachToRecyclerView(rv);
-            rv.setAdapter(new PatientCardRecyclerViewAdapter(getContext()));
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -120,11 +90,6 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    public void newPatient() {
-        Intent intent = new Intent(this.getContext(), PatientVisitActivity.class);
-        startActivity(intent);
     }
 
     /**
@@ -139,7 +104,6 @@ public class RecyclerViewFragment extends android.support.v4.app.Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Uri uri);
     }
-
 }

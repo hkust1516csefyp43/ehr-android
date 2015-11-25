@@ -3,7 +3,12 @@ package io.github.hkust1516csefyp43.ehr.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+
+import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.patientCardViewHolder;
+import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 
 
 /**
@@ -15,6 +20,7 @@ import android.view.ViewGroup;
  */
 public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
     LayoutInflater mLayoutInflater;
+    Patient[] patients;
 
     public PatientCardRecyclerViewAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
@@ -22,7 +28,9 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+//        return null;
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_patient, parent, false);
+        return new patientCardViewHolder(itemView);
     }
 
     @Override
