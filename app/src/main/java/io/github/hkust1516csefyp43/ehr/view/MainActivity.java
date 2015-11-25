@@ -22,8 +22,6 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.SearchEvent;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -39,18 +37,8 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import java.util.List;
-
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.apiEndpointInterface;
-import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
-import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Const;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewFragment.OnFragmentInteractionListener {
     //TODO create a util to get theme color according to package
@@ -63,48 +51,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
-
-        apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
-
-        Call<List<Chief_complain>> call = apiService.getChiefComplains("hihi", null, null, null);
-
-        call.enqueue(new Callback<List<Chief_complain>>() {
-            @Override
-            public void onResponse(Response<List<Chief_complain>> response, Retrofit retrofit) {
-                Log.d("qqq: ", response.toString());
-                if (response.body() != null) {
-                    for (int i = 0; i < response.body().size(); i++) {
-                        Log.d("qqq1: ", response.body().get(i).toString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-
-        Call<List<Patient>> call2 = apiService.getPatients("hihi", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-
-        call2.enqueue(new Callback<List<Patient>>() {
-            @Override
-            public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
-                Log.d("qqq: ", response.toString());
-                if (response.body() != null) {
-                    for (int i = 0; i < response.body().size(); i++) {
-                        Log.d("qqq2: ", response.body().get(i).toString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-            }
-        });
 
         /**
          * Setup the toolbar (the horizontal bar on the top)

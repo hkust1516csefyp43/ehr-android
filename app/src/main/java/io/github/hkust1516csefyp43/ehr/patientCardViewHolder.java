@@ -8,8 +8,8 @@ import android.widget.TextView;
  * Created by Louis on 25/11/15.
  */
 public final class patientCardViewHolder extends RecyclerView.ViewHolder {
-    TextView patientName;
-    TextView subtitle;
+    public TextView patientName;
+    public TextView subtitle;
 
     public patientCardViewHolder(View view) {
         super(view);

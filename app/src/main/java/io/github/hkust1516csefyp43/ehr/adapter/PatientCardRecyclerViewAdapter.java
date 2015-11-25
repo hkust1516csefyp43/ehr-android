@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.patientCardViewHolder;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.value.Cache;
 
 
 /**
@@ -20,7 +21,6 @@ import io.github.hkust1516csefyp43.ehr.pojo.Patient;
  */
 public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
     LayoutInflater mLayoutInflater;
-    Patient[] patients;
 
     public PatientCardRecyclerViewAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
@@ -35,11 +35,23 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        patientCardViewHolder ph = (patientCardViewHolder) holder;
+        StringBuilder name = new StringBuilder();
+        Patient aPatient = Cache.getPatients().get(position);
+        name.append(aPatient.getFirstName());
+        name.append(" ");
+        if (aPatient.getLastName() != null) {
+            name.append(aPatient.getLastName());
+        }
+        ph.patientName.setText(name.toString());
 
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        if (Cache.getPatients() == null) {
+            return 0;
+        } else
+            return Cache.getPatients().size();
     }
 }
