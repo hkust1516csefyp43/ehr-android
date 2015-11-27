@@ -7,6 +7,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 /**
  * Created by Louis on 5/11/15.
  */
+
 public class Cache {
     private static List<Patient> patients;
 

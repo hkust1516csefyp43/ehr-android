@@ -22,6 +22,8 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.SearchEvent;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -37,20 +39,80 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.value.Const;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewFragment.OnFragmentInteractionListener {
+import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.apiEndpointInterface;
+import io.github.hkust1516csefyp43.ehr.listener.patientFetchedListener;
+import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
+import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.value.Cache;
+import io.github.hkust1516csefyp43.ehr.value.Const;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
+
+public class MainActivity extends AppCompatActivity implements RecyclerViewFragment.OnFragmentInteractionListener, patientFetchedListener {
     //TODO create a util to get theme color according to package
 
     public final static int PAGES = 2;
     public final String TAG = getClass().getSimpleName();
     private ViewPager viewPager;
+    private patientFetchedListener pfListener;
+    private TabLayout tl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
+        apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
+        Call<List<Chief_complain>> call = apiService.getChiefComplains("hihi", null, null, null);
+        Call<List<Patient>> call2 = apiService.getPatients("MiWTgwpjRYN0gtFixCTioZa1ll2V5CGRk6ioXIK14P51CKcdUpJVgEr2hB8MjAT4peyRCmluMn2ogVFasH7UE6Z1KPCDjCYgAIVqwJPw85TFDNxUH4majmhfMKFCLOJvwW7PY7a1YnaLlyFvmK4QJJw4fsc9bFakMmQc7Aq0aLyfPtquUXRYUl9CuXdU2mcsgyFDY2TnduSANqkLSoYZfmwKle7OCmhHS6ZXpL2pKXHYR0zpj5AkebNBINDtb6v", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        call.enqueue(new Callback<List<Chief_complain>>() {
+            @Override
+            public void onResponse(Response<List<Chief_complain>> response, Retrofit retrofit) {
+                Log.d("qqq: ", response.toString());
+                if (response.body() != null) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        Log.d("qqq1: ", response.body().get(i).toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
+        call2.enqueue(new Callback<List<Patient>>() {
+            @Override
+            public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+                Log.d("qqq: ", response.toString());
+                if (response.body() != null) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        Log.d("qqq2: ", response.body().get(i).toString());
+                        Cache.setPatients(response.body());
+                    }
+                    recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
+                    viewPager = (ViewPager) findViewById(R.id.viewpager);
+                    if (viewPager != null && tl != null) {
+                        viewPager.setAdapter(rvAdapter);
+                        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+            }
+        });
 
         /**
          * Setup the toolbar (the horizontal bar on the top)
@@ -225,22 +287,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         /**
          * Initiate the tabs
          */
-        TabLayout tl = (TabLayout) findViewById(R.id.tablayout);
+        tl = (TabLayout) findViewById(R.id.tablayout);
         String queuePlusNo = getString(R.string.queue) + "(12)";
         String finishedPlusNo = getString(R.string.finished) + "(24)";
         tl.addTab(tl.newTab().setText(queuePlusNo));
         tl.addTab(tl.newTab().setText(finishedPlusNo));
         tl.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
-
-        /**
-         * Setup viewpager adaptor + viewpager fragments
-         */
-        recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        if (viewPager != null) {
-            viewPager.setAdapter(rvAdapter);
-            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
-        }
     }
 
     @Override
@@ -274,6 +326,21 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
     public void openLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void afterPatientFetched() {
+
+        /**
+         * Setup viewpager adaptor + viewpager fragments
+         */
+        recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        if (viewPager != null) {
+            viewPager.setAdapter(rvAdapter);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
+        }
+
     }
 
     public class recyclerViewAdapter extends FragmentStatePagerAdapter {
