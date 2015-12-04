@@ -5,10 +5,13 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.pojo.BlockedDevice;
 import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
 import io.github.hkust1516csefyp43.ehr.pojo.Consultation;
+import io.github.hkust1516csefyp43.ehr.pojo.Country;
 import io.github.hkust1516csefyp43.ehr.pojo.Inventory;
+import io.github.hkust1516csefyp43.ehr.pojo.Medication;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.pojo.Pharmacy;
 import io.github.hkust1516csefyp43.ehr.pojo.Role;
+import io.github.hkust1516csefyp43.ehr.pojo.Slum;
 import io.github.hkust1516csefyp43.ehr.pojo.Status;
 import io.github.hkust1516csefyp43.ehr.pojo.Token;
 import io.github.hkust1516csefyp43.ehr.pojo.Triage;
@@ -158,6 +161,58 @@ public interface apiEndpointInterface {
             @Path("id") String id,
             @Query("token") String token);
 
+//------------------------------------------ medication ------------------------------------------
+
+    @GET("v1/medications")
+    Call<List<Medication>> getMedications();
+
+    @GET("v1/medications/{id}")
+    Call<Medication> getMedication();
+
+    @POST("v1/medications/")
+    Call<Medication> addMedication();
+
+    @PUT("v1/medications/{id}")
+    Call<Medication> updateMedication();
+
+    @DELETE("v1/medications/{id}")
+    Call<Medication> deleteMedication();
+
+//------------------------------------------ countries ------------------------------------------
+
+    @GET("v1/locations/countries")
+    Call<List<Country>> getCountries();
+
+    @GET("v1/locations/countries/{id}")
+    Call<Country> getCountry();
+
+    @POST("v1/locations/countries/")
+    Call<Country> addCountry();
+
+    @PUT("v1/locations/countries/{id}")
+    Call<Country> updateCountry();
+
+    @DELETE("v1/locations/countries/{id}")
+    Call<Country> deleteCountry();
+
+//------------------------------------------ slums ------------------------------------------
+
+    @GET("v1/locations/slums")
+    Call<List<Slum>> getSlums();
+
+    @GET("v1/locations/slums/{id}")
+    Call<Slum> getSlum();
+
+    @POST("v1/locations/slums/")
+    Call<Slum> addSlum();
+
+    @PUT("v1/locations/slums/{id}")
+    Call<Slum> updateSlum();
+
+    @DELETE("v1/locations/slums/{id}")
+    Call<Slum> deleteSlum();
+
+//------------------------------------------ static ------------------------------------------
 
     @GET("v1/static/status")
     Call<Status> getStatus();
