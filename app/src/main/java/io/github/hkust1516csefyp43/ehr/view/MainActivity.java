@@ -46,6 +46,7 @@ import io.github.hkust1516csefyp43.ehr.apiEndpointInterface;
 import io.github.hkust1516csefyp43.ehr.listener.patientFetchedListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.Status;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import retrofit.Call;
@@ -68,52 +69,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
-        //TODO get package and see which url to get
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
-        apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
-        Call<List<Chief_complain>> call = apiService.getChiefComplains("hihi", null, null, null);
-        Call<List<Patient>> call2 = apiService.getPatients("MiWTgwpjRYN0gtFixCTioZa1ll2V5CGRk6ioXIK14P51CKcdUpJVgEr2hB8MjAT4peyRCmluMn2ogVFasH7UE6Z1KPCDjCYgAIVqwJPw85TFDNxUH4majmhfMKFCLOJvwW7PY7a1YnaLlyFvmK4QJJw4fsc9bFakMmQc7Aq0aLyfPtquUXRYUl9CuXdU2mcsgyFDY2TnduSANqkLSoYZfmwKle7OCmhHS6ZXpL2pKXHYR0zpj5AkebNBINDtb6v", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-
-        call.enqueue(new Callback<List<Chief_complain>>() {
-            @Override
-            public void onResponse(Response<List<Chief_complain>> response, Retrofit retrofit) {
-                Log.d("qqq: ", response.toString());
-                if (response.body() != null) {
-                    for (int i = 0; i < response.body().size(); i++) {
-                        Log.d("qqq1: ", response.body().get(i).toString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-
-        call2.enqueue(new Callback<List<Patient>>() {
-            @Override
-            public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
-                Log.d("qqq: ", response.toString());
-                if (response.body() != null) {
-                    for (int i = 0; i < response.body().size(); i++) {
-                        Log.d("qqq2: ", response.body().get(i).toString());
-                        Cache.setPatients(response.body());
-                    }
-                    recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
-                    viewPager = (ViewPager) findViewById(R.id.viewpager);
-                    if (viewPager != null && tl != null) {
-                        viewPager.setAdapter(rvAdapter);
-                        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-            }
-        });
 
         /**
          * Setup the toolbar (the horizontal bar on the top)
@@ -312,6 +267,94 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
             }
         });
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+        //TODO get package and see which url to get
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
+        apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
+        Call<List<Chief_complain>> call = apiService.getChiefComplains("hihi", null, null, null);
+        Call<List<Patient>> call2 = apiService.getPatients("MiWTgwpjRYN0gtFixCTioZa1ll2V5CGRk6ioXIK14P51CKcdUpJVgEr2hB8MjAT4peyRCmluMn2ogVFasH7UE6Z1KPCDjCYgAIVqwJPw85TFDNxUH4majmhfMKFCLOJvwW7PY7a1YnaLlyFvmK4QJJw4fsc9bFakMmQc7Aq0aLyfPtquUXRYUl9CuXdU2mcsgyFDY2TnduSANqkLSoYZfmwKle7OCmhHS6ZXpL2pKXHYR0zpj5AkebNBINDtb6v", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        Call<Status> call3 = apiService.getStatus();
+
+        call.enqueue(new Callback<List<Chief_complain>>() {
+            @Override
+            public void onResponse(Response<List<Chief_complain>> response, Retrofit retrofit) {
+                Log.d("qqq: ", response.toString());
+                if (response.body() != null) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        Log.d("qqq1: ", response.body().get(i).toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
+        call2.enqueue(new Callback<List<Patient>>() {
+            @Override
+            public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+                Log.d("qqq: ", response.toString());
+                if (response.body() != null) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        Log.d("qqq2: ", response.body().get(i).toString());
+                        Cache.setPatients(response.body());
+                    }
+                    recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
+                    viewPager = (ViewPager) findViewById(R.id.viewpager);
+                    if (viewPager != null && tl != null) {
+                        viewPager.setAdapter(rvAdapter);
+                        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
+                        tl.setOnTabSelectedListener(
+
+
+                                new TabLayout.OnTabSelectedListener() {
+
+                                    @Override
+                                    public void onTabSelected(TabLayout.Tab tab) {
+                                        viewPager.setCurrentItem(tab.getPosition());
+                                    }
+
+                                    @Override
+                                    public void onTabUnselected(TabLayout.Tab tab) {
+
+                                    }
+
+                                    @Override
+                                    public void onTabReselected(TabLayout.Tab tab) {
+                                        viewPager.setCurrentItem(tab.getPosition());
+                                    }
+                                }
+
+
+                        );
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.d("qqq4", "fail: " + t.getMessage());
+            }
+        });
+
+        call3.enqueue(new Callback<Status>() {
+            @Override
+            public void onResponse(Response<Status> response, Retrofit retrofit) {
+                Log.d("qqq", response.body().toString());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 
     @Override

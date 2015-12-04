@@ -8,6 +8,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.Consultation;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.pojo.Pharmacy;
 import io.github.hkust1516csefyp43.ehr.pojo.Role;
+import io.github.hkust1516csefyp43.ehr.pojo.Status;
 import io.github.hkust1516csefyp43.ehr.pojo.Token;
 import io.github.hkust1516csefyp43.ehr.pojo.Triage;
 import io.github.hkust1516csefyp43.ehr.pojo.User;
@@ -124,6 +125,8 @@ public interface apiEndpointInterface {
             @Path("id") String id,
             @Query("token") String token);
 
+    @GET("v1/static/status")
+    Call<Status> getStatus();
 //    @GET("/user/{username}")
 //    Call<User> getUser(@Path("username") String username);
 //
