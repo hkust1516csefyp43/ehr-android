@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         setContentView(R.layout.activity_main);
 
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+        //TODO get package and see which url to get
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
         apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
         Call<List<Chief_complain>> call = apiService.getChiefComplains("hihi", null, null, null);
