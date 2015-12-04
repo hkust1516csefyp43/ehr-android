@@ -5,6 +5,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.pojo.BlockedDevice;
 import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
 import io.github.hkust1516csefyp43.ehr.pojo.Consultation;
+import io.github.hkust1516csefyp43.ehr.pojo.Inventory;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.pojo.Pharmacy;
 import io.github.hkust1516csefyp43.ehr.pojo.Role;
@@ -28,6 +29,11 @@ public interface apiEndpointInterface {
     // Request method and URL specified in the annotation
     // Callback for the parsed response is the last parameter
 
+//------------------------------------------ users ------------------------------------------
+
+    /**
+     * @return
+     */
     @GET("v1/user/")
     Call<User> login();
 
@@ -57,6 +63,8 @@ public interface apiEndpointInterface {
 
     @GET("v1/users/role/{id}")
     Call<Role> getRole();
+
+//------------------------------------------ patients ------------------------------------------
 
     @GET("v1/patient/")
     Call<List<Patient>> getPatients(
@@ -89,6 +97,8 @@ public interface apiEndpointInterface {
     @DELETE("v1/patients/{id}")
     Call<Patient> deletePatient();
 
+//------------------------------------------ visits ------------------------------------------
+
     @GET("v1/visits/")
     Call<List<Visit>> getVisits();
 
@@ -113,6 +123,29 @@ public interface apiEndpointInterface {
     @POST("v1/visits/pharmacies/{id}")
     Call<Pharmacy> addPharmacy();
 
+//------------------------------------------ inventories ------------------------------------------
+
+    @GET("v1/inventories/")
+    Call<List<Inventory>> getInventories();
+
+    @GET("v1/inventories/{id}")
+    Call<Inventory> getInventory();
+
+    @POST("v1/inventories/")
+    Call<Inventory> addInventory();
+
+    @PUT("v1/inventories/{id}")
+    Call<Inventory> updateInventory();
+
+    @DELETE("v1/inventories/{id}")
+    Call<Inventory> deleteInventory();
+
+    //TODO inventory update
+
+//------------------------------------------ diagnosis ------------------------------------------
+
+//------------------------------------------ chief complains ------------------------------------------
+
     @GET("v1/chief_complain/")
     Call<List<Chief_complain>> getChiefComplains(
             @Query("token") String token,
@@ -125,8 +158,14 @@ public interface apiEndpointInterface {
             @Path("id") String id,
             @Query("token") String token);
 
+
     @GET("v1/static/status")
     Call<Status> getStatus();
+
+
+//------------------------------------------ stock samples ------------------------------------------
+
+
 //    @GET("/user/{username}")
 //    Call<User> getUser(@Path("username") String username);
 //
