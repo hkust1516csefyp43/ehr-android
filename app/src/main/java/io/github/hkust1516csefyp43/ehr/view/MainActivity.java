@@ -283,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         call.enqueue(new Callback<List<Chief_complain>>() {
             @Override
             public void onResponse(Response<List<Chief_complain>> response, Retrofit retrofit) {
-                Log.d("qqq: ", response.toString());
                 if (response.body() != null) {
                     for (int i = 0; i < response.body().size(); i++) {
                         Log.d("qqq1: ", response.body().get(i).toString());
@@ -300,7 +299,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         call2.enqueue(new Callback<List<Patient>>() {
             @Override
             public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
-                Log.d("qqq: ", response.toString());
                 if (response.body() != null) {
                     for (int i = 0; i < response.body().size(); i++) {
                         Log.d("qqq2: ", response.body().get(i).toString());
@@ -347,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
         call3.enqueue(new Callback<Status>() {
             @Override
             public void onResponse(Response<Status> response, Retrofit retrofit) {
-                Log.d("qqq", response.body().toString());
+                Log.d("qqq5", response.body().toString());
             }
 
             @Override

@@ -1,15 +1,15 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /build
 /captures
+/app/build
 
+/gradle
 #Android studio
 *.iml
-.idea
-app/app.iml
+/.idea
+
 
 #Windows thumnail db
 Thumbs.db
