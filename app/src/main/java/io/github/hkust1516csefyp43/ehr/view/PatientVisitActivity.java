@@ -22,7 +22,7 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_activity.PersonalDa
 public class PatientVisitActivity extends AppCompatActivity implements PersonalDataFragment.OnFragmentInteractionListener {
 
     ViewPager viewPager;
-    String[] tabs = {"Personal Data", "Vital Signs", "Chief Complain:, Previous Medical History", "Screening", "Drug History", "Allergy", "Pregnancy (Female only)", "HPI", "Family History", "Social History", "Review of the System", "Physical Examination", "Clinical Diagnosis", "Investigation", "Medication", "Advice", "Follow-up"};
+    String[] tabs = {"Personal Data", "Vital Signs", "Chief Complain", "Previous Medical History", "Screening", "Drug History", "Allergy", "Pregnancy (Female only)", "HPI", "Family History", "Social History", "Review of the System", "Physical Examination", "Clinical Diagnosis", "Investigation", "Medication", "Advice", "Follow-up"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,10 @@ public class PatientVisitActivity extends AppCompatActivity implements PersonalD
 
         @Override
         public Fragment getItem(int position) {
-            return PersonalDataFragment.newInstance("random", "text");
+            switch (position) {
+                default:
+                    return PersonalDataFragment.newInstance("random", "text");
+            }
         }
 
         @Override
