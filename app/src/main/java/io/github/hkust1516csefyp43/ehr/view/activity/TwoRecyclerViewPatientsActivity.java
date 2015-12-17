@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr.view;
+package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -49,13 +49,14 @@ import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.pojo.Status;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
+import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostTriageRecyclerViewFragment;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewFragment.OnFragmentInteractionListener, patientFetchedListener {
+public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implements PostTriageRecyclerViewFragment.OnFragmentInteractionListener, patientFetchedListener {
     //TODO create a util to get theme color according to package
 
     public final static int PAGES = 2;
@@ -396,13 +397,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewFragm
             switch (position) {
                 case 0:
                     Log.d(TAG, "1");
-                    return RecyclerViewFragment.newInstance("case", "0");
+                    return PostTriageRecyclerViewFragment.newInstance("case", "0");
                 case 1:
                     Log.d(TAG, "2");
-                    return RecyclerViewFragment.newInstance("case", "1");
+                    return PostTriageRecyclerViewFragment.newInstance("case", "1");
                 default:
                     Log.d(TAG, "default");
-                    return RecyclerViewFragment.newInstance("case", "default");
+                    return PostTriageRecyclerViewFragment.newInstance("case", "default");
             }
         }
 

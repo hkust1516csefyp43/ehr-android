@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr.view;
+package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent mainIntent = new Intent(SplashActivity.this, TwoRecyclerViewPatientsActivity.class);
                 startActivity(mainIntent);
                 finish();
 

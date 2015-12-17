@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="io.github.hkust1516csefyp43.ehr.view.fragment.patient_activity.PreviousMedicalHistoryFragment">
+             tools:context="io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PreviousMedicalHistoryFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

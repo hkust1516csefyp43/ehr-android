@@ -39,6 +39,28 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="confirm">Confirm</string>
+    <string name="our_website">http://hkust1516csefyp43.github.io</string>
+    <string name="licenses">Licenses:</string>
+    <string name="ehr">EHR</string>
+    <string name="personal_data">Personal Data</string>
+    <string name="vital_signs">Vital Signs</string>
+    <string name="chief_complain">Chief Complain</string>
+    <string name="previous_medical_history">Previous Medical History</string>
+    <string name="screening">Screening</string>
+    <string name="drug_history">Drug History</string>
+    <string name="allergy">Allergy</string>
+    <string name="pregnacy">Pregnancy (Female only)</string>
+    <string name="hpi">HPI</string>
+    <string name="family_history">Family History</string>
+    <string name="social_history">Social History</string>
+    <string name="review_of_the_system">Review of the System</string>
+    <string name="physical_examination">Physical Examination</string>
+    <string name="clinical_diagnosis">Clinical Diagnosis</string>
+    <string name="investigation">Investigation</string>
+    <string name="medication">Medication</string>
+    <string name="advice">Advice</string>
+    <string name="follow_up">Follow-up</string>
 
     <string-array name="gender_array">
         <item>Male</item>

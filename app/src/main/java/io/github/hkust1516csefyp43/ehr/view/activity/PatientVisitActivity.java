@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr.view;
+package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.graphics.Color;
 import android.net.Uri;
@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,7 +18,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_activity.PersonalDataFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PersonalDataFragment;
 
 public class PatientVisitActivity extends AppCompatActivity implements PersonalDataFragment.OnFragmentInteractionListener {
 
@@ -32,10 +33,13 @@ public class PatientVisitActivity extends AppCompatActivity implements PersonalD
         //setup toolbar
         Toolbar tb = (Toolbar) findViewById(R.id.tbPatientVisit);
         setSupportActionBar(tb);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("New patient");
-        getSupportActionBar().setSubtitle("in Slum XXX");
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+            ab.setTitle("New patient");
+            ab.setSubtitle("in Slum XXX");
+        }
 
         //Setup tabs
         TabLayout tl = (TabLayout) findViewById(R.id.tlPatientVisit);
@@ -86,6 +90,10 @@ public class PatientVisitActivity extends AppCompatActivity implements PersonalD
         @Override
         public Fragment getItem(int position) {
             switch (position) {
+                case 1:
+                    return PersonalDataFragment.newInstance("random", "text");
+                case 2:
+                    return PersonalDataFragment.newInstance("random", "text");
                 default:
                     return PersonalDataFragment.newInstance("random", "text");
             }

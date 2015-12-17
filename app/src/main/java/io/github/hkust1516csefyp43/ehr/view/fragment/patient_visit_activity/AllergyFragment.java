@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr.view.fragment.patient_activity;
+package io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,12 +13,12 @@ import io.github.hkust1516csefyp43.ehr.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ChiefComplainFragment.OnFragmentInteractionListener} interface
+ * {@link AllergyFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ChiefComplainFragment#newInstance} factory method to
+ * Use the {@link AllergyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChiefComplainFragment extends Fragment {
+public class AllergyFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class ChiefComplainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ChiefComplainFragment() {
+    public AllergyFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class ChiefComplainFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ChiefComplainFragment.
+     * @return A new instance of fragment AllergyFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChiefComplainFragment newInstance(String param1, String param2) {
-        ChiefComplainFragment fragment = new ChiefComplainFragment();
+    public static AllergyFragment newInstance(String param1, String param2) {
+        AllergyFragment fragment = new AllergyFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,7 +65,7 @@ public class ChiefComplainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chief_complain, container, false);
+        return inflater.inflate(R.layout.fragment_allergy, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

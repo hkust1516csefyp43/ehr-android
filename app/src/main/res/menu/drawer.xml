@@ -14,8 +14,8 @@
         android:id="@+id/group_others"
         android:checkableBehavior="single">
         <item
-            android:title="Settings"/>
+            android:title="@string/settings"/>
         <item
-            android:title="About"/>
+            android:title="@string/about"/>
     </group>
 </menu>

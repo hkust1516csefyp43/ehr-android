@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="io.github.hkust1516csefyp43.ehr.view.PatientVisitActivity">
+    tools:context=".view.activity.PatientVisitActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/ablPatientVisit"

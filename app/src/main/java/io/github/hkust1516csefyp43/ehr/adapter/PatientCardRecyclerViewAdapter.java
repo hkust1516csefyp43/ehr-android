@@ -21,15 +21,17 @@ import io.github.hkust1516csefyp43.ehr.value.Cache;
  */
 public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
     LayoutInflater mLayoutInflater;
+    Context context;
 
     public PatientCardRecyclerViewAdapter(Context context) {
+        this.context = context;
         mLayoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_patient, parent, false);
-        return new patientCardViewHolder(itemView);
+        return new patientCardViewHolder(itemView, context);
     }
 
     @Override
@@ -43,7 +45,6 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
             name.append(aPatient.getLastName());
         }
         ph.patientName.setText(name.toString());
-
     }
 
     @Override

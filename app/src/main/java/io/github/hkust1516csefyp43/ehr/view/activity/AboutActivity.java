@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr.view;
+package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr.view.fragment.patient_activity;
+package io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity;
 
 import android.content.Context;
 import android.net.Uri;
