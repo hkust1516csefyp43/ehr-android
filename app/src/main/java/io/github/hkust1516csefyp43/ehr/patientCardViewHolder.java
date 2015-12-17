@@ -3,9 +3,11 @@ package io.github.hkust1516csefyp43.ehr;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
 
 /**
@@ -14,6 +16,7 @@ import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
 public final class patientCardViewHolder extends RecyclerView.ViewHolder {
     public TextView patientName;
     public TextView subtitle;
+    Patient patient;
 
     public patientCardViewHolder(View view, final Context context) {
         super(view);
@@ -22,9 +25,41 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PatientVisitActivity.class);
-                context.startActivity(intent);
+                //TODO tell PVA who is visiting
+                if (patient != null) {
+                    Log.d("qqq12", patient.toString());
+                    Intent intent = new Intent(context, PatientVisitActivity.class);
+                    intent.putExtra("patient", patient);
+                    context.startActivity(intent);
+                } else {
+                    Log.d("qqq11", "no patient");
+                }
             }
         });
+        //TODO? Instagram style 3D touch card?
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                v.setOnTouchListener(new View.OnTouchListener() {
+//                    public boolean onTouch(View view, MotionEvent event) {
+//                        if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+//                            Log.d("qqq TouchTest", "Touch down");
+//                        } else if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
+//                            Log.d("qqq TouchTest", "Touch up");
+//                            Log.d("qqq8", ""+event.getAxisValue(MotionEvent.AXIS_X));
+//                            Log.d("qqq8", ""+event.getAxisValue(MotionEvent.AXIS_Y));
+//                            long t = event.getEventTime()-event.getDownTime();
+//                            Log.d("qqq8", ""+t);
+//                        }
+//                        return true;
+//                    }
+//                });
+//                return false;
+//            }
+//        });
+    }
+
+    public void setPatient(Patient p) {
+        patient = p;
     }
 }

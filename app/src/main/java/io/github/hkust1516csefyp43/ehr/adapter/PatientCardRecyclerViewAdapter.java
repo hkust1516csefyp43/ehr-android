@@ -2,6 +2,7 @@ package io.github.hkust1516csefyp43.ehr.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +30,17 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_patient, parent, false);
         return new patientCardViewHolder(itemView, context);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         patientCardViewHolder ph = (patientCardViewHolder) holder;
         StringBuilder name = new StringBuilder();
         Patient aPatient = Cache.getPatients().get(position);
+        ph.setPatient(aPatient);
         name.append(aPatient.getFirstName());
         name.append(" ");
         if (aPatient.getLastName() != null) {
