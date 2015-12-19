@@ -61,6 +61,7 @@
     <string name="medication">Medication</string>
     <string name="advice">Advice</string>
     <string name="follow_up">Follow-up</string>
+    <string name="uri_separator">/</string>
 
     <string-array name="gender_array">
         <item>Male</item>

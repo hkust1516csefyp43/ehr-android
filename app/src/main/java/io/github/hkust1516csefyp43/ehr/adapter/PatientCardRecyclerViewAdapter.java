@@ -44,7 +44,7 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(ViewHolder holder, int position) {
         patientCardViewHolder ph = (patientCardViewHolder) holder;
         StringBuilder name = new StringBuilder();
-        Patient aPatient = Cache.getPatients().get(position);
+        Patient aPatient = Cache.getPostTriagePatients().get(position);
         ph.setPatient(aPatient);
         name.append(aPatient.getFirstName());
         name.append(" ");
@@ -63,16 +63,17 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
                 .with(context)
                 .load(imageUri)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .thumbnail((float) 0.1)
+                .thumbnail(0.1f)
                 .placeholder(R.drawable.ehr_logo)
+                .fallback(R.drawable.ehr_logo)
                 .into(ph.proPic);
     }
 
     @Override
     public int getItemCount() {
-        if (Cache.getPatients() == null) {
+        if (Cache.getPostTriagePatients() == null) {
             return 0;
         } else
-            return Cache.getPatients().size();
+            return Cache.getPostTriagePatients().size();
     }
 }

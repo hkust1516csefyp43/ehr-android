@@ -66,9 +66,13 @@ public class Utils {
         else return (dateMsDiff / YEAR + " years ago");
     }
 
-    public static String birthdayToAge(int year, int month, int date) {
-        //TODO year&month&date may be null>>
-        return "too old";
+    public static String birthdayToAge(Integer year, Integer month, Integer date) {
+       if (year != null) {
+           //TODO
+           return null;
+       } else {
+           return null;
+       }
     }
 
     public String getPackageName(Context context) {

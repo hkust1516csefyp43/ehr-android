@@ -43,10 +43,10 @@ import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.apiEndpointInterface;
-import io.github.hkust1516csefyp43.ehr.listener.patientFetchedListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
 import io.github.hkust1516csefyp43.ehr.pojo.Status;
 import io.github.hkust1516csefyp43.ehr.value.Const;
+import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostPharmacyRecyclerViewFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostTriageRecyclerViewFragment;
 import retrofit.Call;
 import retrofit.Callback;
@@ -54,13 +54,12 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implements PostTriageRecyclerViewFragment.OnFragmentInteractionListener, patientFetchedListener {
+public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implements PostTriageRecyclerViewFragment.OnFragmentInteractionListener, PostPharmacyRecyclerViewFragment.OnFragmentInteractionListener {
     //TODO create a util to get theme color according to package
 
     public final static int PAGES = 2;
     public final String TAG = getClass().getSimpleName();
     private ViewPager viewPager;
-    private patientFetchedListener pfListener;
     private TabLayout tl;
 
     @Override
@@ -244,7 +243,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
          */
         tl = (TabLayout) findViewById(R.id.tablayout);
         String queuePlusNo = getString(R.string.queue);
-        String finishedPlusNo = getString(R.string.finished) + "(24)";
+        String finishedPlusNo = getString(R.string.finished);
         tl.addTab(tl.newTab().setText(queuePlusNo));
         tl.addTab(tl.newTab().setText(finishedPlusNo));
         tl.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
@@ -276,7 +275,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
         apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
         Call<List<Chief_complain>> call = apiService.getChiefComplains("hihi", null, null, null);
-//        Call<List<Patient>> call2 = apiService.getPatients("MiWTgwpjRYN0gtFixCTioZa1ll2V5CGRk6ioXIK14P51CKcdUpJVgEr2hB8MjAT4peyRCmluMn2ogVFasH7UE6Z1KPCDjCYgAIVqwJPw85TFDNxUH4majmhfMKFCLOJvwW7PY7a1YnaLlyFvmK4QJJw4fsc9bFakMmQc7Aq0aLyfPtquUXRYUl9CuXdU2mcsgyFDY2TnduSANqkLSoYZfmwKle7OCmhHS6ZXpL2pKXHYR0zpj5AkebNBINDtb6v", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         Call<Status> call3 = apiService.getStatus();
 
         call.enqueue(new Callback<List<Chief_complain>>() {
@@ -294,25 +292,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
             }
         });
-
-//        call2.enqueue(new Callback<List<Patient>>() {
-//            @Override
-//            public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
-//                if (response.body() != null) {
-//                    for (int i = 0; i < response.body().size(); i++) {
-//                        Log.d("qqq2: ", response.body().get(i).toString());
-//                        Cache.setPatients(response.body());
-//                    }
-//
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                Log.d("qqq4", "fail: " + t.getMessage());
-//            }
-//        });
 
         call3.enqueue(new Callback<Status>() {
             @Override
@@ -376,21 +355,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         startActivity(intent);
     }
 
-    @Override
-    public void afterPatientFetched() {
-
-        /**
-         * Setup viewpager adaptor + viewpager fragments
-         */
-        recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        if (viewPager != null) {
-            viewPager.setAdapter(rvAdapter);
-            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
-        }
-
-    }
-
     public class recyclerViewAdapter extends FragmentStatePagerAdapter {
 
         public recyclerViewAdapter(FragmentManager fm) {
@@ -405,7 +369,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                     return PostTriageRecyclerViewFragment.newInstance("case", "0");
                 case 1:
                     Log.d(TAG, "2");
-                    return PostTriageRecyclerViewFragment.newInstance("case", "1");
+                    return PostPharmacyRecyclerViewFragment.newInstance("case", "1");
                 default:
                     Log.d(TAG, "default");
                     return PostTriageRecyclerViewFragment.newInstance("case", "default");

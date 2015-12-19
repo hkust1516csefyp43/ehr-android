@@ -129,19 +129,12 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         call2.enqueue(new Callback<List<Patient>>() {
             @Override
             public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
-                Cache.setPatients(response.body());
-                if (response.body() != null) {
-                    for (int i = 0; i < response.body().size(); i++) {
-                        Log.d("qqq1: ", response.body().get(i).toString());
-                    }
-                }
-                //TODO extract "/" out into string resources
-                Uri size = Uri.parse("0/" + response.body().size());
-                mListener.onFragmentInteraction(size);
+                Cache.setPostTriagePatients(response.body());
+                changeTabCounter(response.body().size());
+
                 if (rv != null && c != null) {
                     rl.setVisibility(View.VISIBLE);
                     gpb.setVisibility(View.GONE);
-
                     fab.setImageDrawable(new IconicsDrawable(c, GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
                     fab.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -149,7 +142,6 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
                             newPatient();
                         }
                     });
-
                     LinearLayoutManager lm = new LinearLayoutManager(c);
                     lm.setOrientation(LinearLayoutManager.VERTICAL);
                     rv.setLayoutManager(lm);
@@ -159,13 +151,12 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
 
             @Override
             public void onFailure(Throwable t) {
-
+                Log.d("qqq19", t.toString());
                 fail.setVisibility(View.VISIBLE);
                 gpb.setVisibility(View.GONE);
                 rl.setVisibility(View.GONE);
             }
         });
-
     }
 
     @Override
@@ -177,6 +168,24 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     public void newPatient() {
         Intent intent = new Intent(this.getContext(), PatientVisitActivity.class);
         startActivity(intent);
+    }
+
+    public void inflateRV(Context c) {
+        LinearLayoutManager lm = new LinearLayoutManager(c);
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(lm);
+        rv.setAdapter(new PatientCardRecyclerViewAdapter(c));
+    }
+
+    public void refresh() {
+        //clear cache
+        //loading become visible
+        //wait for response
+    }
+
+    public void changeTabCounter(int count) {
+        Uri size = Uri.parse("0" + getString(R.string.uri_separator) + count);
+        mListener.onFragmentInteraction(size);
     }
 
     /**
