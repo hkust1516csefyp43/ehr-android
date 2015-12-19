@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
@@ -16,12 +17,14 @@ import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
 public final class patientCardViewHolder extends RecyclerView.ViewHolder {
     public TextView patientName;
     public TextView subtitle;
+    public ImageView proPic;
     Patient patient;
 
     public patientCardViewHolder(View view, final Context context) {
         super(view);
         patientName = (TextView) itemView.findViewById(R.id.tvPatientName);
         subtitle = (TextView) itemView.findViewById(R.id.tvSubtitle);
+        proPic = (ImageView) itemView.findViewById(R.id.ivPatientPic);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

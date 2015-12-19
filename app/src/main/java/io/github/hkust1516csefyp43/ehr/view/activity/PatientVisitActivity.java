@@ -26,15 +26,16 @@ public class PatientVisitActivity extends AppCompatActivity implements PersonalD
 
     ViewPager viewPager;
     String[] tabs = {"Personal Data", "Vital Signs", "Chief Complain", "Previous Medical History", "Screening", "Drug History", "Allergy", "Pregnancy (Female only)", "HPI", "Family History", "Social History", "Review of the System", "Physical Examination", "Clinical Diagnosis", "Investigation", "Medication", "Advice", "Follow-up"};
+    Patient patient = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_visit);
 
-        Patient p = (Patient) getIntent().getSerializableExtra("patient");
-        if (p != null) {
-            Log.d("qqq13", p.toString());
+        patient = (Patient) getIntent().getSerializableExtra("patient");
+        if (patient != null) {
+            Log.d("qqq13", patient.toString());
         }
 
         //setup toolbar

@@ -272,6 +272,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
+    @Override
+    public void onBackPressed() {
+        //TODO press twice to leave the app
+        //http://stackoverflow.com/questions/8430805/android-clicking-twice-the-back-button-to-exit-activity
+        super.onBackPressed();
+    }
+
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =

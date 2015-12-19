@@ -3,6 +3,7 @@ package io.github.hkust1516csefyp43.ehr.pojo;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * TODO this need to look exactly like the JSON Object
@@ -36,15 +37,15 @@ public class Patient implements Serializable{
     @SerializedName("blood_type")
     private String bloodType;
     @SerializedName("create_timestamp")
-    private Object createTimestamp;
+    private Object createTimestamp; //TODO Check how to format date http://stackoverflow.com/questions/18473011/retrofit-gson-serialize-date-from-json-string-into-java-util-date
     @SerializedName("last_seen")
-    private Object lastSeen;
+    private Date lastSeen;          //TODO Check how to format date http://stackoverflow.com/questions/18473011/retrofit-gson-serialize-date-from-json-string-into-java-util-date
     @SerializedName("next_station")
     private int nextStation;
     @SerializedName("email")
     private String email;
 
-    public Patient(String id, String honorific, String firstName, String middleName, String lastName, int phoneCountryId, String phoneNumber, String address, Object dateOfBirth, String gender, Object photo, String slumId, String bloodType, Object createTimestamp, Object lastSeen, int nextStation, String email) {
+    public Patient(String id, String honorific, String firstName, String middleName, String lastName, int phoneCountryId, String phoneNumber, String address, Object dateOfBirth, String gender, Object photo, String slumId, String bloodType, Object createTimestamp, Date lastSeen, int nextStation, String email) {
 
         this.id = id;
         this.honorific = honorific;
@@ -200,11 +201,11 @@ public class Patient implements Serializable{
         this.createTimestamp = createTimestamp;
     }
 
-    public Object getLastSeen() {
+    public Date getLastSeen() {
         return lastSeen;
     }
 
-    public void setLastSeen(Object lastSeen) {
+    public void setLastSeen(Date lastSeen) {
         this.lastSeen = lastSeen;
     }
 

@@ -5,21 +5,48 @@
                 android:layout_height="match_parent"
                 tools:context=".view.activity.TwoRecyclerViewPatientsActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
+    <com.jpardogo.android.googleprogressbar.library.GoogleProgressBar
+        android:id="@+id/google_progress"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:visibility="visible"/>
 
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/floatingactionbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        app:fab_colorNormal="@color/primary_color"
-        app:fab_colorPressed="@color/primary_light_color"/>
+    <TextView
+        android:id="@+id/fail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="Fetch data failed"
+        android:textColor="@color/md_black_1000"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/everything_else"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/floatingactionbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            app:fab_colorNormal="@color/primary_color"
+            app:fab_colorPressed="@color/primary_light_color"/>
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

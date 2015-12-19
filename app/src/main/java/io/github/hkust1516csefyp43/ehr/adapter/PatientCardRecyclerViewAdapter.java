@@ -1,13 +1,18 @@
 package io.github.hkust1516csefyp43.ehr.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.patientCardViewHolder;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
@@ -47,6 +52,20 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
             name.append(aPatient.getLastName());
         }
         ph.patientName.setText(name.toString());
+        StringBuilder subtitle = new StringBuilder();
+        subtitle.append(aPatient.getGender());
+        subtitle.append(" / ");
+        subtitle.append(Utils.lastSeenToString(aPatient.getLastSeen()));
+        ph.subtitle.setText(subtitle.toString());
+        //TODO use glide to get image
+        Uri imageUri = Uri.parse("https://avatars0.githubusercontent.com/u/3873011?v=3&s=460");
+        Glide
+                .with(context)
+                .load(imageUri)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .thumbnail((float) 0.1)
+                .placeholder(R.drawable.ehr_logo)
+                .into(ph.proPic);
     }
 
     @Override
