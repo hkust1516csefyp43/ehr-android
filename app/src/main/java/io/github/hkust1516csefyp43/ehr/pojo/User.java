@@ -3,7 +3,6 @@ package io.github.hkust1516csefyp43.ehr.pojo;
 import java.io.Serializable;
 
 /**
- * TODO user for disk cache
  * Created by Louis on 6/10/15.
  */
 public class User implements Serializable{

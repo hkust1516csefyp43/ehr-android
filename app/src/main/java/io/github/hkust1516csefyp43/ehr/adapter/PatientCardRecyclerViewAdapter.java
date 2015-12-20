@@ -1,21 +1,23 @@
 package io.github.hkust1516csefyp43.ehr.adapter;
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.amulyakhare.textdrawable.TextDrawable;
+
+import java.util.List;
+import java.util.Random;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.Utils;
-import io.github.hkust1516csefyp43.ehr.patientCardViewHolder;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
+import io.github.hkust1516csefyp43.ehr.view.viewholder.patientCardViewHolder;
 
 
 /**
@@ -42,38 +44,43 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        patientCardViewHolder ph = (patientCardViewHolder) holder;
-        StringBuilder name = new StringBuilder();
-        Patient aPatient = Cache.getPostTriagePatients().get(position);
-        ph.setPatient(aPatient);
-        name.append(aPatient.getFirstName());
-        name.append(" ");
-        if (aPatient.getLastName() != null) {
-            name.append(aPatient.getLastName());
+        if (context != null) {
+            patientCardViewHolder ph = (patientCardViewHolder) holder;
+            StringBuilder name = new StringBuilder();
+            Patient aPatient = Cache.getPostTriagePatients(context).get(position);
+            ph.setPatient(aPatient);
+            name.append(aPatient.getFirstName());
+            name.append(" ");
+            if (aPatient.getLastName() != null) {
+                name.append(aPatient.getLastName());
+            }
+            ph.patientName.setText(name.toString());
+            ph.subtitle.setText(aPatient.getGender() + " / " + Utils.lastSeenToString(aPatient.getLastSeen()));
+            //TODO 1) Check if photo is null
+            //TODO 2) find a range of acceptable RGB
+            //TODO 3) save color combination of each patient (if no fetching, just use the old color)
+            //e.g. Gmail: each letter have their own pre-defined color combination
+            Random rand = new Random();
+            ph.proPic.setImageDrawable(TextDrawable.builder().beginConfig().width(64).height(64).endConfig().buildRound(Utils.getTextDrawableText(aPatient), Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255))));
+//            Uri imageUri = Uri.parse("https://avatars0.githubusercontent.com/u/3873011?v=3&s=460");
+//            Glide.with(context).load(imageUri)
+//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                    .thumbnail(0.1f)
+//                    .placeholder(R.drawable.ehr_logo)
+//                    .fallback(R.drawable.ehr_logo)
+//                    .into(ph.proPic);
         }
-        ph.patientName.setText(name.toString());
-        StringBuilder subtitle = new StringBuilder();
-        subtitle.append(aPatient.getGender());
-        subtitle.append(" / ");
-        subtitle.append(Utils.lastSeenToString(aPatient.getLastSeen()));
-        ph.subtitle.setText(subtitle.toString());
-        //TODO use glide to get image
-        Uri imageUri = Uri.parse("https://avatars0.githubusercontent.com/u/3873011?v=3&s=460");
-        Glide
-                .with(context)
-                .load(imageUri)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .thumbnail(0.1f)
-                .placeholder(R.drawable.ehr_logo)
-                .fallback(R.drawable.ehr_logo)
-                .into(ph.proPic);
     }
 
     @Override
     public int getItemCount() {
-        if (Cache.getPostTriagePatients() == null) {
-            return 0;
+        if (context != null) {
+            List<Patient> temp = Cache.getPostTriagePatients(context);
+            if (temp != null) {
+                return temp.size();
+            } else
+                return 0;
         } else
-            return Cache.getPostTriagePatients().size();
+            return 0;
     }
 }

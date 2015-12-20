@@ -40,7 +40,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="confirm">Confirm</string>
-    <string name="our_website">http://hkust1516csefyp43.github.io</string>
+    <string name="our_website" translatable="false">http://hkust1516csefyp43.github.io</string>
     <string name="licenses">Licenses:</string>
     <string name="ehr">EHR</string>
     <string name="personal_data">Personal Data</string>
@@ -61,7 +61,7 @@
     <string name="medication">Medication</string>
     <string name="advice">Advice</string>
     <string name="follow_up">Follow-up</string>
-    <string name="uri_separator">/</string>
+    <string name="uri_separator" translatable="false">/</string>
 
     <string-array name="gender_array">
         <item>Male</item>

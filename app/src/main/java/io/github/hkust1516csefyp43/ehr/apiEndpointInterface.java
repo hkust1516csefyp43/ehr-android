@@ -34,9 +34,6 @@ public interface apiEndpointInterface {
 
 //------------------------------------------ users ------------------------------------------
 
-    /**
-     * @return
-     */
     @GET("v1/user/")
     Call<User> login();
 

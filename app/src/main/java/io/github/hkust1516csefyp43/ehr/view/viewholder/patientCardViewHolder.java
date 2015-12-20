@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr;
+package io.github.hkust1516csefyp43.ehr.view.viewholder;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
 

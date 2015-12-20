@@ -22,8 +22,6 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.SearchEvent;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -39,20 +37,10 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import java.util.List;
-
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.apiEndpointInterface;
-import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
-import io.github.hkust1516csefyp43.ehr.pojo.Status;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostPharmacyRecyclerViewFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostTriageRecyclerViewFragment;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implements PostTriageRecyclerViewFragment.OnFragmentInteractionListener, PostPharmacyRecyclerViewFragment.OnFragmentInteractionListener {
     //TODO create a util to get theme color according to package
@@ -270,41 +258,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     @Override
     protected void onResume() {
         super.onResume();
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
-        //TODO get package and see which url to get
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
-        apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
-        Call<List<Chief_complain>> call = apiService.getChiefComplains("hihi", null, null, null);
-        Call<Status> call3 = apiService.getStatus();
-
-        call.enqueue(new Callback<List<Chief_complain>>() {
-            @Override
-            public void onResponse(Response<List<Chief_complain>> response, Retrofit retrofit) {
-                if (response.body() != null) {
-                    for (int i = 0; i < response.body().size(); i++) {
-                        Log.d("qqq1: ", response.body().get(i).toString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-
-        call3.enqueue(new Callback<Status>() {
-            @Override
-            public void onResponse(Response<Status> response, Retrofit retrofit) {
-                Log.d("qqq5", response.body().toString());
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-
         recyclerViewAdapter rvAdapter = new recyclerViewAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         if (viewPager != null && tl != null) {
@@ -331,6 +284,8 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
 
             );
+        } else {
+            Log.d("qqq", "somethings wrong");
         }
     }
 
@@ -340,8 +295,14 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         String[] parts = uriString.split("/");
         int position = Integer.parseInt(parts[0]);
         int size = Integer.parseInt(parts[1]);
-        if (tl != null) {
-            tl.getTabAt(position).setText("Queue("+size+")");
+        if (size > 0) {
+            if (tl != null) {
+                tl.getTabAt(position).setText(getString(R.string.queue) + "(" + size + ")");
+            }
+        } else {
+            if (tl != null) {
+                tl.getTabAt(position).setText(getString(R.string.queue));
+            }
         }
     }
 

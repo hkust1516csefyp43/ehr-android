@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class Patient implements Serializable{
     @SerializedName("patient_id")
-    private String id;
+    private String patient_id;
     @SerializedName("honorific")
     private String honorific;
     @SerializedName("first_name")
@@ -27,27 +27,26 @@ public class Patient implements Serializable{
     @SerializedName("address")
     private String address;
     @SerializedName("date_of_birth")
-    private Object dateOfBirth;     //TODO Check how to format date http://stackoverflow.com/questions/18473011/retrofit-gson-serialize-date-from-json-string-into-java-util-date
+    private Object dateOfBirth;
     @SerializedName("gender")
     private String gender;
     @SerializedName("photo")
-    private Object photo;           //TODO photo
+    private Object photo;
     @SerializedName("slum_id")
     private String SlumId;
     @SerializedName("blood_type")
     private String bloodType;
     @SerializedName("create_timestamp")
-    private Object createTimestamp; //TODO Check how to format date http://stackoverflow.com/questions/18473011/retrofit-gson-serialize-date-from-json-string-into-java-util-date
+    private Object createTimestamp;
     @SerializedName("last_seen")
-    private Date lastSeen;          //TODO Check how to format date http://stackoverflow.com/questions/18473011/retrofit-gson-serialize-date-from-json-string-into-java-util-date
+    private Date lastSeen;
     @SerializedName("next_station")
     private int nextStation;
     @SerializedName("email")
     private String email;
 
     public Patient(String id, String honorific, String firstName, String middleName, String lastName, int phoneCountryId, String phoneNumber, String address, Object dateOfBirth, String gender, Object photo, String slumId, String bloodType, Object createTimestamp, Date lastSeen, int nextStation, String email) {
-
-        this.id = id;
+        this.patient_id = id;
         this.honorific = honorific;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -69,7 +68,7 @@ public class Patient implements Serializable{
     @Override
     public String toString() {
         return "Patient{" +
-                "id='" + id + '\'' +
+                "id='" + patient_id + '\'' +
                 ", honorific='" + honorific + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
@@ -89,12 +88,12 @@ public class Patient implements Serializable{
                 '}';
     }
 
-    public String getId() {
-        return id;
+    public String getPatientId() {
+        return patient_id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.patient_id = id;
     }
 
     public String getHonorific() {

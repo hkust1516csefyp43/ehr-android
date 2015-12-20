@@ -129,7 +129,8 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         call2.enqueue(new Callback<List<Patient>>() {
             @Override
             public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
-                Cache.setPostTriagePatients(response.body());
+                Cache.clearPostTriagePatients(c);
+                Cache.setPostTriagePatients(c, response.body());
                 changeTabCounter(response.body().size());
 
                 if (rv != null && c != null) {
@@ -139,7 +140,7 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
                     fab.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            newPatient();
+                            openPatientVisit(null);
                         }
                     });
                     LinearLayoutManager lm = new LinearLayoutManager(c);
@@ -152,6 +153,7 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
             @Override
             public void onFailure(Throwable t) {
                 Log.d("qqq19", t.toString());
+                changeTabCounter(0);
                 fail.setVisibility(View.VISIBLE);
                 gpb.setVisibility(View.GONE);
                 rl.setVisibility(View.GONE);
@@ -165,8 +167,16 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         mListener = null;
     }
 
-    public void newPatient() {
+    /**
+     * open new activity of patient. p == null >> new patient; else put it into extra
+     *
+     * @param p
+     */
+    public void openPatientVisit(Patient p) {
         Intent intent = new Intent(this.getContext(), PatientVisitActivity.class);
+        if (p != null) {
+            intent.putExtra("patient", p);
+        }
         startActivity(intent);
     }
 
@@ -183,9 +193,15 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         //wait for response
     }
 
+    /**
+     * Signal TwoRecyclerViewPatientsActivity to change the number of patients on the tab
+     * @param count = how many patients
+     */
     public void changeTabCounter(int count) {
-        Uri size = Uri.parse("0" + getString(R.string.uri_separator) + count);
-        mListener.onFragmentInteraction(size);
+        Uri size = Uri.parse("0/" + count);
+        if (mListener != null) {
+            mListener.onFragmentInteraction(size);
+        }
     }
 
     /**

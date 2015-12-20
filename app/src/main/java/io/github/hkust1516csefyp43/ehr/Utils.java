@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import io.github.hkust1516csefyp43.ehr.pojo.Person;
+import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 
 /**
  * Created by Louis on 5/11/15.
@@ -75,6 +75,28 @@ public class Utils {
        }
     }
 
+    public static String getTextDrawableText(Patient p) {
+        String op;
+        if (p != null) {
+            if (p.getFirstName() != null) {
+                if (p.getLastName() != null) {
+                    op = p.getFirstName().substring(0, 1) + p.getLastName().substring(0, 1);
+                } else {
+                    op = p.getFirstName().substring(0, 1);
+                }
+            } else {
+                if (p.getLastName() != null) {
+                    op = p.getLastName().substring(0, 1);
+                } else {
+                    op = "?";
+                }
+            }
+        } else {
+            op = "?";
+        }
+        return op;
+    }
+
     public String getPackageName(Context context) {
         if (packageName == null) {
             packageName = context.getPackageName();
@@ -86,23 +108,4 @@ public class Utils {
         packageName = pn;
     }
 
-    public String getTextDrawableText(Person p) {
-        if (p != null) {
-            if (p.last_name == null) {
-                //just firstname
-                if (p.first_name == null) {
-                    //no name
-                    return "?";
-                }
-                return "f";
-            } else if (p.first_name == null) {
-                //just lastname
-                return "l";
-            } else {
-                //normal
-                return "fl";
-            }
-        } else
-            return "?";
-    }
 }

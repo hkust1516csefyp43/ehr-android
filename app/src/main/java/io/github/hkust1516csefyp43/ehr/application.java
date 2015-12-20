@@ -1,9 +1,13 @@
 package io.github.hkust1516csefyp43.ehr;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.integration.okhttp.OkHttpUrlLoader;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.LeakCanary;
-import com.vincentbrison.openlibraries.android.dualcache.lib.DualCacheContextUtils;
-import com.vincentbrison.openlibraries.android.dualcache.lib.DualCacheLogUtils;
+import com.squareup.okhttp.OkHttpClient;
+
+import java.io.InputStream;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -16,7 +20,6 @@ public class application extends android.app.Application {
         super.onCreate();
         LeakCanary.install(this);
         Fabric.with(this, new Crashlytics());
-        DualCacheLogUtils.enableLog();
-        DualCacheContextUtils.setContext(this);
+        Glide.get(this).register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(new OkHttpClient()));
     }
 }
