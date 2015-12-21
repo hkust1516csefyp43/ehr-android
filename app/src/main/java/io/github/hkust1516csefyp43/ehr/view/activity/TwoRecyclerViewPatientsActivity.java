@@ -38,6 +38,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostPharmacyRecyclerViewFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostTriageRecyclerViewFragment;
@@ -49,12 +50,12 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     public final String TAG = getClass().getSimpleName();
     private ViewPager viewPager;
     private TabLayout tl;
+    private android.support.design.widget.FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         /**
          * Setup the toolbar (the horizontal bar on the top)
@@ -72,6 +73,15 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         if (ab != null) {
             ab.setTitle(getResources().getString(R.string.triage));
         }
+
+        fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.floatingactionbutton);
+        fab.setImageDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(4).sizeDp(16));
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPatientVisit(null);
+            }
+        });
 
         /**
          * Create navigation view (i.e. drawer)
@@ -313,6 +323,14 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
     public void openLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void openPatientVisit(Patient p) {
+        Intent intent = new Intent(this, PatientVisitActivity.class);
+        if (p != null) {
+            intent.putExtra("patient", p);
+        }
         startActivity(intent);
     }
 

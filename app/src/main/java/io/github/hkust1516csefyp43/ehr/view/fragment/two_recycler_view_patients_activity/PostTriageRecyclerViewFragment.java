@@ -3,7 +3,6 @@ package io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,9 +18,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jpardogo.android.googleprogressbar.library.GoogleProgressBar;
-import com.melnykov.fab.FloatingActionButton;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.List;
 
@@ -55,7 +51,6 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     private SwipeRefreshLayout srl;
     private RelativeLayout rl;
     private GoogleProgressBar gpb;
-    private FloatingActionButton fab;
     private TextView fail;
 
     // TODO: Rename and change types of parameters
@@ -120,12 +115,10 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     @Override
     public void onResume() {
         super.onResume();
-        //Attach FAB to Recycler View to enable auto hide
         rv = (RecyclerView) getView().findViewById(R.id.recyclerView);
         srl = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefreshlayout);
         rl = (RelativeLayout) getView().findViewById(R.id.everything_else);
         gpb = (GoogleProgressBar) getView().findViewById(R.id.google_progress);
-        fab = (FloatingActionButton) getView().findViewById(R.id.floatingactionbutton);
         fail = (TextView) getView().findViewById(R.id.fail);
         final Context c = getContext();
 
@@ -170,17 +163,12 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         if (rv != null && c != null) {
             rl.setVisibility(View.VISIBLE);
             gpb.setVisibility(View.GONE);
-            fab.setImageDrawable(new IconicsDrawable(c, GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openPatientVisit(null);
-                }
-            });
             LinearLayoutManager lm = new LinearLayoutManager(c);
             lm.setOrientation(LinearLayoutManager.VERTICAL);
             rv.setLayoutManager(lm);
-            rv.setAdapter(new PatientCardRecyclerViewAdapter(c));
+            RecyclerView.Adapter rva = new PatientCardRecyclerViewAdapter(c);
+            rva.notifyDataSetChanged();
+            rv.setAdapter(rva);
         }
     }
 
