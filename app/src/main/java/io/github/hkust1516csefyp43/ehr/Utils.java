@@ -1,10 +1,12 @@
 package io.github.hkust1516csefyp43.ehr;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 
@@ -95,6 +97,21 @@ public class Utils {
             op = "?";
         }
         return op;
+    }
+
+    public static int getRandomColor() {
+        Random rand = new Random();
+        int r, g, b;
+        do {
+            r = rand.nextInt(255);
+        } while (r < 50);
+        do {
+            g = rand.nextInt(255);
+        } while (g < 50);
+        do {
+            b = rand.nextInt(255);
+        } while (b < 50);
+        return Color.rgb(r, g, b);
     }
 
     public String getPackageName(Context context) {

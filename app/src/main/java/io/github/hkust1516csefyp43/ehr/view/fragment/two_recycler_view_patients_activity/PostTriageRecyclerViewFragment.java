@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -51,6 +52,11 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private RecyclerView rv;
+    private SwipeRefreshLayout srl;
+    private RelativeLayout rl;
+    private GoogleProgressBar gpb;
+    private FloatingActionButton fab;
+    private TextView fail;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -116,47 +122,35 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         super.onResume();
         //Attach FAB to Recycler View to enable auto hide
         rv = (RecyclerView) getView().findViewById(R.id.recyclerView);
-        final RelativeLayout rl = (RelativeLayout) getView().findViewById(R.id.everything_else);
-        final GoogleProgressBar gpb = (GoogleProgressBar) getView().findViewById(R.id.google_progress);
-        final FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.floatingactionbutton);
-        final TextView fail = (TextView) getView().findViewById(R.id.fail);
+        srl = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefreshlayout);
+        rl = (RelativeLayout) getView().findViewById(R.id.everything_else);
+        gpb = (GoogleProgressBar) getView().findViewById(R.id.google_progress);
+        fab = (FloatingActionButton) getView().findViewById(R.id.floatingactionbutton);
+        fail = (TextView) getView().findViewById(R.id.fail);
         final Context c = getContext();
+
 
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
         apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
-        Call<List<Patient>> call2 = apiService.getPatients("MiWTgwpjRYN0gtFixCTioZa1ll2V5CGRk6ioXIK14P51CKcdUpJVgEr2hB8MjAT4peyRCmluMn2ogVFasH7UE6Z1KPCDjCYgAIVqwJPw85TFDNxUH4majmhfMKFCLOJvwW7PY7a1YnaLlyFvmK4QJJw4fsc9bFakMmQc7Aq0aLyfPtquUXRYUl9CuXdU2mcsgyFDY2TnduSANqkLSoYZfmwKle7OCmhHS6ZXpL2pKXHYR0zpj5AkebNBINDtb6v", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-        call2.enqueue(new Callback<List<Patient>>() {
+        final Call<List<Patient>> call2 = apiService.getPatients("MiWTgwpjRYN0gtFixCTioZa1ll2V5CGRk6ioXIK14P51CKcdUpJVgEr2hB8MjAT4peyRCmluMn2ogVFasH7UE6Z1KPCDjCYgAIVqwJPw85TFDNxUH4majmhfMKFCLOJvwW7PY7a1YnaLlyFvmK4QJJw4fsc9bFakMmQc7Aq0aLyfPtquUXRYUl9CuXdU2mcsgyFDY2TnduSANqkLSoYZfmwKle7OCmhHS6ZXpL2pKXHYR0zpj5AkebNBINDtb6v", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        final Callback<List<Patient>> cb = new Callback<List<Patient>>() {
             @Override
             public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
-                Cache.clearPostTriagePatients(c);
-                Cache.setPostTriagePatients(c, response.body());
-                changeTabCounter(response.body().size());
-
-                if (rv != null && c != null) {
-                    rl.setVisibility(View.VISIBLE);
-                    gpb.setVisibility(View.GONE);
-                    fab.setImageDrawable(new IconicsDrawable(c, GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
-                    fab.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            openPatientVisit(null);
-                        }
-                    });
-                    LinearLayoutManager lm = new LinearLayoutManager(c);
-                    lm.setOrientation(LinearLayoutManager.VERTICAL);
-                    rv.setLayoutManager(lm);
-                    rv.setAdapter(new PatientCardRecyclerViewAdapter(c));
-                }
+                receiving(c, response);
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.d("qqq19", t.toString());
-                changeTabCounter(0);
-                fail.setVisibility(View.VISIBLE);
-                gpb.setVisibility(View.GONE);
-                rl.setVisibility(View.GONE);
+                failing(t);
+            }
+        };
+        call2.enqueue(cb);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Call<List<Patient>> call = call2.clone();
+                call.enqueue(cb);
             }
         });
     }
@@ -165,6 +159,37 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void receiving(Context c, Response<List<Patient>> response) {
+        Cache.clearPostTriagePatients(c);
+        Cache.setPostTriagePatients(c, response.body());
+        changeTabCounter(response.body().size());
+        srl.setRefreshing(false);
+
+        if (rv != null && c != null) {
+            rl.setVisibility(View.VISIBLE);
+            gpb.setVisibility(View.GONE);
+            fab.setImageDrawable(new IconicsDrawable(c, GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(16));
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openPatientVisit(null);
+                }
+            });
+            LinearLayoutManager lm = new LinearLayoutManager(c);
+            lm.setOrientation(LinearLayoutManager.VERTICAL);
+            rv.setLayoutManager(lm);
+            rv.setAdapter(new PatientCardRecyclerViewAdapter(c));
+        }
+    }
+
+    private void failing(Throwable t) {
+        Log.d("qqq19", t.toString());
+        changeTabCounter(0);
+        fail.setVisibility(View.VISIBLE);
+        gpb.setVisibility(View.GONE);
+        rl.setVisibility(View.GONE);
     }
 
     /**
