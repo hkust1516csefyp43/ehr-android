@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,19 +39,22 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostPharmacyRecyclerViewFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostTriageRecyclerViewFragment;
 
-public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implements PostTriageRecyclerViewFragment.OnFragmentInteractionListener, PostPharmacyRecyclerViewFragment.OnFragmentInteractionListener {
+public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implements ListCounterChangedListener, PostTriageRecyclerViewFragment.OnFragmentInteractionListener, PostPharmacyRecyclerViewFragment.OnFragmentInteractionListener {
     //TODO create a util to get theme color according to package
 
     public final static int PAGES = 2;
     public final String TAG = getClass().getSimpleName();
     private ViewPager viewPager;
     private TabLayout tl;
-    private android.support.design.widget.FloatingActionButton fab;
+    private FloatingActionButton fab;
+    private PostTriageRecyclerViewFragment ptrvf;
+    private PostPharmacyRecyclerViewFragment pprvf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +78,8 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             ab.setTitle(getResources().getString(R.string.triage));
         }
 
-        fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.floatingactionbutton);
-        fab.setImageDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(4).sizeDp(16));
+        fab = (FloatingActionButton) findViewById(R.id.floatingactionbutton);
+        fab.setImageDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,6 +164,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                         switch (iDrawerItem.getIdentifier()) {
                             case Const.ID_TRIAGE:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.triage));
+                                getSupportActionBar().setSubtitle("Cannal Side");
                                 Answers.getInstance().logContentView(new ContentViewEvent()
                                         .putContentName("Triage")
                                         .putContentType("Station")
@@ -167,6 +172,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                                 break;
                             case Const.ID_CONSULTATION:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.consultation));
+                                getSupportActionBar().setSubtitle("Cannal Side");
                                 Answers.getInstance().logContentView(new ContentViewEvent()
                                         .putContentName("Consultation")
                                         .putContentType("Station")
@@ -174,6 +180,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                                 break;
                             case Const.ID_PHARMACY:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
+                                getSupportActionBar().setSubtitle("Cannal Side");
                                 Answers.getInstance().logContentView(new ContentViewEvent()
                                         .putContentName("Pharmacy")
                                         .putContentType("Station")
@@ -275,7 +282,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
             tl.setOnTabSelectedListener(
                     new TabLayout.OnTabSelectedListener() {
-
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
                             viewPager.setCurrentItem(tab.getPosition());
@@ -283,7 +289,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
                         @Override
                         public void onTabUnselected(TabLayout.Tab tab) {
-
                         }
 
                         @Override
@@ -291,8 +296,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                             viewPager.setCurrentItem(tab.getPosition());
                         }
                     }
-
-
             );
         } else {
             Log.d("qqq", "somethings wrong");
@@ -301,19 +304,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        String uriString = uri.toString();
-        String[] parts = uriString.split("/");
-        int position = Integer.parseInt(parts[0]);
-        int size = Integer.parseInt(parts[1]);
-        if (size > 0) {
-            if (tl != null) {
-                tl.getTabAt(position).setText(getString(R.string.queue) + "(" + size + ")");
-            }
-        } else {
-            if (tl != null) {
-                tl.getTabAt(position).setText(getString(R.string.queue));
-            }
-        }
     }
 
     public void openAbout() {
@@ -334,6 +324,22 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         startActivity(intent);
     }
 
+    @Override
+    public void onCounterChangedListener(int position, int size) {
+        Log.d("qqq", "p&s: " + position + "/" + size);
+        if (position >= 0) {
+            if (size > 0) {
+                if (tl != null) {
+                    tl.getTabAt(position).setText(getString(R.string.queue) + "(" + size + ")");
+                }
+            } else {
+                if (tl != null) {
+                    tl.getTabAt(position).setText(getString(R.string.queue));
+                }
+            }
+        }
+    }
+
     public class recyclerViewAdapter extends FragmentStatePagerAdapter {
 
         public recyclerViewAdapter(FragmentManager fm) {
@@ -344,14 +350,20 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    Log.d(TAG, "1");
-                    return PostTriageRecyclerViewFragment.newInstance("case", "0");
+                    Log.d(TAG, "0");
+                    if (ptrvf == null)
+                        ptrvf = PostTriageRecyclerViewFragment.newInstance();
+                    return ptrvf;
                 case 1:
-                    Log.d(TAG, "2");
-                    return PostPharmacyRecyclerViewFragment.newInstance("case", "1");
+                    Log.d(TAG, "1");
+                    if (pprvf == null)
+                        pprvf = PostPharmacyRecyclerViewFragment.newInstance();
+                    return pprvf;
                 default:
                     Log.d(TAG, "default");
-                    return PostTriageRecyclerViewFragment.newInstance("case", "default");
+                    if (ptrvf == null)
+                        ptrvf = PostTriageRecyclerViewFragment.newInstance();
+                    return ptrvf;
             }
         }
 

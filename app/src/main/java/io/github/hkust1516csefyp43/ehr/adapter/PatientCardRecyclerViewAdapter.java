@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -24,10 +23,6 @@ import io.github.hkust1516csefyp43.ehr.view.viewholder.patientCardViewHolder;
 
 
 /**
- * TODO The whole adapter
- * http://frank-zhu.github.io/android/2015/01/16/android-recyclerview-part-1/
- * http://frank-zhu.github.io/android/2015/02/25/android-recyclerview-part-2/
- * <p/>
  * Created by Louis on 3/11/15.
  */
 public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
@@ -41,8 +36,7 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_patient, parent, false);
-        return new patientCardViewHolder(itemView, context);
+        return new patientCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_patient, parent, false), context);
     }
 
     @Override
@@ -65,7 +59,7 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
             //e.g. Gmail: each letter have their own pre-defined color combination
             Drawable backup = TextDrawable.builder().buildRound(Utils.getTextDrawableText(aPatient), Utils.getRandomColor());
 
-            String[] uris = {"http://photos.toofab.com/gallery-images/2012/08/01_Shot_160_src.jpg", "https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xfl1/v/t1.0-9/11351352_10153368808349875_6517669903500714504_n.jpg?oh=f892debb6921a5004adf4719f42e6de4&oe=57112EFD&__gda__=1461375548_a4cf7741cb74652e0d733b02ec293588", "http://hkust1516csefyp43.github.io/img/team/ricky.jpg"};
+            String[] uris = {"http://cdn-img.instyle.com/sites/default/files/styles/428xflex/public/images/2012/TRANSFORMATIONS/2005-adam-levine-400_0.jpg?itok=n_C1oYNP", "https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xfl1/v/t1.0-9/11351352_10153368808349875_6517669903500714504_n.jpg?oh=f892debb6921a5004adf4719f42e6de4&oe=57112EFD&__gda__=1461375548_a4cf7741cb74652e0d733b02ec293588", "http://hkust1516csefyp43.github.io/img/team/ricky.jpg"};
             if (position < uris.length) {
                 Uri imageUri = Uri.parse(uris[position]);
                 Glide.with(context).load(imageUri)

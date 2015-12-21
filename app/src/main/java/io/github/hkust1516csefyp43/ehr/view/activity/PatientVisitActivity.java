@@ -27,6 +27,7 @@ public class PatientVisitActivity extends AppCompatActivity implements PersonalD
     ViewPager viewPager;
     String[] tabs = {"Personal Data", "Vital Signs", "Chief Complain", "Previous Medical History", "Screening", "Drug History", "Allergy", "Pregnancy (Female only)", "HPI", "Family History", "Social History", "Review of the System", "Physical Examination", "Clinical Diagnosis", "Investigation", "Medication", "Advice", "Follow-up"};
     Patient patient = null;
+    private PersonalDataFragment pdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,11 +100,13 @@ public class PatientVisitActivity extends AppCompatActivity implements PersonalD
         public Fragment getItem(int position) {
             switch (position) {
                 case 1:
-                    return PersonalDataFragment.newInstance("random", "text");
+                    if (pdf == null)
+                        pdf = new PersonalDataFragment().newInstance();
+                    return pdf;
                 case 2:
-                    return PersonalDataFragment.newInstance("random", "text");
+                    return PersonalDataFragment.newInstance();
                 default:
-                    return PersonalDataFragment.newInstance("random", "text");
+                    return PersonalDataFragment.newInstance();
             }
         }
 

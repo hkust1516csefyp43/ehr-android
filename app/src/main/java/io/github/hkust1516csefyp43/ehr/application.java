@@ -24,6 +24,8 @@ public class application extends android.app.Application {
         LeakCanary.install(this);
         Fabric.with(this, new Crashlytics());
         Glide.get(this).register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(new OkHttpClient()));
+
+
         //TODO remove the following code when deploy
         if (io.github.hkust1516csefyp43.ehr.BuildConfig.DEBUG) {
             Log.d("qqq24", "clear glide cache");
