@@ -30,4 +30,7 @@ public class Const {
     public final static String KEY_POST_PHARMACY_PATIENTS = "postPharmacyPatients";
     public final static String KEY_LOCAL_SETTINGS = "localSettings";
     public final static String KEY_CURRENT_USER = "currentUser";
+    public static final String KEY_CURRENT_PATIENT_FIRST_NAME = "currentPatientFirstName";
+    public static final String KEY_CURRENT_PATIENT_MIDDLE_NAME = "currentPatientMiddleName";
+
 }

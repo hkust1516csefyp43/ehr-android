@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
@@ -86,5 +87,24 @@ public class Cache {
 
     public static void deleteCurrentUser(Context context) {
 
+    }
+
+    public static class currentPatientVisit implements Serializable {
+        //TODO save data to SharePreferences of every single fucking input fields every single fucking time
+
+        public String getFirstName(Context context) {
+            SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+            return prefs.getString(Const.KEY_CURRENT_PATIENT_FIRST_NAME, null);
+        }
+
+        public void setFirstName(Context context, String firstName) {
+            SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+            prefs.edit().putString(Const.KEY_CURRENT_PATIENT_FIRST_NAME, firstName).apply();
+        }
+
+        public String getMiddleName(Context context) {
+            SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+            return prefs.getString(Const.KEY_CURRENT_PATIENT_MIDDLE_NAME, null);
+        }
     }
 }
