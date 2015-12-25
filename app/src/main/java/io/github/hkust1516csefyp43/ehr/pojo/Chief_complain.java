@@ -2,10 +2,12 @@ package io.github.hkust1516csefyp43.ehr.pojo;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Louis on 23/11/15.
  */
-public class Chief_complain {
+public class Chief_complain implements Serializable {
     @SerializedName("chief_complain_id")
     public String id;
     @SerializedName("name")
