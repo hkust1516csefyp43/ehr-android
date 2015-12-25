@@ -1,10 +1,16 @@
 package io.github.hkust1516csefyp43.ehr.value;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 /**
  * Created by Louis on 17/9/15.
  */
 public class Const {
     public final static int SPLASH_DISPLAY_LENGTH = 4000;
+
+    public final static Gson gson1 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+    public final static Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
 
     public final static int ID_TRIAGE = 1;
     public final static int ID_CONSULTATION = 2;

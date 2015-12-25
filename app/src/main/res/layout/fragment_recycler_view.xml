@@ -4,13 +4,17 @@
                 android:layout_height="match_parent"
                 tools:context=".view.activity.TwoRecyclerViewPatientsActivity">
 
-    <com.jpardogo.android.googleprogressbar.library.GoogleProgressBar
-        android:id="@+id/google_progress"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:visibility="visible"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/fail"
@@ -18,28 +22,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
-        android:text="Fetch data failed"
-        android:textColor="@color/md_black_1000"
-        android:visibility="gone"/>
-
-    <RelativeLayout
-        android:id="@+id/everything_else"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swiperefreshlayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </android.support.v7.widget.RecyclerView>
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-    </RelativeLayout>
-
+        android:text="@string/fetch_data_failed"
+        android:textColor="@color/md_black_1000"/>
 
 </RelativeLayout>

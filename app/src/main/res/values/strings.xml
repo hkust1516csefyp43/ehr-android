@@ -62,6 +62,11 @@
     <string name="advice">Advice</string>
     <string name="follow_up">Follow-up</string>
     <string name="uri_separator" translatable="false">/</string>
+    <string name="fetch_data_failed">Fetch data failed</string>
+    <string name="dismiss_dialog_title">Are you sure?</string>
+    <string name="dismiss_dialog_content">All unsaved data will be lost.</string>
+    <string name="dismiss_dialog_positive_text">Yes</string>
+    <string name="dismiss_dialog_negative_text">No</string>
 
     <string-array name="gender_array">
         <item>Male</item>

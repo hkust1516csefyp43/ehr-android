@@ -139,6 +139,10 @@ public class Cache {
             }.getType());
         }
 
+        private static void clearAllCurrentPatientVisitData(Context context) {
+            //TODO clear everything
+        }
+
         //------------------------- separation line ----------------------------------
 
         public static String getFirstName(Context context) {

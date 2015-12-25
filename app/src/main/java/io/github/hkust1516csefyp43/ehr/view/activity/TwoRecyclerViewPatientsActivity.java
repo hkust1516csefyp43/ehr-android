@@ -326,7 +326,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
     @Override
     public void onCounterChangedListener(int position, int size) {
-        Log.d("qqq", "p&s: " + position + "/" + size);
+        Log.d("qqq26", "tab position/size: " + position + "/" + size);
         if (position >= 0) {
             if (size > 0) {
                 if (tl != null) {

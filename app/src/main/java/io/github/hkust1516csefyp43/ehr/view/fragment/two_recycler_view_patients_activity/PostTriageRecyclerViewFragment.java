@@ -6,18 +6,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.jpardogo.android.googleprogressbar.library.GoogleProgressBar;
 
 import java.util.List;
 
@@ -48,8 +44,6 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     // TODO: Rename parameter arguments, choose names that match
     private RecyclerView rv;
     private SwipeRefreshLayout srl;
-    private RelativeLayout rl;
-    private GoogleProgressBar gpb;
     private TextView fail;
     private OnFragmentInteractionListener mListener;
     private ListCounterChangedListener lListener;
@@ -87,16 +81,18 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     @Override
     public void onResume() {
         super.onResume();
-        rv = (RecyclerView) getView().findViewById(R.id.recyclerView);
-        srl = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefreshlayout);
-        rl = (RelativeLayout) getView().findViewById(R.id.everything_else);
-        gpb = (GoogleProgressBar) getView().findViewById(R.id.google_progress);
-        fail = (TextView) getView().findViewById(R.id.fail);
+        if (getView() != null) {
+            if (rv == null)
+                rv = (RecyclerView) getView().findViewById(R.id.recyclerView);
+            if (srl == null)
+                srl = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefreshlayout);
+            if (fail == null)
+                fail = (TextView) getView().findViewById(R.id.fail);
+        }
         final Context c = getContext();
+        fail.setVisibility(View.GONE);
 
-
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(gson)).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(Const.gson1)).build();
         apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
         //TODO only get patients where next_station = consultation
         //TODO different Call depending on the station variable >>1/2/3
@@ -104,22 +100,38 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         final Callback<List<Patient>> cb = new Callback<List<Patient>>() {
             @Override
             public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+                Log.d("qqq27", "receiving sth");
                 receiving(c, response);
             }
 
             @Override
             public void onFailure(Throwable t) {
+                Log.d("qqq27", "receiving nothing");
                 failing(t);
             }
         };
-        call2.enqueue(cb);
-        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        srl.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Call<List<Patient>> call = call2.clone();
-                call.enqueue(cb);
+                refreshUI(call2, cb);
             }
         });
+
+        srl.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("qqq28", "set refresh to true");
+                srl.setRefreshing(true);
+                refreshUI(call2, cb);
+            }
+        });
+    }
+
+    private void refreshUI(Call<List<Patient>> call2, Callback<List<Patient>> cb) {
+        Log.d("qqq29", "refreshing");
+        Call<List<Patient>> call = call2.clone();
+        call.enqueue(cb);
     }
 
     @Override
@@ -130,20 +142,24 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     }
 
     private void receiving(Context c, Response<List<Patient>> response) {
-        Cache.clearPostTriagePatients(c);
+        fail.setVisibility(View.GONE);
         Cache.setPostTriagePatients(c, response.body());
         changeTabCounter(response.body().size());
-        srl.setRefreshing(false);
 
         if (rv != null && c != null) {
-            rl.setVisibility(View.VISIBLE);
-            gpb.setVisibility(View.GONE);
+            srl.clearAnimation();
+            srl.setRefreshing(false);
             LinearLayoutManager lm = new LinearLayoutManager(c);
             lm.setOrientation(LinearLayoutManager.VERTICAL);
             rv.setLayoutManager(lm);
             RecyclerView.Adapter rva = new PatientCardRecyclerViewAdapter(c);
-            rva.notifyDataSetChanged();
             rv.setAdapter(rva);
+            rv.getAdapter().notifyDataSetChanged();
+            srl.setVisibility(View.VISIBLE);
+            Log.d("qqq25", "" + response.body().toString());
+            Log.d("qqq23", "not exactly nothing wrong");
+        } else {
+            Log.d("qqq23", "sth wrong");
         }
     }
 
@@ -151,8 +167,9 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         Log.d("qqq19", t.toString());
         changeTabCounter(0);
         fail.setVisibility(View.VISIBLE);
-        gpb.setVisibility(View.GONE);
-        rl.setVisibility(View.GONE);
+        srl.clearAnimation();
+        srl.setRefreshing(false);
+        srl.setVisibility(View.GONE);
     }
 
     /**

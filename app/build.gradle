@@ -80,7 +80,7 @@ dependencies {
     compile 'com.mikepenz:google-material-typeface:1.2.0.1@aar'
     compile 'com.mikepenz:community-material-typeface:1.1.70.3@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.4.0.1@aar'
-    compile 'com.afollestad:material-dialogs:0.7.9.1'
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.3@aar') { transitive = true }
     compile 'com.github.mrengineer13:snackbar:1.2.0'
     compile 'com.quinny898.library.persistentsearch:library:1.1.0-SNAPSHOT'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'

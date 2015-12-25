@@ -3,6 +3,7 @@ package io.github.hkust1516csefyp43.ehr.view.activity;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -34,10 +38,7 @@ public class PatientVisitActivity extends AppCompatActivity implements PersonalD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_visit);
 
-        patient = (Patient) getIntent().getSerializableExtra("patient");
-        if (patient != null) {
-            Log.d("qqq13", patient.toString());
-        }
+
 
         //setup toolbar
         Toolbar tb = (Toolbar) findViewById(R.id.tbPatientVisit);
@@ -46,8 +47,24 @@ public class PatientVisitActivity extends AppCompatActivity implements PersonalD
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
-            ab.setTitle("New patient");
-            ab.setSubtitle("in Slum XXX");
+            patient = (Patient) getIntent().getSerializableExtra("patient");
+            String title = "";
+            String subtitle = "";
+            if (patient != null) {
+                Log.d("qqq13", patient.toString());
+                subtitle = "from Cannal Side";
+                if (patient.getFirstName() != null)
+                    title += patient.getFirstName() + " ";
+                if (patient.getMiddleName() != null)
+                    title += patient.getMiddleName() + " ";
+                if (patient.getLastName() != null)
+                    title += patient.getLastName();
+            } else {
+                title = "New patient";
+                subtitle = "in Cannal Side";
+            }
+            ab.setTitle(title);
+            ab.setSubtitle(subtitle);
         }
 
         //Setup tabs
@@ -82,6 +99,34 @@ public class PatientVisitActivity extends AppCompatActivity implements PersonalD
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //TODO dialog confirm exit
+        MaterialDialog.SingleButtonCallback yes = new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+                PatientVisitActivity.this.finish();
+            }
+        };
+        MaterialDialog.SingleButtonCallback no = new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+            }
+        };
+        new MaterialDialog.Builder(this)
+                .title(R.string.dismiss_dialog_title)
+                .content(R.string.dismiss_dialog_content)
+                .positiveText(R.string.dismiss_dialog_positive_text)
+                .negativeText(R.string.dismiss_dialog_negative_text)
+                .onPositive(yes)
+                .onNegative(no)
+                .autoDismiss(false)
+                .theme(Theme.LIGHT)
+                .show();
     }
 
     @Override
