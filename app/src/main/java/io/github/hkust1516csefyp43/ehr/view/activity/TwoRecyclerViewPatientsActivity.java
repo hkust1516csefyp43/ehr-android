@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
@@ -50,9 +52,11 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
     public final static int PAGES = 2;
     public final String TAG = getClass().getSimpleName();
-    private ViewPager viewPager;
+    private Toolbar tb;
     private TabLayout tl;
+    private ViewPager viewPager;
     private FloatingActionButton fab;
+    private ListView lv;
     private PostTriageRecyclerViewFragment ptrvf;
     private PostPharmacyRecyclerViewFragment pprvf;
 
@@ -61,10 +65,17 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String[] test = {"Slums", "Countries", "Chief complains", "Diagnosis", "Fingers", "Medicines", "Status", "Users", "Synchronization"};
+
+        ArrayAdapter<String> aas = new ArrayAdapter<String>(this, R.layout.list_item, R.id.label, test);
+        lv = (ListView) findViewById(R.id.listview);
+        lv.setAdapter(aas);
+        lv.setVisibility(View.GONE);
+
         /**
          * Setup the toolbar (the horizontal bar on the top)
          */
-        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+        tb = (Toolbar) findViewById(R.id.toolbar);
         if (tb != null) {
             setSupportActionBar(tb);
             tb.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
@@ -165,6 +176,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                             case Const.ID_TRIAGE:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.triage));
                                 getSupportActionBar().setSubtitle("Cannal Side");
+                                hideAdmin();
                                 Answers.getInstance().logContentView(new ContentViewEvent()
                                         .putContentName("Triage")
                                         .putContentType("Station")
@@ -173,6 +185,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                             case Const.ID_CONSULTATION:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.consultation));
                                 getSupportActionBar().setSubtitle("Cannal Side");
+                                hideAdmin();
                                 Answers.getInstance().logContentView(new ContentViewEvent()
                                         .putContentName("Consultation")
                                         .putContentType("Station")
@@ -181,6 +194,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                             case Const.ID_PHARMACY:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
                                 getSupportActionBar().setSubtitle("Cannal Side");
+                                hideAdmin();
                                 Answers.getInstance().logContentView(new ContentViewEvent()
                                         .putContentName("Pharmacy")
                                         .putContentType("Station")
@@ -196,6 +210,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                             case Const.ID_ADMIN:
                                 getSupportActionBar().setTitle(getResources().getString(R.string.admin));
                                 getSupportActionBar().setSubtitle(null);
+                                shoeAdmin();
                                 Answers.getInstance().logContentView(new ContentViewEvent()
                                         .putContentName("Admin")
                                         .putContentType("Admin")
@@ -304,6 +319,20 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+    }
+
+    private void hideAdmin() {
+        tl.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.VISIBLE);
+        lv.setVisibility(View.GONE);
+    }
+
+    private void shoeAdmin() {
+        tl.setVisibility(View.GONE);
+        viewPager.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
+        lv.setVisibility(View.VISIBLE);
     }
 
     public void openAbout() {

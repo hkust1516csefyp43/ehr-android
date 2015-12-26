@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +21,7 @@ import io.github.hkust1516csefyp43.ehr.R;
  * create an instance of this fragment.
  */
 public class PersonalDataFragment extends Fragment {
+    private static Patient patient;
     private OnFragmentInteractionListener mListener;
 
     public PersonalDataFragment() {
@@ -33,6 +35,13 @@ public class PersonalDataFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static PersonalDataFragment newInstance() {
+        return new PersonalDataFragment();
+    }
+
+    public static PersonalDataFragment newInstance(Patient p) {
+        if (p != null) {
+            patient = p;
+        }
         return new PersonalDataFragment();
     }
 
@@ -57,6 +66,11 @@ public class PersonalDataFragment extends Fragment {
         } else {
             throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
