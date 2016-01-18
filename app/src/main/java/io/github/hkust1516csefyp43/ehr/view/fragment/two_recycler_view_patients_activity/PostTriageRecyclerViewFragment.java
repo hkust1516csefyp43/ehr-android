@@ -2,9 +2,9 @@ package io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +24,6 @@ import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
-import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -41,6 +40,7 @@ import retrofit.Retrofit;
  */
 public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragment {
     private static int station = 0;
+    private int times = 0;
     // TODO: Rename parameter arguments, choose names that match
     private RecyclerView rv;
     private SwipeRefreshLayout srl;
@@ -65,6 +65,7 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d("qqq41", "onAttach");
         try {
             mListener = (OnFragmentInteractionListener) context;
             lListener = (ListCounterChangedListener) context;
@@ -74,39 +75,46 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d("qqq42", "onCreate");
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (getView() != null) {
-            if (rv == null)
-                rv = (RecyclerView) getView().findViewById(R.id.recyclerView);
-            if (srl == null)
-                srl = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefreshlayout);
-            if (fail == null)
-                fail = (TextView) getView().findViewById(R.id.fail);
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("qqq43", "onCreateView");
+        View rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false);
         final Context c = getContext();
-        fail.setVisibility(View.GONE);
+        if (rootView != null) {
+            if (rv == null)
+                rv = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+            if (srl == null)
+                srl = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefreshlayout);
+            if (fail == null)
+                fail = (TextView) rootView.findViewById(R.id.fail);
+            fail.setVisibility(View.GONE);
+            rv.setLayoutManager(new LinearLayoutManager(c, LinearLayoutManager.VERTICAL, false));
+            rv.setAdapter(new PatientCardRecyclerViewAdapter(c));
+        }
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(Const.gson1)).build();
         apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
         //TODO only get patients where next_station = consultation
         //TODO different Call depending on the station variable >>1/2/3
-        final Call<List<Patient>> call2 = apiService.getPatients("MiWTgwpjRYN0gtFixCTioZa1ll2V5CGRk6ioXIK14P51CKcdUpJVgEr2hB8MjAT4peyRCmluMn2ogVFasH7UE6Z1KPCDjCYgAIVqwJPw85TFDNxUH4majmhfMKFCLOJvwW7PY7a1YnaLlyFvmK4QJJw4fsc9bFakMmQc7Aq0aLyfPtquUXRYUl9CuXdU2mcsgyFDY2TnduSANqkLSoYZfmwKle7OCmhHS6ZXpL2pKXHYR0zpj5AkebNBINDtb6v", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        final Call<List<Patient>> call2 = apiService.getPatients("hihi", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         final Callback<List<Patient>> cb = new Callback<List<Patient>>() {
             @Override
             public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
-                Log.d("qqq27", "receiving sth");
-                receiving(c, response);
+                Log.d("qqq27", "receiving: " + response.code() + " " + response.message());
+                if (response.code() >= 500 && response.code() < 600)
+                    onFailure(new Throwable(response.code() + "/" + response.message()));
+                else
+                    receiving(c, response);
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.d("qqq27", "receiving nothing");
+                Log.d("qqq27", "receives nothing");
                 failing(t);
             }
         };
@@ -121,11 +129,21 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         srl.post(new Runnable() {
             @Override
             public void run() {
-                Log.d("qqq28", "set refresh to true");
-                srl.setRefreshing(true);
-                refreshUI(call2, cb);
+                if (!srl.isRefreshing()) {
+                    Log.d("qqq28", "set refresh to true: " + times);
+                    times++;
+                    srl.setRefreshing(true);
+                    refreshUI(call2, cb);
+                }
             }
         });
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("qqq44", "onResume");
     }
 
     private void refreshUI(Call<List<Patient>> call2, Callback<List<Patient>> cb) {
@@ -142,48 +160,40 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     }
 
     private void receiving(Context c, Response<List<Patient>> response) {
-        fail.setVisibility(View.GONE);
-        Cache.setPostTriagePatients(c, response.body());
-        changeTabCounter(response.body().size());
+        if (response != null && response.body() != null && response.body().size() > 0) {
+            Cache.setPostTriagePatients(c, response.body());
+            changeTabCounter(response.body().size());
 
-        if (rv != null && c != null) {
-            srl.clearAnimation();
-            srl.setRefreshing(false);
-            LinearLayoutManager lm = new LinearLayoutManager(c);
-            lm.setOrientation(LinearLayoutManager.VERTICAL);
-            rv.setLayoutManager(lm);
-            RecyclerView.Adapter rva = new PatientCardRecyclerViewAdapter(c);
-            rv.setAdapter(rva);
-            rv.getAdapter().notifyDataSetChanged();
-            srl.setVisibility(View.VISIBLE);
-            Log.d("qqq25", "" + response.body().toString());
-            Log.d("qqq23", "not exactly nothing wrong");
+            if (rv != null && c != null && srl != null) {
+                srl.clearAnimation();
+                srl.setRefreshing(false);
+                rv.getAdapter().notifyDataSetChanged();
+                fail.setVisibility(View.GONE);
+                rv.setVisibility(View.VISIBLE);
+                srl.setVisibility(View.VISIBLE);
+                Log.d("qqq25", "" + response.body().toString());
+                Log.d("qqq23", "rv/srl not showing occationally");
+            } else {
+                Log.d("qqq23", "sth wrong");
+            }
         } else {
-            Log.d("qqq23", "sth wrong");
+            //TODO receives nothing
+            Log.d("qqq", "error");
+            failing(new Throwable("Fetched nothing"));
         }
     }
 
     private void failing(Throwable t) {
-        Log.d("qqq19", t.toString());
+        Log.d("qqq19", "failing");
         changeTabCounter(0);
+        fail.setText(t.getMessage());
         fail.setVisibility(View.VISIBLE);
         srl.clearAnimation();
         srl.setRefreshing(false);
         srl.setVisibility(View.GONE);
+        rv.setVisibility(View.GONE);
     }
 
-    /**
-     * open new activity of patient. p == null >> new patient; else put it into extra
-     *
-     * @param p
-     */
-    public void openPatientVisit(Patient p) {
-        Intent intent = new Intent(this.getContext(), PatientVisitActivity.class);
-        if (p != null) {
-            intent.putExtra("patient", p);
-        }
-        startActivity(intent);
-    }
 
     /**
      * Signal TwoRecyclerViewPatientsActivity to change the number of patients on the tab
@@ -193,6 +203,10 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         if (lListener != null) {
             lListener.onCounterChangedListener(0, count);
         }
+    }
+
+    public void scrollToTop() {
+        rv.getLayoutManager().scrollToPosition(0);
     }
 
     /**

@@ -21,6 +21,25 @@ import io.github.hkust1516csefyp43.ehr.pojo.User;
 
 public class Cache {
 
+    //Current user
+
+    public static void setUser(Context context, User user) {
+        Gson gson = new GsonBuilder().create();
+        String jsonString = gson.toJson(user);
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putString(Const.KEY_CURRENT_USER, jsonString).apply();
+    }
+
+    public static User getUser(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        String value = prefs.getString(Const.KEY_CURRENT_USER, null);
+        if (value != null) {
+            return new Gson().fromJson(value, User.class);
+        } else {
+            return null;
+        }
+    }
+
     //The basic functions: get, set and delete
 
     /**
@@ -78,18 +97,6 @@ public class Cache {
     }
 
     //---------------- non patient related stuff --------------------------
-
-    public static User getCurrentUser(Context context) {
-        return null;
-    }
-
-    public static void setCurrentUser(Context context, User user) {
-
-    }
-
-    public static void deleteCurrentUser(Context context) {
-
-    }
 
     public static class currentPatientVisit implements Serializable {
         //TODO save data to SharePreferences of every single fucking input fields every single fucking time

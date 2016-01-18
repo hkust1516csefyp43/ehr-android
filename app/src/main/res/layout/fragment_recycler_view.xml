@@ -7,12 +7,14 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swiperefreshlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="visible">
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -22,7 +24,8 @@
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
-        android:text="@string/fetch_data_failed"
-        android:textColor="@color/md_black_1000"/>
+        android:text="Sth wrong"
+        android:textColor="@color/md_black_1000"
+        android:visibility="gone"/>
 
 </RelativeLayout>

@@ -177,6 +177,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                                 getSupportActionBar().setTitle(getResources().getString(R.string.triage));
                                 getSupportActionBar().setSubtitle("Cannal Side");
                                 hideAdmin();
+                                ptrvfRecyclerViewScrollToTop();
                                 Answers.getInstance().logContentView(new ContentViewEvent()
                                         .putContentName("Triage")
                                         .putContentType("Station")
@@ -351,6 +352,10 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             intent.putExtra("patient", p);
         }
         startActivity(intent);
+    }
+
+    private void ptrvfRecyclerViewScrollToTop() {
+        ptrvf.scrollToTop();
     }
 
     @Override

@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class User implements Serializable{
     private String email;
+    private String username;
     private String accessToken;
     private String refreshToken;
     private String firstName;
@@ -17,6 +18,14 @@ public class User implements Serializable{
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
