@@ -12,6 +12,16 @@ public class User implements Serializable{
     private String refreshToken;
     private String firstName;
 
+    /**
+     *
+     * @param email
+     * @param username >> temp password storage
+     */
+    public User(String email, String username) {
+        this.email = email;
+        this.username = username;
+    }
+
     public String getFirstName() {
         return firstName;
     }

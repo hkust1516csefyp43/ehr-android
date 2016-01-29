@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.pojo.User;
+import io.github.hkust1516csefyp43.ehr.value.Cache;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -345,6 +347,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 Intent i = new Intent(getApplicationContext(), TwoRecyclerViewPatientsActivity.class);
                 startActivity(i);
+                Cache.setUser(getBaseContext(), new User(mEmail, mPassword));
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

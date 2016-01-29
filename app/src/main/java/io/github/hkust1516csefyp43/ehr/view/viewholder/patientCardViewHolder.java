@@ -34,6 +34,8 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
                     Log.d("qqq12", patient.toString());
                     Intent intent = new Intent(context, PatientVisitActivity.class);
                     intent.putExtra("patient", patient);
+                    //need_cc == true for consultation station only
+                    intent.putExtra("snackBarText", "Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache");
                     context.startActivity(intent);
                 } else {
                     Log.d("qqq11", "no patient");

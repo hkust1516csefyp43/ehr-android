@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -56,8 +57,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_visit);
 
-
-
         //setup toolbar
         Toolbar tb = (Toolbar) findViewById(R.id.tbPatientVisit);
         setSupportActionBar(tb);
@@ -96,6 +95,12 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         if (viewPager != null) {
             viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager()));
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
+            String snackBarText = getIntent().getStringExtra("snackBarText");
+            if (snackBarText != null) {
+                Snackbar.make(viewPager, snackBarText, Snackbar.LENGTH_INDEFINITE).show();
+            } else {
+                Snackbar.make(viewPager, "No CC", Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 
