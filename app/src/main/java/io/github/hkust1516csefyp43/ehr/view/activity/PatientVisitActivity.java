@@ -23,10 +23,28 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.AdviceFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.AllergyFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ChiefComplainFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ClinicalDiagnosisFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DrugHistoryFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.FamilyHistoryFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.FollowUpFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.HPIFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.InvestigationFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.MedicationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PersonalDataFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PhysicalExaminationFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PreviousMedicalHistoryFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ROSFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ScreeningFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.SocialHistoryFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.VitalSignsFragment;
 
-public class PatientVisitActivity extends AppCompatActivity implements PersonalDataFragment.OnFragmentInteractionListener {
+public class PatientVisitActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
     ViewPager viewPager;
     String[] tabs = {"Personal Data", "Vital Signs", "Chief Complain", "Previous Medical History", "Screening", "Drug History", "Allergy", "Pregnancy (Female only)", "HPI", "Family History", "Social History", "Review of the System", "Physical Examination", "Clinical Diagnosis", "Investigation", "Medication", "Advice", "Follow-up"};
@@ -149,7 +167,39 @@ public class PatientVisitActivity extends AppCompatActivity implements PersonalD
                         pdf = new PersonalDataFragment().newInstance();
                     return pdf;
                 case 2:
-                    return PersonalDataFragment.newInstance();
+                    return VitalSignsFragment.newInstance("", "");
+                case 3:
+                    return ChiefComplainFragment.newInstance("", "");
+                case 4:
+                    return PreviousMedicalHistoryFragment.newInstance("", "");
+                case 5:
+                    return ScreeningFragment.newInstance("", "");
+                case 6:
+                    return DrugHistoryFragment.newInstance("", "");
+                case 7:
+                    return AllergyFragment.newInstance("", "");
+                case 8:
+                    return PregnancyFragment.newInstance("", "");
+                case 9:
+                    return HPIFragment.newInstance("", "");
+                case 10:
+                    return FamilyHistoryFragment.newInstance("", "");
+                case 11:
+                    return SocialHistoryFragment.newInstance("", "");
+                case 12:
+                    return ROSFragment.newInstance("", "");
+                case 13:
+                    return PhysicalExaminationFragment.newInstance("", "");
+                case 14:
+                    return ClinicalDiagnosisFragment.newInstance("", "");
+                case 15:
+                    return InvestigationFragment.newInstance("", "");
+                case 16:
+                    return MedicationFragment.newInstance("", "");
+                case 17:
+                    return AdviceFragment.newInstance("", "");
+                case 18:
+                    return FollowUpFragment.newInstance("", "");
                 default:
                     return PersonalDataFragment.newInstance();
             }

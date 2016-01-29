@@ -2,7 +2,6 @@ package io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients
 
 import android.app.Fragment;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,12 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.PatientCardRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.apiEndpointInterface;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
+import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
@@ -97,7 +100,20 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
             rv.setAdapter(new PatientCardRecyclerViewAdapter(c));
         }
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Const.API_HEROKU).addConverterFactory(GsonConverterFactory.create(Const.gson1)).build();
+        OkHttpClient ohc1 = new OkHttpClient();
+        ohc1.setReadTimeout(1, TimeUnit.MINUTES);
+        ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+
+        OkHttpClient ohc15 = new OkHttpClient();
+        ohc15.setReadTimeout(15, TimeUnit.MINUTES);
+        ohc15.setConnectTimeout(15, TimeUnit.MINUTES);
+
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(Const.API_HEROKU)
+                .addConverterFactory(GsonConverterFactory.create(Const.gson1))
+                .client(ohc1)
+                .build();
         apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
         //TODO only get patients where next_station = consultation
         //TODO different Call depending on the station variable >>1/2/3
@@ -208,19 +224,4 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     public void scrollToTop() {
         rv.getLayoutManager().scrollToPosition(0);
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
-
 }
