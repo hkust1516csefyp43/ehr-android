@@ -1,5 +1,6 @@
 package io.github.hkust1516csefyp43.ehr.view.activity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback;
 import com.afollestad.materialdialogs.Theme;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -26,6 +28,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.AdviceFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.AllergyFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ChiefComplainFragment;
@@ -36,10 +39,10 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.Foll
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.HPIFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.InvestigationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.MedicationFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PEFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PMHFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PersonalDataFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PhysicalExaminationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PreviousMedicalHistoryFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ROSFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ScreeningFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.SocialHistoryFragment;
@@ -50,12 +53,15 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
     ViewPager viewPager;
     String[] tabs = {"Personal Data", "Vital Signs", "Chief Complain", "Previous Medical History", "Screening", "Drug History", "Allergy", "Pregnancy (Female only)", "HPI", "Family History", "Social History", "Review of the System", "Physical Examination", "Clinical Diagnosis", "Investigation", "Medication", "Advice", "Follow-up"};
     Patient patient = null;
+    Context mContext;
+    String mCC;
     private PersonalDataFragment pdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_visit);
+        mContext = this;
 
         //setup toolbar
         Toolbar tb = (Toolbar) findViewById(R.id.tbPatientVisit);
@@ -66,10 +72,9 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             ab.setDisplayShowHomeEnabled(true);
             patient = (Patient) getIntent().getSerializableExtra("patient");
             String title = "";
-            String subtitle = "";
+            String subtitle = "from Cannal Side";
             if (patient != null) {
                 Log.d("qqq13", patient.toString());
-                subtitle = "from Cannal Side";
                 if (patient.getFirstName() != null)
                     title += patient.getFirstName() + " ";
                 if (patient.getMiddleName() != null)
@@ -78,7 +83,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                     title += patient.getLastName();
             } else {
                 title = "New patient";
-                subtitle = "in Cannal Side";
             }
             ab.setTitle(title);
             ab.setSubtitle(subtitle);
@@ -95,11 +99,9 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         if (viewPager != null) {
             viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager()));
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
-            String snackBarText = getIntent().getStringExtra("snackBarText");
-            if (snackBarText != null) {
-                Snackbar.make(viewPager, snackBarText, Snackbar.LENGTH_INDEFINITE).show();
-            } else {
-                Snackbar.make(viewPager, "No CC", Snackbar.LENGTH_LONG).show();
+            mCC = getIntent().getStringExtra(Const.KEY_SNACKBAR_TEXT);
+            if (mCC != null) {
+                Snackbar.make(viewPager, mCC, Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -110,6 +112,29 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         menu.findItem(R.id.action_confirm).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+        menu.findItem(R.id.cc).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (mCC != null) {
+                    new MaterialDialog.Builder(mContext)
+                            .title("Chief Complain")
+                            .content(mCC)
+                            .autoDismiss(true)
+                            .onPositive(new SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .theme(Theme.LIGHT)
+                            .positiveText("Dismiss")
+                            .show();
+                } else {
+                    Snackbar.make(viewPager, "No CC", Snackbar.LENGTH_LONG).show();
+                }
                 return false;
             }
         });
@@ -126,15 +151,14 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
 
     @Override
     public void onBackPressed() {
-        //TODO dialog confirm exit
-        MaterialDialog.SingleButtonCallback yes = new MaterialDialog.SingleButtonCallback() {
+        SingleButtonCallback yes = new SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 dialog.dismiss();
                 PatientVisitActivity.this.finish();
             }
         };
-        MaterialDialog.SingleButtonCallback no = new MaterialDialog.SingleButtonCallback() {
+        SingleButtonCallback no = new SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 dialog.dismiss();
@@ -157,7 +181,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         //TODO?
     }
 
-    //TODO
     public class viewPagerAdapter extends FragmentStatePagerAdapter {
 
         public viewPagerAdapter(FragmentManager fm) {
@@ -167,43 +190,43 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 1:
+                case 0:
                     if (pdf == null)
                         pdf = new PersonalDataFragment().newInstance();
                     return pdf;
-                case 2:
+                case 1:
                     return VitalSignsFragment.newInstance("", "");
-                case 3:
+                case 2:
                     return ChiefComplainFragment.newInstance("", "");
+                case 3:
+                    return PMHFragment.newInstance("", "");
                 case 4:
-                    return PreviousMedicalHistoryFragment.newInstance("", "");
-                case 5:
                     return ScreeningFragment.newInstance("", "");
-                case 6:
+                case 5:
                     return DrugHistoryFragment.newInstance("", "");
-                case 7:
+                case 6:
                     return AllergyFragment.newInstance("", "");
-                case 8:
+                case 7:
                     return PregnancyFragment.newInstance("", "");
-                case 9:
+                case 8:
                     return HPIFragment.newInstance("", "");
-                case 10:
+                case 9:
                     return FamilyHistoryFragment.newInstance("", "");
-                case 11:
+                case 10:
                     return SocialHistoryFragment.newInstance("", "");
-                case 12:
+                case 11:
                     return ROSFragment.newInstance("", "");
+                case 12:
+                    return PEFragment.newInstance("", "");
                 case 13:
-                    return PhysicalExaminationFragment.newInstance("", "");
-                case 14:
                     return ClinicalDiagnosisFragment.newInstance("", "");
-                case 15:
+                case 14:
                     return InvestigationFragment.newInstance("", "");
-                case 16:
+                case 15:
                     return MedicationFragment.newInstance("", "");
-                case 17:
+                case 16:
                     return AdviceFragment.newInstance("", "");
-                case 18:
+                case 17:
                     return FollowUpFragment.newInstance("", "");
                 default:
                     return PersonalDataFragment.newInstance();

@@ -4,6 +4,12 @@
       tools:context=".view.activity.TwoRecyclerViewPatientsActivity">
 
     <item
+        android:id="@+id/cc"
+        android:title="CC"
+        app:showAsAction="always"
+        />
+
+    <item
         android:id="@+id/action_confirm"
         android:title="@string/confirm"
         app:showAsAction="ifRoom"/>

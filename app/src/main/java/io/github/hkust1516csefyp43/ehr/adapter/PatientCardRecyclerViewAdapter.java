@@ -26,12 +26,10 @@ import io.github.hkust1516csefyp43.ehr.view.viewholder.patientCardViewHolder;
  * Created by Louis on 3/11/15.
  */
 public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
-    LayoutInflater mLayoutInflater;
     Context context;
 
     public PatientCardRecyclerViewAdapter(Context context) {
         this.context = context;
-        mLayoutInflater = LayoutInflater.from(context);
     }
 
     @Override

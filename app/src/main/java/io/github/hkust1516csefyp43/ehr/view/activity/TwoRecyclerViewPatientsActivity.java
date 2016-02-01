@@ -44,6 +44,7 @@ import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostPharmacyRecyclerViewFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostTriageRecyclerViewFragment;
@@ -238,6 +239,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                                         .putContentId("about"));
                                 break;
                             case Const.ID_LOGOUT:
+                                Cache.clearUser(getApplicationContext());
                                 openLogin();
                                 getSupportActionBar().setTitle(getResources().getString(R.string.settings));
                                 getSupportActionBar().setSubtitle(null);

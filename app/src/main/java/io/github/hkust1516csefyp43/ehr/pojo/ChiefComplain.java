@@ -7,13 +7,13 @@ import java.io.Serializable;
 /**
  * Created by Louis on 23/11/15.
  */
-public class Chief_complain implements Serializable {
+public class ChiefComplain implements Serializable {
     @SerializedName("chief_complain_id")
     public String id;
     @SerializedName("name")
     public String name;
 
-    public Chief_complain(String id, String name) {
+    public ChiefComplain(String id, String name) {
         this.id = id;
         this.name = name;
     }

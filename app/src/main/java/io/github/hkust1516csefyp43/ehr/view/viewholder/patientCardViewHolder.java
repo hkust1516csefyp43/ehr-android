@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
 
 /**
@@ -29,13 +30,12 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO tell PVA who is visiting
                 if (patient != null) {
                     Log.d("qqq12", patient.toString());
                     Intent intent = new Intent(context, PatientVisitActivity.class);
                     intent.putExtra("patient", patient);
                     //need_cc == true for consultation station only
-                    intent.putExtra("snackBarText", "Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache, Headache");
+                    intent.putExtra(Const.KEY_SNACKBAR_TEXT, "Headache, Headache, Headache, Headache, Headache, Headache");
                     context.startActivity(intent);
                 } else {
                     Log.d("qqq11", "no patient");

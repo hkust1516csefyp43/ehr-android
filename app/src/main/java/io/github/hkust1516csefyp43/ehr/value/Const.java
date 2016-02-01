@@ -61,4 +61,6 @@ public class Const {
     public static final String KEY_CURRENT_PATIENT_LAST_DEWORMING_MONTH = "currentPatientLastDewormingMonth";
     public static final String KEY_CURRENT_PATIENT_LAST_DEWORMING_YEAR = "currentPatientLastDewormingYear";
     //public static final String KEY_CURRENT_PATIENT_ = "currentPatient";
+
+    public static final String KEY_SNACKBAR_TEXT = "snackBarText";
 }

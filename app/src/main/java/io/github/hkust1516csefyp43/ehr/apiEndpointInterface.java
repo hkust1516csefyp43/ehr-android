@@ -3,7 +3,7 @@ package io.github.hkust1516csefyp43.ehr;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.pojo.BlockedDevice;
-import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
+import io.github.hkust1516csefyp43.ehr.pojo.ChiefComplain;
 import io.github.hkust1516csefyp43.ehr.pojo.Consultation;
 import io.github.hkust1516csefyp43.ehr.pojo.Country;
 import io.github.hkust1516csefyp43.ehr.pojo.Inventory;
@@ -147,14 +147,14 @@ public interface apiEndpointInterface {
 //------------------------------------------ chief complains ------------------------------------------
 
     @GET("v1/chief_complain/")
-    Call<List<Chief_complain>> getChiefComplains(
+    Call<List<ChiefComplain>> getChiefComplains(
             @Query("token") String token,
             @Query("diagnosis_id") String diagnosisId,
             @Query("name") String name,
             @Query("sort_by") String sortBy);
 
     @GET("v1/chief_complain/{id}")
-    Call<Chief_complain> getChiefComplain(
+    Call<ChiefComplain> getChiefComplain(
             @Path("id") String id,
             @Query("token") String token);
 

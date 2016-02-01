@@ -43,6 +43,7 @@
     <string name="our_website" translatable="false">http://hkust1516csefyp43.github.io</string>
     <string name="licenses">Licenses:</string>
     <string name="ehr">EHR</string>
+
     <string name="personal_data">Personal Data</string>
     <string name="vital_signs">Vital Signs</string>
     <string name="chief_complain">Chief Complain</string>
@@ -50,7 +51,7 @@
     <string name="screening">Screening</string>
     <string name="drug_history">Drug History</string>
     <string name="allergy">Allergy</string>
-    <string name="pregnacy">Pregnancy (Female only)</string>
+    <string name="pregnancy">Pregnancy (Female only)</string>
     <string name="hpi">HPI</string>
     <string name="family_history">Family History</string>
     <string name="social_history">Social History</string>
@@ -61,6 +62,7 @@
     <string name="medication">Medication</string>
     <string name="advice">Advice</string>
     <string name="follow_up">Follow-up</string>
+
     <string name="uri_separator" translatable="false">/</string>
     <string name="fetch_data_failed">Fetch data failed</string>
     <string name="dismiss_dialog_title">Are you sure?</string>
@@ -81,6 +83,10 @@
         <item>Divorced</item>
         <item>Widowed</item>
         <item>Custom</item>
+    </string-array>
+
+    <string-array name="tabs">
+        <item>Personal Data</item>
     </string-array>
 
 </resources>

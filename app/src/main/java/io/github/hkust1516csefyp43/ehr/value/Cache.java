@@ -7,12 +7,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.Serializable;
 import java.util.List;
 
-import io.github.hkust1516csefyp43.ehr.pojo.Chief_complain;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
-import io.github.hkust1516csefyp43.ehr.pojo.Perscription;
 import io.github.hkust1516csefyp43.ehr.pojo.User;
 
 /**
@@ -21,7 +18,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.User;
 
 public class Cache {
 
-    //Current user
+    //==============================<Current user>==================================
 
     public static void setUser(Context context, User user) {
         Gson gson = new GsonBuilder().create();
@@ -40,8 +37,14 @@ public class Cache {
         }
     }
 
-    //The basic functions: get, set and delete
+    public static void clearUser(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().remove(Const.KEY_CURRENT_USER).apply();
+    }
 
+    //==============================</Current user>==================================
+
+    //The basic functions: get, set and delete
     /**
      * @param context can be fragment, activity, application, etc
      * @param key     is the string on how & where to find
@@ -96,105 +99,10 @@ public class Cache {
         clearPatients(context, Const.KEY_POST_PHARMACY_PATIENTS);
     }
 
-    //---------------- non patient related stuff --------------------------
+    //==============================<Current patient>==================================
 
-    public static class currentPatientVisit implements Serializable {
-        //TODO save data to SharePreferences of every single fucking input fields every single fucking time
 
-        //The basic functions
+    //==============================</Current patient>==================================
 
-        private static String getString(Context context, String key) {
-            return context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE).getString(key, null);
-        }
 
-        private static void setString(Context context, String key, String value) {
-            context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE).edit().putString(key, value).apply();
-        }
-
-        private static int getInt(Context context, String key) {
-            return context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE).getInt(key, 0);
-        }
-
-        private static void setInt(Context context, String key, int value) {
-            context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE).edit().putInt(key, value).apply();
-        }
-
-        private static boolean getBoolean(Context context, String key) {
-            return context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE).getBoolean(key, false);
-        }
-
-        private static float getFloat(Context context, String key) {
-            return context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE).getFloat(key, 0f);
-        }
-
-        private static long getLong(Context context, String key) {
-            return context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE).getLong(key, 0L);
-        }
-
-        private static List<String> getStrings(Context context, String key) {
-            return new Gson().fromJson(getString(context, key), new TypeToken<List<String>>() {
-            }.getType());
-        }
-
-        private static List<Chief_complain> getChiefComplains(Context context, String key) {
-            return new Gson().fromJson(getString(context, key), new TypeToken<List<Chief_complain>>() {
-            }.getType());
-        }
-
-        private static List<Perscription> getPerscriptions(Context context, String key) {
-            return new Gson().fromJson(getString(context, key), new TypeToken<List<Perscription>>() {
-            }.getType());
-        }
-
-        private static void clearAllCurrentPatientVisitData(Context context) {
-            //TODO clear everything
-        }
-
-        //------------------------- separation line ----------------------------------
-
-        public static String getFirstName(Context context) {
-            return getString(context, Const.KEY_CURRENT_PATIENT_FIRST_NAME);
-        }
-
-        public static void setFirstName(Context context, String firstName) {
-            setString(context, Const.KEY_CURRENT_PATIENT_FIRST_NAME, firstName);
-        }
-
-        public static String getMiddleName(Context context) {
-            return getString(context, Const.KEY_CURRENT_PATIENT_MIDDLE_NAME);
-        }
-
-        public static void setMiddleName(Context context, String middleName) {
-            setString(context, Const.KEY_CURRENT_PATIENT_MIDDLE_NAME, middleName);
-        }
-
-        public static String getLastName(Context context) {
-            return getString(context, Const.KEY_CURRENT_PATIENT_LAST_NAME);
-        }
-
-        public static void setLastName(Context context, String lastName) {
-            setString(context, Const.KEY_CURRENT_PATIENT_LAST_NAME, lastName);
-        }
-
-        public static int getBirthYear(Context context) {
-            return getInt(context, Const.KEY_CURRENT_PATIENT_BIRTH_YEAR);
-        }
-
-        public static void setBirthYear(Context context, int birthYear) {
-            setInt(context, Const.KEY_CURRENT_PATIENT_BIRTH_YEAR, birthYear);
-        }
-
-        //previous medical history
-        //screening
-        //drug history
-        //allergy
-        //lmp year (int)
-        //lmp month (int)
-        //lmp day (int)
-        //currently pregnant how many (int)
-        //gestation (int)
-        //currently breast feeding (boolean)
-        //contraceptive use
-        //(TBC)
-    }
 }

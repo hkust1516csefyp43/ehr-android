@@ -36,7 +36,7 @@ import retrofit.Retrofit;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PostTriageRecyclerViewFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link PostTriageRecyclerViewFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -87,7 +87,15 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("qqq43", "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("qqq44", "onResume");
         final Context c = getContext();
+        View rootView = getView();
         if (rootView != null) {
             if (rv == null)
                 rv = (RecyclerView) rootView.findViewById(R.id.recyclerView);
@@ -98,6 +106,7 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
             fail.setVisibility(View.GONE);
             rv.setLayoutManager(new LinearLayoutManager(c, LinearLayoutManager.VERTICAL, false));
             rv.setAdapter(new PatientCardRecyclerViewAdapter(c));
+            Log.d("qqq", "rv lm and a all set");
         }
 
         OkHttpClient ohc1 = new OkHttpClient();
@@ -142,24 +151,17 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
             }
         });
 
-        srl.post(new Runnable() {
-            @Override
-            public void run() {
-                if (!srl.isRefreshing()) {
-                    Log.d("qqq28", "set refresh to true: " + times);
-                    times++;
+//        srl.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (!srl.isRefreshing()) {
+//                    Log.d("qqq28", "set refresh to true: " + times);
+//                    times++;
                     srl.setRefreshing(true);
                     refreshUI(call2, cb);
-                }
-            }
-        });
-        return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("qqq44", "onResume");
+//                }
+//            }
+//        });
     }
 
     private void refreshUI(Call<List<Patient>> call2, Callback<List<Patient>> cb) {
@@ -188,7 +190,7 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
                 rv.setVisibility(View.VISIBLE);
                 srl.setVisibility(View.VISIBLE);
                 Log.d("qqq25", "" + response.body().toString());
-                Log.d("qqq23", "rv/srl not showing occationally");
+                Log.d("qqq23", "rv/srl not showing occasionally");
             } else {
                 Log.d("qqq23", "sth wrong");
             }

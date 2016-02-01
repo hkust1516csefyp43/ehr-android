@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,12 @@ import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PhysicalExaminationFragment.OnFragmentInteractionListener} interface
+ * {@link PEFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link PhysicalExaminationFragment#newInstance} factory method to
+ * Use the {@link PEFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PhysicalExaminationFragment extends Fragment {
+public class PEFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,7 +32,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public PhysicalExaminationFragment() {
+    public PEFragment() {
         // Required empty public constructor
     }
 
@@ -44,8 +45,8 @@ public class PhysicalExaminationFragment extends Fragment {
      * @return A new instance of fragment PregnancyFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PhysicalExaminationFragment newInstance(String param1, String param2) {
-        PhysicalExaminationFragment fragment = new PhysicalExaminationFragment();
+    public static PEFragment newInstance(String param1, String param2) {
+        PEFragment fragment = new PEFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,10 +64,10 @@ public class PhysicalExaminationFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_physical_examination, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        return localInflater.inflate(R.layout.fragment_physical_examination, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
