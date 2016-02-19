@@ -1,5 +1,7 @@
 package io.github.hkust1516csefyp43.ehr;
 
+import android.app.Application;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.integration.okhttp.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -14,7 +16,7 @@ import io.fabric.sdk.android.Fabric;
 /**
  * Created by Louis on 1/9/15.
  */
-public class application extends android.app.Application {
+public class application extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

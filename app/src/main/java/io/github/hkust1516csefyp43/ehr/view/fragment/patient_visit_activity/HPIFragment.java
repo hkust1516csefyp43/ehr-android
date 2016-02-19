@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import jp.wasabeef.richeditor.RichEditor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +31,7 @@ public class HPIFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private RichEditor mEditor;
     private OnFragmentInteractionListener mListener;
 
     public HPIFragment() {
@@ -70,6 +72,20 @@ public class HPIFragment extends Fragment {
         return localInflater.inflate(R.layout.fragment_hpi, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mEditor = (RichEditor) getView().findViewById(R.id.editor);
+        if (mEditor != null) {
+            mEditor.setAlignCenter();
+            mEditor.setEditorFontSize(12);
+            mEditor.setEditorFontColor(Color.BLACK);
+            mEditor.setPadding(8, 8, 8, 8);
+            mEditor.setPlaceholder("Tap here and start typing");
+            mEditor.setHtml("the html content <br>in string");    //put the content back to the rich editor (i.e. webview)
+        }
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -83,8 +99,7 @@ public class HPIFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 

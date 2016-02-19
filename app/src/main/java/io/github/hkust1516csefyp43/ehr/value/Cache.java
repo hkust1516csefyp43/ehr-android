@@ -101,6 +101,12 @@ public class Cache {
 
     //==============================<Current patient>==================================
 
+    //Save the fragment data as a JSONObject (String)
+    public static void saveFragmentByKey(Context context, String key, String json) {
+
+    }
+
+    //Get the fragment data as a JSONObject (String)
 
     //==============================</Current patient>==================================
 
