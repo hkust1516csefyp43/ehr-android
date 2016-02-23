@@ -28,6 +28,7 @@
             android:layout_margin="16dp"
             android:orientation="vertical">
 
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,6 +36,22 @@
                 android:padding="8dp"
                 android:text="@string/ehr"
                 android:textSize="64sp"/>
+
+            <HorizontalScrollView
+                android:id="@+id/hsv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/slums_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -94,6 +111,7 @@
                     android:textStyle="bold"/>
 
             </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

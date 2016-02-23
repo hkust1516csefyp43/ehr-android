@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
+    private LinearLayout mSlumsView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView = (EditText) findViewById(R.id.password);
         mProgressView = findViewById(R.id.login_progress);
         mLoginFormView = findViewById(R.id.login_form);
+        mSlumsView = (LinearLayout) findViewById(R.id.slums_list);
+
+        Button csButton = new Button(this);
+        csButton.setText("Cannal Side");
+        Button hawButton = new Button(this);
+        hawButton.setText("House Above water");
+        Button bsButton = new Button(this);
+        bsButton.setText("Banteay Slaek");
+        Button smcButton = new Button(this);
+        smcButton.setText("Samroeng Mean Chey");
+        Button clinicButton = new Button(this);
+        clinicButton.setText("Clinic@Grace");
+        mSlumsView.addView(clinicButton);
+        mSlumsView.addView(bsButton);
+        mSlumsView.addView(csButton);
+        mSlumsView.addView(hawButton);
+        mSlumsView.addView(smcButton);
 
         // Set up the login form.
         populateAutoComplete();
