@@ -1,6 +1,5 @@
 package io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,14 +32,6 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PostTriageRecyclerViewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragment {
     private static int station = 0;
     private int times = 0;
@@ -55,11 +46,7 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @return A new instance of fragment PostTriageRecyclerViewFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static PostTriageRecyclerViewFragment newInstance() {
         return new PostTriageRecyclerViewFragment();
@@ -197,6 +184,7 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         } else {
             //TODO receives nothing
             Log.d("qqq", "error");
+            changeTabCounter(-1);
             failing(new Throwable("Fetched nothing"));
         }
     }

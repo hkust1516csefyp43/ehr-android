@@ -88,5 +88,7 @@
     <string-array name="tabs">
         <item>Personal Data</item>
     </string-array>
+    <string name="title_activity_settings">Settings</string>
+
 
 </resources>

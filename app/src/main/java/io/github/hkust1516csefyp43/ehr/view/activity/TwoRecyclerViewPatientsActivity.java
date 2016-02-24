@@ -1,9 +1,11 @@
 package io.github.hkust1516csefyp43.ehr.view.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
@@ -61,6 +66,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     private ListView lv;
     private PostTriageRecyclerViewFragment ptrvf;
     private PostPharmacyRecyclerViewFragment pprvf;
+    private Drawer drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +123,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                 .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).paddingDp(2))
                 .withIdentifier(Const.ID_PHARMACY);
 
-        PrimaryDrawerItem inventory = new PrimaryDrawerItem()
-                .withName(R.string.inventory)
-                .withIcon(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_medkit).color(Color.GRAY).paddingDp(2))
-                .withIdentifier(Const.ID_INVENTORY);
         PrimaryDrawerItem adminDashboard = new PrimaryDrawerItem()
                 .withName(R.string.admin)
                 .withIcon(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_male).color(Color.GRAY).paddingDp(2))
@@ -166,95 +168,121 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                 .build();
 
         //Build the drawer
-        new DrawerBuilder()
+        drawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(tb)
                 .withActionBarDrawerToggleAnimated(true)
-                .addDrawerItems(triage, consultation, pharmacy, ddi, inventory, adminDashboard, ddi, settings, about, logout)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
-                        switch (iDrawerItem.getIdentifier()) {
-                            case Const.ID_TRIAGE:
-                                getSupportActionBar().setTitle(getResources().getString(R.string.triage));
-                                getSupportActionBar().setSubtitle("Cannal Side");
-                                hideAdmin();
-                                ptrvfRecyclerViewScrollToTop();
-                                Answers.getInstance().logContentView(new ContentViewEvent()
-                                        .putContentName("Triage")
-                                        .putContentType("Station")
-                                        .putContentId("triage"));
-                                break;
-                            case Const.ID_CONSULTATION:
-                                getSupportActionBar().setTitle(getResources().getString(R.string.consultation));
-                                getSupportActionBar().setSubtitle("Cannal Side");
-                                hideAdmin();
-                                Answers.getInstance().logContentView(new ContentViewEvent()
-                                        .putContentName("Consultation")
-                                        .putContentType("Station")
-                                        .putContentId("consultation"));
-                                break;
-                            case Const.ID_PHARMACY:
-                                getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
-                                getSupportActionBar().setSubtitle("Cannal Side");
-                                hideAdmin();
-                                Answers.getInstance().logContentView(new ContentViewEvent()
-                                        .putContentName("Pharmacy")
-                                        .putContentType("Station")
-                                        .putContentId("pharmacy"));
-                                break;
-                            case Const.ID_INVENTORY:
-                                getSupportActionBar().setTitle(getResources().getString(R.string.inventory));
-                                Answers.getInstance().logContentView(new ContentViewEvent()
-                                        .putContentName("Inventory")
-                                        .putContentType("Admin")
-                                        .putContentId("inventory"));
-                                break;
-                            case Const.ID_ADMIN:
-                                getSupportActionBar().setTitle(getResources().getString(R.string.admin));
-                                getSupportActionBar().setSubtitle(null);
-                                shoeAdmin();
-                                Answers.getInstance().logContentView(new ContentViewEvent()
-                                        .putContentName("Admin")
-                                        .putContentType("Admin")
-                                        .putContentId("admin"));
-                                break;
-                            case Const.ID_SETTINGS:
-                                getSupportActionBar().setTitle(getResources().getString(R.string.settings));
-                                getSupportActionBar().setSubtitle(null);
-                                Answers.getInstance().logContentView(new ContentViewEvent()
-                                        .putContentName("Settings")
-                                        .putContentType("Settings & About")
-                                        .putContentId("settings"));
-                                break;
-                            case Const.ID_ABOUT:
-                                openAbout();
-//                                getSupportActionBar().setTitle(getResources().getString(R.string.about));
-//                                getSupportActionBar().setSubtitle(null);
-                                getSupportActionBar().setTitle(getResources().getString(R.string.about));
-                                getSupportActionBar().setSubtitle(null);
-                                Answers.getInstance().logContentView(new ContentViewEvent()
-                                        .putContentName("About")
-                                        .putContentType("Settings & About")
-                                        .putContentId("about"));
-                                break;
-                            case Const.ID_LOGOUT:
-                                Cache.clearUser(getApplicationContext());
-                                openLogin();
-                                getSupportActionBar().setTitle(getResources().getString(R.string.settings));
-                                getSupportActionBar().setSubtitle(null);
-                                Answers.getInstance().logContentView(new ContentViewEvent()
-                                        .putContentName("Logout")
-                                        .putContentType("Logout")
-                                        .putContentId("logout"));
-                                break;
-
-                        }
-                        return false;
-                    }
-                })
+                .withCloseOnClick(true)
+                .addDrawerItems(triage, consultation, pharmacy, ddi, adminDashboard, ddi, settings, about, logout)
                 .withAccountHeader(ah)
                 .build();
+
+//        final Context c = this;
+        final Activity c = this;
+        drawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                switch (drawerItem.getIdentifier()) {
+                    case Const.ID_TRIAGE:
+                        getSupportActionBar().setTitle(getResources().getString(R.string.triage));
+                        getSupportActionBar().setSubtitle("Cannal Side");
+                        hideAdmin();
+                        ptrvfRecyclerViewScrollToTop();
+                        Answers.getInstance().logContentView(new ContentViewEvent()
+                                .putContentName("Triage")
+                                .putContentType("Station")
+                                .putContentId("triage"));
+                        break;
+                    case Const.ID_CONSULTATION:
+                        getSupportActionBar().setTitle(getResources().getString(R.string.consultation));
+                        getSupportActionBar().setSubtitle("Cannal Side");
+                        hideAdmin();
+                        Answers.getInstance().logContentView(new ContentViewEvent()
+                                .putContentName("Consultation")
+                                .putContentType("Station")
+                                .putContentId("consultation"));
+                        break;
+                    case Const.ID_PHARMACY:
+                        getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
+                        getSupportActionBar().setSubtitle("Cannal Side");
+                        hideAdmin();
+                        Answers.getInstance().logContentView(new ContentViewEvent()
+                                .putContentName("Pharmacy")
+                                .putContentType("Station")
+                                .putContentId("pharmacy"));
+                        break;
+                    case Const.ID_INVENTORY:
+                        getSupportActionBar().setTitle(getResources().getString(R.string.inventory));
+                        Answers.getInstance().logContentView(new ContentViewEvent()
+                                .putContentName("Inventory")
+                                .putContentType("Admin")
+                                .putContentId("inventory"));
+                        break;
+                    case Const.ID_ADMIN:
+                        getSupportActionBar().setTitle(getResources().getString(R.string.admin));
+                        getSupportActionBar().setSubtitle(null);
+                        shoeAdmin();
+                        Answers.getInstance().logContentView(new ContentViewEvent()
+                                .putContentName("Admin")
+                                .putContentType("Admin")
+                                .putContentId("admin"));
+                        break;
+                    case Const.ID_SETTINGS:
+                        openSettings();
+//                        getSupportActionBar().setTitle(getResources().getString(R.string.settings));
+//                        getSupportActionBar().setSubtitle(null);
+                        Answers.getInstance().logContentView(new ContentViewEvent()
+                                .putContentName("Settings")
+                                .putContentType("Settings & About")
+                                .putContentId("settings"));
+                        break;
+                    case Const.ID_ABOUT:
+                        openAbout();
+//                                getSupportActionBar().setTitle(getResources().getString(R.string.about));
+//                                getSupportActionBar().setSubtitle(null);
+                        getSupportActionBar().setTitle(getResources().getString(R.string.about));
+                        getSupportActionBar().setSubtitle(null);
+                        Answers.getInstance().logContentView(new ContentViewEvent()
+                                .putContentName("About")
+                                .putContentType("Settings & About")
+                                .putContentId("about"));
+                        break;
+                    case Const.ID_LOGOUT:
+                        new MaterialDialog.Builder(c)
+                                .theme(Theme.LIGHT)
+                                .autoDismiss(true)
+                                .content("Are you sure you want to logout?")
+                                .positiveText("Logout")
+                                //TODO icon?
+                                //TODO different color for +ve and -ve text
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        dialog.dismiss();
+                                        Cache.clearUser(getApplicationContext());
+                                        openLogin();
+                                        c.finish();
+                                    }
+                                })
+                                .negativeText("Dismiss")
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+                        getSupportActionBar().setTitle(getResources().getString(R.string.settings));
+                        getSupportActionBar().setSubtitle(null);
+                        Answers.getInstance().logContentView(new ContentViewEvent()
+                                .putContentName("Logout")
+                                .putContentType("Logout")
+                                .putContentId("logout"));
+                        break;
+                }
+                return false;
+            }
+        });
 
         Answers.getInstance().logContentView(new ContentViewEvent()
                 .putContentName("Triage")
@@ -349,6 +377,11 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         startActivity(intent);
     }
 
+    public void openSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
     public void openPatientVisit(Patient p) {
         Intent intent = new Intent(this, PatientVisitActivity.class);
         if (p != null) {
@@ -361,19 +394,30 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         ptrvf.scrollToTop();
     }
 
+    /**
+     * TODO "Finished"
+     *
+     * @param position of tab, 0 >> Left, 1 >> right
+     * @param size     i.e. the number
+     */
     @Override
     public void onCounterChangedListener(int position, int size) {
         Log.d("qqq26", "tab position/size: " + position + "/" + size);
-        if (position >= 0) {
-            if (size > 0) {
-                if (tl != null) {
-                    tl.getTabAt(position).setText(getString(R.string.queue) + "(" + size + ")");
-                }
-            } else {
-                if (tl != null) {
-                    tl.getTabAt(position).setText(getString(R.string.queue));
-                }
-            }
+        String message = "";
+        switch (position) {
+            case 0:
+                if (size > 0)
+                    message = getString(R.string.queue) + "(" + size + ")";
+                else
+                    message = getString(R.string.queue);
+                break;
+            case 1:
+                message = getString(R.string.finished);
+        }
+        try {
+            tl.getTabAt(position).setText(message);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 

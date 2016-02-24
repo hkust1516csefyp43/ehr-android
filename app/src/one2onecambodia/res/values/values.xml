@@ -2,11 +2,11 @@
 <resources>
 
     <!-- primary colors-->
-    <color name="primary_color">#E30B5D</color>
-    <color name="primary_dark_color">#B5084A</color>
-    <color name="primary_light_color">#eb548d</color>
+    <color name="primary_color">#0052A2</color>
+    <color name="primary_dark_color">#004282</color>
+    <color name="primary_light_color">#3375B5</color>
     <!-- accent colors-->
-    <color name="accent_color">#0be391</color>
+    <color name="accent_color">#de0019</color>
 
     <color name="text_color">#FFFFFF</color>
     <color name="primary_text_color">#212121</color>

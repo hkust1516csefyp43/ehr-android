@@ -78,6 +78,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mSlumsView = (LinearLayout) findViewById(R.id.slums_list);
 
+
+        //TODO call api and get list of slums (just names)
         Button csButton = new Button(this);
         csButton.setText("Cannal Side");
         Button hawButton = new Button(this);
@@ -208,6 +210,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+            //TODO replace this with retrofit
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
@@ -363,10 +366,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Intent i = new Intent(getApplicationContext(), TwoRecyclerViewPatientsActivity.class);
-                startActivity(i);
                 Cache.setUser(getBaseContext(), new User(mEmail, mPassword));
+                Intent i = new Intent(getApplicationContext(), TwoRecyclerViewPatientsActivity.class);
                 finish();
+                startActivity(i);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
