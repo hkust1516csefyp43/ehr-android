@@ -44,11 +44,12 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
             StringBuilder name = new StringBuilder();
             Patient aPatient = Cache.getPostTriagePatients(context).get(position);
             ph.setPatient(aPatient);
-            name.append(aPatient.getFirstName());
-            name.append(" ");
+            //TODO a setting to change first or last name in the front
             if (aPatient.getLastName() != null) {
                 name.append(aPatient.getLastName());
+                name.append(" ");
             }
+            name.append(aPatient.getFirstName());
             ph.patientName.setText(name.toString());
             ph.subtitle.setText(aPatient.getGender() + " / " + Utils.lastSeenToString(aPatient.getLastSeen()) + " / age (TBC)");
             //TODO 1) Check if photo is null >> TextDrawable or load image

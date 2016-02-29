@@ -3,8 +3,6 @@ package io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,7 +35,7 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     private int times = 0;
     // TODO: Rename parameter arguments, choose names that match
     private RecyclerView rv;
-    private SwipeRefreshLayout srl;
+//    private SwipeRefreshLayout srl;
     private TextView fail;
     private OnFragmentInteractionListener mListener;
     private ListCounterChangedListener lListener;
@@ -86,8 +84,8 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         if (rootView != null) {
             if (rv == null)
                 rv = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-            if (srl == null)
-                srl = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefreshlayout);
+//            if (srl == null)
+//                srl = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefreshlayout);
             if (fail == null)
                 fail = (TextView) rootView.findViewById(R.id.fail);
             fail.setVisibility(View.GONE);
@@ -106,7 +104,7 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
 
         Retrofit retrofit = new Retrofit
                 .Builder()
-                .baseUrl(Const.API_HEROKU)
+                .baseUrl(Const.API_ONE2ONE_HEROKU)
                 .addConverterFactory(GsonConverterFactory.create(Const.gson1))
                 .client(ohc1)
                 .build();
@@ -126,17 +124,17 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
 
             @Override
             public void onFailure(Throwable t) {
-                Log.d("qqq27", "receives nothing");
+                Log.d("qqq27", "receives nothing/error");
                 failing(t);
             }
         };
 
-        srl.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshUI(call2, cb);
-            }
-        });
+//        srl.setOnRefreshListener(new OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+        refreshUI(call2, cb);
+//            }
+//        });
 
 //        srl.post(new Runnable() {
 //            @Override
@@ -144,8 +142,8 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
 //                if (!srl.isRefreshing()) {
 //                    Log.d("qqq28", "set refresh to true: " + times);
 //                    times++;
-                    srl.setRefreshing(true);
-                    refreshUI(call2, cb);
+//                    srl.setRefreshing(true);
+//                    refreshUI(call2, cb);
 //                }
 //            }
 //        });
@@ -169,13 +167,12 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
             Cache.setPostTriagePatients(c, response.body());
             changeTabCounter(response.body().size());
 
-            if (rv != null && c != null && srl != null) {
-                srl.clearAnimation();
-                srl.setRefreshing(false);
+//            if (rv != null && c != null && srl != null) {
+            if (rv != null && c != null) {
                 rv.getAdapter().notifyDataSetChanged();
                 fail.setVisibility(View.GONE);
                 rv.setVisibility(View.VISIBLE);
-                srl.setVisibility(View.VISIBLE);
+//                srl.setVisibility(View.VISIBLE);
                 Log.d("qqq25", "" + response.body().toString());
                 Log.d("qqq23", "rv/srl not showing occasionally");
             } else {
@@ -194,9 +191,9 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
         changeTabCounter(0);
         fail.setText(t.getMessage());
         fail.setVisibility(View.VISIBLE);
-        srl.clearAnimation();
-        srl.setRefreshing(false);
-        srl.setVisibility(View.GONE);
+//        srl.clearAnimation();
+//        srl.setRefreshing(false);
+//        srl.setVisibility(View.GONE);
         rv.setVisibility(View.GONE);
     }
 

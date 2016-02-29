@@ -3,6 +3,8 @@ package io.github.hkust1516csefyp43.ehr.value;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import io.github.hkust1516csefyp43.ehr.BuildConfig;
+
 /**
  * Created by Louis on 17/9/15.
  */
@@ -20,26 +22,12 @@ public class Const {
     public final static int ID_SETTINGS = 7;
     public final static int ID_ABOUT = 8;
     public final static int ID_LOGOUT = 9;
-
-    public final static String PACKAGE_HEROKU = "io.github.hkust1516csefyp43.ehr.heroku";
-    public final static String PACKAGE_WEBSTORM = "io.github.hkust1516csefyp43.ehr.webstorm";
-    public final static String API_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
-
-    //TODO change Heroku to One2One, Webstorm to Public
-    public final static String PACKAGE_ONE2ONE = "io.github.hkust1516csefyp43.ehr.one2one";
-    public final static String PACKAGE_PUBLIC = "io.github.hkust1516csefyp43.ehr.public";
-    public final static String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
-    public final static String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
-
-    public final static String KEY_SHARE_PREFERENCES = "EHR";
-
+    public final static String KEY_SHARE_PREFERENCES = "EHR" + BuildConfig.FLAVOR;
     public final static String KEY_POST_TRIAGE_PATIENTS = "postTriagePatients";
     public final static String KEY_POST_CONSULTATION_PATIENTS = "postConsultationPatients";
     public final static String KEY_POST_PHARMACY_PATIENTS = "postPharmacyPatients";
-
     public final static String KEY_LOCAL_SETTINGS = "localSettings";
     public final static String KEY_CURRENT_USER = "currentUser";
-
     public static final String KEY_CURRENT_PATIENT_FIRST_NAME = "currentPatientFirstName";
     public static final String KEY_CURRENT_PATIENT_MIDDLE_NAME = "currentPatientMiddleName";
     public static final String KEY_CURRENT_PATIENT_LAST_NAME = "currentPatientLastName";
@@ -60,7 +48,22 @@ public class Const {
     public static final String KEY_CURRENT_PATIENT_HEIGHT = "currentPatientHeight";
     public static final String KEY_CURRENT_PATIENT_LAST_DEWORMING_MONTH = "currentPatientLastDewormingMonth";
     public static final String KEY_CURRENT_PATIENT_LAST_DEWORMING_YEAR = "currentPatientLastDewormingYear";
-    //public static final String KEY_CURRENT_PATIENT_ = "currentPatient";
-
     public static final String KEY_SNACKBAR_TEXT = "snackBarText";
+    public final static String KEY_VIRGIN = "touch_for_the_very_first_time~";
+    public static final String FLAVOR_ONE_2_ONE_CAMBODIA = "one2onecambodia";
+    public static final String FLAVOR_FREE = "free";
+    public static String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
+    public static String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
+    //public static final String KEY_CURRENT_PATIENT_ = "currentPatient";
+    public static String API_CLOUD;
+    public static String API_LOCAL;
+
+    public static void setCloudAPI(String api) {
+        API_CLOUD = api;
+    }
+
+    public static void setLocalAPI(String api) {
+        API_LOCAL = api;
+    }
+
 }

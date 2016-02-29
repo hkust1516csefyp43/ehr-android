@@ -5,6 +5,7 @@ import android.graphics.Color;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Random;
 
@@ -68,11 +69,44 @@ public class Utils {
         else return (dateMsDiff / YEAR + " years ago");
     }
 
-    public static String birthdayToAge(Integer year, Integer month, Integer date) {
-       if (year != null) {
-           //TODO
+    /**
+     * If you guys are still using this app in 2100 it's your problem not mine
+     *
+     * @param year  of birthday
+     * @param month of birthday
+     * @param day   of birthday
+     * @return a string of age description:
+     * < 1 week:        X day(s) old
+     * < 3 month:       XX week(s) old
+     * < 2 year old:    XX month(s) old
+     * else:            XX year(s) old
+     */
+    public static String birthdayToAgeString(int year, int month, int day) {
+        if (year > 1900 && year < 2100) {
+            //TODO babies >> XX months
+            GregorianCalendar gc = new GregorianCalendar();
+            int age = year - gc.get(Calendar.YEAR);
+            int monthDiff = month - gc.get(Calendar.MONTH);
+            int dayDiff = day - gc.get(Calendar.DAY_OF_MONTH);
+
+            if (age == 0) {
+                if (monthDiff == 0) {
+                    //TODO XX days/weeks old
+                } else {
+                    //TODO XX months old
+                }
+            } else {
+                if (monthDiff < 0) {
+                    age--;
+                }
+                if (monthDiff == 0 && dayDiff < 0) {
+                    age--;
+                }
+            }
+
            return null;
-       } else {
+        } else {
+            //Invalid birth year >> no age
            return null;
        }
     }

@@ -17,10 +17,10 @@ import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MedicationFragment#newInstance} factory method to
+ * Use the {@link RemarkFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MedicationFragment extends Fragment {
+public class RemarkFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,7 +32,7 @@ public class MedicationFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public MedicationFragment() {
+    public RemarkFragment() {
         // Required empty public constructor
     }
 
@@ -45,8 +45,8 @@ public class MedicationFragment extends Fragment {
      * @return A new instance of fragment PregnancyFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MedicationFragment newInstance(String param1, String param2) {
-        MedicationFragment fragment = new MedicationFragment();
+    public static RemarkFragment newInstance(String param1, String param2) {
+        RemarkFragment fragment = new RemarkFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -67,7 +67,7 @@ public class MedicationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_medication, container, false);
+        return localInflater.inflate(R.layout.fragment_remark, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

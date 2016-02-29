@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:padding="8dp"
+             android:theme="@style/AppTheme2"
+             tools:context="io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.MedicationFragment">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.AppCompatMultiAutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Any extra info?"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+</FrameLayout>
