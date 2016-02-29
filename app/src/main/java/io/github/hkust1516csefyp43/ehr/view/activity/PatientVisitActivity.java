@@ -92,6 +92,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
             patient = (Patient) getIntent().getSerializableExtra("patient");
+            //TODO get another extra: edit/new/view, triage/consultation
             String title = "";
             String subtitle = "from Cannal Side";
             if (patient != null) {
@@ -229,7 +230,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             switch (position) {
                 case 0:
                     if (pdf == null)
-                        pdf = new PersonalDataFragment().newInstance();
+                        pdf = new PersonalDataFragment().newInstance(patient);
                     return pdf;
                 case 1:
                     return VitalSignsFragment.newInstance("", "");

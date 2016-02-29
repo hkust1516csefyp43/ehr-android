@@ -77,6 +77,12 @@
         <item>Custom</item>
     </string-array>
 
+    <string-array name="image_array">
+        <item>Take new picture</item>
+        <item>Select new picture</item>
+        <item>Remove picture</item>
+    </string-array>
+
     <string-array name="status_array">
         <item>Single</item>
         <item>Married</item>

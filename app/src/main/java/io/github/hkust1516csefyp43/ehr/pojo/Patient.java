@@ -44,9 +44,11 @@ public class Patient implements Serializable{
     private int nextStation;
     @SerializedName("email")
     private String email;
+    @SerializedName("photo_url")
+    private String profilePictureUrl;
 
-    public Patient(String id, String honorific, String firstName, String middleName, String lastName, int phoneCountryId, String phoneNumber, String address, Object dateOfBirth, String gender, Object photo, String slumId, String bloodType, Object createTimestamp, Date lastSeen, int nextStation, String email) {
-        this.patient_id = id;
+    public Patient(String patient_id, String honorific, String firstName, String middleName, String lastName, int phoneCountryId, String phoneNumber, String address, Object dateOfBirth, String gender, Object photo, String slumId, String bloodType, Object createTimestamp, Date lastSeen, int nextStation, String email, String profilePictureUrl) {
+        this.patient_id = patient_id;
         this.honorific = honorific;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -57,35 +59,21 @@ public class Patient implements Serializable{
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.photo = photo;
-        this.SlumId = slumId;
+        SlumId = slumId;
         this.bloodType = bloodType;
         this.createTimestamp = createTimestamp;
         this.lastSeen = lastSeen;
         this.nextStation = nextStation;
         this.email = email;
+        this.profilePictureUrl = profilePictureUrl;
     }
 
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "id='" + patient_id + '\'' +
-                ", honorific='" + honorific + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phoneCountryId=" + phoneCountryId +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", gender='" + gender + '\'' +
-                ", photo=" + photo +
-                ", SlumId='" + SlumId + '\'' +
-                ", bloodType='" + bloodType + '\'' +
-                ", createTimestamp=" + createTimestamp +
-                ", lastSeen=" + lastSeen +
-                ", nextStation=" + nextStation +
-                ", email='" + email + '\'' +
-                '}';
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 
     public String getPatientId() {
@@ -222,5 +210,29 @@ public class Patient implements Serializable{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "patient_id='" + patient_id + '\'' +
+                ", honorific='" + honorific + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneCountryId=" + phoneCountryId +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender='" + gender + '\'' +
+                ", photo=" + photo +
+                ", SlumId='" + SlumId + '\'' +
+                ", bloodType='" + bloodType + '\'' +
+                ", createTimestamp=" + createTimestamp +
+                ", lastSeen=" + lastSeen +
+                ", nextStation=" + nextStation +
+                ", email='" + email + '\'' +
+                ", profilePictureUrl='" + profilePictureUrl + '\'' +
+                '}';
     }
 }

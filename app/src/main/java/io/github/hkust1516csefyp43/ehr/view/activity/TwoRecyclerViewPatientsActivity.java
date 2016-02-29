@@ -123,6 +123,10 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                 .withIcon(new IconicsDrawable(getApplicationContext(), CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).paddingDp(2))
                 .withIdentifier(Const.ID_PHARMACY);
 
+        PrimaryDrawerItem inventory = new PrimaryDrawerItem()
+                .withName(R.string.inventory)
+                .withIcon(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_medkit).color(Color.GRAY).paddingDp(2))
+                .withIdentifier(Const.ID_INVENTORY);
         PrimaryDrawerItem adminDashboard = new PrimaryDrawerItem()
                 .withName(R.string.admin)
                 .withIcon(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_male).color(Color.GRAY).paddingDp(2))
@@ -173,7 +177,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                 .withToolbar(tb)
                 .withActionBarDrawerToggleAnimated(true)
                 .withCloseOnClick(true)
-                .addDrawerItems(triage, consultation, pharmacy, ddi, adminDashboard, ddi, settings, about, logout)
+                .addDrawerItems(triage, consultation, pharmacy, ddi, inventory, adminDashboard, ddi, settings, about, logout)
                 .withAccountHeader(ah)
                 .build();
 

@@ -1,21 +1,31 @@
 package io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PersonalDataFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link PersonalDataFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -23,6 +33,9 @@ import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 public class PersonalDataFragment extends Fragment {
     private static Patient patient;
     private OnFragmentInteractionListener mListener;
+    private EditText etFirstName;
+    private EditText etLastName;
+    private ImageView ivProfilePic;
 
     public PersonalDataFragment() {
         // Required empty public constructor
@@ -49,7 +62,22 @@ public class PersonalDataFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_personal_data, container, false);
+        View v = localInflater.inflate(R.layout.fragment_personal_data, container, false);
+        etFirstName = (EditText) v.findViewById(R.id.first_name);
+        etLastName = (EditText) v.findViewById(R.id.last_name);
+        ivProfilePic = (ImageView) v.findViewById(R.id.iv_profile_pic);
+        ivProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO add new image dialog
+                new MaterialDialog.Builder(getContext())
+                        .title("Patient picture")
+                        .items(R.array.image_array)
+                        .theme(Theme.LIGHT)
+                        .show();
+            }
+        });
+        return v;
     }
 
     @Override
@@ -71,6 +99,22 @@ public class PersonalDataFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        //TODO fill ui with patient data
+        if (patient != null) {
+            if (etFirstName != null && patient.getFirstName() != null)
+                etFirstName.setText(patient.getFirstName());
+            if (etLastName != null && patient.getLastName() != null)
+                etLastName.setText(patient.getLastName());
+            if (ivProfilePic != null && patient.getProfilePictureUrl() != null) {
+                Drawable backup = TextDrawable.builder().buildRound(Utils.getTextDrawableText(patient), Utils.getRandomColor());
+                Glide.with(this).load(patient.getProfilePictureUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .thumbnail(0.01f)
+                        .placeholder(backup)
+                        .fallback(backup)
+                        .into(ivProfilePic);
+            }
+        }
     }
 
     @Override
