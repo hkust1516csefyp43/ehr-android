@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import io.github.hkust1516csefyp43.ehr.BuildConfig;
 import io.github.hkust1516csefyp43.ehr.Connectivity;
@@ -24,6 +28,16 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        ImageView iv = (ImageView) findViewById(R.id.logo);
+        int logo;
+        if (BuildConfig.FLAVOR.compareTo(Const.FLAVOR_ONE_2_ONE_CAMBODIA) == 0)
+            logo = R.drawable.ehr_one2onecambodia_logo;
+        else
+            logo = R.drawable.ehr_free_logo;
+        Glide.with(this).load(logo).diskCacheStrategy(DiskCacheStrategy.ALL).fallback(R.drawable.ehr_logo).into(iv);
+
+        //TODO move things to background thread
 
         SharedPreferences p = getSharedPreferences(Const.KEY_SHARE_PREFERENCES, MODE_PRIVATE);
         String configString = p.getString(Const.KEY_VIRGIN, null);

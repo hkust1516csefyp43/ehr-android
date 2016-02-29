@@ -34,7 +34,8 @@
                     android:id="@+id/etSystolic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Systolic"/>
+                    android:hint="Systolic"
+                    android:inputType="number"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -53,7 +54,8 @@
                     android:id="@+id/etDiastolic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Diastolic"/>
+                    android:hint="Diastolic"
+                    android:inputType="number"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -82,7 +84,8 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:inputType="number"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -111,7 +114,8 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:inputType="number"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -119,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="cmn"/>
+                android:text="bpm"/>
 
         </LinearLayout>
 
@@ -140,7 +144,8 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -197,7 +202,8 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -226,7 +232,8 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -251,6 +258,18 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:text="LDD"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"/>
+
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 
