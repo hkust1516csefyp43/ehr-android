@@ -10,12 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import java.util.GregorianCalendar;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.Utils;
@@ -36,6 +40,7 @@ public class PersonalDataFragment extends Fragment {
     private EditText etFirstName;
     private EditText etLastName;
     private ImageView ivProfilePic;
+    private TextView tvBirthday;
 
     public PersonalDataFragment() {
         // Required empty public constructor
@@ -63,9 +68,11 @@ public class PersonalDataFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View v = localInflater.inflate(R.layout.fragment_personal_data, container, false);
+        //TODO findViewById
         etFirstName = (EditText) v.findViewById(R.id.first_name);
         etLastName = (EditText) v.findViewById(R.id.last_name);
         ivProfilePic = (ImageView) v.findViewById(R.id.iv_profile_pic);
+        tvBirthday = (TextView) v.findViewById(R.id.tvBirthday);
         ivProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +106,22 @@ public class PersonalDataFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (tvBirthday != null) {
+            tvBirthday.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GregorianCalendar gc = new GregorianCalendar();
+                    DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                            //TODO
+                        }
+                    }, 1992, 9, 14);
+                    dpd.showYearPickerFirst(true);
+                    dpd.show(getActivity().getFragmentManager(), "qqq");
+                }
+            });
+        }
         //TODO fill ui with patient data
         if (patient != null) {
             if (etFirstName != null && patient.getFirstName() != null)
