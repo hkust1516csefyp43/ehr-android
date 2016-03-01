@@ -51,6 +51,8 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
             }
             name.append(aPatient.getFirstName());
             ph.patientName.setText(name.toString());
+            //TODO replace gender with symbols (save screen space)
+            //TODO once the age came you can start calculate that
             ph.subtitle.setText(aPatient.getGender() + " / " + Utils.lastSeenToString(aPatient.getLastSeen()) + " / age (TBC)");
             //TODO 1) Check if photo is null >> TextDrawable or load image
             //TODO 2) find a range of acceptable RGB (currently 50+)
