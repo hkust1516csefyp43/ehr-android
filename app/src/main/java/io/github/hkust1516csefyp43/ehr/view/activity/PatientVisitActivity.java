@@ -233,7 +233,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                         pdf = new PersonalDataFragment().newInstance(patient);
                     return pdf;
                 case 1:
-                    return VitalSignsFragment.newInstance("", "");
+                    return VitalSignsFragment.newInstance();
                 case 2:
                     return ChiefComplainFragment.newInstance("", "");
                 case 4:
