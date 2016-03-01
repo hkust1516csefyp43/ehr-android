@@ -129,7 +129,8 @@ public class PersonalDataFragment extends Fragment {
             if (etLastName != null && patient.getLastName() != null)
                 etLastName.setText(patient.getLastName());
             if (ivProfilePic != null && patient.getProfilePictureUrl() != null) {
-                Drawable backup = TextDrawable.builder().buildRound(Utils.getTextDrawableText(patient), Utils.getRandomColor());
+                String t = Utils.getTextDrawableText(patient);
+                Drawable backup = TextDrawable.builder().buildRound(t, Utils.getTextDrawableColor(t));
                 Glide.with(this).load(patient.getProfilePictureUrl())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .thumbnail(0.01f)

@@ -111,6 +111,12 @@ public class Utils {
        }
     }
 
+    /**
+     * Extract text from drawable
+     *
+     * @param p
+     * @return
+     */
     public static String getTextDrawableText(Patient p) {
         String op;
         if (p != null) {
@@ -133,6 +139,24 @@ public class Utils {
         return op;
     }
 
+    /**
+     * @param s >> the name
+     * @return true if the whole name is english + number + space
+     */
+    public static boolean isValidEnglishChar(String s) {
+        for (char c : s.toCharArray()) {
+            if ((c != ' ') && (c < '0' || c > 'z' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a')))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Generate a random color
+     *
+     * @return a color-int
+     */
+    @Deprecated
     public static int getRandomColor() {
         Random rand = new Random();
         int r, g, b;
@@ -146,6 +170,57 @@ public class Utils {
             b = rand.nextInt(255);
         } while (b < 50);
         return Color.rgb(r, g, b);
+    }
+
+    /**
+     * TODO
+     * return a color based on the text
+     * logic:
+     * 1. map the first letter to 1-37 (0-9, a-z, space) >> preR
+     * 2. map the second letter to 1-38 (null, 0-9, a-z, space) >> preG
+     * 3. third number = multiply of the first 2 >> preB
+     * 4. map preR to 0-255 >> R
+     * 5. map preG to 0-255 >> G
+     * 6. map preB to 0-255 >> B
+     * 7. return color
+     *
+     * @param text the 1/2 letter(s) on the TextDrawable
+     * @return a color-int
+     */
+    public static int getTextDrawableColor(String text) {
+        if (text.length() > 2) {
+            //error
+        } else {
+            String textLC = text.toLowerCase(Locale.ENGLISH);
+            Character first = textLC.charAt(0);         //extract first char >> r
+            Character second;
+            if (textLC.length() < 2)
+                second = null;
+            else
+                second = textLC.charAt(1);        //extract second char >> g
+            int preR = charToInt(first);                //map first char to 1-37
+            int preG = charToInt(second);               //map second char to 1-38
+            int preB = preR * preG;                     //r*g >> b (should match 1-1406)
+            int r = 256 * preR / 37;
+            int g = 256 * preG / 38;
+            int b = 256 * preB / 1406;
+            return Color.rgb(r, g, b);
+        }
+        return 0;
+    }
+
+    private static int charToInt(Character c) {
+        if (c == null)                      //null >> 1
+            return 1;
+        int ascii = (int) c;
+        if (c == 32)                        //space >> 37
+            return 37;
+        if (c >= 'a' && c <= 'z')           //
+            return ascii - 86;
+        if (c >= '0' && c <= '9')
+            return ascii - 47;
+        else
+            return 0;
     }
 
     public String getPackageName(Context context) {
