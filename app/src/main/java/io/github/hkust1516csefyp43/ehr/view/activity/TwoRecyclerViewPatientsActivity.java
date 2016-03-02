@@ -47,6 +47,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import de.cketti.library.changelog.ChangeLog;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
@@ -74,6 +75,11 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ChangeLog cl = new ChangeLog(this);
+        if (cl.isFirstRun()) {
+            cl.getLogDialog().show();
+        }
 
         String[] test = {"Slums", "Countries", "Chief complains", "Diagnosis", "Fingers", "Medicines", "Status", "Users", "Synchronization"};
 

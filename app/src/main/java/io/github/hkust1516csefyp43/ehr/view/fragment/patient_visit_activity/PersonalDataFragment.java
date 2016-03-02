@@ -12,8 +12,10 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -47,6 +49,7 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
     private EditText etLastName;
     private ImageView ivProfilePic;
     private TextView tvBirthday;
+    private Spinner sGender;
 
     public PersonalDataFragment() {
         // Required empty public constructor
@@ -79,6 +82,18 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
         etLastName = (EditText) v.findViewById(R.id.last_name);
         ivProfilePic = (ImageView) v.findViewById(R.id.iv_profile_pic);
         tvBirthday = (TextView) v.findViewById(R.id.tvBirthday);
+        sGender = (Spinner) v.findViewById(R.id.sGender);
+        sGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         ivProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

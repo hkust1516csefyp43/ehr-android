@@ -1,169 +1,176 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="8dp"
-                android:theme="@style/AppTheme2"
-                tools:context="io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.HPIFragment">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="4dp"
+    android:theme="@style/AppTheme2"
+    tools:context="io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.HPIFragment">
 
     <HorizontalScrollView
         android:id="@+id/hsv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/HsvLL"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/undo"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Undo"/>
+            <!--<Button-->
+            <!--android:id="@+id/undo"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Undo"/>-->
 
-            <Button
-                android:id="@+id/redo"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Redo"/>
+            <!--<Button-->
+            <!--android:id="@+id/redo"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Redo"/>-->
 
-            <Button
-                android:id="@+id/bold"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Bold"/>
+            <!--<Button-->
+            <!--android:id="@+id/bold"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Bold"/>-->
 
-            <Button
-                android:id="@+id/italic"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Italic"/>
+            <!--<Button-->
+            <!--android:id="@+id/italic"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Italic"/>-->
 
-            <Button
-                android:id="@+id/subscript"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Subscript"/>
+            <!--<Button-->
+            <!--android:id="@+id/subscript"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Subscript"/>-->
 
-            <Button
-                android:id="@+id/superscript"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Superscript"/>
+            <!--<Button-->
+            <!--android:id="@+id/superscript"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Superscript"/>-->
 
-            <Button
-                android:id="@+id/strikethrough"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Strikethrough"/>
+            <!--<Button-->
+            <!--android:id="@+id/strikethrough"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Strikethrough"/>-->
 
-            <Button
-                android:id="@+id/underline"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="underline"/>
+            <!--<Button-->
+            <!--android:id="@+id/underline"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="underline"/>-->
 
-            <Button
-                android:id="@+id/heading1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="H1"/>
+            <!--<Button-->
+            <!--android:id="@+id/heading1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="H1"/>-->
 
-            <Button
-                android:id="@+id/heading2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="H2"/>
+            <!--<Button-->
+            <!--android:id="@+id/heading2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="H2"/>-->
 
-            <Button
-                android:id="@+id/heading3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="H3"/>
+            <!--<Button-->
+            <!--android:id="@+id/heading3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="H3"/>-->
 
-            <Button
-                android:id="@+id/heading4"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="H4"/>
+            <!--<Button-->
+            <!--android:id="@+id/heading4"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="H4"/>-->
 
-            <Button
-                android:id="@+id/heading5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="H5"/>
+            <!--<Button-->
+            <!--android:id="@+id/heading5"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="H5"/>-->
 
-            <Button
-                android:id="@+id/heading6"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="H6"/>
+            <!--<Button-->
+            <!--android:id="@+id/heading6"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="H6"/>-->
 
-            <Button
-                android:id="@+id/text_color"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Text color"/>
+            <!--<Button-->
+            <!--android:id="@+id/text_color"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Text color"/>-->
 
-            <Button
-                android:id="@+id/background_color"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Background Color"/>
+            <!--<Button-->
+            <!--android:id="@+id/background_color"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Background Color"/>-->
 
-            <Button
-                android:id="@+id/indent"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Indent"/>
+            <!--<Button-->
+            <!--android:id="@+id/indent"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Indent"/>-->
 
-            <Button
-                android:id="@+id/outdent"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Outdent"/>
+            <!--<Button-->
+            <!--android:id="@+id/outdent"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Outdent"/>-->
 
-            <Button
-                android:id="@+id/align_left"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Align Left"/>
+            <!--<Button-->
+            <!--android:id="@+id/align_left"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Align Left"/>-->
 
-            <Button
-                android:id="@+id/aligh_center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Align Center"/>
+            <!--<Button-->
+            <!--android:id="@+id/aligh_center"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Align Center"/>-->
 
-            <Button
-                android:id="@+id/align_right"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Align Right"/>
+            <!--<Button-->
+            <!--android:id="@+id/align_right"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Align Right"/>-->
 
-            <Button
-                android:id="@+id/blockquote"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Blockquote"/>
+            <!--<Button-->
+            <!--android:id="@+id/blockquote"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Blockquote"/>-->
 
-            <Button
-                android:id="@+id/insert_image"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Insert image"/>
+            <!--<Button-->
+            <!--android:id="@+id/insert_image"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Insert image"/>-->
 
-            <Button
-                android:id="@+id/insert_link"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Insert link"/>
+            <!--<Button-->
+            <!--android:id="@+id/insert_link"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Insert link"/>-->
 
-            <Button
-                android:id="@+id/insert_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Insert checkbox"/>
+            <!--<Button-->
+            <!--android:id="@+id/insert_checkbox"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="Insert checkbox"/>-->
         </LinearLayout>
 
     </HorizontalScrollView>
@@ -172,7 +179,6 @@
         android:id="@+id/editor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/hsv"
-        android:layout_gravity="center"/>
+        android:layout_below="@id/hsv"/>
 
-</RelativeLayout>
+</LinearLayout>

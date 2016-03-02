@@ -5,10 +5,17 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
@@ -17,7 +24,7 @@ import jp.wasabeef.richeditor.RichEditor;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HPIOnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link HPIFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -33,6 +40,7 @@ public class HPIFragment extends Fragment {
     private String mParam2;
     private RichEditor mEditor;
     private OnFragmentInteractionListener mListener;
+    private LinearLayout hsvLL;
 
     public HPIFragment() {
         // Required empty public constructor
@@ -69,13 +77,11 @@ public class HPIFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_hpi, container, false);
-    }
+        View v = localInflater.inflate(R.layout.fragment_hpi, container, false);
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mEditor = (RichEditor) getView().findViewById(R.id.editor);
+        mEditor = (RichEditor) v.findViewById(R.id.editor);
+        hsvLL = (LinearLayout) v.findViewById(R.id.HsvLL);
+
         if (mEditor != null) {
             mEditor.setAlignCenter();
             mEditor.setEditorFontSize(12);
@@ -84,6 +90,65 @@ public class HPIFragment extends Fragment {
             mEditor.setPlaceholder("Tap here and start typing");
             mEditor.setHtml("the html content <br>in string");    //put the content back to the rich editor (i.e. webview)
         }
+
+        //TODO add imageview as button
+
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_redo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_bold, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_italic, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_underline, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_strikethrough, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_subscript, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_superscript, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -107,5 +172,19 @@ public class HPIFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void addButtons(Context context, LinearLayout hsvLL, GoogleMaterial.Icon icon, View.OnClickListener ocl) {
+        ImageView ivBold = new ImageView(context);
+        ivBold.setImageDrawable(new IconicsDrawable(getContext(), icon).color(getResources().getColor(R.color.primary_text_color)).sizeDp(48).paddingDp(12));
+        ivBold.setOnClickListener(ocl);
+        hsvLL.addView(ivBold);
+    }
+
+    private void addButtons(Context context, LinearLayout hsvLL, CommunityMaterial.Icon icon, View.OnClickListener ocl) {
+        ImageView ivBold = new ImageView(context);
+        ivBold.setImageDrawable(new IconicsDrawable(getContext(), icon).color(getResources().getColor(R.color.primary_text_color)).sizeDp(48).paddingDp(12));
+        ivBold.setOnClickListener(ocl);
+        hsvLL.addView(ivBold);
     }
 }
