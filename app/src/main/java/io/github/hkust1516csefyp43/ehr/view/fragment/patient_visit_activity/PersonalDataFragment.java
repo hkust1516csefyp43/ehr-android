@@ -1,8 +1,11 @@
 package io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -23,8 +26,10 @@ import java.util.GregorianCalendar;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.Utils;
+import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.value.Const;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +39,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.Patient;
  * Use the {@link PersonalDataFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PersonalDataFragment extends Fragment {
+public class PersonalDataFragment extends Fragment implements OnCameraRespond {
     private static Patient patient;
     private OnFragmentInteractionListener mListener;
     private EditText etFirstName;
@@ -80,6 +85,22 @@ public class PersonalDataFragment extends Fragment {
                 new MaterialDialog.Builder(getContext())
                         .title("Patient picture")
                         .items(R.array.image_array)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                                switch (which) {
+                                    case Const.ACTION_TAKE_PICTURE:
+                                        openCamera();
+                                        break;
+                                    case Const.ACTION_SELECT_PICTURE:
+                                        break;
+                                    case Const.ACTION_REMOVE_PICTURE:
+                                        //save as default
+                                    default:
+                                        //TODO remove picture & put a Text Drawable
+                                }
+                            }
+                        })
                         .theme(Theme.LIGHT)
                         .show();
             }
@@ -145,5 +166,22 @@ public class PersonalDataFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void openCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, 1);
+        }
+    }
+
+    @Override
+    public void OnCameraRespond(Intent t) {
+        if (t != null && ivProfilePic != null) {
+            Bundle extras = t.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+//        mImageView.setImageBitmap(imageBitmap);
+            Glide.with(this).load(imageBitmap).diskCacheStrategy(DiskCacheStrategy.ALL).thumbnail(0.1f).into(ivProfilePic);
+        }
     }
 }

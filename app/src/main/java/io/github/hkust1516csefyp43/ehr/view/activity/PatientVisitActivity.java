@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Const;
@@ -77,6 +79,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
     Context mContext;
     String mCC;
     private PersonalDataFragment pdf;
+    private OnCameraRespond ocrPDF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +145,22 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                 }
             });
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("qqq81", "" + requestCode + "/" + resultCode);
+        if (resultCode == RESULT_OK) {
+            OnCameraRespond p = (OnCameraRespond) getSupportFragmentManager().findFragmentByTag("fragment_personal_data");
+            if (p != null) {
+                Log.d("qqq82", "sending");
+                p.OnCameraRespond(data);
+            } else {
+                Log.d("qqq83", "cant find fragment?");
+            }
+        } else
+            super.onActivityResult(requestCode, resultCode, data);
+        //TODO: 1. handle camera callback
     }
 
     @Override
@@ -237,12 +256,15 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             super(fm);
         }
 
+        //TODO save sth to call the fragment from activity
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    if (pdf == null)
+                    if (pdf == null) {
                         pdf = new PersonalDataFragment().newInstance(patient);
+                        ocrPDF = pdf;
+                    }
                     return pdf;
                 case 1:
                     return VitalSignsFragment.newInstance();

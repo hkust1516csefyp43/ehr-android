@@ -52,6 +52,9 @@ public class Const {
     public final static String KEY_VIRGIN = "touch_for_the_very_first_time~";
     public static final String FLAVOR_ONE_2_ONE_CAMBODIA = "one2onecambodia";
     public static final String FLAVOR_FREE = "free";
+    public static final int ACTION_TAKE_PICTURE = 0;
+    public static final int ACTION_SELECT_PICTURE = 1;
+    public static final int ACTION_REMOVE_PICTURE = 2;
     public static String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
     public static String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
     //public static final String KEY_CURRENT_PATIENT_ = "currentPatient";
@@ -65,5 +68,4 @@ public class Const {
     public static void setLocalAPI(String api) {
         API_LOCAL = api;
     }
-
 }

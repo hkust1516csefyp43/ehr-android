@@ -30,6 +30,8 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.SearchEvent;
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -142,7 +144,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                 .withIdentifier(Const.ID_ABOUT);
         SecondaryDrawerItem logout = new SecondaryDrawerItem()
                 .withName(R.string.logout)
-                .withIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_local_phone).color(Color.GRAY).paddingDp(2))
+                .withIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_exit_to_app).color(Color.GRAY).paddingDp(2))
                 .withIdentifier(Const.ID_LOGOUT);
 
         DividerDrawerItem ddi = new DividerDrawerItem();
@@ -372,8 +374,18 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     }
 
     public void openAbout() {
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, AboutActivity.class);
+//        startActivity(intent);
+        new LibsBuilder()
+                .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                .withAboutVersionShown(true)
+                .withAboutIconShown(true)
+                .withVersionShown(true)
+                .withActivityTitle("About")
+                .withAboutAppName("EHR")        //TODO how to get app name on the fly
+                .withAboutDescription("This app allows you to generate a simple text-based icon in seconds")
+                .withSortEnabled(true)
+                .start(this);
     }
 
     public void openLogin() {
