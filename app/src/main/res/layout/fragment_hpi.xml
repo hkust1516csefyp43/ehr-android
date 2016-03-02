@@ -23,54 +23,6 @@
             android:layout_height="match_parent">
 
             <!--<Button-->
-            <!--android:id="@+id/undo"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Undo"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/redo"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Redo"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/bold"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Bold"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/italic"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Italic"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/subscript"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Subscript"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/superscript"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Superscript"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/strikethrough"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Strikethrough"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/underline"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="underline"/>-->
-
-            <!--<Button-->
             <!--android:id="@+id/heading1"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="match_parent"-->
@@ -129,36 +81,6 @@
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="match_parent"-->
             <!--android:text="Outdent"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/align_left"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Align Left"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/aligh_center"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Align Center"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/align_right"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Align Right"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/blockquote"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Blockquote"/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/insert_image"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Insert image"/>-->
 
             <!--<Button-->
             <!--android:id="@+id/insert_link"-->

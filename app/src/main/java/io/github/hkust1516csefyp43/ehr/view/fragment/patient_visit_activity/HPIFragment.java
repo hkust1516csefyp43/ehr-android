@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.typeface.IIcon;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
@@ -31,13 +31,8 @@ import jp.wasabeef.richeditor.RichEditor;
  */
 public class HPIFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private RichEditor mEditor;
     private OnFragmentInteractionListener mListener;
     private LinearLayout hsvLL;
@@ -46,21 +41,13 @@ public class HPIFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PregnancyFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static HPIFragment newInstance(String param1, String param2) {
         HPIFragment fragment = new HPIFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -68,8 +55,8 @@ public class HPIFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -84,11 +71,12 @@ public class HPIFragment extends Fragment {
 
         if (mEditor != null) {
             mEditor.setAlignCenter();
-            mEditor.setEditorFontSize(12);
+            mEditor.setEditorFontSize(14);
             mEditor.setEditorFontColor(Color.BLACK);
             mEditor.setPadding(8, 8, 8, 8);
             mEditor.setPlaceholder("Tap here and start typing");
             mEditor.setHtml("the html content <br>in string");    //put the content back to the rich editor (i.e. webview)
+            mEditor.scrollTo(0, mEditor.getContentHeight());
         }
 
         //TODO add imageview as button
@@ -97,18 +85,36 @@ public class HPIFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("qqq9", "yes");
+                if (mEditor != null) {
+                    Log.d("qqq100", mEditor.getHtml());
+                }
             }
         });
         addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_redo, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("qqq9", "yes");
+                if (mEditor != null) {
+                    mEditor.setHtml(mEditor.getHtml() + "<br>" + "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAM0AAAD\n" +
+                            " NCAMAAAAsYgRbAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5c\n" +
+                            " cllPAAAABJQTFRF3NSmzMewPxIG//ncJEJsldTou1jHgAAAARBJREFUeNrs2EEK\n" +
+                            " gCAQBVDLuv+V20dENbMY831wKz4Y/VHb/5RGQ0NDQ0NDQ0NDQ0NDQ0NDQ\n" +
+                            " 0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0PzMWtyaGhoaGhoaGhoaGhoaGhoxtb0QGho\n" +
+                            " aGhoaGhoaGhoaGhoaMbRLEvv50VTQ9OTQ5OpyZ01GpM2g0bfmDQaL7S+ofFC6x\n" +
+                            " v3ZpxJiywakzbvd9r3RWPS9I2+MWk0+kbf0Hih9Y17U0nTHibrDDQ0NDQ0NDQ0\n" +
+                            " NDQ0NDQ0NTXbRSL/AK72o6GhoaGhoRlL8951vwsNDQ0NDQ1NDc0WyHtDTEhD\n" +
+                            " Q0NDQ0NTS5MdGhoaGhoaGhoaGhoaGhoaGhoaGhoaGposzSHAAErMwwQ2HwRQ\n" +
+                            " AAAAAElFTkSuQmCC\" alt=\"beastie.png\">");
+                }
             }
         });
         addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_bold, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("qqq9", "yes");
+                if (mEditor != null) {
+                    mEditor.scrollTo(0, mEditor.getContentHeight());
+                }
             }
         });
         addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_italic, new View.OnClickListener() {
@@ -136,6 +142,30 @@ public class HPIFragment extends Fragment {
             }
         });
         addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_superscript, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_file_image_box, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_align_left, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_align_center, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("qqq9", "yes");
+            }
+        });
+        addButtons(getContext(), hsvLL, CommunityMaterial.Icon.cmd_format_align_right, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("qqq9", "yes");
@@ -174,14 +204,7 @@ public class HPIFragment extends Fragment {
         mListener = null;
     }
 
-    private void addButtons(Context context, LinearLayout hsvLL, GoogleMaterial.Icon icon, View.OnClickListener ocl) {
-        ImageView ivBold = new ImageView(context);
-        ivBold.setImageDrawable(new IconicsDrawable(getContext(), icon).color(getResources().getColor(R.color.primary_text_color)).sizeDp(48).paddingDp(12));
-        ivBold.setOnClickListener(ocl);
-        hsvLL.addView(ivBold);
-    }
-
-    private void addButtons(Context context, LinearLayout hsvLL, CommunityMaterial.Icon icon, View.OnClickListener ocl) {
+    private void addButtons(Context context, LinearLayout hsvLL, IIcon icon, View.OnClickListener ocl) {
         ImageView ivBold = new ImageView(context);
         ivBold.setImageDrawable(new IconicsDrawable(getContext(), icon).color(getResources().getColor(R.color.primary_text_color)).sizeDp(48).paddingDp(12));
         ivBold.setOnClickListener(ocl);
