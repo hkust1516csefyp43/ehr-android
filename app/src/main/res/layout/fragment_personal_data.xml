@@ -133,6 +133,37 @@
 
             </LinearLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Add logo to left: Address"
+                    android:inputType="textCapSentences"
+                    android:lines="2"
+                    android:maxLines="5"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/evPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Add logo to left: Phone number"
+                    android:inputType="phone"
+                    android:lines="1"
+                    android:maxLines="1"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+
         </LinearLayout>
 
 
