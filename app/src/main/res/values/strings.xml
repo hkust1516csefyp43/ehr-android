@@ -96,6 +96,25 @@
     </string-array>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_initiation">InitiationActivity</string>
+    <string name="LMP">LMP Date:</string>
+    <string name="day_hint">dd</string>
+    <string name="month_hint">mm</string>
+    <string name="year_hint">yyyy</string>
+    <string name="ispregnant">Is Pregnant?</string>
+    <string name="gestation">Gestation:</string>
+    <string name="int_hint">0</string>
+    <string name="week">week</string>
+    <string name="breastfeeding">Breast Feeding:</string>
+    <string name="contraceptive">Contraceptive Use:</string>
+    <string name="no_pregnant">No. of Pregnancy:</string>
+    <string name="no_miscarriage">No. of miscarriage:</string>
+    <string name="no_abortion">No. of abortion:</string>
+    <string name="no_stillbirth">No. of still birth:</string>
+    <string name="other_info">Other information:</string>
+    <string name="age">Age</string>
+    <string name="pid">Patient ID</string>
+    <string name="no_tel">Tel no.</string>
+    <string name="address">Address</string>
 
 
 </resources>
