@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,28 +106,6 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
                         .show();
             }
         });
-        return v;
-    }
-
-    @Override
-    public void onStop() {
-        //TODO save all inputs
-        super.onStop();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         if (tvBirthday != null) {
             tvBirthday.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -160,6 +139,29 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
                         .into(ivProfilePic);
             }
         }
+        return v;
+    }
+
+    @Override
+    public void onStop() {
+        //TODO save all inputs
+        super.onStop();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -180,8 +182,15 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
         if (t != null && ivProfilePic != null) {
             Bundle extras = t.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-//        mImageView.setImageBitmap(imageBitmap);
-            Glide.with(this).load(imageBitmap).diskCacheStrategy(DiskCacheStrategy.ALL).thumbnail(0.1f).into(ivProfilePic);
+            //TODO imageBitmap is just a thumbnail >> low resolution >> ugly
+            //http://developer.android.com/training/camera/photobasics.html
+            if (imageBitmap != null) {
+                ivProfilePic.setImageBitmap(imageBitmap);
+                ivProfilePic.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                ivProfilePic.setMaxHeight(ivProfilePic.getWidth());
+            } else {
+                Log.d("qqq811", "umm the image is null");
+            }
         }
     }
 }

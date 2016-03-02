@@ -150,17 +150,22 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("qqq81", "" + requestCode + "/" + resultCode);
-        if (resultCode == RESULT_OK) {
-            OnCameraRespond p = (OnCameraRespond) getSupportFragmentManager().findFragmentByTag("fragment_personal_data");
-            if (p != null) {
-                Log.d("qqq82", "sending");
-                p.OnCameraRespond(data);
+        //TODO I don't think this calculation can handle not just camera call
+        //for some reason the request code is accumulative, so a bit of calculation is needed
+        if ((requestCode - 1) % 65536 == 0) {
+            if (resultCode == RESULT_OK) {
+                if (ocrPDF != null) {
+                    ocrPDF.OnCameraRespond(data);
+                } else {
+                    //TODO can't find the fragment -_-
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+                // User cancelled the image capture
             } else {
                 Log.d("qqq83", "cant find fragment?");
             }
         } else
             super.onActivityResult(requestCode, resultCode, data);
-        //TODO: 1. handle camera callback
     }
 
     @Override

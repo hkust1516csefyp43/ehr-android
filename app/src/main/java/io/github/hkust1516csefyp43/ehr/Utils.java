@@ -2,7 +2,6 @@ package io.github.hkust1516csefyp43.ehr;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -194,8 +193,8 @@ public class Utils {
             int r = 256 * preR / 37;
             int g = 256 * preG / 38;
             int b = 256 * preB / 1406;
-            Log.d("qqq63", text + " >> " + preR + "," + preG + "," + preB);
-            Log.d("qqq64", text + " >> " + r + "," + g + "," + b);
+//            Log.d("qqq63", text + " >> " + preR + "," + preG + "," + preB);
+//            Log.d("qqq64", text + " >> " + r + "," + g + "," + b);
             return Color.rgb(r, g, b);
         }
     }
