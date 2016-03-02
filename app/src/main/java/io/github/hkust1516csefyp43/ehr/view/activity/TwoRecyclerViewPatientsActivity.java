@@ -383,7 +383,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                 .withVersionShown(true)
                 .withActivityTitle("About")
                 .withAboutAppName("EHR")        //TODO how to get app name on the fly
-                .withAboutDescription("This app allows you to generate a simple text-based icon in seconds")
+                .withAboutDescription("EHR 2015-2016 from SIGHT@HKUST x CSE@HKUST")
                 .withSortEnabled(true)
                 .start(this);
     }
