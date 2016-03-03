@@ -3,54 +3,31 @@ package io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RemarkFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RemarkFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
+    private SwitchCompat scRemark;
+    private EditText etRemark;
+    private TextInputLayout tilRemark;
 
     public RemarkFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PregnancyFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static RemarkFragment newInstance(String param1, String param2) {
         RemarkFragment fragment = new RemarkFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -58,8 +35,6 @@ public class RemarkFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -67,7 +42,28 @@ public class RemarkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_remark, container, false);
+        View v = localInflater.inflate(R.layout.fragment_remark, container, false);
+        scRemark = (SwitchCompat) v.findViewById(R.id.scRemark);
+        etRemark = (EditText) v.findViewById(R.id.etRemark);
+        tilRemark = (TextInputLayout) v.findViewById(R.id.tilRemark);
+        scRemark.setChecked(true);
+        if (!scRemark.isChecked())
+            tilRemark.setVisibility(View.GONE);
+        else
+            tilRemark.setVisibility(View.VISIBLE);
+        scRemark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (tilRemark != null) {
+                    if (isChecked)
+                        tilRemark.setVisibility(View.VISIBLE);
+                    else
+                        tilRemark.setVisibility(View.GONE);
+                }
+
+            }
+        });
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -83,8 +79,7 @@ public class RemarkFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 

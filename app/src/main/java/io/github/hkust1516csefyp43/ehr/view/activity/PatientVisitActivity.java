@@ -183,12 +183,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                 return false;
             }
         });
-        menu.findItem(R.id.action_open).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_folder_open).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
         menu.findItem(R.id.cc).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

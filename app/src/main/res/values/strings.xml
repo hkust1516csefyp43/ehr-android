@@ -66,7 +66,7 @@
     <string name="uri_separator" translatable="false">/</string>
     <string name="fetch_data_failed">Fetch data failed</string>
     <string name="dismiss_dialog_title">Are you sure?</string>
-    <string name="dismiss_dialog_content">All unsaved data will be lost.</string>
+    <string name="dismiss_dialog_content">All unsaved data will be lost. If you want to save the data, Click the 3 dots on the top right corner and select "Save". The data will be saved for 24 hours, and you can select "Open" from the "+" button from the list of patients list outside. </string>
     <string name="dismiss_dialog_positive_text">Yes</string>
     <string name="dismiss_dialog_negative_text">No</string>
 

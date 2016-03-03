@@ -9,6 +9,10 @@ import android.view.View;
 
 import io.github.hkust1516csefyp43.ehr.R;
 
+/**
+ * TODO
+ * http://developer.android.com/guide/topics/ui/settings.html#Groups
+ */
 public class SettingsActivity extends AppCompatActivity {
     private Toolbar tb;
     private ActionBar ab;

@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <!--<release-->
+    <!--version="1.0.7"-->
+    <!--versioncode="7">-->
+
+    <!--</release>-->
+    <release
+        version="1.0.6"
+        versioncode="6">
+        <change>ADD: Change log dialog after update</change>
+        <change>A dialog to let user select what kind of new patient record to add</change>
+        <change>Replace text buttons with icons in HPI Fragment</change>
+        <change>Testing the rich text editor (Try tap the redo button!)</change>
+        <change>UI update to Remark Fragment</change>
+        <change>Minor UI fixes everywhere</change>
+    </release>
+    <release
+        version="1.0.5"
+        versioncode="5">
+        <change>More UI added in patient visit i.e. more input boxes everywhere</change>
+        <change>Working on taking new profile picture for patients</change>
+        <change>Fix opening screen, logo is now the correct one</change>
+        <change>Jump between input boxes in vital signs will show the correct keyboard</change>
+        <change>Fix color for patients with no profile picture</change>
+        <change>Date pickers for dates</change>
+    </release>
     <release
         version="1.0.4"
         versioncode="4">

@@ -1,6 +1,8 @@
 package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -21,6 +23,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -404,12 +408,45 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         startActivity(intent);
     }
 
+    /**
+     * TODO show selection dialog first (dialog add patient)
+     *
+     * @param p
+     */
     public void openPatientVisit(Patient p) {
-        Intent intent = new Intent(this, PatientVisitActivity.class);
-        if (p != null) {
-            intent.putExtra("patient", p);
-        }
-        startActivity(intent);
+        final Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialog.setContentView(R.layout.dialog_add_patient);
+
+        ImageView ivExistingPatient = (ImageView) dialog.findViewById(R.id.ivExistingPatient);
+        ivExistingPatient.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).color(Color.WHITE).sizeDp(32));
+
+        ImageView ivNotSure = (ImageView) dialog.findViewById(R.id.ivNotSure);
+        ivNotSure.setImageDrawable(new IconicsDrawable(getApplicationContext(), FontAwesome.Icon.faw_question).color(Color.WHITE).sizeDp(32));
+
+        ImageView ivNewPatient = (ImageView) dialog.findViewById(R.id.ivNewPatient);
+        ivNewPatient.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(32));
+
+        ImageView ivOpenSaves = (ImageView) dialog.findViewById(R.id.ivOpenSaves);
+        ivOpenSaves.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_folder_open).color(Color.WHITE).sizeDp(32));
+
+        LinearLayout llNewPatient = (LinearLayout) dialog.findViewById(R.id.llNewPatient);
+
+        final Context c = this;
+        final Patient p2 = p;
+        llNewPatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(c, PatientVisitActivity.class);
+                if (p2 != null) {
+                    intent.putExtra("patient", p2);
+                }
+                startActivity(intent);
+            }
+        });
+
+
+        dialog.show();
     }
 
     private void ptrvfRecyclerViewScrollToTop() {

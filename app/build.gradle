@@ -24,8 +24,8 @@ android {
         applicationId "io.github.hkust1516csefyp43.ehr"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 5
-        versionName "1.0.5"
+        versionCode 6
+        versionName "1.0.6"
     }
     buildTypes {
         release {
@@ -37,24 +37,22 @@ android {
     productFlavors {
         free {
             applicationId "io.github.hkust1516csefyp43.ehr.free"
-            versionName "1.0.5f"
+            versionName "1.0.6f"
         }
         one2onecambodia {
             applicationId "io.github.hkust1516csefyp43.ehr.one2onecambodia"
-            versionName "1.0.5o"
+            versionName "1.0.6o"
         }
     }
 }
 
 repositories {
-    maven {
-        url 'http://dl.bintray.com/amulyakhare/maven'
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-        url 'https://oss.sonatype.org/content/groups/public/'
-        mavenCentral()
-    }
+    maven { url 'http://dl.bintray.com/amulyakhare/maven' }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
     maven { url 'https://maven.fabric.io/public' }
     jcenter()
+    mavenCentral()
 }
 
 dependencies {

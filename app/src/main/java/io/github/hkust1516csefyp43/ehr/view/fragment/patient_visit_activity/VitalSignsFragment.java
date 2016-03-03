@@ -89,7 +89,9 @@ public class VitalSignsFragment extends Fragment {
         etSpo2 = (EditText) v.findViewById(R.id.etSpo2);
         etWeight = (EditText) v.findViewById(R.id.etWeight);
         etHeight = (EditText) v.findViewById(R.id.etHeight);
+        //TODO weight & height listener: calculate BMI
 
+        v.findViewById(R.id.tvBMI).setSelected(true);
         tvLDD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +100,8 @@ public class VitalSignsFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
                         if (tvLDD != null) {
-                            String date = "" + year + "/" + monthOfYear + "/" + dayOfMonth;
+                            //TODO before today check
+                            String date = "" + year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
                             tvLDD.setText(date);
                         }
                     }

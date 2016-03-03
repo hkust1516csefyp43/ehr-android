@@ -77,6 +77,7 @@ public class HPIFragment extends Fragment {
             mEditor.setPlaceholder("Tap here and start typing");
             mEditor.setHtml("the html content <br>in string");    //put the content back to the rich editor (i.e. webview)
             mEditor.scrollTo(0, mEditor.getContentHeight());
+            mEditor.pageDown(true);
         }
 
         //TODO add imageview as button

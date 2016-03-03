@@ -2,9 +2,12 @@
 <resources>
 
     <!-- primary colors-->
-    <color name="primary_color">#79589F</color>
+    <color name="primary_darker_color">#3c2c4f</color>
     <color name="primary_dark_color">#523C6C</color>
-    <color name="primary_light_color">#D9C9EB</color>
+    <color name="primary_color">#79589F</color>
+    <color name="primary_light_color">#9379b2</color>
+    <color name="primary_lighter_color">#bcabcf</color>
+    <color name="primary_lightest_color">#e4ddeb</color>
     <!-- accent colors-->
     <color name="accent_color">#9F9E58</color>
 
