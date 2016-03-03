@@ -49,12 +49,12 @@ android {
 repositories {
     maven {
         url 'http://dl.bintray.com/amulyakhare/maven'
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-        url 'https://oss.sonatype.org/content/groups/public/'
         mavenCentral()
     }
     maven { url 'https://maven.fabric.io/public' }
     jcenter()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
 }
 
 dependencies {
