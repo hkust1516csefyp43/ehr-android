@@ -107,7 +107,6 @@ public class VitalSignsFragment extends Fragment {
                     }
                 }, gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH));
                 dpd.show(getActivity().getFragmentManager(), "qqq");
-                //TODO date picker dialog
             }
         });
     }

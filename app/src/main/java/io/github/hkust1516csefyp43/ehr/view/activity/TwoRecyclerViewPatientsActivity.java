@@ -414,7 +414,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
      * @param p
      */
     public void openPatientVisit(Patient p) {
-        final Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        final Dialog dialog = new Dialog(this, R.style.AppTheme);
         dialog.setContentView(R.layout.dialog_add_patient);
 
         ImageView ivExistingPatient = (ImageView) dialog.findViewById(R.id.ivExistingPatient);
@@ -427,7 +427,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         ivNewPatient.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(32));
 
         ImageView ivOpenSaves = (ImageView) dialog.findViewById(R.id.ivOpenSaves);
-        ivOpenSaves.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_folder_open).color(Color.WHITE).sizeDp(32));
+        ivOpenSaves.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_folder_open).color(getResources().getColor(R.color.secondary_text_color)).sizeDp(32));
 
         LinearLayout llNewPatient = (LinearLayout) dialog.findViewById(R.id.llNewPatient);
 
@@ -436,11 +436,11 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         llNewPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
                 Intent intent = new Intent(c, PatientVisitActivity.class);
                 if (p2 != null) {
                     intent.putExtra("patient", p2);
                 }
+                dialog.dismiss();
                 startActivity(intent);
             }
         });
@@ -509,7 +509,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
         @Override
         public int getCount() {
-            return 2;
+            return PAGES;
         }
     }
 }

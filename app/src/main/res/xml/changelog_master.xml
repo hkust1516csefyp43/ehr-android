@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-    <!--<release-->
-    <!--version="1.0.7"-->
-    <!--versioncode="7">-->
-
-    <!--</release>-->
+    <release
+        version="1.0.7"
+        versioncode="7">
+        <change>Minor bug fixes here and there</change>
+    </release>
     <release
         version="1.0.6"
         versioncode="6">

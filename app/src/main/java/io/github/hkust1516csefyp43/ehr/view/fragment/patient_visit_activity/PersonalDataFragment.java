@@ -129,9 +129,12 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
                     DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                            //TODO
+                            if (tvBirthday != null) {
+                                String date = "" + year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+                                tvBirthday.setText(date);
+                            }
                         }
-                    }, 1992, 9, 14);
+                    }, 1992, 9, 14);            //Channat's birthday
                     dpd.showYearPickerFirst(true);
                     dpd.show(getActivity().getFragmentManager(), "qqq");
                 }
