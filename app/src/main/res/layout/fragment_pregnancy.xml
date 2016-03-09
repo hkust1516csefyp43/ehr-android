@@ -1,17 +1,18 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:theme="@style/AppTheme2"
-            tools:context="io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:tag="fragment_pregnancy"
+    android:theme="@style/AppTheme2"
+    tools:context="io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="vertical">
 
         <LinearLayout

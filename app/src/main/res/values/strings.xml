@@ -116,5 +116,11 @@
     <string name="no_tel">Tel no.</string>
     <string name="address">Address</string>
 
+    <string-array name="drug_array">
+        <item>medicine</item>
+        <item>drug</item>
+        <item>poison</item>
+        <item>unknown</item>
+    </string-array>
 
 </resources>
