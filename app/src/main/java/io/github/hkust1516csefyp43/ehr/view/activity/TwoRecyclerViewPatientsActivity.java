@@ -34,8 +34,6 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.SearchEvent;
-import com.mikepenz.aboutlibraries.Libs;
-import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -384,18 +382,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     }
 
     public void openAbout() {
-//        Intent intent = new Intent(this, AboutActivity.class);
-//        startActivity(intent);
-        new LibsBuilder()
-                .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
-                .withAboutVersionShown(true)
-                .withAboutIconShown(true)
-                .withVersionShown(true)
-                .withActivityTitle("About")
-                .withAboutAppName("EHR")        //TODO how to get app name on the fly
-                .withAboutDescription("EHR 2015-2016 from SIGHT@HKUST x CSE@HKUST")
-                .withSortEnabled(true)
-                .start(this);
+        Const.ABOUT.start(this);
     }
 
     public void openLogin() {

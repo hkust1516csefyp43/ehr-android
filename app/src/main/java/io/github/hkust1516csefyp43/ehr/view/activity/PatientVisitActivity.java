@@ -76,7 +76,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             "Remark"
     };
     Patient patient = null;
-    Context mContext;
     String mCC;
     private PersonalDataFragment pdf;
     private OnCameraRespond ocrPDF;
@@ -85,7 +84,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_visit);
-        mContext = this;
 
         //setup toolbar
         Toolbar tb = (Toolbar) findViewById(R.id.tbPatientVisit);
@@ -183,6 +181,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                 return false;
             }
         });
+        final Context mContext = this;
         menu.findItem(R.id.cc).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -223,6 +222,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 dialog.dismiss();
+                //TODO destroy current patient cache
                 PatientVisitActivity.this.finish();
             }
         };

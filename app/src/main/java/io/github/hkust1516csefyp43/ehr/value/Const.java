@@ -2,8 +2,14 @@ package io.github.hkust1516csefyp43.ehr.value;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import io.github.hkust1516csefyp43.ehr.BuildConfig;
+import io.github.hkust1516csefyp43.ehr.R;
 
 /**
  * Created by Louis on 17/9/15.
@@ -22,6 +28,7 @@ public class Const {
     public final static int ID_SETTINGS = 7;
     public final static int ID_ABOUT = 8;
     public final static int ID_LOGOUT = 9;
+
     public final static String KEY_SHARE_PREFERENCES = "EHR" + BuildConfig.FLAVOR;
     public final static String KEY_POST_TRIAGE_PATIENTS = "postTriagePatients";
     public final static String KEY_POST_CONSULTATION_PATIENTS = "postConsultationPatients";
@@ -52,20 +59,49 @@ public class Const {
     public final static String KEY_VIRGIN = "touch_for_the_very_first_time~";
     public static final String FLAVOR_ONE_2_ONE_CAMBODIA = "one2onecambodia";
     public static final String FLAVOR_FREE = "free";
+
+    public static final String CONFIG_CLOUD_HOST = "cloud_api_host";
+    public static final String CONFIG_LOCAL_HOST = "local_api_host";
+    public static final String CONFIG_SSID_LIST = "ssid_list";
+
     public static final int ACTION_TAKE_PICTURE = 0;
     public static final int ACTION_SELECT_PICTURE = 1;
     public static final int ACTION_REMOVE_PICTURE = 2;
-    public static String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
-    public static String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
+
+    public static final LibsBuilder ABOUT = new LibsBuilder()
+            .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+            .withAboutVersionShown(true)
+            .withAboutIconShown(true)
+            .withVersionShown(true)
+            .withActivityTitle("About")
+            .withFields(R.string.class.getFields())
+            .withAboutAppName("EHR")        //TODO how to get app name on the fly
+            .withAboutDescription("EHR 2015-2016 from SIGHT@HKUST x CSE@HKUST")
+            .withSortEnabled(true);
+    /**
+     * One-2-One CAMBODIA specific data
+     */
+    public static final String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
+    public static final String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
+    public static JSONArray LIST_ONE2ONE_SSID;
     //public static final String KEY_CURRENT_PATIENT_ = "currentPatient";
     public static String API_CLOUD;
     public static String API_LOCAL;
+    public static JSONArray LIST_SSID;
+
+    static {
+        try {
+            LIST_ONE2ONE_SSID = new JSONArray("['sight_network', 'sight_network2', 'One-2-One Cambodia GroundFlor']");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void setCloudAPI(String api) {
         API_CLOUD = api;
     }
-
     public static void setLocalAPI(String api) {
         API_LOCAL = api;
     }
+    public static void setListSSID(JSONArray ssid) { LIST_SSID = ssid; }
 }

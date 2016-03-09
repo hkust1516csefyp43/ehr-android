@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
@@ -109,6 +111,25 @@ public class Cache {
     //Get the fragment data as a JSONObject (String)
 
     //==============================</Current patient>==================================
+
+    //==============================<Connection config>==================================
+
+    public static void setConfig(Context context, JSONObject json) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putString(Const.KEY_VIRGIN, json.toString()).apply();
+    }
+
+    public static String getConfig(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        return prefs.getString(Const.KEY_VIRGIN, null);
+    }
+
+    public static void clearConfig(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().remove(Const.KEY_VIRGIN).apply();
+    }
+
+    //==============================</Connection config>==================================
 
 
 }

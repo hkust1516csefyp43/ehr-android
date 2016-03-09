@@ -1,11 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/primary_color"
-              android:gravity="center_horizontal"
-              android:orientation="vertical"
-              tools:context=".view.activity.LoginActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/primary_color"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                tools:context=".view.activity.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -13,13 +13,25 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
         android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvAbout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_horizontal"
+        android:text="About"/>
 
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tvAbout"
+        android:layout_alignParentTop="true"
         android:foregroundGravity="center_horizontal">
 
         <LinearLayout
@@ -119,8 +131,7 @@
                     android:textStyle="bold"/>
 
             </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+</RelativeLayout>

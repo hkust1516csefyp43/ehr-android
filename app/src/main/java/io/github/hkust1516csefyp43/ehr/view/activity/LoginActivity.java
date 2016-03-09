@@ -2,6 +2,7 @@ package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -33,6 +34,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.pojo.User;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
+import io.github.hkust1516csefyp43.ehr.value.Const;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -94,6 +96,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mSlumsView.addView(hawButton);
         mSlumsView.addView(smcButton);
 
+        setAboutButton();
+
         // Set up the login form.
         populateAutoComplete();
 
@@ -113,6 +117,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+    }
+
+    private void setAboutButton() {
+        TextView about = (TextView) findViewById(R.id.tvAbout);
+        final Context c = this;
+        about.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Const.ABOUT.start(c);
             }
         });
     }
