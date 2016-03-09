@@ -4,18 +4,25 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.adapter.PMHCardRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.pojo.PreviousMedicalHistory;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PMHFragment.OnFragmentInteractionListener} interface
+ * {@link PMHFragment...OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link PMHFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -32,6 +39,8 @@ public class PMHFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private RecyclerView rv;
+    private List<PreviousMedicalHistory> medicine;
     public PMHFragment() {
         // Required empty public constructor
     }
@@ -54,6 +63,7 @@ public class PMHFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +71,9 @@ public class PMHFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +82,21 @@ public class PMHFragment extends Fragment {
         return localInflater.inflate(R.layout.fragment_previous_medical_history, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        medicine = new ArrayList<>();
+        medicine.add(0, new PreviousMedicalHistory("drug1", "20121012", "20121222", true));
+        medicine.add(1, new PreviousMedicalHistory("drug2", "20130131", "20131222", true));
+        medicine.add(2, new PreviousMedicalHistory("drug3", "20130207", "20131222", false));
+        medicine.add(3, new PreviousMedicalHistory("drug4", "20140524", "20141222", true));
+
+        rv = (RecyclerView) getView().findViewById(R.id.rv_pmh);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        rv.setAdapter(new PMHCardRecyclerViewAdapter(medicine));
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

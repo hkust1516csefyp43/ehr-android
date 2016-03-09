@@ -5,5 +5,5 @@ import java.io.Serializable;
 /**
  * Created by Louis on 25/12/15.
  */
-public class Perscription implements Serializable {
+public class Prescription implements Serializable {
 }

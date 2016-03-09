@@ -28,12 +28,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="Diabetes"
-                    android:textSize="12pt" />
+                    android:textSize="12pt"
+                    android:id="@+id/medicineName"/>
 
                 <android.support.v7.widget.AppCompatCheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/underTreatment"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -52,13 +54,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Starting Date"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:id="@+id/startDate"/>
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ending date"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:id="@+id/endDate"/>
             </LinearLayout>
 
 
