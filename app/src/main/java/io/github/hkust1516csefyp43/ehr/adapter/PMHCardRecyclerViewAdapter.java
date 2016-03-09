@@ -21,11 +21,10 @@ public class PMHCardRecyclerViewAdapter extends Adapter {
     Context context;
     List<PreviousMedicalHistory> data;
 
-    public PMHCardRecyclerViewAdapter(List<PreviousMedicalHistory> source) {
+    public PMHCardRecyclerViewAdapter(List<PreviousMedicalHistory> source, Context context) {
         data = source;
+        context = this.context;
     }
-
-    public PMHCardRecyclerViewAdapter(Context context){context = this.context;}
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -34,22 +33,19 @@ public class PMHCardRecyclerViewAdapter extends Adapter {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (context != null){
+        if (data != null){
             PMHCardViewHolder ph = (PMHCardViewHolder) holder;
+            ph.setPmh(data.get(position));
             ph.medicineName.setText(data.get(position).getMedicineName());
-            ph.startDate.setText((CharSequence) data.get(position).getStartDate());
-            ph.endDate.setText((CharSequence) data.get(position).getEndDate());
-            if (data.get(position).isUnderTreatment() == true){
-                ph.underTreatment.setChecked(true);
-            }else
-                ph.underTreatment.setChecked(false);
+            ph.medicalDescription.setText(data.get(position).getMedicalDescription());
+
         }
 
     }
 
     @Override
     public int getItemCount() {
-        if (context != null){
+        if (data != null){
             return data.size();
         } else
         return 0;

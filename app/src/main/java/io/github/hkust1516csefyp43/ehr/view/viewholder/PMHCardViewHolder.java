@@ -16,19 +16,13 @@ import io.github.hkust1516csefyp43.ehr.pojo.PreviousMedicalHistory;
  */
 public class PMHCardViewHolder extends RecyclerView.ViewHolder {
     public TextView medicineName;
-    public EditText startDate;
-    public EditText endDate;
-    public CheckBox underTreatment;
-    public CardView cv;
+    public EditText medicalDescription;
     PreviousMedicalHistory pmh;
 
     public PMHCardViewHolder(View view, final Context context) {
         super(view);
         medicineName = (TextView) itemView.findViewById(R.id.medicineName);
-        startDate = (EditText) itemView.findViewById(R.id.startDate);
-        endDate = (EditText) itemView.findViewById(R.id.endDate);
-        underTreatment = (CheckBox) itemView.findViewById(R.id.underTreatment);
-        cv = (CardView) itemView.findViewById(R.id.cardPMH);
+        medicalDescription = (EditText) itemView.findViewById(R.id.medicalDescription);
     }
 
     public void setPmh(PreviousMedicalHistory pmh) {
