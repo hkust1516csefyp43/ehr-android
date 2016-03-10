@@ -172,6 +172,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                     @Override
                     public boolean onClick(View view, IProfile iProfile) {
                         //TODO ProfileActivity
+                        openProfile();
                         Answers.getInstance().logContentView(new ContentViewEvent()
                                 .putContentName("Profile account header")
                                 .putContentType("Profile")
@@ -316,7 +317,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         tl.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -334,6 +334,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         });
         return true;
     }
+
 
     @Override
     protected void onResume() {
@@ -367,6 +368,11 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+    }
+
+    private void openProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
     }
 
     private void showInventory() {
