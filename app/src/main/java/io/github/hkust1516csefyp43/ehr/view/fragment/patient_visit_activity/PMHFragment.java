@@ -1,21 +1,33 @@
 package io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PMHFrag;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PMHFragment.OnFragmentInteractionListener} interface
+ * {@link PMHFragment...OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link PMHFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -31,6 +43,11 @@ public class PMHFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private RecyclerView rv;
+    private List<PMHFrag> disease;
+
+    private FloatingActionButton fab;
 
     public PMHFragment() {
         // Required empty public constructor
@@ -54,6 +71,7 @@ public class PMHFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,13 +79,40 @@ public class PMHFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater.inflate(R.layout.fragment_previous_medical_history, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        disease = new ArrayList<>();
+        disease.add(0, new PMHFrag("heart disease", "very very very severe"));
+        disease.add(1, new PMHFrag("diabetes", "die soon"));
+        disease.add(2, new PMHFrag("insomnia", "feel unhappy"));
+        disease.add(3, new PMHFrag("depression", "no comment"));
+        disease.add(4, new PMHFrag("hot", "40 oC"));
+        disease.add(5, new PMHFrag("cold", "30 oC"));
+        disease.add(6, new PMHFrag("crazy", "silly guy"));
+        disease.add(7, new PMHFrag("out of control", "pissing everywhere"));
+
+        rv = (RecyclerView) getView().findViewById(R.id.rv_fab);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        rv.setAdapter(new FragRecyclerViewAdapter(disease, getContext()));
+
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.floatingactionbutton);
+        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+        // TODO: setOnClickListener
     }
 
     // TODO: Rename method, update argument and hook method into UI event
