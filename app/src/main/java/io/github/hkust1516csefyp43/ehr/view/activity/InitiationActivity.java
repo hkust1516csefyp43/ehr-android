@@ -1,11 +1,12 @@
 package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.widget.ImageView;
+
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.ehr.R;
 
@@ -18,14 +19,21 @@ public class InitiationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        ImageView ivLocalHost = (ImageView) findViewById(R.id.ivLocalHost);
+        ivLocalHost.setImageDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_cloud_off).color(getResources().getColor(R.color.primary_text_color)).actionBar());
+        ImageView ivCloudHost = (ImageView) findViewById(R.id.ivCloudHost);
+        ivCloudHost.setImageDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_cloud).color(getResources().getColor(R.color.primary_text_color)).actionBar());
+        ImageView ivSSID = (ImageView) findViewById(R.id.ivSSID);
+        ivSSID.setImageDrawable(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_router).color(getResources().getColor(R.color.primary_text_color)).actionBar());
+
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
 }

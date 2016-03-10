@@ -226,6 +226,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                                 .putContentId("pharmacy"));
                         break;
                     case Const.ID_INVENTORY:
+                        showInventory();
                         getSupportActionBar().setTitle(getResources().getString(R.string.inventory));
                         Answers.getInstance().logContentView(new ContentViewEvent()
                                 .putContentName("Inventory")
@@ -235,7 +236,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                     case Const.ID_ADMIN:
                         getSupportActionBar().setTitle(getResources().getString(R.string.admin));
                         getSupportActionBar().setSubtitle(null);
-                        shoeAdmin();
+                        showAdmin();
                         Answers.getInstance().logContentView(new ContentViewEvent()
                                 .putContentName("Admin")
                                 .putContentType("Admin")
@@ -315,6 +316,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         tl.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -367,6 +369,12 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     public void onFragmentInteraction(Uri uri) {
     }
 
+    private void showInventory() {
+        //TODO
+        Intent intent = new Intent(this, InitiationActivity.class);
+        startActivity(intent);
+    }
+
     private void hideAdmin() {
         tl.setVisibility(View.VISIBLE);
         viewPager.setVisibility(View.VISIBLE);
@@ -374,7 +382,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         lv.setVisibility(View.GONE);
     }
 
-    private void shoeAdmin() {
+    private void showAdmin() {
         tl.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
         fab.setVisibility(View.GONE);

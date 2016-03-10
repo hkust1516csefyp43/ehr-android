@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MultipleEditText">
+        <attr name="first_hint" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="EditTextWithButton">
+        <attr name="hint" format="string"/>
+        <attr name="button" format="enum">
+            <enum name="add" value="0"/>
+            <enum name="delete" value="1"/>
+        </attr>
+    </declare-styleable>
+</resources>
