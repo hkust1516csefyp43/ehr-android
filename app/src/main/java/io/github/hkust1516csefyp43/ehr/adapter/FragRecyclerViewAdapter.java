@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.pojo.PreviousMedicalHistory;
-import io.github.hkust1516csefyp43.ehr.view.viewholder.PMHCardViewHolder;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PMHFrag;
+import io.github.hkust1516csefyp43.ehr.view.viewholder.FragCardViewHolder;
 
 import static android.support.v7.widget.RecyclerView.Adapter;
 import static android.support.v7.widget.RecyclerView.ViewHolder;
@@ -16,25 +16,27 @@ import static android.support.v7.widget.RecyclerView.ViewHolder;
 /**
  * Created by kalongip on 4/3/16.
  */
-public class PMHCardRecyclerViewAdapter extends Adapter {
+public class FragRecyclerViewAdapter extends Adapter {
 
     Context context;
-    List<PreviousMedicalHistory> data;
+    List<PMHFrag> data;
 
-    public PMHCardRecyclerViewAdapter(List<PreviousMedicalHistory> source, Context context) {
+    public FragRecyclerViewAdapter(List<PMHFrag> source, Context context) {
         data = source;
         context = this.context;
     }
 
+
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PMHCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_pmh, parent, false), context);
+        return new FragCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_frag, parent, false), context);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (data != null){
-            PMHCardViewHolder ph = (PMHCardViewHolder) holder;
+            FragCardViewHolder ph = (FragCardViewHolder) holder;
             ph.setPmh(data.get(position));
             ph.medicineName.setText(data.get(position).getMedicineName());
             ph.medicalDescription.setText(data.get(position).getMedicalDescription());

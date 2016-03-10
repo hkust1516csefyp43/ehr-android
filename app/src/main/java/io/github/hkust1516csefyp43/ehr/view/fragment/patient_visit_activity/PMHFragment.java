@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.adapter.PMHCardRecyclerViewAdapter;
+import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.PreviousMedicalHistory;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PMHFrag;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +45,7 @@ public class PMHFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<PreviousMedicalHistory> disease;
+    private List<PMHFrag> disease;
 
     private FloatingActionButton fab;
 
@@ -96,19 +96,19 @@ public class PMHFragment extends Fragment {
         super.onResume();
 
         disease = new ArrayList<>();
-        disease.add(0, new PreviousMedicalHistory("heart disease", "very very very severe"));
-        disease.add(1, new PreviousMedicalHistory("diabetes", "die soon"));
-        disease.add(2, new PreviousMedicalHistory("insomnia", "feel unhappy"));
-        disease.add(3, new PreviousMedicalHistory("depression", "no comment"));
-        disease.add(4, new PreviousMedicalHistory("hot", "40 oC"));
-        disease.add(5, new PreviousMedicalHistory("cold", "30 oC"));
-        disease.add(6, new PreviousMedicalHistory("crazy", "silly guy"));
-        disease.add(7, new PreviousMedicalHistory("out of control", "pissing everywhere"));
+        disease.add(0, new PMHFrag("heart disease", "very very very severe"));
+        disease.add(1, new PMHFrag("diabetes", "die soon"));
+        disease.add(2, new PMHFrag("insomnia", "feel unhappy"));
+        disease.add(3, new PMHFrag("depression", "no comment"));
+        disease.add(4, new PMHFrag("hot", "40 oC"));
+        disease.add(5, new PMHFrag("cold", "30 oC"));
+        disease.add(6, new PMHFrag("crazy", "silly guy"));
+        disease.add(7, new PMHFrag("out of control", "pissing everywhere"));
 
-        rv = (RecyclerView) getView().findViewById(R.id.rv_pmh);
+        rv = (RecyclerView) getView().findViewById(R.id.rv_fab);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(new PMHCardRecyclerViewAdapter(disease, getContext()));
+        rv.setAdapter(new FragRecyclerViewAdapter(disease, getContext()));
 
         fab = (FloatingActionButton) getActivity().findViewById(R.id.floatingactionbutton);
         fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));

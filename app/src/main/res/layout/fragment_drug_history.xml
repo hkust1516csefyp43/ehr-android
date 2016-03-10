@@ -1,63 +1,26 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="fragment_drug_history"
-    android:theme="@style/AppTheme2"
-    tools:context="io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DrugHistoryFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragment.patient_visit_activity.DrugHistoryFrag">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:id="@+id/rv_fab"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_vertical">
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingactionbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/primary_color"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:visibility="visible" />
 
-            <TextView
-                android:layout_width="90dp"
-                android:layout_height="wrap_content"
-                android:text="Drug history:"/>
-
-            <Spinner
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:entries="@array/drug_array">
-            </Spinner>
-
-            <LinearLayout
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Update"
-                    android:textAlignment="center"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Delete"
-                    android:textAlignment="center"/>
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="290dp"
-            android:entries="@array/drug_array">
-        </ListView>
-
-    </LinearLayout>
-
-</ScrollView>
+</android.support.design.widget.CoordinatorLayout>
