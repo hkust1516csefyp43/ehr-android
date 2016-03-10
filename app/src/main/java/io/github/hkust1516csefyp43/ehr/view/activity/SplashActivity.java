@@ -93,7 +93,7 @@ public class SplashActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.logo);
         int logo;
         if (BuildConfig.FLAVOR.compareTo(Const.FLAVOR_ONE_2_ONE_CAMBODIA) == 0)
-            logo = R.drawable.ehr_one2onecambodia_logo;
+            logo = R.drawable.easymed;
         else
             logo = R.drawable.ehr_free_logo;
         Glide.with(this).load(logo).diskCacheStrategy(DiskCacheStrategy.ALL).fallback(R.drawable.ehr_logo).into(iv);
