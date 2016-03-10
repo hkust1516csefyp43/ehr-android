@@ -2,10 +2,11 @@
 <changelog>
     <release
         version="1.0.8"
-        versioncode="7">
+        versioncode="8">
         <change>Fixed Leak Canary never goes away bug</change>
         <change>Added network checking during start up screen (Warning if no network access)</change>
         <change>Added UI for free(public) version initial setup</change>
+        <change>Change logo</change>
     </release>
     <release
         version="1.0.7"

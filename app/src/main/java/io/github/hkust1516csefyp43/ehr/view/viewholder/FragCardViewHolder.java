@@ -7,18 +7,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PMHFrag;
 
 /**
  * Created by kalongip on 7/3/16.
  */
 public class FragCardViewHolder extends RecyclerView.ViewHolder {
-    public TextView cardTitle;
-    public EditText cardDescription;
+    public TextView medicineName;
+    public TextView medicalDescription;
+    PMHFrag pmh;
 
     public FragCardViewHolder(View view, final Context context) {
         super(view);
-        cardTitle = (TextView) itemView.findViewById(R.id.cardTitle);
-        cardDescription = (EditText) itemView.findViewById(R.id.cardDescription);
+        medicineName = (TextView) itemView.findViewById(R.id.medicineName);
+        medicalDescription = (TextView) itemView.findViewById(R.id.medicalDescription);
     }
 
+    public void setPmh(PMHFrag pmh) {
+        this.pmh = pmh;
+    }
 }
