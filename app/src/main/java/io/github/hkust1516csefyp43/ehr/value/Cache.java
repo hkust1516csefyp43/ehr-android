@@ -103,12 +103,27 @@ public class Cache {
 
     //==============================<Current patient>==================================
 
-    //Save the fragment data as a JSONObject (String)
-    public static void saveFragmentByKey(Context context, String key, String json) {
-
+    /**
+     * Store data of a fragment (e.g. The dozens of fragments in the viewpager of PatientVisitActivity)
+     * @param context is needed to access the SharedPreference
+     * @param key of the fragment. Store the key in Const and pass that
+     * @param json of the fragment, just the data, nothing else
+     */
+    public static void saveFragmentData(Context context, String key, JSONObject json) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putString(key, json.toString()).apply();
     }
 
-    //Get the fragment data as a JSONObject (String)
+    /**
+     * Get data of a fragment (e.g. The dozens of fragments in the viewpager of PatientVisitActivity)
+     * @param context is needed to access the SharedPreference
+     * @param key of the fragment. Store the key in Const and pass that
+     * @return a String (parse it through JSONObject) of the data, or {@code null} if not found
+     */
+    public static String getFragmentData(Context context, String key) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        return prefs.getString(key, null);
+    }
 
     //==============================</Current patient>==================================
 

@@ -35,12 +35,18 @@ public class Const {
     public final static String KEY_POST_PHARMACY_PATIENTS = "postPharmacyPatients";
     public final static String KEY_LOCAL_SETTINGS = "localSettings";
     public final static String KEY_CURRENT_USER = "currentUser";
+
+    //------------------------------<current patient>------------------------------
+    public static final String KEY_CURRENT_PATIENT_ = "currentPatient";
+
+    public static final String KEY_PERSONAL_DATA = "personal_data";
     public static final String KEY_CURRENT_PATIENT_FIRST_NAME = "currentPatientFirstName";
     public static final String KEY_CURRENT_PATIENT_MIDDLE_NAME = "currentPatientMiddleName";
     public static final String KEY_CURRENT_PATIENT_LAST_NAME = "currentPatientLastName";
     public static final String KEY_CURRENT_PATIENT_BIRTH_YEAR = "currentPatientBirthYear";
     public static final String KEY_CURRENT_PATIENT_BIRTH_MONTH = "currentPatientBirthMonth";
     public static final String KEY_CURRENT_PATIENT_BIRTH_DAY = "currentPatientBirthDay";
+
     public static final String KEY_CURRENT_PATIENT_GENDER_ID = "currentPatientGenderId";
     public static final String KEY_CURRENT_PATIENT_STATUS = "currentPatientStatus";
     public static final String KEY_CURRENT_PATIENT_TELEPHONE = "currentPatientTelephone";
@@ -55,8 +61,11 @@ public class Const {
     public static final String KEY_CURRENT_PATIENT_HEIGHT = "currentPatientHeight";
     public static final String KEY_CURRENT_PATIENT_LAST_DEWORMING_MONTH = "currentPatientLastDewormingMonth";
     public static final String KEY_CURRENT_PATIENT_LAST_DEWORMING_YEAR = "currentPatientLastDewormingYear";
+    //------------------------------</current patient>------------------------------
+
     public static final String KEY_SNACKBAR_TEXT = "snackBarText";
     public final static String KEY_VIRGIN = "touch_for_the_very_first_time~";
+
     public static final String FLAVOR_ONE_2_ONE_CAMBODIA = "one2onecambodia";
     public static final String FLAVOR_FREE = "free";
 
@@ -78,16 +87,14 @@ public class Const {
             .withAboutAppName("EHR")        //TODO how to get app name on the fly
             .withAboutDescription("EHR 2015-2016 from SIGHT@HKUST x CSE@HKUST")
             .withSortEnabled(true);
-    /**
-     * One-2-One CAMBODIA specific data
-     */
+    //------------------------------<One-2-One CAMBODIA specific data>----------------------------------
     public static final String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
     public static final String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
     public static JSONArray LIST_ONE2ONE_SSID;
-    //public static final String KEY_CURRENT_PATIENT_ = "currentPatient";
-    public static String API_CLOUD;
-    public static String API_LOCAL;
     public static JSONArray LIST_SSID;
+    public static String API_CLOUD;
+    //------------------------------</One-2-One CAMBODIA specific data>----------------------------------
+    public static String API_LOCAL;
 
     static {
         try {
@@ -103,5 +110,7 @@ public class Const {
     public static void setLocalAPI(String api) {
         API_LOCAL = api;
     }
-    public static void setListSSID(JSONArray ssid) { LIST_SSID = ssid; }
+    public static void setListSSID(JSONArray ssid) {
+        LIST_SSID = ssid;
+    }
 }

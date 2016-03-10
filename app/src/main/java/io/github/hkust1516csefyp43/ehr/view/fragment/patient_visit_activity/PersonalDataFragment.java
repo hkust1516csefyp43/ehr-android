@@ -25,6 +25,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.GregorianCalendar;
 
 import io.github.hkust1516csefyp43.ehr.R;
@@ -32,6 +35,7 @@ import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 
 /**
@@ -50,6 +54,7 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
     private ImageView ivProfilePic;
     private TextView tvBirthday;
     private Spinner sGender;
+    private int[] birthday;
 
     public PersonalDataFragment() {
         // Required empty public constructor
@@ -131,6 +136,9 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
                         public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
                             if (tvBirthday != null) {
                                 String date = "" + year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+                                birthday[0] = year;
+                                birthday[1] = monthOfYear;
+                                birthday[2] = dayOfMonth;
                                 tvBirthday.setText(date);
                             }
                         }
@@ -161,12 +169,6 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
     }
 
     @Override
-    public void onStop() {
-        //TODO save all inputs
-        super.onStop();
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -178,8 +180,38 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
 
     @Override
     public void onResume() {
+        //TODO restore cache if exists
         super.onResume();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        //TODO save data
+        //Why catch each separately: even if 1 failed, others can go on (save as much data as possible)
+        JSONObject personalData = new JSONObject();
+        if (etFirstName != null)
+            try {
+                personalData.put(Const.KEY_CURRENT_PATIENT_FIRST_NAME, etFirstName.getText().toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        if (etLastName != null)
+            try {
+                personalData.put(Const.KEY_CURRENT_PATIENT_LAST_NAME, etLastName.getText().toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        if (tvBirthday != null && birthday != null) {
+            try {
+                personalData.put(Const.KEY_CURRENT_PATIENT_BIRTH_YEAR, birthday[0]);
+                personalData.put(Const.KEY_CURRENT_PATIENT_BIRTH_MONTH, birthday[1]);
+                personalData.put(Const.KEY_CURRENT_PATIENT_BIRTH_DAY, birthday[2]);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        Cache.saveFragmentData(getContext(), Const.KEY_PERSONAL_DATA, personalData);
     }
 
     @Override

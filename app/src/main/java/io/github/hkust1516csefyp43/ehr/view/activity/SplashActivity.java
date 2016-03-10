@@ -1,12 +1,20 @@
 package io.github.hkust1516csefyp43.ehr.view.activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -19,6 +27,8 @@ import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.pojo.User;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
+
+import static android.provider.Settings.ACTION_WIFI_SETTINGS;
 
 /**
  * TODO Check User disk cache
@@ -34,6 +44,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         loadLogo();
+        showLoading();
+        Cache.clearConfig(this);
         serverConfig = null;
         String serverConfigString = null;
         try {
@@ -49,6 +61,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         user = Cache.getUser(this);
+        //TODO check if user is still valid (1. compare with device time 2. try with server(s))
         if (user == null) {
             //go to login screen
             new Handler().postDelayed(new Runnable() {
@@ -89,6 +102,15 @@ public class SplashActivity extends AppCompatActivity {
     public void showLoading() {
         //TODO show spinner after 4 seconds
         //no need to dismiss, just destory the whole activity
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ProgressBar pb = (ProgressBar) findViewById(R.id.loading_wheel);
+                if (pb != null) {
+                    pb.setVisibility(View.VISIBLE);
+                }
+            }
+        }, Const.SPLASH_DISPLAY_LENGTH);
     }
 
     public String noHostInitiation() throws JSONException {
@@ -149,7 +171,8 @@ public class SplashActivity extends AppCompatActivity {
                     if (Const.LIST_SSID != null && Const.LIST_SSID.length() > 0) {
                         do {
                             try {
-                                aSSID = Const.LIST_SSID.getString(i);
+                                aSSID = "\"" + Const.LIST_SSID.getString(i) + "\"";                 //the stupid getSSID method pre and suffix " to the ssid -_-
+                                Log.d("qqq113", aSSID + " vs " + thisSSID);
                                 if (aSSID.compareTo(thisSSID) == 0)
                                     found = true;
                             } catch (JSONException e) {
@@ -163,7 +186,7 @@ public class SplashActivity extends AppCompatActivity {
                         Log.d("qqq110", "found it");
                     } else {
                         //i.e. connected through wifi but not local router
-                        Log.d("qqq111", "found it, kinda");
+                        Log.d("qqq111", "not local");
                     }
                 }
                 //TODO check if local host is available
@@ -177,6 +200,43 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             //TODO not connected >> go to setting
             //TODO dialog: wifi, data or else
+            final View v = findViewById(R.id.rootView);
+            final Snackbar sb = Snackbar.make(v, "No network access", Snackbar.LENGTH_INDEFINITE);
+            final MaterialDialog.Builder b = new MaterialDialog.Builder(this);
+            b.theme(Theme.LIGHT).title("No network access")
+                    .content("Please enable Wi-Fi or data").positiveText("Wi-Fi")
+                    .negativeText("Data")
+                    .neutralText("Dismiss")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            startActivity(new Intent(ACTION_WIFI_SETTINGS));
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName(
+                                    "com.android.settings",
+                                    "com.android.settings.Settings$DataUsageSummaryActivity"));
+                            startActivity(intent);
+                        }
+                    })
+                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            sb.show();
+                            dialog.dismiss();
+                        }
+                    });
+            sb.setAction("Fix it", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    b.show();
+                }
+            });
+            b.show();
         }
     }
 
