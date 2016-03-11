@@ -29,7 +29,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.AdviceFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.AllergyFragment;
@@ -39,9 +39,9 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.Docu
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DrugHistoryFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.FollowUpFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.InvestigationFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ListOfCardsFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.MedicationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PEFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PMHFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PersonalDataFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ROSFragment;
@@ -285,7 +285,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                     else
                         return DocumentFragment.newInstance(Const.KEY_HPI, null);
                 case 4:
-                    return PMHFragment.newInstance("", "");
+                    return ListOfCardsFragment.newInstance("PMH", "");
                 case 5:
                     return DocumentFragment.newInstance(Const.KEY_FAMILY_HISTORY, null);
                 case 6:

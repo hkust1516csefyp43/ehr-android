@@ -21,7 +21,7 @@ import io.github.hkust1516csefyp43.ehr.adapter.PatientCardRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.apiEndpointInterface;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import retrofit.Call;
@@ -30,7 +30,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragment {
+public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragment {
     private static int station = 0;
     private int times = 0;
     // TODO: Rename parameter arguments, choose names that match
@@ -41,18 +41,18 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     private ListCounterChangedListener lListener;
     private int whichOne;
 
-    public PostTriageRecyclerViewFragment() {
+    public PatientsRecyclerViewFragment() {
         // Required empty public constructor
     }
 
 
     // TODO: Rename and change types and number of parameters
-    public static PostTriageRecyclerViewFragment newInstance() {
-        return new PostTriageRecyclerViewFragment();
+    public static PatientsRecyclerViewFragment newInstance() {
+        return new PatientsRecyclerViewFragment();
     }
 
-    public static PostTriageRecyclerViewFragment newInstance(int which) {
-        PostTriageRecyclerViewFragment ptrvf = new PostTriageRecyclerViewFragment();
+    public static PatientsRecyclerViewFragment newInstance(int which) {
+        PatientsRecyclerViewFragment ptrvf = new PatientsRecyclerViewFragment();
         Bundle args = new Bundle();
         args.putInt(Const.EXTRA_WHICH_ONE, which);
         ptrvf.setArguments(args);

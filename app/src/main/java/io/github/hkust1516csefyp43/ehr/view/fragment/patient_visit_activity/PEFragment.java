@@ -22,7 +22,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Card;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +45,7 @@ public class PEFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<CardFrag> pe;
+    private List<Card> pe;
 
     private FloatingActionButton fab;
 
@@ -85,7 +85,7 @@ public class PEFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View v = localInflater.inflate(R.layout.fragment_physical_examination, container, false);
-        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv = (RecyclerView) v.findViewById(R.id.recycler_view);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
@@ -99,13 +99,13 @@ public class PEFragment extends Fragment {
         super.onResume();
 
         pe = new ArrayList<>();
-        pe.add(0, new CardFrag("pe 1", "mark 100"));
-        pe.add(1, new CardFrag("pe 2", "mark 80"));
-        pe.add(2, new CardFrag("pe 3", "mark 30"));
-        pe.add(3, new CardFrag("pe 4", "mark 101"));
-        pe.add(4, new CardFrag("pe 5", "grade A"));
-        pe.add(5, new CardFrag("pe 6", "grade F"));
-        pe.add(6, new CardFrag("pe 7", "grade GGGGG"));
+        pe.add(0, new Card("pe 1", "mark 100"));
+        pe.add(1, new Card("pe 2", "mark 80"));
+        pe.add(2, new Card("pe 3", "mark 30"));
+        pe.add(3, new Card("pe 4", "mark 101"));
+        pe.add(4, new Card("pe 5", "grade A"));
+        pe.add(5, new Card("pe 6", "grade F"));
+        pe.add(6, new Card("pe 7", "grade GGGGG"));
 
         rv.setAdapter(new FragRecyclerViewAdapter(pe, getContext()));
     }

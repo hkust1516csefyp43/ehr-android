@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr.pojo;
+package io.github.hkust1516csefyp43.ehr.pojo.server_response;
 
 /**
  * POJO of clearance

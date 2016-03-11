@@ -21,7 +21,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Card;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +44,7 @@ public class AdviceFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<CardFrag> advice;
+    private List<Card> advice;
 
     private FloatingActionButton fab;
 
@@ -82,7 +82,7 @@ public class AdviceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_advice, container, false);
-        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv = (RecyclerView) v.findViewById(R.id.recycler_view);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
@@ -96,13 +96,13 @@ public class AdviceFragment extends Fragment {
         super.onResume();
 
         advice = new ArrayList<>();
-        advice.add(0, new CardFrag("advice 1", "do more exercise"));
-        advice.add(1, new CardFrag("advice 2", "sleep more"));
-        advice.add(2, new CardFrag("advice 3", "quite good"));
-        advice.add(3, new CardFrag("advice 4", "no comment"));
-        advice.add(4, new CardFrag("advice 5", "healthy"));
-        advice.add(5, new CardFrag("advice 6", "word harder"));
-        advice.add(6, new CardFrag("advice 7", "wear more clothes"));
+        advice.add(0, new Card("advice 1", "do more exercise"));
+        advice.add(1, new Card("advice 2", "sleep more"));
+        advice.add(2, new Card("advice 3", "quite good"));
+        advice.add(3, new Card("advice 4", "no comment"));
+        advice.add(4, new Card("advice 5", "healthy"));
+        advice.add(5, new Card("advice 6", "word harder"));
+        advice.add(6, new Card("advice 7", "wear more clothes"));
 
         rv.setAdapter(new FragRecyclerViewAdapter(advice, getContext()));
     }

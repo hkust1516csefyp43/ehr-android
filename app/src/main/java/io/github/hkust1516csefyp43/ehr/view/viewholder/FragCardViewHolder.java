@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PMHFrag;
 
 /**
  * Created by kalongip on 7/3/16.
@@ -14,7 +13,6 @@ import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PMHFrag;
 public class FragCardViewHolder extends RecyclerView.ViewHolder {
     public TextView cardTitle;
     public TextView cardDescription;
-    PMHFrag pmh;
 
     public FragCardViewHolder(View view, final Context context) {
         super(view);
@@ -22,7 +20,4 @@ public class FragCardViewHolder extends RecyclerView.ViewHolder {
         cardDescription = (TextView) itemView.findViewById(R.id.medicalDescription);
     }
 
-    public void setPmh(PMHFrag pmh) {
-        this.pmh = pmh;
-    }
 }

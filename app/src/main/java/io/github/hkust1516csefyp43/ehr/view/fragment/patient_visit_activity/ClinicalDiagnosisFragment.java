@@ -22,7 +22,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Card;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +45,7 @@ public class ClinicalDiagnosisFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<CardFrag> diagnosis;
+    private List<Card> diagnosis;
 
     private FloatingActionButton fab;
 
@@ -85,7 +85,7 @@ public class ClinicalDiagnosisFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View v = localInflater.inflate(R.layout.fragment_clinical_diagnosis, container, false);
-        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv = (RecyclerView) v.findViewById(R.id.recycler_view);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
@@ -99,13 +99,13 @@ public class ClinicalDiagnosisFragment extends Fragment {
         super.onResume();
 
         diagnosis = new ArrayList<>();
-        diagnosis.add(0, new CardFrag("diagnosis 1", "great"));
-        diagnosis.add(1, new CardFrag("diagnosis 2", "poor"));
-        diagnosis.add(2, new CardFrag("diagnosis 3", "quite good"));
-        diagnosis.add(3, new CardFrag("diagnosis 4", "no comment"));
-        diagnosis.add(4, new CardFrag("diagnosis 5", "healthy"));
-        diagnosis.add(5, new CardFrag("diagnosis 6", "die soon"));
-        diagnosis.add(6, new CardFrag("diagnosis 7", "unhealthy"));
+        diagnosis.add(0, new Card("diagnosis 1", "great"));
+        diagnosis.add(1, new Card("diagnosis 2", "poor"));
+        diagnosis.add(2, new Card("diagnosis 3", "quite good"));
+        diagnosis.add(3, new Card("diagnosis 4", "no comment"));
+        diagnosis.add(4, new Card("diagnosis 5", "healthy"));
+        diagnosis.add(5, new Card("diagnosis 6", "die soon"));
+        diagnosis.add(6, new Card("diagnosis 7", "unhealthy"));
 
         rv.setAdapter(new FragRecyclerViewAdapter(diagnosis, getContext()));
     }

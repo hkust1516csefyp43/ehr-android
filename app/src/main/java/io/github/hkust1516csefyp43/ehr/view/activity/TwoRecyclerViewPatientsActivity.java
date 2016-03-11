@@ -53,10 +53,10 @@ import de.cketti.library.changelog.ChangeLog;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
-import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostTriageRecyclerViewFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PatientsRecyclerViewFragment;
 
 public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implements ListCounterChangedListener, OnFragmentInteractionListener {
     //TODO create a util to get theme color according to package
@@ -68,8 +68,8 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     private ViewPager viewPager;
     private FloatingActionButton fab;
     private ListView lv;
-    private PostTriageRecyclerViewFragment fListLeft;
-    private PostTriageRecyclerViewFragment fListRight;
+    private PatientsRecyclerViewFragment fListLeft;
+    private PatientsRecyclerViewFragment fListRight;
     private Drawer drawer;
 
     @Override
@@ -493,17 +493,17 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                 case 0:
                     Log.d(TAG, "0");
                     if (fListLeft == null)
-                        fListLeft = PostTriageRecyclerViewFragment.newInstance(Const.LIST_POST_TRIAGE);
+                        fListLeft = PatientsRecyclerViewFragment.newInstance(Const.LIST_POST_TRIAGE);
                     return fListLeft;
                 case 1:
                     Log.d(TAG, "1");
                     if (fListRight == null)
-                        fListRight = PostTriageRecyclerViewFragment.newInstance(Const.LIST_ALL_PATIENTS);
+                        fListRight = PatientsRecyclerViewFragment.newInstance(Const.LIST_ALL_PATIENTS);
                     return fListRight;
                 default:
                     Log.d(TAG, "default");
                     if (fListLeft == null)
-                        fListLeft = PostTriageRecyclerViewFragment.newInstance();
+                        fListLeft = PatientsRecyclerViewFragment.newInstance();
                     return fListLeft;
             }
         }

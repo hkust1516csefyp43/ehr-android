@@ -21,7 +21,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Card;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +44,7 @@ public class AllergyFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<CardFrag> allergy;
+    private List<Card> allergy;
 
     private FloatingActionButton fab;
 
@@ -83,7 +83,7 @@ public class AllergyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_allergy, container, false);
-        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv = (RecyclerView) v.findViewById(R.id.recycler_view);
         fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
         fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
         // TODO: setOnClickListener
@@ -95,13 +95,13 @@ public class AllergyFragment extends Fragment {
         super.onResume();
 
         allergy = new ArrayList<>();
-        allergy.add(0, new CardFrag("milk", "serious"));
-        allergy.add(1, new CardFrag("beef", "little"));
-        allergy.add(2, new CardFrag("fish", "deadly"));
-        allergy.add(3, new CardFrag("egg", "none"));
-        allergy.add(4, new CardFrag("cat", "some"));
-        allergy.add(5, new CardFrag("water", "many"));
-        allergy.add(6, new CardFrag("unknown", "few"));
+        allergy.add(0, new Card("milk", "serious"));
+        allergy.add(1, new Card("beef", "little"));
+        allergy.add(2, new Card("fish", "deadly"));
+        allergy.add(3, new Card("egg", "none"));
+        allergy.add(4, new Card("cat", "some"));
+        allergy.add(5, new Card("water", "many"));
+        allergy.add(6, new Card("unknown", "few"));
 
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

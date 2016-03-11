@@ -4,15 +4,19 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -22,51 +26,34 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Card;
+import io.github.hkust1516csefyp43.ehr.value.Const;
+import io.github.hkust1516csefyp43.ehr.view.custom_view.TwoEditTextDialogCustomView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PMHFragment...OnFragmentInteractionListener} interface
+ * {@link ListOfCardsFragment...OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link PMHFragment#newInstance} factory method to
+ * Use the {@link ListOfCardsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PMHFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+public class ListOfCardsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
-
     private RecyclerView rv;
-    private List<CardFrag> disease;
-
+    private List<Card> disease;
     private FloatingActionButton fab;
+    private String title;
 
-    public PMHFragment() {
+    public ListOfCardsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PMHFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PMHFragment newInstance(String param1, String param2) {
-        PMHFragment fragment = new PMHFragment();
+    public static ListOfCardsFragment newInstance(String title, String param2) {
+        ListOfCardsFragment fragment = new ListOfCardsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(Const.KEY_TITLE, title);
+//        args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +63,7 @@ public class PMHFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            title = getArguments().getString(Const.KEY_TITLE);
         }
     }
 
@@ -86,10 +72,40 @@ public class PMHFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View v = localInflater.inflate(R.layout.fragment_previous_medical_history, container, false);
-        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv = (RecyclerView) v.findViewById(R.id.recycler_view);
         fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
         fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
         // TODO: setOnClickListener
+        ArrayList<String> a = new ArrayList<>();
+        a.add("a");
+        a.add("ab");
+        a.add("abc");
+        a.add("abcd");
+        a.add("abcde");
+        a.add("abcdef");
+        a.add("abcdefg");
+        a.add("headache");
+        a.add("head");
+        a.add("leg");
+        final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), a, title);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean wrapInScrollView = true;
+                new MaterialDialog.Builder(getContext())
+                        .title("Add")
+                        .customView(tetdcv, wrapInScrollView)
+                        .positiveText("Confirm")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                ArrayList<String> data = tetdcv.getData();
+                                Log.d("qqq141", data.toString());
+                            }
+                        })
+                        .show();
+            }
+        });
         return v;
     }
 
@@ -98,14 +114,14 @@ public class PMHFragment extends Fragment {
         super.onResume();
 
         disease = new ArrayList<>();
-        disease.add(0, new CardFrag("heart disease", "very very very severe"));
-        disease.add(1, new CardFrag("diabetes", "die soon"));
-        disease.add(2, new CardFrag("insomnia", "feel unhappy"));
-        disease.add(3, new CardFrag("depression", "no comment"));
-        disease.add(4, new CardFrag("hot", "40 oC"));
-        disease.add(5, new CardFrag("cold", "30 oC"));
-        disease.add(6, new CardFrag("crazy", "silly guy"));
-        disease.add(7, new CardFrag("out of control", "pissing everywhere"));
+        disease.add(0, new Card("heart disease", "very very very severe"));
+        disease.add(1, new Card("diabetes", "die soon"));
+        disease.add(2, new Card("insomnia", "feel unhappy"));
+        disease.add(3, new Card("depression", "no comment"));
+        disease.add(4, new Card("hot", "40 oC"));
+        disease.add(5, new Card("cold", "30 oC"));
+        disease.add(6, new Card("crazy", "silly guy"));
+        disease.add(7, new Card("out of control", "pissing everywhere"));
 
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

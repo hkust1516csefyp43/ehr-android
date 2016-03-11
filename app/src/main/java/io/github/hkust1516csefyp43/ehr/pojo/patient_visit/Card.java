@@ -7,11 +7,16 @@ import java.io.Serializable;
 /**
  * Created by Louis on 1/2/16.
  */
-public class CardFrag implements Serializable {
+public class Card implements Serializable {
     @SerializedName("cardTitle")
     private String cardTitle;
     @SerializedName("cardDescription")
     private String cardDescription;
+
+    public Card(String medicineName, String medicalDescription) {
+        this.cardTitle = medicineName;
+        this.cardDescription = medicalDescription;
+    }
 
     public String getCardTitle() {
         return cardTitle;
@@ -27,11 +32,5 @@ public class CardFrag implements Serializable {
 
     public void setCardDescription(String cardDescription) {
         this.cardDescription = cardDescription;
-    }
-
-    public CardFrag(String medicineName, String medicalDescription) {
-
-        this.cardTitle = medicineName;
-        this.cardDescription = medicalDescription;
     }
 }

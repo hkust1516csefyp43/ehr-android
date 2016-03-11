@@ -18,8 +18,8 @@ import java.util.GregorianCalendar;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.Patient;
-import io.github.hkust1516csefyp43.ehr.pojo.Triage;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.Triage;
 
 /**
  * A simple {@link Fragment} subclass.

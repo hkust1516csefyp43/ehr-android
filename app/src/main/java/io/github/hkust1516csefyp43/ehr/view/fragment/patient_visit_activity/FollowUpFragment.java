@@ -22,7 +22,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Card;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +45,7 @@ public class FollowUpFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<CardFrag> followUp;
+    private List<Card> followUp;
 
     private FloatingActionButton fab;
 
@@ -85,7 +85,7 @@ public class FollowUpFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View v =  localInflater.inflate(R.layout.fragment_follow_up, container, false);
-        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv = (RecyclerView) v.findViewById(R.id.recycler_view);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
@@ -99,13 +99,13 @@ public class FollowUpFragment extends Fragment {
         super.onResume();
 
         followUp = new ArrayList<>();
-        followUp.add(0, new CardFrag("followUp 1", "next time meet you"));
-        followUp.add(1, new CardFrag("followUp 2", "bye"));
-        followUp.add(2, new CardFrag("followUp 3", "see you later"));
-        followUp.add(3, new CardFrag("followUp 4", "bye forever"));
-        followUp.add(4, new CardFrag("followUp 5", "you recovered la"));
-        followUp.add(5, new CardFrag("followUp 6", "please come every day"));
-        followUp.add(6, new CardFrag("followUp 7", "take my medicine and get well"));
+        followUp.add(0, new Card("followUp 1", "next time meet you"));
+        followUp.add(1, new Card("followUp 2", "bye"));
+        followUp.add(2, new Card("followUp 3", "see you later"));
+        followUp.add(3, new Card("followUp 4", "bye forever"));
+        followUp.add(4, new Card("followUp 5", "you recovered la"));
+        followUp.add(5, new Card("followUp 6", "please come every day"));
+        followUp.add(6, new Card("followUp 7", "take my medicine and get well"));
 
         rv.setAdapter(new FragRecyclerViewAdapter(followUp, getContext()));
     }

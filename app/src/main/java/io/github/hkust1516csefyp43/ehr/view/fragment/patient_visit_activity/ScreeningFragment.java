@@ -22,7 +22,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Card;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +45,7 @@ public class ScreeningFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<CardFrag> screening;
+    private List<Card> screening;
 
     private FloatingActionButton fab;
 
@@ -85,7 +85,7 @@ public class ScreeningFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View v = localInflater.inflate(R.layout.fragment_screening, container, false);
-        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv = (RecyclerView) v.findViewById(R.id.recycler_view);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
@@ -98,14 +98,14 @@ public class ScreeningFragment extends Fragment {
         super.onResume();
 
         screening = new ArrayList<>();
-        screening.add(0, new CardFrag("first", "screening?"));
-        screening.add(1, new CardFrag("second", "whats that"));
-        screening.add(2, new CardFrag("third", "I dont know"));
-        screening.add(3, new CardFrag("fourth", "no idea"));
-        screening.add(4, new CardFrag("fifth", "but I need some examples"));
-        screening.add(5, new CardFrag("sixth", "random is ok"));
-        screening.add(6, new CardFrag("seventh", "what can I type?"));
-        screening.add(7, new CardFrag("eight", "I give up la"));
+        screening.add(0, new Card("first", "screening?"));
+        screening.add(1, new Card("second", "whats that"));
+        screening.add(2, new Card("third", "I dont know"));
+        screening.add(3, new Card("fourth", "no idea"));
+        screening.add(4, new Card("fifth", "but I need some examples"));
+        screening.add(5, new Card("sixth", "random is ok"));
+        screening.add(6, new Card("seventh", "what can I type?"));
+        screening.add(7, new Card("eight", "I give up la"));
 
         rv.setAdapter(new FragRecyclerViewAdapter(screening, getContext()));
 

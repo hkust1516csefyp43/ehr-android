@@ -22,7 +22,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Card;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +45,7 @@ public class DrugHistoryFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<CardFrag> drug;
+    private List<Card> drug;
 
     private FloatingActionButton fab;
 
@@ -85,7 +85,7 @@ public class DrugHistoryFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View v = localInflater.inflate(R.layout.fragment_drug_history, container, false);
-        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv = (RecyclerView) v.findViewById(R.id.recycler_view);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
@@ -98,13 +98,13 @@ public class DrugHistoryFragment extends Fragment {
         super.onResume();
 
         drug = new ArrayList<>();
-        drug.add(0, new CardFrag("panadol", "many"));
-        drug.add(1, new CardFrag("candy", "a lot"));
-        drug.add(2, new CardFrag("sweet", "several"));
-        drug.add(3, new CardFrag("poison", "none"));
-        drug.add(4, new CardFrag("soup", "some"));
-        drug.add(5, new CardFrag("toxic", "many"));
-        drug.add(6, new CardFrag("vitamin C", "few"));
+        drug.add(0, new Card("panadol", "many"));
+        drug.add(1, new Card("candy", "a lot"));
+        drug.add(2, new Card("sweet", "several"));
+        drug.add(3, new Card("poison", "none"));
+        drug.add(4, new Card("soup", "some"));
+        drug.add(5, new Card("toxic", "many"));
+        drug.add(6, new Card("vitamin C", "few"));
 
         rv.setAdapter(new FragRecyclerViewAdapter(drug, getContext()));
 

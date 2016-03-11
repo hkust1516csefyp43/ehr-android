@@ -104,6 +104,7 @@ public class Const {
     public static final int LIST_POST_CONSULTATION = 3;
     public static final int LIST_PRE_PHARMACY = 4;          //It is not necessary same as Post Consultation because some patients need no medication
     public static final int LIST_ALL_TODAYS_PATIENT = 5;
+    public static final String KEY_TITLE = "title";
     public static JSONArray LIST_ONE2ONE_SSID;
     public static JSONArray LIST_SSID;
     public static String API_CLOUD;

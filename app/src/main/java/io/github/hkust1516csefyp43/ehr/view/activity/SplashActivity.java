@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import io.github.hkust1516csefyp43.ehr.BuildConfig;
 import io.github.hkust1516csefyp43.ehr.Connectivity;
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.pojo.User;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.User;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Card;
 import io.github.hkust1516csefyp43.ehr.view.viewholder.FragCardViewHolder;
 
 import static android.support.v7.widget.RecyclerView.Adapter;
@@ -19,9 +19,9 @@ import static android.support.v7.widget.RecyclerView.ViewHolder;
 public class FragRecyclerViewAdapter extends Adapter {
 
     Context context;
-    List<CardFrag> data;
+    List<Card> data;
 
-    public FragRecyclerViewAdapter(List<CardFrag> source, Context context) {
+    public FragRecyclerViewAdapter(List<Card> source, Context context) {
         data = source;
         context = this.context;
     }
