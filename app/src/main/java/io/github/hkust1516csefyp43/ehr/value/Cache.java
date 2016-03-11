@@ -146,5 +146,14 @@ public class Cache {
 
     //==============================</Connection config>==================================
 
+    public static void setEmergencyFix(Context context, int i) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putInt(Const.KEY_EMERGENCY_FIX, i).apply();
+    }
+
+    public static int getEmergencyFix(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        return prefs.getInt(Const.KEY_EMERGENCY_FIX, 0);
+    }
 
 }

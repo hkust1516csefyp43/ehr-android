@@ -80,10 +80,14 @@ public class AllergyFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_allergy, container, false);
+        View v = inflater.inflate(R.layout.fragment_allergy, container, false);
+        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
+        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+        // TODO: setOnClickListener
+        return v;
     }
 
     @Override
@@ -99,13 +103,10 @@ public class AllergyFragment extends Fragment {
         allergy.add(5, new CardFrag("water", "many"));
         allergy.add(6, new CardFrag("unknown", "few"));
 
-        rv = (RecyclerView) getView().findViewById(R.id.rv_fab);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(new FragRecyclerViewAdapter(allergy, getContext()));
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.floatingactionbutton);
-        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
-        // TODO: setOnClickListener
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

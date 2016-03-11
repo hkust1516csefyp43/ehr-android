@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
     <release
+        version="1.0.9"
+        versioncode="9">
+        <change>Added a lot more panels</change>
+    </release>
+    <release
         version="1.0.8"
         versioncode="8">
         <change>Fixed Leak Canary never goes away bug</change>

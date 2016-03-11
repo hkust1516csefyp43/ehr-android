@@ -43,9 +43,9 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        emergencyFix();
         loadLogo();
         showLoading();
-        Cache.clearConfig(this);
         serverConfig = null;
         String serverConfigString = null;
         try {
@@ -84,6 +84,18 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }, Const.SPLASH_DISPLAY_LENGTH);
         }
+    }
+
+    private void emergencyFix() {
+        for (int i = Cache.getEmergencyFix(this) + 1; i <= Const.NUMBER_EMERGENCY_FIX; i++) {
+            switch (i) {
+                case 1:                                         //Emergency fix for v1.0.9: remove config to make sure there is a SSID in the config
+                    Cache.clearConfig(this);
+                    Log.d("qqq0", "Emergency fix 1");
+                    break;
+            }
+        }
+        Cache.setEmergencyFix(this, Const.NUMBER_EMERGENCY_FIX);
     }
 
     /**

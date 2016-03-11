@@ -65,6 +65,8 @@ public class Const {
 
     public static final String KEY_SNACKBAR_TEXT = "snackBarText";
     public final static String KEY_VIRGIN = "touch_for_the_very_first_time~";
+    public final static String KEY_EMERGENCY_FIX = "\uD83D\uDE13";
+    public final static int NUMBER_EMERGENCY_FIX = 1;
 
     public static final String FLAVOR_ONE_2_ONE_CAMBODIA = "one2onecambodia";
     public static final String FLAVOR_FREE = "free";
