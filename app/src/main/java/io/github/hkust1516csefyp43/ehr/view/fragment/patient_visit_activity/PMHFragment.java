@@ -22,7 +22,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PMHFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +45,7 @@ public class PMHFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<PMHFrag> disease;
+    private List<CardFrag> disease;
 
     private FloatingActionButton fab;
 
@@ -79,10 +79,7 @@ public class PMHFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,14 +93,14 @@ public class PMHFragment extends Fragment {
         super.onResume();
 
         disease = new ArrayList<>();
-        disease.add(0, new PMHFrag("heart disease", "very very very severe"));
-        disease.add(1, new PMHFrag("diabetes", "die soon"));
-        disease.add(2, new PMHFrag("insomnia", "feel unhappy"));
-        disease.add(3, new PMHFrag("depression", "no comment"));
-        disease.add(4, new PMHFrag("hot", "40 oC"));
-        disease.add(5, new PMHFrag("cold", "30 oC"));
-        disease.add(6, new PMHFrag("crazy", "silly guy"));
-        disease.add(7, new PMHFrag("out of control", "pissing everywhere"));
+        disease.add(0, new CardFrag("heart disease", "very very very severe"));
+        disease.add(1, new CardFrag("diabetes", "die soon"));
+        disease.add(2, new CardFrag("insomnia", "feel unhappy"));
+        disease.add(3, new CardFrag("depression", "no comment"));
+        disease.add(4, new CardFrag("hot", "40 oC"));
+        disease.add(5, new CardFrag("cold", "30 oC"));
+        disease.add(6, new CardFrag("crazy", "silly guy"));
+        disease.add(7, new CardFrag("out of control", "pissing everywhere"));
 
         rv = (RecyclerView) getView().findViewById(R.id.rv_fab);
         rv.setHasFixedSize(true);

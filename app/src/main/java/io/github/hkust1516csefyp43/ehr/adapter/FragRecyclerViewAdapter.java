@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PMHFrag;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.CardFrag;
 import io.github.hkust1516csefyp43.ehr.view.viewholder.FragCardViewHolder;
 
 import static android.support.v7.widget.RecyclerView.Adapter;
@@ -19,9 +19,9 @@ import static android.support.v7.widget.RecyclerView.ViewHolder;
 public class FragRecyclerViewAdapter extends Adapter {
 
     Context context;
-    List<PMHFrag> data;
+    List<CardFrag> data;
 
-    public FragRecyclerViewAdapter(List<PMHFrag> source, Context context) {
+    public FragRecyclerViewAdapter(List<CardFrag> source, Context context) {
         data = source;
         context = this.context;
     }
@@ -37,9 +37,8 @@ public class FragRecyclerViewAdapter extends Adapter {
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (data != null){
             FragCardViewHolder ph = (FragCardViewHolder) holder;
-            ph.setPmh(data.get(position));
-            ph.medicineName.setText(data.get(position).getMedicineName());
-            ph.medicalDescription.setText(data.get(position).getMedicalDescription());
+            ph.cardTitle.setText(data.get(position).getCardTitle());
+            ph.cardDescription.setText(data.get(position).getCardDescription());
 
         }
 

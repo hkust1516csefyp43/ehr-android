@@ -19,19 +19,16 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-
             <TextView
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12pt"
-                android:id="@+id/medicineName"/>
-
+                android:id="@+id/cardTitle"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/medicalDescription"/>
-
+                android:id="@+id/cardDescription"/>
 
         </LinearLayout>
 
