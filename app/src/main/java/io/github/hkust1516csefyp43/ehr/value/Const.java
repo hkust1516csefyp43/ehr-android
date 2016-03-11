@@ -88,8 +88,8 @@ public class Const {
             .withAboutDescription("EHR 2015-2016 from SIGHT@HKUST x CSE@HKUST")
             .withSortEnabled(true);
     //------------------------------<One-2-One CAMBODIA specific data>----------------------------------
-    public static final String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
-    public static final String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
+    public static final String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v2";
+    public static final String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v2";
     public static JSONArray LIST_ONE2ONE_SSID;
     public static JSONArray LIST_SSID;
     public static String API_CLOUD;

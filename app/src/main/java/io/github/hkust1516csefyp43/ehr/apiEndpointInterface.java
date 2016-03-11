@@ -34,39 +34,39 @@ public interface apiEndpointInterface {
 
 //------------------------------------------ users ------------------------------------------
 
-    @GET("v1/user/")
+    @GET("v2/user/")
     Call<User> login();
 
-    @GET("v1/user/")
+    @GET("v2/user/")
     Call<User> refreshAccessToken();
 
-    @POST("v1/user/")
+    @POST("v2/user/")
     Call<User> signup();
 
-    @PUT("v1/user/{id}")
+    @PUT("v2/user/{id}")
     Call<User> updateInfo();
 
-    @DELETE("v1/users/logout/")
+    @DELETE("v2/users/logout/")
     Call<User> logout();
 
-    @GET("v1/users/token/")
+    @GET("v2/users/token/")
     Call<List<Token>> getTokens();
 
-    @DELETE("v1/users/token/{id}")
+    @DELETE("v2/users/token/{id}")
     Call<Token> revokeToken();
 
-    @GET("v1/users/block_device/")
+    @GET("v2/users/block_device/")
     Call<List<BlockedDevice>> getBlockedDevices();
 
-    @GET("v1/users/role/")
+    @GET("v2/users/role/")
     Call<List<Role>> getRoles();
 
-    @GET("v1/users/role/{id}")
+    @GET("v2/users/role/{id}")
     Call<Role> getRole();
 
 //------------------------------------------ patients ------------------------------------------
 
-    @GET("v1/patient/")
+    @GET("v2/patient/")
     Call<List<Patient>> getPatients(
             @Query("token") String token,
             @Query("next_station") Integer nextStation,
@@ -85,59 +85,59 @@ public interface apiEndpointInterface {
             @Query("offset") Integer offset,
             @Query("sort_by") String sortBy);
 
-    @GET("v1/patient/{id}")
+    @GET("v2/patient/{id}")
     Call<Patient> getPatient();
 
-    @POST("v1/patients/")
+    @POST("v2/patients/")
     Call<Patient> addPatient();
 
-    @PUT("v1/patients/{id}")
+    @PUT("v2/patients/{id}")
     Call<Patient> updatePatient();
 
-    @DELETE("v1/patients/{id}")
+    @DELETE("v2/patients/{id}")
     Call<Patient> deletePatient();
 
 //------------------------------------------ visits ------------------------------------------
 
-    @GET("v1/visits/")
+    @GET("v2/visits/")
     Call<List<Visit>> getVisits();
 
-    @GET("v1/visits/{id}")
+    @GET("v2/visits/{id}")
     Call<Visit> getVisit();
 
-    @POST("v1/visits/")
+    @POST("v2/visits/")
     Call<Visit> createVisit();
 
-    @PUT("v1/visits/{id}")
+    @PUT("v2/visits/{id}")
     Call<Visit> updateVisit();
 
-    @DELETE("v1/visits/{id}")
+    @DELETE("v2/visits/{id}")
     Call<Visit> deleteVisit();
 
-    @POST("v1/visits/triages/{id}")
+    @POST("v2/visits/triages/{id}")
     Call<Triage> addTriage();
 
-    @POST("v1/visits/consultations/{id}")
+    @POST("v2/visits/consultations/{id}")
     Call<Consultation> addConsultation();
 
-    @POST("v1/visits/pharmacies/{id}")
+    @POST("v2/visits/pharmacies/{id}")
     Call<Pharmacy> addPharmacy();
 
 //------------------------------------------ inventories ------------------------------------------
 
-    @GET("v1/inventories/")
+    @GET("v2/inventories/")
     Call<List<Inventory>> getInventories();
 
-    @GET("v1/inventories/{id}")
+    @GET("v2/inventories/{id}")
     Call<Inventory> getInventory();
 
-    @POST("v1/inventories/")
+    @POST("v2/inventories/")
     Call<Inventory> addInventory();
 
-    @PUT("v1/inventories/{id}")
+    @PUT("v2/inventories/{id}")
     Call<Inventory> updateInventory();
 
-    @DELETE("v1/inventories/{id}")
+    @DELETE("v2/inventories/{id}")
     Call<Inventory> deleteInventory();
 
     //TODO inventory update
@@ -146,72 +146,72 @@ public interface apiEndpointInterface {
 
 //------------------------------------------ chief complains ------------------------------------------
 
-    @GET("v1/chief_complain/")
+    @GET("v2/chief_complain/")
     Call<List<ChiefComplain>> getChiefComplains(
             @Query("token") String token,
             @Query("diagnosis_id") String diagnosisId,
             @Query("name") String name,
             @Query("sort_by") String sortBy);
 
-    @GET("v1/chief_complain/{id}")
+    @GET("v2/chief_complain/{id}")
     Call<ChiefComplain> getChiefComplain(
             @Path("id") String id,
             @Query("token") String token);
 
 //------------------------------------------ medication ------------------------------------------
 
-    @GET("v1/medications")
+    @GET("v2/medications")
     Call<List<Medication>> getMedications();
 
-    @GET("v1/medications/{id}")
+    @GET("v2/medications/{id}")
     Call<Medication> getMedication();
 
-    @POST("v1/medications/")
+    @POST("v2/medications/")
     Call<Medication> addMedication();
 
-    @PUT("v1/medications/{id}")
+    @PUT("v2/medications/{id}")
     Call<Medication> updateMedication();
 
-    @DELETE("v1/medications/{id}")
+    @DELETE("v2/medications/{id}")
     Call<Medication> deleteMedication();
 
 //------------------------------------------ countries ------------------------------------------
 
-    @GET("v1/locations/countries")
+    @GET("v2/locations/countries")
     Call<List<Country>> getCountries();
 
-    @GET("v1/locations/countries/{id}")
+    @GET("v2/locations/countries/{id}")
     Call<Country> getCountry();
 
-    @POST("v1/locations/countries/")
+    @POST("v2/locations/countries/")
     Call<Country> addCountry();
 
-    @PUT("v1/locations/countries/{id}")
+    @PUT("v2/locations/countries/{id}")
     Call<Country> updateCountry();
 
-    @DELETE("v1/locations/countries/{id}")
+    @DELETE("v2/locations/countries/{id}")
     Call<Country> deleteCountry();
 
 //------------------------------------------ slums ------------------------------------------
 
-    @GET("v1/locations/slums")
+    @GET("v2/locations/slums")
     Call<List<Slum>> getSlums();
 
-    @GET("v1/locations/slums/{id}")
+    @GET("v2/locations/slums/{id}")
     Call<Slum> getSlum();
 
-    @POST("v1/locations/slums/")
+    @POST("v2/locations/slums/")
     Call<Slum> addSlum();
 
-    @PUT("v1/locations/slums/{id}")
+    @PUT("v2/locations/slums/{id}")
     Call<Slum> updateSlum();
 
-    @DELETE("v1/locations/slums/{id}")
+    @DELETE("v2/locations/slums/{id}")
     Call<Slum> deleteSlum();
 
 //------------------------------------------ static ------------------------------------------
 
-    @GET("v1/static/status")
+    @GET("v2/static/status")
     Call<Status> getStatus();
 
 
