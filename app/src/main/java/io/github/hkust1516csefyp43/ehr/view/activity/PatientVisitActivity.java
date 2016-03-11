@@ -35,9 +35,9 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.Advi
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.AllergyFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ChiefComplainFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ClinicalDiagnosisFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DocumentFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DrugHistoryFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.FollowUpFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.HPIFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.InvestigationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.MedicationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PEFragment;
@@ -283,13 +283,13 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                     if (triage)
                         return RemarkFragment.newInstance("", "");
                     else
-                        return HPIFragment.newInstance("", "");                     //TODO some param to seperate the 3
+                        return DocumentFragment.newInstance(Const.KEY_HPI, null);
                 case 4:
                     return PMHFragment.newInstance("", "");
                 case 5:
-                    return HPIFragment.newInstance("", "");                         //TODO some param to seperate the 3
+                    return DocumentFragment.newInstance(Const.KEY_FAMILY_HISTORY, null);
                 case 6:
-                    return HPIFragment.newInstance("", "");                         //TODO some param to seperate the 3
+                    return DocumentFragment.newInstance(Const.KEY_SOCIAL_HISTORY, null);
                 case 7:
                     return DrugHistoryFragment.newInstance("", "");
                 case 8:

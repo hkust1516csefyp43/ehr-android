@@ -61,6 +61,10 @@ public class Const {
     public static final String KEY_CURRENT_PATIENT_HEIGHT = "currentPatientHeight";
     public static final String KEY_CURRENT_PATIENT_LAST_DEWORMING_MONTH = "currentPatientLastDewormingMonth";
     public static final String KEY_CURRENT_PATIENT_LAST_DEWORMING_YEAR = "currentPatientLastDewormingYear";
+
+    public static final String KEY_HPI = "currentPatientHPI";
+    public static final String KEY_FAMILY_HISTORY = "currentPatientFamilyHistory";
+    public static final String KEY_SOCIAL_HISTORY = "currentPatientSocialHistory";
     //------------------------------</current patient>------------------------------
 
     public static final String KEY_SNACKBAR_TEXT = "snackBarText";
@@ -92,6 +96,7 @@ public class Const {
     //------------------------------<One-2-One CAMBODIA specific data>----------------------------------
     public static final String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
     public static final String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
+    public static final String CACHE_KEY = "cache_key";
     public static JSONArray LIST_ONE2ONE_SSID;
     public static JSONArray LIST_SSID;
     public static String API_CLOUD;

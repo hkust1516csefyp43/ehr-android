@@ -9,7 +9,7 @@
     android:paddingRight="8dp"
     android:paddingTop="4dp"
     android:theme="@style/AppTheme2"
-    tools:context="io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.HPIFragment">
+    tools:context=".view.fragment.patient_visit_activity.DocumentFragment">
 
     <HorizontalScrollView
         android:id="@+id/hsv"

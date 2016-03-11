@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -19,6 +20,7 @@ import com.mikepenz.iconics.typeface.IIcon;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.value.Const;
 import jp.wasabeef.richeditor.RichEditor;
 
 /**
@@ -26,28 +28,29 @@ import jp.wasabeef.richeditor.RichEditor;
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HPIFragment#newInstance} factory method to
+ * Use the {@link DocumentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HPIFragment extends Fragment {
+public class DocumentFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
 
     // TODO: Rename and change types of parameters
     private RichEditor mEditor;
     private OnFragmentInteractionListener mListener;
     private LinearLayout hsvLL;
+    private String cacheKey;
 
-    public HPIFragment() {
+    public DocumentFragment() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static HPIFragment newInstance(String param1, String param2) {
-        HPIFragment fragment = new HPIFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
+    public static DocumentFragment newInstance(String cache_key, @Nullable String data) {
+        DocumentFragment fragment = new DocumentFragment();
+        Bundle args = new Bundle();
+        args.putString(Const.CACHE_KEY, cache_key);
 //        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -55,8 +58,7 @@ public class HPIFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
+            cacheKey = getArguments().getString(Const.CACHE_KEY);
         }
     }
 
