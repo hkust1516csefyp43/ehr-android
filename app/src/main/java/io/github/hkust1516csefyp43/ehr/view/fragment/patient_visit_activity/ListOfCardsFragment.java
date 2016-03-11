@@ -44,6 +44,7 @@ public class ListOfCardsFragment extends Fragment {
     private List<Card> disease;
     private FloatingActionButton fab;
     private String title;
+    private FragRecyclerViewAdapter adapter;
 
     public ListOfCardsFragment() {
         // Required empty public constructor
@@ -101,6 +102,8 @@ public class ListOfCardsFragment extends Fragment {
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 ArrayList<String> data = tetdcv.getData();
                                 Log.d("qqq141", data.toString());
+                                adapter.addCard(new Card(data.get(0), data.get(1)));
+                                adapter.notifyItemInserted(adapter.getCardCount() - 1);
                             }
                         })
                         .show();
@@ -125,7 +128,8 @@ public class ListOfCardsFragment extends Fragment {
 
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(new FragRecyclerViewAdapter(disease, getContext()));
+        adapter = new FragRecyclerViewAdapter(disease, getContext());
+        rv.setAdapter(adapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

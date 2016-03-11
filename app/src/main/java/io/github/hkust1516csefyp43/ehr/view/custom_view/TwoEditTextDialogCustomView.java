@@ -24,26 +24,27 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
         super(context, null, R.style.AppTheme2);
         this.setOrientation(VERTICAL);
 
+        TextInputLayout til = new TextInputLayout(context);
         actv = new AutoCompleteTextView(context);
-        actv.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.md_divider_black)));
+        actv.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_text_color)));
         actv.setHint(title);
         if (suggestions != null) {
-//            actv.setHintTextColor(getResources().getColor(R.color.primary_text_color));
             String[] list = suggestions.toArray(new String[0]);
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, list);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_selectable_list_item, list);
             actv.setAdapter(adapter);
         }
 
-        TextInputLayout til = new TextInputLayout(context);
+        TextInputLayout til2 = new TextInputLayout(context);
 
         et = new EditText(context);
-        et.setLines(6);
+        et.setLines(8);
         et.setHint("Description");
 
-        til.addView(et);
+        til.addView(actv);
+        til2.addView(et);
 
-        this.addView(actv);
         this.addView(til);
+        this.addView(til2);
     }
 
     public ArrayList<String> getData() {

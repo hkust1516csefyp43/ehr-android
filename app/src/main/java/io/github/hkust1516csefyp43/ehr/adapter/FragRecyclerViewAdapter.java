@@ -26,8 +26,6 @@ public class FragRecyclerViewAdapter extends Adapter {
         context = this.context;
     }
 
-
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new FragCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_frag, parent, false), context);
@@ -41,6 +39,17 @@ public class FragRecyclerViewAdapter extends Adapter {
             ph.cardDescription.setText(data.get(position).getCardDescription());
 
         }
+    }
+
+    public void addCard(Card c) {
+        data.add(c);
+    }
+
+    public int getCardCount() {
+        return data.size();
+    }
+
+    public void deleteCard(int position) {
 
     }
 
