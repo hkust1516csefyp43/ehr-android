@@ -67,7 +67,7 @@ public class SocialHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_social_history, container, false);
+        return localInflater.inflate(R.layout.fragment_hpi, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

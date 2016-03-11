@@ -36,7 +36,6 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.Alle
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ChiefComplainFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ClinicalDiagnosisFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DrugHistoryFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.FamilyHistoryFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.FollowUpFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.HPIFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.InvestigationFragment;
@@ -48,13 +47,12 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.Preg
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ROSFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.RemarkFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ScreeningFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.SocialHistoryFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.VitalSignsFragment;
 
 public class PatientVisitActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
     ViewPager viewPager;
-    String[] tabs = {
+    String[] consultationTabs = {
             "Personal Data",
             "Vital Signs",
             "Chief Complain",
@@ -73,6 +71,12 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             "Medication",
             "Advice",
             "Follow-up",
+            "Remark"
+    };
+    String[] triageTabs = {
+            "Personal Data",
+            "Vital Signs",
+            "Chief Complain",
             "Remark"
     };
     Patient patient = null;
@@ -114,13 +118,13 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         //Setup tabs
         TabLayout tl = (TabLayout) findViewById(R.id.tlPatientVisit);
         tl.setTabGravity(TabLayout.MODE_SCROLLABLE);
-        for (String tab : tabs) {
+        for (String tab : consultationTabs) {
             tl.addTab(tl.newTab().setText(tab));
         }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         if (viewPager != null) {
-            viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager()));
+            viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager(), false));         //TODO the false >> consultation, true >> triage
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
             mCC = getIntent().getStringExtra(Const.KEY_SNACKBAR_TEXT);
             if (mCC != null) {
@@ -250,9 +254,15 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
     }
 
     public class viewPagerAdapter extends FragmentStatePagerAdapter {
+        boolean triage;
 
         public viewPagerAdapter(FragmentManager fm) {
             super(fm);
+        }
+
+        public viewPagerAdapter(FragmentManager fm, boolean t) {
+            super(fm);
+            triage = t;
         }
 
         //TODO save sth to call the fragment from activity
@@ -269,22 +279,25 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                     return VitalSignsFragment.newInstance();
                 case 2:
                     return ChiefComplainFragment.newInstance("", "");
+                case 3:
+                    if (triage)
+                        return RemarkFragment.newInstance("", "");
+                    else
+                        return HPIFragment.newInstance("", "");                     //TODO some param to seperate the 3
                 case 4:
                     return PMHFragment.newInstance("", "");
-                case 8:
-                    return ScreeningFragment.newInstance("", "");
+                case 5:
+                    return HPIFragment.newInstance("", "");                         //TODO some param to seperate the 3
+                case 6:
+                    return HPIFragment.newInstance("", "");                         //TODO some param to seperate the 3
                 case 7:
                     return DrugHistoryFragment.newInstance("", "");
+                case 8:
+                    return ScreeningFragment.newInstance("", "");
                 case 9:
                     return AllergyFragment.newInstance("", "");
                 case 10:
                     return PregnancyFragment.newInstance("", "");
-                case 3:
-                    return HPIFragment.newInstance("", "");
-                case 5:
-                    return FamilyHistoryFragment.newInstance("", "");
-                case 6:
-                    return SocialHistoryFragment.newInstance("", "");
                 case 11:
                     return ROSFragment.newInstance("", "");
                 case 12:
@@ -308,7 +321,10 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
 
         @Override
         public int getCount() {
-            return tabs.length;
+            if (triage)
+                return triageTabs.length;
+            else
+                return consultationTabs.length;
         }
     }
 }

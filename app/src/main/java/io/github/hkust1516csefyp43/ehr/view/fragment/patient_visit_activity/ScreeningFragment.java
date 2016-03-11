@@ -84,7 +84,14 @@ public class ScreeningFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_screening, container, false);
+        View v = localInflater.inflate(R.layout.fragment_screening, container, false);
+        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
+        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+        // TODO: setOnClickListener
+        return v;
     }
     @Override
     public void onResume() {
@@ -100,14 +107,8 @@ public class ScreeningFragment extends Fragment {
         screening.add(6, new CardFrag("seventh", "what can I type?"));
         screening.add(7, new CardFrag("eight", "I give up la"));
 
-        rv = (RecyclerView) getView().findViewById(R.id.rv_fab);
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(new FragRecyclerViewAdapter(screening, getContext()));
 
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.floatingactionbutton);
-        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
-        // TODO: setOnClickListener
     }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

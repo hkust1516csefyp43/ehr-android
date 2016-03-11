@@ -85,7 +85,12 @@ public class PMHFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_previous_medical_history, container, false);
+        View v = localInflater.inflate(R.layout.fragment_previous_medical_history, container, false);
+        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
+        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+        // TODO: setOnClickListener
+        return v;
     }
 
     @Override
@@ -102,14 +107,9 @@ public class PMHFragment extends Fragment {
         disease.add(6, new CardFrag("crazy", "silly guy"));
         disease.add(7, new CardFrag("out of control", "pissing everywhere"));
 
-        rv = (RecyclerView) getView().findViewById(R.id.rv_fab);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(new FragRecyclerViewAdapter(disease, getContext()));
-
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.floatingactionbutton);
-        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
-        // TODO: setOnClickListener
     }
 
     // TODO: Rename method, update argument and hook method into UI event

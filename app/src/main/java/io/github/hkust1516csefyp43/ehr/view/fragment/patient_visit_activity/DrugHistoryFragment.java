@@ -84,7 +84,13 @@ public class DrugHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_drug_history, container, false);
+        View v = localInflater.inflate(R.layout.fragment_drug_history, container, false);
+        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
+        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+        return v;
     }
 
     @Override
@@ -100,12 +106,8 @@ public class DrugHistoryFragment extends Fragment {
         drug.add(5, new CardFrag("toxic", "many"));
         drug.add(6, new CardFrag("vitamin C", "few"));
 
-        rv = (RecyclerView) getView().findViewById(R.id.rv_fab);
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(new FragRecyclerViewAdapter(drug, getContext()));
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.floatingactionbutton);
-        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+
         // TODO: setOnClickListener
     }
 

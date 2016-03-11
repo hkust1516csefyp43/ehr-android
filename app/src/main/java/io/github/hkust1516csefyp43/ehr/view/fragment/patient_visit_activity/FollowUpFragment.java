@@ -84,7 +84,14 @@ public class FollowUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_follow_up, container, false);
+        View v =  localInflater.inflate(R.layout.fragment_follow_up, container, false);
+        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
+        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+        // TODO: setOnClickListener
+        return v;
     }
 
     @Override
@@ -100,13 +107,7 @@ public class FollowUpFragment extends Fragment {
         followUp.add(5, new CardFrag("followUp 6", "please come every day"));
         followUp.add(6, new CardFrag("followUp 7", "take my medicine and get well"));
 
-        rv = (RecyclerView) getView().findViewById(R.id.rv_fab);
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(new FragRecyclerViewAdapter(followUp, getContext()));
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.floatingactionbutton);
-        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
-        // TODO: setOnClickListener
     }
 
     // TODO: Rename method, update argument and hook method into UI event

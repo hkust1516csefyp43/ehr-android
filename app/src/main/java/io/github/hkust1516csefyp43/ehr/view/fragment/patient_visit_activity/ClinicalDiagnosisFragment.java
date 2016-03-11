@@ -84,7 +84,14 @@ public class ClinicalDiagnosisFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_clinical_diagnosis, container, false);
+        View v = localInflater.inflate(R.layout.fragment_clinical_diagnosis, container, false);
+        rv = (RecyclerView) v.findViewById(R.id.rv_fab);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
+        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+        // TODO: setOnClickListener
+        return v;
     }
 
     @Override
@@ -100,13 +107,7 @@ public class ClinicalDiagnosisFragment extends Fragment {
         diagnosis.add(5, new CardFrag("diagnosis 6", "die soon"));
         diagnosis.add(6, new CardFrag("diagnosis 7", "unhealthy"));
 
-        rv = (RecyclerView) getView().findViewById(R.id.rv_fab);
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(new FragRecyclerViewAdapter(diagnosis, getContext()));
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.floatingactionbutton);
-        fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
-        // TODO: setOnClickListener
     }
 
 
