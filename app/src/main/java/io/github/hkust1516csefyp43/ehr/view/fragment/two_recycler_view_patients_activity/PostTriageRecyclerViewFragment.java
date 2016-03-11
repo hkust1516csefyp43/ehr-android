@@ -39,6 +39,7 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     private TextView fail;
     private OnFragmentInteractionListener mListener;
     private ListCounterChangedListener lListener;
+    private int whichOne;
 
     public PostTriageRecyclerViewFragment() {
         // Required empty public constructor
@@ -48,6 +49,14 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     // TODO: Rename and change types and number of parameters
     public static PostTriageRecyclerViewFragment newInstance() {
         return new PostTriageRecyclerViewFragment();
+    }
+
+    public static PostTriageRecyclerViewFragment newInstance(int which) {
+        PostTriageRecyclerViewFragment ptrvf = new PostTriageRecyclerViewFragment();
+        Bundle args = new Bundle();
+        args.putInt(Const.EXTRA_WHICH_ONE, which);
+        ptrvf.setArguments(args);
+        return ptrvf;
     }
 
     @Override
@@ -65,7 +74,10 @@ public class PostTriageRecyclerViewFragment extends android.support.v4.app.Fragm
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("qqq42", "onCreate");
+        if (getArguments() != null) {
+            whichOne = getArguments().getInt(Const.EXTRA_WHICH_ONE);
+            Log.d("qqq42", "which one = " + whichOne);
+        }
     }
 
     @Override

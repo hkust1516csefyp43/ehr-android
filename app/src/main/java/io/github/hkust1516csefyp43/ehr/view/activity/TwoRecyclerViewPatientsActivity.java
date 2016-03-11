@@ -56,7 +56,6 @@ import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
-import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostPharmacyRecyclerViewFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PostTriageRecyclerViewFragment;
 
 public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implements ListCounterChangedListener, OnFragmentInteractionListener {
@@ -69,8 +68,8 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     private ViewPager viewPager;
     private FloatingActionButton fab;
     private ListView lv;
-    private PostTriageRecyclerViewFragment ptrvf;
-    private PostPharmacyRecyclerViewFragment pprvf;
+    private PostTriageRecyclerViewFragment fListLeft;
+    private PostTriageRecyclerViewFragment fListRight;
     private Drawer drawer;
 
     @Override
@@ -451,12 +450,13 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     }
 
     private void ptrvfRecyclerViewScrollToTop() {
-        ptrvf.scrollToTop();
+        fListLeft.scrollToTop();
     }
 
     /**
-     * TODO "Finished"
-     *
+     * TODO In the Slum not getting its number
+     * TODO Consultation: Waiting/Finished
+     * TODO Pharmacy: Waiting/Today's patients
      * @param position of tab, 0 >> Left, 1 >> right
      * @param size     i.e. the number
      */
@@ -492,19 +492,19 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             switch (position) {
                 case 0:
                     Log.d(TAG, "0");
-                    if (ptrvf == null)
-                        ptrvf = PostTriageRecyclerViewFragment.newInstance();
-                    return ptrvf;
+                    if (fListLeft == null)
+                        fListLeft = PostTriageRecyclerViewFragment.newInstance(Const.LIST_POST_TRIAGE);
+                    return fListLeft;
                 case 1:
                     Log.d(TAG, "1");
-                    if (pprvf == null)
-                        pprvf = PostPharmacyRecyclerViewFragment.newInstance();
-                    return pprvf;
+                    if (fListRight == null)
+                        fListRight = PostTriageRecyclerViewFragment.newInstance(Const.LIST_ALL_PATIENTS);
+                    return fListRight;
                 default:
                     Log.d(TAG, "default");
-                    if (ptrvf == null)
-                        ptrvf = PostTriageRecyclerViewFragment.newInstance();
-                    return ptrvf;
+                    if (fListLeft == null)
+                        fListLeft = PostTriageRecyclerViewFragment.newInstance();
+                    return fListLeft;
             }
         }
 

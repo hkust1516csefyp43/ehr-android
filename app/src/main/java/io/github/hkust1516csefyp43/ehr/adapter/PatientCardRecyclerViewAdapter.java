@@ -42,39 +42,43 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
         if (context != null) {
             patientCardViewHolder ph = (patientCardViewHolder) holder;
             StringBuilder name = new StringBuilder();
-            Patient aPatient = Cache.getPostTriagePatients(context).get(position);
-            ph.setPatient(aPatient);
-            //TODO a setting to change first or last name in the front
-            if (aPatient.getLastName() != null) {
-                name.append(aPatient.getLastName());
-                name.append(" ");
-            }
-            name.append(aPatient.getFirstName());
-            ph.patientName.setText(name.toString());
-            //TODO replace gender with symbols (save screen space)
-            //TODO once the age came you can start calculate that
-            ph.subtitle.setText(aPatient.getGender() + " / " + Utils.lastSeenToString(aPatient.getLastSeen()) + " / age (TBC)");
-            //TODO 1) Check if photo is null >> TextDrawable or load image
-            //TODO 2) find a range of acceptable RGB (currently 50+)
-            //TODO 3) save color combination of each patient? (if just getting from cache, just use the old color?)
-            //e.g. Gmail: each letter have their own pre-defined color combination
-            String t = Utils.getTextDrawableText(aPatient);
-            Drawable backup = TextDrawable.builder().buildRound(t, Utils.getTextDrawableColor(t));
+            List<Patient> listOfPatints = Cache.getPostTriagePatients(context);
+            if (listOfPatints != null && listOfPatints.size() > 0) {
+                Patient aPatient = listOfPatints.get(position);
+                ph.setPatient(aPatient);
+                //TODO a setting to change first or last name in the front
+                if (aPatient.getLastName() != null) {
+                    name.append(aPatient.getLastName());
+                    name.append(" ");
+                }
+                name.append(aPatient.getFirstName());
+                ph.patientName.setText(name.toString());
+                //TODO replace gender with symbols (save screen space)
+                //TODO once the age came you can start calculate that
+                ph.subtitle.setText(aPatient.getGender() + " / " + Utils.lastSeenToString(aPatient.getLastSeen()) + " / age (TBC)");
+                //TODO 1) Check if photo is null >> TextDrawable or load image
+                //TODO 2) find a range of acceptable RGB (currently 50+)
+                //TODO 3) save color combination of each patient? (if just getting from cache, just use the old color?)
+                //e.g. Gmail: each letter have their own pre-defined color combination
+                String t = Utils.getTextDrawableText(aPatient);
+                Drawable backup = TextDrawable.builder().buildRound(t, Utils.getTextDrawableColor(t));
 
-            String[] uris = {"http://cdn-img.instyle.com/sites/default/files/styles/428xflex/public/images/2012/TRANSFORMATIONS/2005-adam-levine-400_0.jpg?itok=n_C1oYNP", "https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xfl1/v/t1.0-9/11351352_10153368808349875_6517669903500714504_n.jpg?oh=f892debb6921a5004adf4719f42e6de4&oe=57112EFD&__gda__=1461375548_a4cf7741cb74652e0d733b02ec293588", "http://hkust1516csefyp43.github.io/img/team/ricky.jpg"};
-            if (position < uris.length) {
-                Uri imageUri = Uri.parse(uris[position]);
-                Glide.with(context).load(imageUri)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .transform(new CircleTransform(context))
-                        .thumbnail(0.01f)
-                        .placeholder(backup)
-                        .fallback(backup)
-                        .into(ph.proPic);
+                String[] uris = {"http://cdn-img.instyle.com/sites/default/files/styles/428xflex/public/images/2012/TRANSFORMATIONS/2005-adam-levine-400_0.jpg?itok=n_C1oYNP", "https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xfl1/v/t1.0-9/11351352_10153368808349875_6517669903500714504_n.jpg?oh=f892debb6921a5004adf4719f42e6de4&oe=57112EFD&__gda__=1461375548_a4cf7741cb74652e0d733b02ec293588", "http://hkust1516csefyp43.github.io/img/team/ricky.jpg"};
+                if (position < uris.length) {
+                    Uri imageUri = Uri.parse(uris[position]);
+                    Glide.with(context).load(imageUri)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .transform(new CircleTransform(context))
+                            .thumbnail(0.01f)
+                            .placeholder(backup)
+                            .fallback(backup)
+                            .into(ph.proPic);
+                } else {
+                    ph.proPic.setImageDrawable(backup);
+                }
             } else {
-                ph.proPic.setImageDrawable(backup);
+                //TODO no patient list >> display sth on UI
             }
-
         }
     }
 

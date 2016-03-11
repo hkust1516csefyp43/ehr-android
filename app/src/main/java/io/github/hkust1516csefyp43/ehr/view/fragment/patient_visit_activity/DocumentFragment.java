@@ -48,7 +48,7 @@ public class DocumentFragment extends Fragment {
     public static DocumentFragment newInstance(String cache_key, @Nullable String data) {
         DocumentFragment fragment = new DocumentFragment();
         Bundle args = new Bundle();
-        args.putString(Const.CACHE_KEY, cache_key);
+        args.putString(Const.EXTRA_CACHE_KEY, cache_key);
 //        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -58,7 +58,7 @@ public class DocumentFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            cacheKey = getArguments().getString(Const.CACHE_KEY);
+            cacheKey = getArguments().getString(Const.EXTRA_CACHE_KEY);
         }
     }
 

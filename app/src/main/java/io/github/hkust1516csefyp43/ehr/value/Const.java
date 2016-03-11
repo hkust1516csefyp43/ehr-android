@@ -96,7 +96,14 @@ public class Const {
     //------------------------------<One-2-One CAMBODIA specific data>----------------------------------
     public static final String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
     public static final String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
-    public static final String CACHE_KEY = "cache_key";
+    public static final String EXTRA_CACHE_KEY = "cache_key";
+    public static final String EXTRA_WHICH_ONE = "which_list_of_patients";
+    public static final int LIST_POST_TRIAGE = 1;
+    public static final int LIST_ALL_PATIENTS = 2;
+    public static final int LIST_PRE_CONSULTATION = 1;      //Yup, it is the same as post triage :joy:
+    public static final int LIST_POST_CONSULTATION = 3;
+    public static final int LIST_PRE_PHARMACY = 4;          //It is not necessary same as Post Consultation because some patients need no medication
+    public static final int LIST_ALL_TODAYS_PATIENT = 5;
     public static JSONArray LIST_ONE2ONE_SSID;
     public static JSONArray LIST_SSID;
     public static String API_CLOUD;

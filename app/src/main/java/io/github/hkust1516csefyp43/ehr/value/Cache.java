@@ -2,9 +2,11 @@ package io.github.hkust1516csefyp43.ehr.value;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
@@ -55,8 +57,18 @@ public class Cache {
     private static List<Patient> getPatients(Context context, String key) {
         SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
         String value = prefs.getString(key, null);
-        return new Gson().fromJson(value, new TypeToken<List<Patient>>() {
-        }.getType());
+        if (value != null) {
+            try {
+                List<Patient> lp = new Gson().fromJson(value, new TypeToken<List<Patient>>() {
+                }.getType());
+                return lp;
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+                Log.d("qqq131", value);
+                //TODO for some reason it often got incorrect syntax stuff -_-
+            }
+        }
+        return null;
     }
 
     private static void setPatients(Context context, String key, List<Patient> patients) {
