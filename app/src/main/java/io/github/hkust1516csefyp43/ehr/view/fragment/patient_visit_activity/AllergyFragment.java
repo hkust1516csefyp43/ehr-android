@@ -16,7 +16,6 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
@@ -44,7 +43,7 @@ public class AllergyFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<Card> allergy;
+    private ArrayList<Card> allergy;
 
     private FloatingActionButton fab;
 

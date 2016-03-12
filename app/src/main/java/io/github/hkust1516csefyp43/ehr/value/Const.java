@@ -65,7 +65,6 @@ public class Const {
     public static final String KEY_HPI = "currentPatientHPI";
     public static final String KEY_FAMILY_HISTORY = "currentPatientFamilyHistory";
     public static final String KEY_SOCIAL_HISTORY = "currentPatientSocialHistory";
-    //------------------------------</current patient>------------------------------
 
     public static final String KEY_SNACKBAR_TEXT = "snackBarText";
     public final static String KEY_VIRGIN = "touch_for_the_very_first_time~";
@@ -93,27 +92,30 @@ public class Const {
             .withAboutAppName("EHR")        //TODO how to get app name on the fly
             .withAboutDescription("EHR 2015-2016 from SIGHT@HKUST x CSE@HKUST")
             .withSortEnabled(true);
+
     //------------------------------<One-2-One CAMBODIA specific data>----------------------------------
     public static final String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
     public static final String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
     public static final String EXTRA_CACHE_KEY = "cache_key";
     public static final String EXTRA_WHICH_ONE = "which_list_of_patients";
-    public static final int LIST_POST_TRIAGE = 1;
-    public static final int LIST_ALL_PATIENTS = 2;
-    public static final int LIST_PRE_CONSULTATION = 1;      //Yup, it is the same as post triage :joy:
-    public static final int LIST_POST_CONSULTATION = 3;
-    public static final int LIST_PRE_PHARMACY = 4;          //It is not necessary same as Post Consultation because some patients need no medication
-    public static final int LIST_ALL_TODAYS_PATIENT = 5;
+    //----------------------------<Patients list>------------------------------------
+    public static final int PATIENT_LIST_POST_TRIAGE = 1;
+    public static final int PATIENT_LIST_ALL_PATIENTS = 2;
+    public static final int PATIENT_LIST_PRE_CONSULTATION = 1;      //Yup, it is the same as post triage :joy:
+    public static final int PATIENT_LIST_POST_CONSULTATION = 3;
+    public static final int PATIENT_LIST_PRE_PHARMACY = 4;          //It is not necessary same as Post Consultation because some patients need no medication
+    public static final int PATIENT_LIST_ALL_TODAYS_PATIENT = 5;
     public static final String KEY_TITLE = "title";
-    public static JSONArray LIST_ONE2ONE_SSID;
+    public static final String KEY_PRE_FILL_ITEMS = "pre_fill_items";
+    public static JSONArray SSID_LIST_ONE2ONE;
+    public static String API_LOCAL;
     public static JSONArray LIST_SSID;
     public static String API_CLOUD;
-    //------------------------------</One-2-One CAMBODIA specific data>----------------------------------
-    public static String API_LOCAL;
+    public static String KEY_LOCF = "locf";
 
     static {
         try {
-            LIST_ONE2ONE_SSID = new JSONArray("['sight_network', 'sight_network2', 'One-2-One Cambodia GroundFlor']");
+            SSID_LIST_ONE2ONE = new JSONArray("['sight_network', 'sight_network2', 'One-2-One Cambodia GroundFlor']");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -122,9 +124,11 @@ public class Const {
     public static void setCloudAPI(String api) {
         API_CLOUD = api;
     }
+
     public static void setLocalAPI(String api) {
         API_LOCAL = api;
     }
+
     public static void setListSSID(JSONArray ssid) {
         LIST_SSID = ssid;
     }

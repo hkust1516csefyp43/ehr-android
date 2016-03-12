@@ -285,7 +285,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                     else
                         return DocumentFragment.newInstance(Const.KEY_HPI, null);
                 case 4:
-                    return ListOfCardsFragment.newInstance("PMH", "");
+                    return ListOfCardsFragment.newInstance("PMH");
                 case 5:
                     return DocumentFragment.newInstance(Const.KEY_FAMILY_HISTORY, null);
                 case 6:

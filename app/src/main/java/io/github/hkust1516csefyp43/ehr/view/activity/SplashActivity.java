@@ -130,7 +130,7 @@ public class SplashActivity extends AppCompatActivity {
         if (BuildConfig.FLAVOR.compareTo(Const.FLAVOR_ONE_2_ONE_CAMBODIA) == 0) {
             host.put(Const.CONFIG_CLOUD_HOST, Const.API_ONE2ONE_HEROKU);
             host.put(Const.CONFIG_LOCAL_HOST, Const.API_ONE2ONE_RPi);
-            host.put(Const.CONFIG_SSID_LIST, Const.LIST_ONE2ONE_SSID);
+            host.put(Const.CONFIG_SSID_LIST, Const.SSID_LIST_ONE2ONE);
             Cache.setConfig(this, host);
             return host.toString();
         } else {

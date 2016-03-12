@@ -17,7 +17,6 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
@@ -45,7 +44,7 @@ public class PEFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView rv;
-    private List<Card> pe;
+    private ArrayList<Card> pe;
 
     private FloatingActionButton fab;
 

@@ -53,4 +53,9 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
         output.add(et.getText().toString());
         return output;
     }
+
+    public void clearData() {
+        actv.setText("");
+        et.setText("");
+    }
 }

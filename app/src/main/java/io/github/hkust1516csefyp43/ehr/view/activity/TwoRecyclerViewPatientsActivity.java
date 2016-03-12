@@ -493,12 +493,12 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                 case 0:
                     Log.d(TAG, "0");
                     if (fListLeft == null)
-                        fListLeft = PatientsRecyclerViewFragment.newInstance(Const.LIST_POST_TRIAGE);
+                        fListLeft = PatientsRecyclerViewFragment.newInstance(Const.PATIENT_LIST_POST_TRIAGE);
                     return fListLeft;
                 case 1:
                     Log.d(TAG, "1");
                     if (fListRight == null)
-                        fListRight = PatientsRecyclerViewFragment.newInstance(Const.LIST_ALL_PATIENTS);
+                        fListRight = PatientsRecyclerViewFragment.newInstance(Const.PATIENT_LIST_ALL_PATIENTS);
                     return fListRight;
                 default:
                     Log.d(TAG, "default");
