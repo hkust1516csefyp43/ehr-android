@@ -95,6 +95,7 @@ public class ListOfCardsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("qqq172", "rotating");
         Bundle b = getArguments();
         if (b != null) {
             title = b.getString(Const.KEY_TITLE);
@@ -104,6 +105,7 @@ public class ListOfCardsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("qqq171", "rotating");
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View v = localInflater.inflate(R.layout.fragment_previous_medical_history, container, false);
@@ -170,6 +172,7 @@ public class ListOfCardsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("qqq173", "rotating");
     }
 
     /**
@@ -179,6 +182,7 @@ public class ListOfCardsFragment extends Fragment {
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        Log.d("qqq179", "rotating");
         super.onSaveInstanceState(outState);
         outState.putString(Const.KEY_TITLE, title);
         outState.putParcelableArrayList(Const.KEY_LOCF + title, adapter.getData());
@@ -187,9 +191,11 @@ public class ListOfCardsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d("qqq174", "rotating");
         if (savedInstanceState != null) {
             title = savedInstanceState.getString(Const.KEY_TITLE);
             ArrayList<Card> alc = savedInstanceState.getParcelableArrayList(Const.KEY_LOCF + title);
+            adapter.deleteAllCards();
             adapter.addCards(alc);
         }
     }

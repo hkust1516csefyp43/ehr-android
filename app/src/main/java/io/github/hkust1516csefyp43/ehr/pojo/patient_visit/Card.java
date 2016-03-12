@@ -28,15 +28,18 @@ public class Card implements Serializable, Parcelable {
     private String cardTitle;
     @SerializedName("cardDescription")
     private String cardDescription;
+    private boolean checked;
 
     public Card(String name, @Nullable String description) {
         this.cardTitle = name;
         this.cardDescription = description;
+        checked = true;
     }
 
     protected Card(Parcel in) {
         cardTitle = in.readString();
         cardDescription = in.readString();
+        checked = in.readByte() != 0x00;
     }
 
     public String getCardTitle() {
@@ -55,6 +58,14 @@ public class Card implements Serializable, Parcelable {
         this.cardDescription = cardDescription;
     }
 
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -64,5 +75,6 @@ public class Card implements Serializable, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(cardTitle);
         dest.writeString(cardDescription);
+        dest.writeByte((byte) (checked ? 0x01 : 0x00));
     }
 }

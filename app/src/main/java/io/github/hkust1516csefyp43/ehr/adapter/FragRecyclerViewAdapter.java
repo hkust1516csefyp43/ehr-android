@@ -23,18 +23,18 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
 
     Context context;
     ArrayList<Card> data;
-    boolean sa;
+    boolean displaySwitch;
     ArrayList<String> suggestions;
     String title;
 
-    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c, boolean switchAvailable) {
+    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c, boolean d) {
         data = source;
         this.context = c;
-        sa = switchAvailable;
+        displaySwitch = d;
     }
 
-    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c, boolean switchAvailable, @Nullable ArrayList<String> sugg, @Nullable String t) {
-        this(source, c, switchAvailable);
+    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c, boolean d, @Nullable ArrayList<String> sugg, @Nullable String t) {
+        this(source, c, d);
         suggestions = sugg;
         title = t;
     }
@@ -45,22 +45,25 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(FragCardViewHolder holder, int position) {
+    public void onBindViewHolder(FragCardViewHolder holder, final int position) {
         if (data != null){
             if (data.size() > 0) {
                 final FragCardViewHolder ph = holder;
                 ph.cardTitle.setText(data.get(position).getCardTitle());
                 ph.cardDescription.setText(data.get(position).getCardDescription());
-                if (sa){
+                if (displaySwitch) {
                     ph.cardSwitch.setVisibility(View.VISIBLE);
-                    ph.cardSwitch.setChecked(true);
+                    ph.cardSwitch.setChecked(data.get(position).isChecked());
                     ph.cardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if (!isChecked)
+                            if (!isChecked) {
                                 ph.cardDescription.setVisibility(View.GONE);
-                            else
+                                data.get(position).setChecked(false);
+                            } else {
                                 ph.cardDescription.setVisibility(View.VISIBLE);
+                                data.get(position).setChecked(true);
+                            }
                         }
                     });
                 }
@@ -97,6 +100,11 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
     public void deleteCard(int position) {
         data.remove(position);
         this.notifyItemRemoved(position);
+    }
+
+    public void deleteAllCards() {
+        data = new ArrayList<>();
+        this.notifyDataSetChanged();
     }
 
     @Override

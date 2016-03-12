@@ -55,6 +55,8 @@ public class FragCardViewHolder extends RecyclerView.ViewHolder {
                                     tetdcv.clearData();
                                     Log.d("qqq141", data.toString());
                                     adapter.addCard(new Card(data.get(0), data.get(1)));
+                                    //TODO not add card, change card
+                                    //TODO maybe just move this whole block back out to adapter (use listener?)
                                 }
                             })
                             .onNegative(new MaterialDialog.SingleButtonCallback() {
