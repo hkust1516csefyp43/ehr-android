@@ -129,10 +129,9 @@ public class ListOfCardsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean wrapInScrollView = true;
                 new MaterialDialog.Builder(getContext())
                         .title("Add")
-                        .customView(tetdcv, wrapInScrollView)
+                        .customView(tetdcv, true)
                         .positiveText("Confirm")
                         .negativeText("Cancel")
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -160,9 +159,9 @@ public class ListOfCardsFragment extends Fragment {
             for (String s : preFillItems) {
                 preFillCards.add(new Card(s, "Fill this or flip the switch"));
             }
-            adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true);
+            adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true, a, title);
         } else {
-            adapter = new FragRecyclerViewAdapter(null, getContext(), false);
+            adapter = new FragRecyclerViewAdapter(null, getContext(), false, a, title);
         }
         rv.setAdapter(adapter);
         return v;

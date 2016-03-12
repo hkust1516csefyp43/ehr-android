@@ -31,21 +31,14 @@ import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Const;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.AdviceFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.AllergyFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ChiefComplainFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ClinicalDiagnosisFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DocumentFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DrugHistoryFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.FollowUpFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.InvestigationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ListOfCardsFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.MedicationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PersonalDataFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ROSFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.RemarkFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ScreeningFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.VitalSignsFragment;
 
 public class PatientVisitActivity extends AppCompatActivity implements OnFragmentInteractionListener {
@@ -290,27 +283,27 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                 case 6:
                     return DocumentFragment.newInstance(Const.KEY_SOCIAL_HISTORY, null);
                 case 7:
-                    return DrugHistoryFragment.newInstance("", "");
+                    return ListOfCardsFragment.newInstance("Drug History");
                 case 8:
-                    return ScreeningFragment.newInstance("", "");
+                    return ListOfCardsFragment.newInstance("Screening");
                 case 9:
-                    return AllergyFragment.newInstance("", "");
+                    return ListOfCardsFragment.newInstance("Allergy");
                 case 10:
                     return PregnancyFragment.newInstance("", "");
                 case 11:
-                    return ROSFragment.newInstance("", "");
+                    return ListOfCardsFragment.newInstance("RoS", Const.DEFAULT_REVICE_OF_SYSTEM);
                 case 12:
-                    return ListOfCardsFragment.newInstance("PE", Const.PHYSICAL_EXAMINATION);
+                    return ListOfCardsFragment.newInstance("PE", Const.DEFAULT_PHYSICAL_EXAMINATION);
                 case 13:
-                    return ClinicalDiagnosisFragment.newInstance("", "");
+                    return ListOfCardsFragment.newInstance("Diagnosis");
                 case 14:
                     return InvestigationFragment.newInstance("", "");
                 case 15:
                     return MedicationFragment.newInstance("", "");
                 case 16:
-                    return AdviceFragment.newInstance("", "");
+                    return ListOfCardsFragment.newInstance("Advice");
                 case 17:
-                    return FollowUpFragment.newInstance("", "");
+                    return ListOfCardsFragment.newInstance("Follow-up");
                 case 18:
                     return RemarkFragment.newInstance("", "");
                 default:

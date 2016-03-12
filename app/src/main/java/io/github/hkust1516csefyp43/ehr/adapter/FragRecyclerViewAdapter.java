@@ -24,6 +24,8 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
     Context context;
     ArrayList<Card> data;
     boolean sa;
+    ArrayList<String> suggestions;
+    String title;
 
     public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c, boolean switchAvailable) {
         data = source;
@@ -31,9 +33,15 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
         sa = switchAvailable;
     }
 
+    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c, boolean switchAvailable, @Nullable ArrayList<String> sugg, @Nullable String t) {
+        this(source, c, switchAvailable);
+        suggestions = sugg;
+        title = t;
+    }
+
     @Override
     public FragCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new FragCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_frag, parent, false), context);
+        return new FragCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_frag, parent, false), context, suggestions, title, this);
     }
 
     @Override

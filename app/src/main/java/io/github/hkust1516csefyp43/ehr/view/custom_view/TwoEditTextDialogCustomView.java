@@ -47,6 +47,12 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
         this.addView(til2);
     }
 
+    public static TwoEditTextDialogCustomView newInstance(Context context, @Nullable ArrayList<String> suggestions, @Nullable String title, String text1, @Nullable String text2) {
+        TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(context, suggestions, title);
+        tetdcv.setTexts(text1, text2);
+        return tetdcv;
+    }
+
     public ArrayList<String> getData() {
         ArrayList<String> output = new ArrayList<>();
         output.add(actv.getText().toString());
@@ -57,5 +63,18 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
     public void clearData() {
         actv.setText("");
         et.setText("");
+    }
+
+    public void setText1(String t) {
+        actv.setText(t);
+    }
+
+    public void setText2(String t) {
+        et.setText(t);
+    }
+
+    public void setTexts(String t1, String t2) {
+        setText1(t1);
+        setText2(t2);
     }
 }
