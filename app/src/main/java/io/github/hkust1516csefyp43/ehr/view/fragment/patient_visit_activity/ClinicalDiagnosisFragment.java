@@ -106,7 +106,7 @@ public class ClinicalDiagnosisFragment extends Fragment {
         diagnosis.add(5, new Card("diagnosis 6", "die soon"));
         diagnosis.add(6, new Card("diagnosis 7", "unhealthy"));
 
-        rv.setAdapter(new FragRecyclerViewAdapter(diagnosis, getContext()));
+        rv.setAdapter(new FragRecyclerViewAdapter(diagnosis, getContext(), false));
     }
 
 

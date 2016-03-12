@@ -106,7 +106,7 @@ public class PEFragment extends Fragment {
         pe.add(5, new Card("pe 6", "grade F"));
         pe.add(6, new Card("pe 7", "grade GGGGG"));
 
-        rv.setAdapter(new FragRecyclerViewAdapter(pe, getContext()));
+        rv.setAdapter(new FragRecyclerViewAdapter(pe, getContext(), false));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

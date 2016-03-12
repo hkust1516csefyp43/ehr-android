@@ -41,7 +41,6 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.Foll
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.InvestigationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ListOfCardsFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.MedicationFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PEFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PersonalDataFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ROSFragment;
@@ -301,7 +300,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                 case 11:
                     return ROSFragment.newInstance("", "");
                 case 12:
-                    return PEFragment.newInstance("", "");
+                    return ListOfCardsFragment.newInstance("PE", Const.PHYSICAL_EXAMINATION);
                 case 13:
                     return ClinicalDiagnosisFragment.newInstance("", "");
                 case 14:

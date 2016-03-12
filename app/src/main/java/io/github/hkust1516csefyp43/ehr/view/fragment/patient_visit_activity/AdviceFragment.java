@@ -103,7 +103,7 @@ public class AdviceFragment extends Fragment {
         advice.add(5, new Card("advice 6", "word harder"));
         advice.add(6, new Card("advice 7", "wear more clothes"));
 
-        rv.setAdapter(new FragRecyclerViewAdapter(advice, getContext()));
+        rv.setAdapter(new FragRecyclerViewAdapter(advice, getContext(), false));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -106,7 +106,7 @@ public class FollowUpFragment extends Fragment {
         followUp.add(5, new Card("followUp 6", "please come every day"));
         followUp.add(6, new Card("followUp 7", "take my medicine and get well"));
 
-        rv.setAdapter(new FragRecyclerViewAdapter(followUp, getContext()));
+        rv.setAdapter(new FragRecyclerViewAdapter(followUp, getContext(), false));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

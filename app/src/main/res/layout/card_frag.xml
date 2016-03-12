@@ -19,13 +19,30 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/medicineName"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="Name"
-                android:textSize="24sp"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/medicineName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:padding="8dp"
+                    android:text="Name"
+                    android:textSize="24sp"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/scNull"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:checked="true"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/medicalDescription"

@@ -3,6 +3,7 @@ package io.github.hkust1516csefyp43.ehr.adapter;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -21,10 +22,12 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
 
     Context context;
     ArrayList<Card> data;
+    boolean sa;
 
-    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c) {
+    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c, boolean switchAvailable) {
         data = source;
         this.context = c;
+        sa = switchAvailable;
     }
 
     @Override
@@ -39,8 +42,11 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
                 FragCardViewHolder ph = holder;
                 ph.cardTitle.setText(data.get(position).getCardTitle());
                 ph.cardDescription.setText(data.get(position).getCardDescription());
+                if (sa){
+                    ph.cardSwitch.setVisibility(View.VISIBLE);
+                    ph.cardSwitch.setChecked(true);
+                }
             }
-
         }
     }
 

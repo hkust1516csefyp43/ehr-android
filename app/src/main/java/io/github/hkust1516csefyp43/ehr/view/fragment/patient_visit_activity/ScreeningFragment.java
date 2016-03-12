@@ -106,7 +106,7 @@ public class ScreeningFragment extends Fragment {
         screening.add(6, new Card("seventh", "what can I type?"));
         screening.add(7, new Card("eight", "I give up la"));
 
-        rv.setAdapter(new FragRecyclerViewAdapter(screening, getContext()));
+        rv.setAdapter(new FragRecyclerViewAdapter(screening, getContext(), false));
 
     }
     // TODO: Rename method, update argument and hook method into UI event

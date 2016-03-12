@@ -105,7 +105,7 @@ public class DrugHistoryFragment extends Fragment {
         drug.add(5, new Card("toxic", "many"));
         drug.add(6, new Card("vitamin C", "few"));
 
-        rv.setAdapter(new FragRecyclerViewAdapter(drug, getContext()));
+        rv.setAdapter(new FragRecyclerViewAdapter(drug, getContext(), false));
 
         // TODO: setOnClickListener
     }

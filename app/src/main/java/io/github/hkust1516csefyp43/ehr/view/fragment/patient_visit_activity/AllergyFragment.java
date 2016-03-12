@@ -104,7 +104,7 @@ public class AllergyFragment extends Fragment {
 
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(new FragRecyclerViewAdapter(allergy, getContext()));
+        rv.setAdapter(new FragRecyclerViewAdapter(allergy, getContext(), false));
 
     }
 

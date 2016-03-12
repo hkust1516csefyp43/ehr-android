@@ -84,6 +84,13 @@ public class ListOfCardsFragment extends Fragment {
         return fragment;
     }
 
+    public static ListOfCardsFragment newInstance(String title, String[] preFillItems) {
+        ArrayList<String> sList = new ArrayList<>();
+        for (String s : preFillItems) {
+            sList.add(s);
+        }
+        return newInstance(title, sList);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -150,11 +157,11 @@ public class ListOfCardsFragment extends Fragment {
         if (preFillItems != null) {
             ArrayList<Card> preFillCards = new ArrayList<>();
             for (String s : preFillItems) {
-                preFillCards.add(new Card(s, null));
+                preFillCards.add(new Card(s, "Fill this or flip the switch"));
             }
-            adapter = new FragRecyclerViewAdapter(preFillCards, getContext());
+            adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true);
         } else {
-            adapter = new FragRecyclerViewAdapter(null, getContext());
+            adapter = new FragRecyclerViewAdapter(null, getContext(), false);
         }
         rv.setAdapter(adapter);
         return v;
