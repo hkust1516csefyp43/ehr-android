@@ -107,7 +107,7 @@ public class Const {
     public static final int PATIENT_LIST_ALL_TODAYS_PATIENT = 5;
     public static final String KEY_TITLE = "title";
     public static final String KEY_PRE_FILL_ITEMS = "pre_fill_items";
-    public static final String[] PHYSICAL_EXAMINATION = {"General Appearance", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin"};
+    public static final String[] PHYSICAL_EXAMINATION = {"General Appearance", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Other"};
     public static JSONArray SSID_LIST_ONE2ONE;
     public static String API_LOCAL;
     public static JSONArray LIST_SSID;

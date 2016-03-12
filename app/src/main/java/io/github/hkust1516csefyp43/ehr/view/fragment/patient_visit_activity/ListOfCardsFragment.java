@@ -155,6 +155,7 @@ public class ListOfCardsFragment extends Fragment {
             }
         });
         if (preFillItems != null) {
+            fab.setVisibility(View.GONE);
             ArrayList<Card> preFillCards = new ArrayList<>();
             for (String s : preFillItems) {
                 preFillCards.add(new Card(s, "Fill this or flip the switch"));

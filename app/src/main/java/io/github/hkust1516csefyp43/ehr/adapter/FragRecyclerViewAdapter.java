@@ -62,12 +62,14 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
     }
 
     public void addCards(ArrayList<Card> c) {
-        if (data == null)
-            data = new ArrayList<>();
-        for (Card card : c) {
-            data.add(card);
+        if (c != null) {
+            if (data == null)
+                data = new ArrayList<>();
+            for (Card card : c) {
+                data.add(card);
+            }
+            this.notifyDataSetChanged();
         }
-        this.notifyDataSetChanged();
     }
 
     public int getCardCount() {

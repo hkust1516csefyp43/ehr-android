@@ -3,6 +3,8 @@ package io.github.hkust1516csefyp43.ehr;
 import android.content.Context;
 import android.graphics.Color;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -211,6 +213,24 @@ public class Utils {
             return ascii - 47;
         else
             return 0;
+    }
+
+    /**
+     * Round number
+     *
+     * @param num    is the number you want to round
+     * @param length of decimal places you want (e.g. 2 >> #.##)
+     */
+    public static String roundNumber(double num, int length) {
+        String format = "#";
+        if (length > 0)
+            format += ".";
+        for (int i = 0; i < length; i++) {
+            format += "#";
+        }
+        DecimalFormat df = new DecimalFormat(format);
+        df.setRoundingMode(RoundingMode.CEILING);
+        return df.format(num);
     }
 
     public String getPackageName(Context context) {
