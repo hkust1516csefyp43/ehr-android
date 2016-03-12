@@ -4,6 +4,9 @@
         version="1.0.9"
         versioncode="9">
         <change>Added a lot more panels</change>
+        <change>New logo</change>
+        <change>More persistent data (i.e. rotate screen won't always destroy data)</change>
+        <change>Auto BMI calculation</change>
     </release>
     <release
         version="1.0.8"
