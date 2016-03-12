@@ -113,7 +113,7 @@ public class ListOfCardsFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
         fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
-        // TODO: setOnClickListener
+        //TODO call api and get list of keywords (& cache them)
         ArrayList<String> a = new ArrayList<>();
         a.add("a");
         a.add("ab");

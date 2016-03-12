@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import java.util.ArrayList;
 
@@ -39,12 +40,21 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
     public void onBindViewHolder(FragCardViewHolder holder, int position) {
         if (data != null){
             if (data.size() > 0) {
-                FragCardViewHolder ph = holder;
+                final FragCardViewHolder ph = holder;
                 ph.cardTitle.setText(data.get(position).getCardTitle());
                 ph.cardDescription.setText(data.get(position).getCardDescription());
                 if (sa){
                     ph.cardSwitch.setVisibility(View.VISIBLE);
                     ph.cardSwitch.setChecked(true);
+                    ph.cardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (!isChecked)
+                                ph.cardDescription.setVisibility(View.GONE);
+                            else
+                                ph.cardDescription.setVisibility(View.VISIBLE);
+                        }
+                    });
                 }
             }
         }
