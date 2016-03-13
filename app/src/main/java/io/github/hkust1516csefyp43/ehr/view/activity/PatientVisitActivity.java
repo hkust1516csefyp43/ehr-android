@@ -171,12 +171,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                 return false;
             }
         });
-        menu.findItem(R.id.action_save).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_save).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
         final Context mContext = this;
         menu.findItem(R.id.cc).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -222,6 +216,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                 PatientVisitActivity.this.finish();
             }
         };
+        //TODO save data button
         SingleButtonCallback no = new SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

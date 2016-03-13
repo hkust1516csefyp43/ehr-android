@@ -33,6 +33,15 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
         displaySwitch = d;
     }
 
+    /**
+     * Create a new FragRecyclerViewAdapter
+     *
+     * @param source if there is any default cards
+     * @param c      is the context, nothing special
+     * @param d      is true if you want to display switches on each individual card. It will also A) disable fab and B) TODO disable edit on title
+     * @param sugg   i.e. a list of suggestions for auto complete
+     * @param t      i.e. the title for the dialog
+     */
     public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c, boolean d, @Nullable ArrayList<String> sugg, @Nullable String t) {
         this(source, c, d);
         suggestions = sugg;
@@ -41,17 +50,18 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
 
     @Override
     public FragCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new FragCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_frag, parent, false), context, suggestions, title, this);
+        return new FragCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_frag, parent, false), context, suggestions, title, this, displaySwitch);
     }
 
     @Override
-    public void onBindViewHolder(FragCardViewHolder holder, final int position) {
+    public void onBindViewHolder(final FragCardViewHolder holder, int position) {
         if (data != null){
             if (data.size() > 0) {
                 final FragCardViewHolder ph = holder;
                 ph.cardTitle.setText(data.get(position).getCardTitle());
                 ph.cardDescription.setText(data.get(position).getCardDescription());
                 if (displaySwitch) {
+                    ph.setEditableTitle(false);
                     ph.cardSwitch.setVisibility(View.VISIBLE);
                     ph.cardSwitch.setChecked(data.get(position).isChecked());
                     ph.cardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -59,10 +69,10 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (!isChecked) {
                                 ph.cardDescription.setVisibility(View.GONE);
-                                data.get(position).setChecked(false);
+                                data.get(holder.getAdapterPosition()).setChecked(false);
                             } else {
                                 ph.cardDescription.setVisibility(View.VISIBLE);
-                                data.get(position).setChecked(true);
+                                data.get(holder.getAdapterPosition()).setChecked(true);
                             }
                         }
                     });
