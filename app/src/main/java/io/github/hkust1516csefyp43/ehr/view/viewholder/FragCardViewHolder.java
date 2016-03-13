@@ -33,14 +33,24 @@ public class FragCardViewHolder extends RecyclerView.ViewHolder {
         cardSwitch = (SwitchCompat) view.findViewById(R.id.scNull);
     }
 
-    public FragCardViewHolder(View view, final Context c, final ArrayList<String> suggestions, final String title, final FragRecyclerViewAdapter adapter, final boolean d) {
+    /**
+     * Viewholder for a card in patient visit
+     *
+     * @param view
+     * @param c             for the diaog
+     * @param suggestions   for the dialog
+     * @param title         for the dialog
+     * @param adapter       TODO maybe i should just move the whole dialog out to the adapter level
+     * @param displaySwitch TODO rename this fucking variable
+     */
+    public FragCardViewHolder(View view, final Context c, final ArrayList<String> suggestions, final String title, final FragRecyclerViewAdapter adapter, final boolean displaySwitch) {
         this(view, c);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cardSwitch.isChecked()) {
-                    final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(c, suggestions, title, cardTitle.getText().toString(), cardDescription.getText().toString(), d);
-                    new MaterialDialog.Builder(c)
+                    final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(c, suggestions, title, cardTitle.getText().toString(), cardDescription.getText().toString(), displaySwitch);
+                    MaterialDialog.Builder b = new MaterialDialog.Builder(c)
                             .title("Add")
                             .customView(tetdcv, true)
                             .positiveText("Confirm")
@@ -62,8 +72,17 @@ public class FragCardViewHolder extends RecyclerView.ViewHolder {
                                     tetdcv.clearData();
                                     dialog.dismiss();
                                 }
-                            })
-                            .show();
+                            });
+                    if (!displaySwitch) {
+                        b.onNeutral(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                //TODO delete card
+                                //TODO maybe just move this whole block back out to adapter (use listener?)
+                            }
+                        }).neutralText("Delete");
+                    }
+                    b.show();
                 }
             }
         });

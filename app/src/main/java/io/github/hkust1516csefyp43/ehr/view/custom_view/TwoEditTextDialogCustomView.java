@@ -51,6 +51,14 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
         this.addView(til2);
     }
 
+    /**
+     * @param context
+     * @param suggestions
+     * @param title
+     * @param text1
+     * @param text2
+     * @param displaySwitch
+     */
     public TwoEditTextDialogCustomView(Context context, @Nullable ArrayList<String> suggestions, @Nullable String title, @Nullable String text1, @Nullable String text2, boolean displaySwitch) {
         super(context, null, R.style.AppTheme2);
         this.setOrientation(VERTICAL);
