@@ -16,8 +16,10 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -70,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private LinearLayout mSlumsView;
+    private ContentLoadingProgressBar clppb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,24 +84,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
         mLoginFormView = findViewById(R.id.login_form);
         mSlumsView = (LinearLayout) findViewById(R.id.slums_list);
-
+        clppb = (ContentLoadingProgressBar) findViewById(R.id.loading_slums);
 
         //TODO call api and get list of slums (just names)
-        Button csButton = new Button(this);
+        //TODO GET http://ehr-testing.herokuapp.com/v2/location/clinics/
+        final Button csButton = new Button(this);
         csButton.setText("Cannal Side");
-        Button hawButton = new Button(this);
+        final Button hawButton = new Button(this);
         hawButton.setText("House Above water");
-        Button bsButton = new Button(this);
+        final Button bsButton = new Button(this);
         bsButton.setText("Banteay Slaek");
-        Button smcButton = new Button(this);
+        final Button smcButton = new Button(this);
         smcButton.setText("Samroeng Mean Chey");
-        Button clinicButton = new Button(this);
+        final Button clinicButton = new Button(this);
         clinicButton.setText("Clinic@Grace");
-        mSlumsView.addView(clinicButton);
-        mSlumsView.addView(bsButton);
-        mSlumsView.addView(csButton);
-        mSlumsView.addView(hawButton);
-        mSlumsView.addView(smcButton);
+        Log.d("qqq161", "1");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("qqq161", "2");
+                clppb.setVisibility(View.GONE);
+                mSlumsView.setVisibility(View.VISIBLE);
+                mSlumsView.addView(clinicButton);
+                mSlumsView.addView(bsButton);
+                mSlumsView.addView(csButton);
+                mSlumsView.addView(hawButton);
+                mSlumsView.addView(smcButton);
+            }
+        }, 4000);
 
         setAboutButton();
 

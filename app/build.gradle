@@ -43,6 +43,10 @@ android {
             applicationId "io.github.hkust1516csefyp43.ehr.one2onecambodia"
             versionName "1.0.9o"
         }
+        staging {
+            applicationId "io.github.hkust1516csefyp43.ehr.demo"
+            versionName "1.0.9t"
+        }
     }
 }
 

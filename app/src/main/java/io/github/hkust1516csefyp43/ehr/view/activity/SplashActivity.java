@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -45,10 +46,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        loadLogo();
-        showLoading();
         behindSplashIconAsyncTask bsiat = new behindSplashIconAsyncTask(this);
-        bsiat.execute();
+        bsiat.execute();                                                        //Run non-UI stuff on background thread
     }
 
     private void emergencyFix() {
@@ -76,10 +75,15 @@ public class SplashActivity extends AppCompatActivity {
         Glide.with(this).load(logo).diskCacheStrategy(DiskCacheStrategy.ALL).fallback(R.drawable.ehr_logo).into(iv);
     }
 
-    public void showLoading() {
+    public void showLoadingSpinner() {
         //no need to dismiss, just destory the whole activity
         ProgressBar pb = (ProgressBar) findViewById(R.id.loading_wheel);
         pb.setVisibility(View.VISIBLE);
+    }
+
+    public void hideLoadingSpinner() {
+        ProgressBar pb = (ProgressBar) findViewById(R.id.loading_wheel);
+        pb.setVisibility(View.GONE);
     }
 
     public String noHostInitiation() throws JSONException {
@@ -140,7 +144,7 @@ public class SplashActivity extends AppCompatActivity {
                     if (Const.LIST_SSID != null && Const.LIST_SSID.length() > 0) {
                         do {
                             try {
-                                aSSID = "\"" + Const.LIST_SSID.getString(i) + "\"";                 //the stupid getSSID method pre and suffix " to the ssid -_-
+                                aSSID = "\"" + Const.LIST_SSID.getString(i) + "\"";                 //the stupid getSSID method pre and suffix '"' to the ssid -_-
                                 Log.d("qqq113", aSSID + " vs " + thisSSID);
                                 if (aSSID.compareTo(thisSSID) == 0)
                                     found = true;
@@ -205,6 +209,7 @@ public class SplashActivity extends AppCompatActivity {
                     b.show();
                 }
             });
+            Looper.prepare();
             b.show();
         }
     }
@@ -215,6 +220,13 @@ public class SplashActivity extends AppCompatActivity {
 
         private behindSplashIconAsyncTask(Context c) {
             context = c;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loadLogo();
+            showLoadingSpinner();
         }
 
         @Override
@@ -232,6 +244,7 @@ public class SplashActivity extends AppCompatActivity {
             }
             getHosts(serverConfigString);
             makeSureSomeFormOfNetworkAccessIsAvailable();
+            user = Cache.getUser(context);
             return null;
         }
 
@@ -239,30 +252,24 @@ public class SplashActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             //TODO start the correct activity
-            user = Cache.getUser(context);
             //TODO check if user is still valid (1. compare with device time 2. try with server(s))
+            final Class c;
             if (user == null) {
                 //go to login screen
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
-                        startActivity(mainIntent);
-                        finish();
-                        overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
-                    }
-                }, Const.SPLASH_DISPLAY_LENGTH);
+                c = LoginActivity.class;
             } else {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent mainIntent = new Intent(SplashActivity.this, TwoRecyclerViewPatientsActivity.class);
-                        startActivity(mainIntent);
-                        finish();
-                        overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
-                    }
-                }, Const.SPLASH_DISPLAY_LENGTH);
+                c = TwoRecyclerViewPatientsActivity.class;
             }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    hideLoadingSpinner();
+                    Intent mainIntent = new Intent(SplashActivity.this, c);
+                    startActivity(mainIntent);
+                    finish();
+                    overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
+                }
+            }, Const.SPLASH_DISPLAY_LENGTH);
         }
     }
 }

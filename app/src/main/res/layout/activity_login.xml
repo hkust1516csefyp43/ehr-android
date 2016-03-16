@@ -53,9 +53,15 @@
                     android:text="@string/ehr"
                     android:textSize="64sp"/>
 
-                <!--add a about imageview here-->
-
             </RelativeLayout>
+
+            <android.support.v4.widget.ContentLoadingProgressBar
+                android:id="@+id/loading_slums"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="visible"/>
 
             <HorizontalScrollView
                 android:id="@+id/hsv"
@@ -66,8 +72,8 @@
                     android:id="@+id/slums_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                 </LinearLayout>
 

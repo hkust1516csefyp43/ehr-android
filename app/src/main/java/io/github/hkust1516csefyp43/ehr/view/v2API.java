@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.BloodType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.SimplifiedClinic;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -14,6 +15,9 @@ import retrofit.http.Query;
  * Created by Louis on 15/3/16.
  */
 public interface v2API {
+
+    @GET("v2/location/clinics")
+    Call<List<SimplifiedClinic>> getSimplifiedClinics();
 
     /**
      * TODO age, age_ot and age_yt
