@@ -18,10 +18,10 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.PatientCardRecyclerViewAdapter;
-import io.github.hkust1516csefyp43.ehr.apiEndpointInterface;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
+import io.github.hkust1516csefyp43.ehr.v1API;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import retrofit.Call;
@@ -120,7 +120,7 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
                 .addConverterFactory(GsonConverterFactory.create(Const.gson1))
                 .client(ohc1)
                 .build();
-        apiEndpointInterface apiService = retrofit.create(apiEndpointInterface.class);
+        v1API apiService = retrofit.create(v1API.class);
         //TODO only get patients where next_station = consultation
         //TODO different Call depending on the station variable >>1/2/3
         final Call<List<Patient>> call2 = apiService.getPatients("hihi", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);

@@ -2,21 +2,21 @@ package io.github.hkust1516csefyp43.ehr;
 
 import java.util.List;
 
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.BlockedDevice;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.ChiefComplain;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Consultation;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Country;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Inventory;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Medication;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Patient;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Pharmacy;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Role;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Slum;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Status;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Token;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Triage;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.User;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Visit;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.BlockedDevice;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.ChiefComplain;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Consultation;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Country;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Inventory;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Medication;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Pharmacy;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Role;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Slum;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Status;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Token;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Triage;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.User;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Visit;
 import retrofit.Call;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
@@ -26,9 +26,9 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 
 /**
- * TODO define each api calls
+ * TODO switch to v2
  */
-public interface apiEndpointInterface {
+public interface v1API {
     // Request method and URL specified in the annotation
     // Callback for the parsed response is the last parameter
 

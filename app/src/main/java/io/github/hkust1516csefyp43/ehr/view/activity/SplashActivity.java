@@ -1,7 +1,9 @@
 package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -24,7 +26,7 @@ import org.json.JSONObject;
 import io.github.hkust1516csefyp43.ehr.BuildConfig;
 import io.github.hkust1516csefyp43.ehr.Connectivity;
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.User;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.User;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 
@@ -43,47 +45,10 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        emergencyFix();
         loadLogo();
         showLoading();
-        serverConfig = null;
-        String serverConfigString = null;
-        try {
-            serverConfigString = Cache.getConfig(this);
-            if (serverConfigString == null) {
-                serverConfigString = noHostInitiation();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        getHosts(serverConfigString);
-        makeSureSomeFormOfNetworkAccessIsAvailable();
-
-
-        user = Cache.getUser(this);
-        //TODO check if user is still valid (1. compare with device time 2. try with server(s))
-        if (user == null) {
-            //go to login screen
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
-                    startActivity(mainIntent);
-                    finish();
-                    overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
-                }
-            }, Const.SPLASH_DISPLAY_LENGTH);
-        } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent mainIntent = new Intent(SplashActivity.this, TwoRecyclerViewPatientsActivity.class);
-                    startActivity(mainIntent);
-                    finish();
-                    overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
-                }
-            }, Const.SPLASH_DISPLAY_LENGTH);
-        }
+        behindSplashIconAsyncTask bsiat = new behindSplashIconAsyncTask(this);
+        bsiat.execute();
     }
 
     private void emergencyFix() {
@@ -112,17 +77,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void showLoading() {
-        //TODO show spinner after 4 seconds
         //no need to dismiss, just destory the whole activity
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ProgressBar pb = (ProgressBar) findViewById(R.id.loading_wheel);
-                if (pb != null) {
-                    pb.setVisibility(View.VISIBLE);
-                }
-            }
-        }, Const.SPLASH_DISPLAY_LENGTH);
+        ProgressBar pb = (ProgressBar) findViewById(R.id.loading_wheel);
+        pb.setVisibility(View.VISIBLE);
     }
 
     public String noHostInitiation() throws JSONException {
@@ -253,5 +210,59 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
+    private class behindSplashIconAsyncTask extends AsyncTask<Void, Void, Void> {
+        Context context;
 
+        private behindSplashIconAsyncTask(Context c) {
+            context = c;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            emergencyFix();
+            serverConfig = null;
+            String serverConfigString = null;
+            try {
+                serverConfigString = Cache.getConfig(context);
+                if (serverConfigString == null) {
+                    serverConfigString = noHostInitiation();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            getHosts(serverConfigString);
+            makeSureSomeFormOfNetworkAccessIsAvailable();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //TODO start the correct activity
+            user = Cache.getUser(context);
+            //TODO check if user is still valid (1. compare with device time 2. try with server(s))
+            if (user == null) {
+                //go to login screen
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(mainIntent);
+                        finish();
+                        overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
+                    }
+                }, Const.SPLASH_DISPLAY_LENGTH);
+            } else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent mainIntent = new Intent(SplashActivity.this, TwoRecyclerViewPatientsActivity.class);
+                        startActivity(mainIntent);
+                        finish();
+                        overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
+                    }
+                }, Const.SPLASH_DISPLAY_LENGTH);
+            }
+        }
+    }
 }

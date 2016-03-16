@@ -15,7 +15,7 @@
     <string name="logout">Logout</string>
 
     <string name="queue">Finished Triage</string>
-    <string name="finished">In this slum</string>
+    <string name="finished">In this clinic</string>
     <string name="admin">Admin</string>
     <string name="title_activity_login">Sign in</string>
 

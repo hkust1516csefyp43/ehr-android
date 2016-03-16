@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Random;
 
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 
 /**
  * Created by Louis on 5/11/15.

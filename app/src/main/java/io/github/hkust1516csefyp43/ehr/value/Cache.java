@@ -13,8 +13,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Patient;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.User;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.User;
 
 /**
  * Created by Louis on 5/11/15.

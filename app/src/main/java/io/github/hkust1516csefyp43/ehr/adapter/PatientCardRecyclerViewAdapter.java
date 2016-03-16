@@ -17,7 +17,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.CircleTransform;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.Utils;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.view.viewholder.patientCardViewHolder;
 

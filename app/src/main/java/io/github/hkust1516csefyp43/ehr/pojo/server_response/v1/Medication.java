@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr.pojo.server_response;
+package io.github.hkust1516csefyp43.ehr.pojo.server_response.v1;
 
 import java.io.Serializable;
 
