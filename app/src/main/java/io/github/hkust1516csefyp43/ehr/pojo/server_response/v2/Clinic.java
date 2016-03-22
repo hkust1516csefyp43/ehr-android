@@ -2,10 +2,12 @@ package io.github.hkust1516csefyp43.ehr.pojo.server_response.v2;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.github.hkust1516csefyp43.ehr.haveTitle;
+
 /**
  * Created by Louis on 22/3/16.
  */
-public class Clinic {
+public class Clinic implements haveTitle {
     @SerializedName("clinic_id")
     private String clinicId;
     @SerializedName("english_name")
@@ -30,5 +32,10 @@ public class Clinic {
 
     public void setClinicId(String clinicId) {
         this.clinicId = clinicId;
+    }
+
+    @Override
+    public String getTitle() {
+        return englishName;
     }
 }

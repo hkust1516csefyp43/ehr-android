@@ -35,7 +35,6 @@ import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
-import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 
 /**
@@ -211,7 +210,7 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
                 e.printStackTrace();
             }
         }
-        Cache.saveFragmentData(getContext(), Const.KEY_PERSONAL_DATA, personalData);
+//        Cache.saveFragmentData(getContext(), Const.KEY_PERSONAL_DATA, personalData);
     }
 
     @Override

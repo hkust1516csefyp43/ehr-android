@@ -92,6 +92,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("qqq181", "" + position);
                 //TODO new activity
+                openStaticItemList();
             }
         });
         lv.setAdapter(aas);
@@ -376,6 +377,12 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+    }
+
+    private void openStaticItemList() {
+        //TODO pass extra param to specify clinic/keyword/suitcase/etc
+        Intent intent = new Intent(this, StaticItemListActivity.class);
+        startActivity(intent);
     }
 
     private void openProfile() {

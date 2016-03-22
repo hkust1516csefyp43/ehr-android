@@ -109,6 +109,10 @@ public class Const {
     public static final String KEY_PRE_FILL_ITEMS = "pre_fill_items";
     public static final String[] DEFAULT_PHYSICAL_EXAMINATION = {"General Appearance", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Other"};
     public static final String[] DEFAULT_REVICE_OF_SYSTEM = {"EENT", "Raspiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Locomotor", "Neurology"};
+    public static final String KEY_CLINICS = "list_of_clinics";
+    public static final int STATIC_CLINIC = 0;
+    public static final int STATIC_KEYWORD = 1;
+    public static final int STATIC_SUITCASE = 2;
     public static JSONArray SSID_LIST_ONE2ONE;
     public static String API_LOCAL;
     public static JSONArray LIST_SSID;
@@ -134,4 +138,5 @@ public class Const {
     public static void setListSSID(JSONArray ssid) {
         LIST_SSID = ssid;
     }
+
 }

@@ -21,7 +21,6 @@ public interface v2API {
     /**
      * Get list of clinics without token >> clinic_id & english_name only
      * No param/header/query/body needed
-     *
      * @return
      */
     @GET("v2/clinics")
@@ -29,7 +28,6 @@ public interface v2API {
 
     /**
      * Get list of clinics
-     *
      * @param token >> access token
      * @return
      */
@@ -40,15 +38,15 @@ public interface v2API {
             @Query("is_active") Boolean isActive,
             @Query("english_name") String englishName,
             @Query("native_name") String nativeName,
-            @Query("latitude") double latitude,
-            @Query("longitude") double longitude,
+            @Query("latitude") Double latitude,
+            @Query("longitude") Double longitude,
             @Query("create_timestamp") String createTimestamp,
             @Query("remark") String remark,
             @Query("is_global") Boolean isGlobal,
             @Query("suitcase_id") String suitcaseId,
-            @Query("offset") int offset,
+            @Query("offset") Integer offset,
             @Query("sort_by") String sortBy,
-            @Query("limit") int limit
+            @Query("limit") Integer limit
     );
 
     @GET("v2/clinics/{id}")

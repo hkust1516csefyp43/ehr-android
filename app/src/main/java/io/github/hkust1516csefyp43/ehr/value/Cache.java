@@ -15,6 +15,7 @@ import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.User;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 
 /**
  * Created by Louis on 5/11/15.
@@ -114,28 +115,8 @@ public class Cache {
     }
 
     //==============================<Current patient>==================================
+    //TODO use onSaveInstanceState and onActivityCreated to save data
 
-    /**
-     * Store data of a fragment (e.g. The dozens of fragments in the viewpager of PatientVisitActivity)
-     * @param context is needed to access the SharedPreference
-     * @param key of the fragment. Store the key in Const and pass that
-     * @param json of the fragment, just the data, nothing else
-     */
-    public static void saveFragmentData(Context context, String key, JSONObject json) {
-        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
-        prefs.edit().putString(key, json.toString()).apply();
-    }
-
-    /**
-     * Get data of a fragment (e.g. The dozens of fragments in the viewpager of PatientVisitActivity)
-     * @param context is needed to access the SharedPreference
-     * @param key of the fragment. Store the key in Const and pass that
-     * @return a String (parse it through JSONObject) of the data, or {@code null} if not found
-     */
-    public static String getFragmentData(Context context, String key) {
-        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
-        return prefs.getString(key, null);
-    }
 
     //==============================</Current patient>==================================
 
@@ -167,5 +148,33 @@ public class Cache {
         SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
         return prefs.getInt(Const.KEY_EMERGENCY_FIX, 0);
     }
+
+    //==============================<Static stuff>==================================
+
+    public static void setClinics(Context context, List<Clinic> clinics) {
+        Gson gson = new GsonBuilder().create();
+        String jsonString = gson.toJson(clinics);
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putString(Const.KEY_CLINICS, jsonString).apply();
+    }
+
+    private static List<Clinic> getClinics(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        String value = prefs.getString(Const.KEY_CLINICS, null);
+        if (value != null) {
+            try {
+                List<Clinic> lp = new Gson().fromJson(value, new TypeToken<List<Clinic>>() {
+                }.getType());
+                return lp;
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+                Log.d("qqq131", value);
+                //TODO for some reason it occasionally got incorrect syntax stuff -_-
+            }
+        }
+        return null;
+    }
+
+    //==============================</Static stuff>==================================
 
 }
