@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -82,10 +83,17 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             cl.getLogDialog().show();
         }
 
-        String[] test = {"Slums", "Countries", "Chief complains", "Diagnosis", "Fingers", "Medicines", "Status", "Users", "Synchronization"};
+        String[] test = {"Blood type", "Clinics", "Countries", "Gender", "Keywords", "Medicines", "Suitcase", "Server status", "Users", "Synchronization"};
 
         ArrayAdapter<String> aas = new ArrayAdapter<String>(this, R.layout.list_item, R.id.label, test);
         lv = (ListView) findViewById(R.id.listview);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("qqq181", "" + position);
+                //TODO new activity
+            }
+        });
         lv.setAdapter(aas);
         lv.setVisibility(View.GONE);
 
@@ -97,7 +105,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             setSupportActionBar(tb);
             tb.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_color));
             tb.setCollapsible(true);
-            tb.setSubtitle("Cannal Side"); //TODO get it dynamically
+            tb.setSubtitle("Cannal Side"); //TODO get it from cache (user login need to select clinic)
             tb.setTitleTextColor(ContextCompat.getColor(this, R.color.text_color));
             tb.setSubtitleTextColor(ContextCompat.getColor(this, R.color.text_color));
         }
@@ -320,7 +328,8 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_search).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        //TODO if notification change it to gmd_notifications
+        menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_notifications_none).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Answers.getInstance().logSearch(new SearchEvent());

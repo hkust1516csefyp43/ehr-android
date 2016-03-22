@@ -34,14 +34,23 @@ import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
+import com.squareup.okhttp.OkHttpClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.User;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
+import io.github.hkust1516csefyp43.ehr.view.v2API;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -88,30 +97,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //TODO call api and get list of slums (just names)
         //TODO GET http://ehr-testing.herokuapp.com/v2/location/clinics/
-        final Button csButton = new Button(this);
-        csButton.setText("Cannal Side");
-        final Button hawButton = new Button(this);
-        hawButton.setText("House Above water");
-        final Button bsButton = new Button(this);
-        bsButton.setText("Banteay Slaek");
-        final Button smcButton = new Button(this);
-        smcButton.setText("Samroeng Mean Chey");
-        final Button clinicButton = new Button(this);
-        clinicButton.setText("Clinic@Grace");
-        Log.d("qqq161", "1");
-        new Handler().postDelayed(new Runnable() {
+        OkHttpClient ohc1 = new OkHttpClient();
+        ohc1.setReadTimeout(1, TimeUnit.MINUTES);
+        ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(Const.API_ONE2ONE_HEROKU)
+                .addConverterFactory(GsonConverterFactory.create(Const.gson1))
+                .client(ohc1)
+                .build();
+        v2API apiService = retrofit.create(v2API.class);
+        Call<List<Clinic>> clinicListCall = apiService.getSimplifiedClinics();
+        clinicListCall.enqueue(new Callback<List<Clinic>>() {
             @Override
-            public void run() {
-                Log.d("qqq161", "2");
-                clppb.setVisibility(View.GONE);
-                mSlumsView.setVisibility(View.VISIBLE);
-                mSlumsView.addView(clinicButton);
-                mSlumsView.addView(bsButton);
-                mSlumsView.addView(csButton);
-                mSlumsView.addView(hawButton);
-                mSlumsView.addView(smcButton);
+            public void onResponse(Response<List<Clinic>> response, Retrofit retrofit) {
+                Log.d("qqq27", "receiving: " + response.code() + " " + response.message() + " " + response.body());
+                if (response.body() != null && response.body().size() > 0) {
+                    clppb.setVisibility(View.GONE);
+                    mSlumsView.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < response.body().size(); i++) {
+                        Button button = new Button(getBaseContext());
+                        button.setText(response.body().get(i).getEnglishName());
+                        mSlumsView.addView(button);
+                    }
+                }
             }
-        }, 4000);
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.d("qqq27", "receives nothing/error");
+            }
+        });
 
         setAboutButton();
 

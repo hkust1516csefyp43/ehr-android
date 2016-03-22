@@ -263,9 +263,9 @@ public class SplashActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    hideLoadingSpinner();
                     Intent mainIntent = new Intent(SplashActivity.this, c);
                     startActivity(mainIntent);
+                    hideLoadingSpinner();
                     finish();
                     overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
                 }
