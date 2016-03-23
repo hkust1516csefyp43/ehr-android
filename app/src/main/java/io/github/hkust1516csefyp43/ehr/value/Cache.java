@@ -15,6 +15,7 @@ import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.User;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.BloodType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 
 /**
@@ -23,7 +24,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 
 public class Cache {
 
-    //==============================<Current user>==================================
+    //==============================<Currently>==================================
 
     public static void setUser(Context context, User user) {
         Gson gson = new GsonBuilder().create();
@@ -47,7 +48,11 @@ public class Cache {
         prefs.edit().remove(Const.KEY_CURRENT_USER).apply();
     }
 
-    //==============================</Current user>==================================
+    public static void setCurrentClinicId(Context context) {
+        //TODO save id only (to put in back to each api)
+    }
+
+    //==============================</Currently>==================================
 
     //The basic functions: get, set and delete
     /**
@@ -164,6 +169,30 @@ public class Cache {
         if (value != null) {
             try {
                 List<Clinic> lp = new Gson().fromJson(value, new TypeToken<List<Clinic>>() {
+                }.getType());
+                return lp;
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+                Log.d("qqq131", value);
+                //TODO for some reason it occasionally got incorrect syntax stuff -_-
+            }
+        }
+        return null;
+    }
+
+    public static void setBloodTypes(Context context, List<BloodType> bt) {
+        Gson gson = new GsonBuilder().create();
+        String jsonString = gson.toJson(bt);
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putString(Const.KEY_BLOOD_TYPES, jsonString).apply();
+    }
+
+    private static List<BloodType> getBloodTypes(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        String value = prefs.getString(Const.KEY_BLOOD_TYPES, null);
+        if (value != null) {
+            try {
+                List<BloodType> lp = new Gson().fromJson(value, new TypeToken<List<BloodType>>() {
                 }.getType());
                 return lp;
             } catch (JsonSyntaxException e) {

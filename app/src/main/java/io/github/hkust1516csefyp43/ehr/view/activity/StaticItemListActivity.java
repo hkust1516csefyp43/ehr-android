@@ -1,7 +1,9 @@
 package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.StaticItemAdapter;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.BloodType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
@@ -43,6 +46,7 @@ public class StaticItemListActivity extends AppCompatActivity {
     ProgressBar pb;
     RelativeLayout rl;
     DragScrollBar d;
+    int whichOne;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,22 @@ public class StaticItemListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_static_item_list);
         super.setTheme(R.style.AppTheme2);
 
+        Intent i = getIntent();
+        if (i != null) {
+            whichOne = i.getIntExtra(Const.KEY_WHICH_STATIC, 0);
+            Log.d("qqq271", "" + whichOne);
+        } else {
+            Log.d("qqq271", "b");
+        }
+
+
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+            ab.setTitle("Some text");
+        }
 
         rl = (RelativeLayout) findViewById(R.id.theWholeThing);
         rv = (RecyclerView) findViewById(R.id.recyclerView);
@@ -69,28 +88,66 @@ public class StaticItemListActivity extends AppCompatActivity {
                 .client(ohc1)
                 .build();
         v2API apiService = retrofit.create(v2API.class);
-        Call<List<Clinic>> clinicListCall = apiService.getClinics("1", null, null, null, null, null, null, null, null, null, null, null, null, null);
-        clinicListCall.enqueue(new Callback<List<Clinic>>() {
-            @Override
-            public void onResponse(Response<List<Clinic>> response, Retrofit retrofit) {
-                Log.d("qqq27", "receiving: " + response.code() + " " + response.message() + " " + response.body());
-                if (response.body() != null && response.body().size() > 0) {
-                    //TODO
-                    Cache.setClinics(getBaseContext(), response.body());
-                    rv.setAdapter(StaticItemAdapter.newInstance(getBaseContext(), response.body(), Const.STATIC_CLINIC));
-                    rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-                    pb.setVisibility(View.GONE);
-                    rv.setVisibility(View.VISIBLE);
-                    d = new DragScrollBar(getBaseContext(), rv, true);
-                    d.addIndicator(new AlphabetIndicator(getBaseContext()), true);
-                }
-            }
+        Log.d("qqq273", "b");
+        switch (whichOne) {
+            case Const.STATIC_CLINIC:
+                Call<List<Clinic>> clinicListCall = apiService.getClinics("1", null, null, null, null, null, null, null, null, null, null, null, null, null);
+                clinicListCall.enqueue(new Callback<List<Clinic>>() {
+                    @Override
+                    public void onResponse(Response<List<Clinic>> response, Retrofit retrofit) {
+                        Log.d("qqq27", "receiving: " + response.code() + " " + response.message() + " " + response.body());
+                        if (response.body() != null && response.body().size() > 0) {
+                            Cache.setClinics(getBaseContext(), response.body());
+                            rv.setAdapter(StaticItemAdapter.newInstance(getBaseContext(), response.body(), Const.STATIC_CLINIC));
+                            rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                            pb.setVisibility(View.GONE);
+                            rv.setVisibility(View.VISIBLE);
+                            d = new DragScrollBar(getBaseContext(), rv, true);
+                            d.addIndicator(new AlphabetIndicator(getBaseContext()), true);
+                        }
+                    }
 
-            @Override
-            public void onFailure(Throwable t) {
-                Log.d("qqq27", "receives nothing/error");
-            }
-        });
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Log.d("qqq27", "receives nothing/error");
+                    }
+                });
+                break;
+            case Const.STATIC_BLOOD_TYPE:
+                Log.d("qqq273", "a");
+                Call<List<BloodType>> bloodTypeListCall = apiService.getBloodTypes("1", null);
+                bloodTypeListCall.enqueue(new Callback<List<BloodType>>() {
+                    @Override
+                    public void onResponse(Response<List<BloodType>> response, Retrofit retrofit) {
+                        Log.d("qqq27", "receiving: " + response.code() + " " + response.message() + " " + response.body());
+                        if (response.body() != null && response.body().size() > 0) {
+                            Cache.setBloodTypes(getBaseContext(), response.body());
+                            rv.setAdapter(StaticItemAdapter.newInstance(getBaseContext(), response.body(), Const.STATIC_BLOOD_TYPE));
+                            rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                            pb.setVisibility(View.GONE);
+                            rv.setVisibility(View.VISIBLE);
+                            d = new DragScrollBar(getBaseContext(), rv, true);
+                            d.addIndicator(new AlphabetIndicator(getBaseContext()), true);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Log.d("qqq27", "receives nothing/error");
+                    }
+                });
+                break;
+            case Const.STATIC_COUNTRIES:
+                break;
+            case Const.STATIC_GENDER:
+                break;
+            case Const.STATIC_KEYWORD:
+                break;
+            case Const.STATIC_SUITCASE:
+                break;
+            case Const.STATIC_USERS:
+                break;
+        }
     }
 
     @Override

@@ -113,6 +113,12 @@ public class Const {
     public static final int STATIC_CLINIC = 0;
     public static final int STATIC_KEYWORD = 1;
     public static final int STATIC_SUITCASE = 2;
+    public static final int STATIC_BLOOD_TYPE = 3;
+    public static final int STATIC_COUNTRIES = 4;
+    public static final int STATIC_GENDER = 5;
+    public static final int STATIC_USERS = 6;
+    public static final String KEY_WHICH_STATIC = "key_which_static";
+    public static final String KEY_BLOOD_TYPES = "kwy_blood_type";
     public static JSONArray SSID_LIST_ONE2ONE;
     public static String API_LOCAL;
     public static JSONArray LIST_SSID;

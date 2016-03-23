@@ -82,7 +82,8 @@ public interface v2API {
 
     @GET("v2/blood_types/")
     Call<List<BloodType>> getBloodTypes(
-            @Header("token") String token
+            @Header("token") String token,
+            @Query("blood_type") String bloodType
     );
 
     @GET("v2/blood_types/{id}")

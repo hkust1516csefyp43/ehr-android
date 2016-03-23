@@ -10,6 +10,7 @@ import com.turingtechnologies.materialscrollbar.INameableAdapter;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.BloodType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Suitcase;
@@ -24,6 +25,7 @@ public class StaticItemAdapter extends RecyclerView.Adapter<StaticItemViewHolder
     List<Clinic> listOfClinics;
     List<Keyword> listOfKeywords;
     List<Suitcase> listOfSuitcases;
+    List<BloodType> listOfBloodTypes;
     int whichOne;
 
     public StaticItemAdapter(Context c, int w) {
@@ -43,6 +45,9 @@ public class StaticItemAdapter extends RecyclerView.Adapter<StaticItemViewHolder
             case Const.STATIC_SUITCASE:
                 sia.listOfSuitcases = l;
                 break;
+            case Const.STATIC_BLOOD_TYPE:
+                sia.listOfBloodTypes = l;
+                break;
         }
         return sia;
     }
@@ -60,8 +65,14 @@ public class StaticItemAdapter extends RecyclerView.Adapter<StaticItemViewHolder
                     holder.tvTitle.setText(listOfClinics.get(position).getTitle());
                 break;
             case Const.STATIC_KEYWORD:
+//                if (listOfKeywords != null)
+//                    holder.tvTitle.setText(listOfKeywords.get(position).getTitle());
                 break;
             case Const.STATIC_SUITCASE:
+                break;
+            case Const.STATIC_BLOOD_TYPE:
+                if (listOfBloodTypes != null)
+                    holder.tvTitle.setText(listOfBloodTypes.get(position).getTitle());
                 break;
         }
     }
@@ -78,42 +89,15 @@ public class StaticItemAdapter extends RecyclerView.Adapter<StaticItemViewHolder
                 break;
             case Const.STATIC_SUITCASE:
                 break;
+            case Const.STATIC_BLOOD_TYPE:
+                if (listOfBloodTypes != null)
+                    return listOfBloodTypes.size();
+                else
+                    return 0;
             default:
                 return 0;
         }
         return 0;
-    }
-
-    public List<Clinic> getListOfClinics() {
-        return listOfClinics;
-    }
-
-    public void setListOfClinics(List<Clinic> listOfClinics) {
-        this.listOfClinics = listOfClinics;
-    }
-
-    public List<Keyword> getListOfKeywords() {
-        return listOfKeywords;
-    }
-
-    public void setListOfKeywords(List<Keyword> listOfKeywords) {
-        this.listOfKeywords = listOfKeywords;
-    }
-
-    public List<Suitcase> getListOfSuitcases() {
-        return listOfSuitcases;
-    }
-
-    public void setListOfSuitcases(List<Suitcase> listOfSuitcases) {
-        this.listOfSuitcases = listOfSuitcases;
-    }
-
-    public int getWhichOne() {
-        return whichOne;
-    }
-
-    public void setWhichOne(int whichOne) {
-        this.whichOne = whichOne;
     }
 
     @Override
@@ -122,10 +106,14 @@ public class StaticItemAdapter extends RecyclerView.Adapter<StaticItemViewHolder
         switch (whichOne) {
             case Const.STATIC_CLINIC:
                 if (listOfClinics != null)
-                    c = listOfClinics.get(element).getEnglishName().charAt(0);
+                    c = listOfClinics.get(element).getTitle().charAt(0);
             case Const.STATIC_KEYWORD:
                 break;
             case Const.STATIC_SUITCASE:
+                break;
+            case Const.STATIC_BLOOD_TYPE:
+                if (listOfBloodTypes != null)
+                    c = listOfBloodTypes.get(element).getTitle().charAt(0);
                 break;
             default:
                 return 0;

@@ -92,7 +92,35 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("qqq181", "" + position);
                 //TODO new activity
-                openStaticItemList();
+                switch (position) {
+                    case 0:
+                        openStaticItemList(Const.STATIC_BLOOD_TYPE);
+                        break;
+                    case 1:
+                        openStaticItemList(Const.STATIC_CLINIC);
+                        break;
+                    case 2:
+                        openStaticItemList(Const.STATIC_COUNTRIES);
+                        break;
+                    case 3:
+                        openStaticItemList(Const.STATIC_GENDER);
+                        break;
+                    case 4:
+                        openStaticItemList(Const.STATIC_KEYWORD);
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        openStaticItemList(Const.STATIC_SUITCASE);
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        openStaticItemList(Const.STATIC_USERS);
+                        break;
+                    case 9:
+                        break;
+                }
             }
         });
         lv.setAdapter(aas);
@@ -253,8 +281,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                         break;
                     case Const.ID_SETTINGS:
                         openSettings();
-//                        getSupportActionBar().setTitle(getResources().getString(R.string.settings));
-//                        getSupportActionBar().setSubtitle(null);
                         Answers.getInstance().logContentView(new ContentViewEvent()
                                 .putContentName("Settings")
                                 .putContentType("Settings & About")
@@ -262,8 +288,6 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                         break;
                     case Const.ID_ABOUT:
                         openAbout();
-//                                getSupportActionBar().setTitle(getResources().getString(R.string.about));
-//                                getSupportActionBar().setSubtitle(null);
                         getSupportActionBar().setTitle(getResources().getString(R.string.about));
                         getSupportActionBar().setSubtitle(null);
                         Answers.getInstance().logContentView(new ContentViewEvent()
@@ -379,9 +403,9 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     public void onFragmentInteraction(Uri uri) {
     }
 
-    private void openStaticItemList() {
-        //TODO pass extra param to specify clinic/keyword/suitcase/etc
+    private void openStaticItemList(int which) {
         Intent intent = new Intent(this, StaticItemListActivity.class);
+        intent.putExtra(Const.KEY_WHICH_STATIC, which);
         startActivity(intent);
     }
 

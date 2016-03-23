@@ -72,13 +72,12 @@ public class Utils {
     }
 
     /**
-     * @param year  of birthday
-     * @param month of birthday
-     * @param day   of birthday
+     * @param year  of birthday (the normal 4 digit format that human uses)
+     * @param month of birthday (1-12, not 0-11)
+     * @param day   of birthday (1-31)
      * @return a string of age description:
      */
     public static String birthdayToAgeString(int year, int month, int day) {
-        //TODO check if date is valid (in the past & not too old)
         GregorianCalendar n = new GregorianCalendar();
         if (year < 1800 || month < 1 || month > 12 || day < 1 || day > 31 || new GregorianCalendar(year, month - 1, day).compareTo(n) != -1) {
             return "Invalid birthday";
@@ -88,10 +87,8 @@ public class Utils {
             long millDiff = now - bd;
             if (millDiff < (48 * HOUR))
                 return "1 day old";
-            else if (millDiff < (14 * DAY))
-                return (millDiff / DAY + " days old");
             else if (millDiff < (MONTH))
-                return (millDiff / WEEK + " weeks old");
+                return (millDiff / DAY + " days old");
             else if (millDiff < (2 * MONTH))
                 return "1 month old";
             else if (millDiff < (2 * YEAR))
