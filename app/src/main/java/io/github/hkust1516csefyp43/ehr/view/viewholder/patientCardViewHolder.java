@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
+import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
 
@@ -21,8 +22,9 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
     public TextView subtitle;
     public ImageView proPic;
     Patient patient;
+    int whichStation;
 
-    public patientCardViewHolder(View view, final Context context) {
+    public patientCardViewHolder(View view, final Context context, int which) {
         super(view);
         patientName = (TextView) itemView.findViewById(R.id.tvPatientName);
         subtitle = (TextView) itemView.findViewById(R.id.tvSubtitle);
@@ -31,9 +33,21 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if (patient != null) {
-                    Log.d("qqq12", patient.toString());
+                    Log.d("qqq120", patient.toString());
+                    Log.d("qqq121", "station: " + whichStation);
+                    whichStation = Cache.getWhichStation(context);
+                    Log.d("qqq122", "station: " + whichStation);
                     Intent intent = new Intent(context, PatientVisitActivity.class);
                     intent.putExtra("patient", patient);
+                    //TODO show less tab for triage
+                    switch (whichStation) {
+                        case Const.ID_TRIAGE:
+                            intent.putExtra(Const.KEY_IS_TRIAGE, true);
+                            break;
+                        case Const.ID_CONSULTATION:
+                            intent.putExtra(Const.KEY_IS_TRIAGE, false);
+                            break;
+                    }
                     //need_cc == true for consultation station only
                     intent.putExtra(Const.KEY_SNACKBAR_TEXT, "Headache, Headache, Headache, Headache, Headache, Headache");
                     context.startActivity(intent);

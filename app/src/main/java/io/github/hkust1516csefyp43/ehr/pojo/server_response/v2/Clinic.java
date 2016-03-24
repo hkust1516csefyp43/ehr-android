@@ -2,6 +2,8 @@ package io.github.hkust1516csefyp43.ehr.pojo.server_response.v2;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 import io.github.hkust1516csefyp43.ehr.haveTitle;
 
 /**
@@ -28,10 +30,10 @@ public class Clinic implements haveTitle {
     private Double longitude;
     @SerializedName("remark")
     private String remark;
-    //TODO create_timestamp
+    @SerializedName("create_timestamp")
+    private Date create_timestamp;
 
-
-    public Clinic(String clinicId, String englishName, String nativeName, String countryId, String suitcaseId, Boolean isActive, Boolean isGlobal, Double latitude, Double longitude, String remark) {
+    public Clinic(String clinicId, String englishName, String nativeName, String countryId, String suitcaseId, Boolean isActive, Boolean isGlobal, Double latitude, Double longitude, String remark, Date create_timestamp) {
         this.clinicId = clinicId;
         this.englishName = englishName;
         this.nativeName = nativeName;
@@ -42,32 +44,28 @@ public class Clinic implements haveTitle {
         this.latitude = latitude;
         this.longitude = longitude;
         this.remark = remark;
+        this.create_timestamp = create_timestamp;
     }
 
-    /**
-     * print just the simple clinic format
-     *
-     * @return
-     */
     @Override
     public String toString() {
-        return clinicId + ": " + englishName;
+        return "Clinic{" +
+                "clinicId='" + clinicId + '\'' +
+                ", englishName='" + englishName + '\'' +
+                ", nativeName='" + nativeName + '\'' +
+                ", countryId='" + countryId + '\'' +
+                ", suitcaseId='" + suitcaseId + '\'' +
+                ", isActive=" + isActive +
+                ", isGlobal=" + isGlobal +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", remark='" + remark + '\'' +
+                ", create_timestamp=" + create_timestamp +
+                '}';
     }
 
     public String getEnglishName() {
         return englishName;
-    }
-
-    public void setEnglishName(String englishName) {
-        this.englishName = englishName;
-    }
-
-    public String getClinicId() {
-        return clinicId;
-    }
-
-    public void setClinicId(String clinicId) {
-        this.clinicId = clinicId;
     }
 
     @Override
@@ -75,67 +73,4 @@ public class Clinic implements haveTitle {
         return englishName;
     }
 
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Boolean getGlobal() {
-        return isGlobal;
-    }
-
-    public void setGlobal(Boolean global) {
-        isGlobal = global;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-    public String getSuitcaseId() {
-        return suitcaseId;
-    }
-
-    public void setSuitcaseId(String suitcaseId) {
-        this.suitcaseId = suitcaseId;
-    }
-
-    public String getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(String countryId) {
-        this.countryId = countryId;
-    }
-
-    public String getNativeName() {
-        return nativeName;
-    }
-
-    public void setNativeName(String nativeName) {
-        this.nativeName = nativeName;
-    }
 }

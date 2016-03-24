@@ -206,4 +206,14 @@ public class Cache {
 
     //==============================</Static stuff>==================================
 
+    public static int getWhichStation(Context c) {
+        SharedPreferences prefs = c.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        return prefs.getInt(Const.KEY_WHICH_STATION, Const.PATIENT_LIST_POST_TRIAGE);
+    }
+
+    public static void setWhichStation(Context c, int w) {
+        SharedPreferences prefs = c.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putInt(Const.KEY_WHICH_STATION, w).apply();
+    }
+
 }

@@ -27,14 +27,16 @@ import io.github.hkust1516csefyp43.ehr.view.viewholder.patientCardViewHolder;
  */
 public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
     Context context;
+    int whichStation;
 
-    public PatientCardRecyclerViewAdapter(Context context) {
+    public PatientCardRecyclerViewAdapter(Context context, int which) {
         this.context = context;
+        whichStation = which;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new patientCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_patient, parent, false), context);
+        return new patientCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_patient, parent, false), context, whichStation);
     }
 
     @Override
@@ -42,9 +44,9 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
         if (context != null) {
             patientCardViewHolder ph = (patientCardViewHolder) holder;
             StringBuilder name = new StringBuilder();
-            List<Patient> listOfPatints = Cache.getPostTriagePatients(context);
-            if (listOfPatints != null && listOfPatints.size() > 0) {
-                Patient aPatient = listOfPatints.get(position);
+            List<Patient> listOfPatients = Cache.getPostTriagePatients(context);
+            if (listOfPatients != null && listOfPatients.size() > 0) {
+                Patient aPatient = listOfPatients.get(position);
                 ph.setPatient(aPatient);
                 //TODO a setting to change first or last name in the front
                 if (aPatient.getLastName() != null) {

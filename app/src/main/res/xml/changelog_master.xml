@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
     <release
+        version="1.0.11"
+        versioncode="11">
+        <change>Blood type and Clinics in Admin now have some content</change>
+        <change>Pull to refresh is coming back, kind of</change>
+        <change>Only display 4 pages in Triage, and all in Consultation</change>
+    </release>
+    <release
         version="1.0.10"
         versioncode="10">
         <change>Another new logo</change>

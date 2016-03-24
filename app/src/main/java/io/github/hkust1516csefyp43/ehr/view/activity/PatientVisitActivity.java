@@ -73,6 +73,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
     };
     Patient patient = null;
     String mCC;
+    boolean isTriage;
     private PersonalDataFragment pdf;
     private OnCameraRespond ocrPDF;
 
@@ -80,6 +81,10 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_visit);
+
+        Intent i = getIntent();
+        if (i != null)
+            isTriage = i.getBooleanExtra(Const.KEY_IS_TRIAGE, true);
 
         //setup toolbar
         Toolbar tb = (Toolbar) findViewById(R.id.tbPatientVisit);
@@ -110,13 +115,19 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         //Setup tabs
         TabLayout tl = (TabLayout) findViewById(R.id.tlPatientVisit);
         tl.setTabGravity(TabLayout.MODE_SCROLLABLE);
-        for (String tab : consultationTabs) {
-            tl.addTab(tl.newTab().setText(tab));
+        if (isTriage) {
+            for (String tab : triageTabs) {
+                tl.addTab(tl.newTab().setText(tab));
+            }
+        } else {
+            for (String tab : consultationTabs) {
+                tl.addTab(tl.newTab().setText(tab));
+            }
         }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         if (viewPager != null) {
-            viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager(), false));         //TODO the false >> consultation, true >> triage
+            viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager(), isTriage));         //TODO the false >> consultation, true >> triage
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
             mCC = getIntent().getStringExtra(Const.KEY_SNACKBAR_TEXT);
             if (mCC != null) {
@@ -243,10 +254,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
     public class viewPagerAdapter extends FragmentStatePagerAdapter {
         boolean triage;
 
-        public viewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
         public viewPagerAdapter(FragmentManager fm, boolean t) {
             super(fm);
             triage = t;
@@ -258,7 +265,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             switch (position) {
                 case 0:
                     if (pdf == null) {
-                        pdf = new PersonalDataFragment().newInstance(patient);
+                        pdf = PersonalDataFragment.newInstance(patient);
                         ocrPDF = pdf;
                     }
                     return pdf;

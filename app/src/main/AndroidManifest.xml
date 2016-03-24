@@ -55,6 +55,8 @@
         </activity>
         <activity android:name=".view.activity.StaticItemListActivity">
         </activity>
+        <activity android:name=".view.activity.NotificationActivity">
+        </activity>
     </application>
 
 </manifest>

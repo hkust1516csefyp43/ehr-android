@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Retrofit retrofit = new Retrofit
                 .Builder()
                 .baseUrl(Const.API_ONE2ONE_HEROKU)
-                .addConverterFactory(GsonConverterFactory.create(Const.gson1))
+                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
                 .client(ohc1)
                 .build();
         v2API apiService = retrofit.create(v2API.class);

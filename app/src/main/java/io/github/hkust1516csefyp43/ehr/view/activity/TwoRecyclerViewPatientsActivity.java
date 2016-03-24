@@ -53,6 +53,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import de.cketti.library.changelog.ChangeLog;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
+import io.github.hkust1516csefyp43.ehr.listener.OnChangeStationListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
@@ -70,8 +71,11 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     private FloatingActionButton fab;
     private ListView lv;
     private PatientsRecyclerViewFragment fListLeft;
+    private OnChangeStationListener ocslLeft;
     private PatientsRecyclerViewFragment fListRight;
+    private OnChangeStationListener ocslRight;
     private Drawer drawer;
+    private int whichPage = Const.ID_TRIAGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,6 +241,10 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                     case Const.ID_TRIAGE:
                         getSupportActionBar().setTitle(getResources().getString(R.string.triage));
                         getSupportActionBar().setSubtitle("Cannal Side");
+                        whichPage = Const.ID_TRIAGE;
+                        //TODO call the 2 pages and call server
+                        ocslLeft.onStationChange(Const.PATIENT_LIST_POST_TRIAGE);
+                        ocslRight.onStationChange(Const.PATIENT_LIST_ALL_PATIENTS);
                         hideAdmin();
                         ptrvfRecyclerViewScrollToTop();
                         Answers.getInstance().logContentView(new ContentViewEvent()
@@ -247,6 +255,10 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                     case Const.ID_CONSULTATION:
                         getSupportActionBar().setTitle(getResources().getString(R.string.consultation));
                         getSupportActionBar().setSubtitle("Cannal Side");
+                        whichPage = Const.ID_CONSULTATION;
+                        //TODO call the 2 pages and call server
+                        ocslLeft.onStationChange(Const.PATIENT_LIST_PRE_CONSULTATION);
+                        ocslRight.onStationChange(Const.PATIENT_LIST_POST_CONSULTATION);
                         hideAdmin();
                         Answers.getInstance().logContentView(new ContentViewEvent()
                                 .putContentName("Consultation")
@@ -256,6 +268,8 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                     case Const.ID_PHARMACY:
                         getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
                         getSupportActionBar().setSubtitle("Cannal Side");
+                        whichPage = Const.ID_PHARMACY;
+                        //TODO call the 2 pages and call server
                         hideAdmin();
                         Answers.getInstance().logContentView(new ContentViewEvent()
                                 .putContentName("Pharmacy")
@@ -476,16 +490,30 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         llNewPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(c, PatientVisitActivity.class);
-                if (p2 != null) {
-                    intent.putExtra("patient", p2);
+                Intent intent;
+                switch (whichPage) {
+                    case Const.ID_TRIAGE:
+                        intent = new Intent(c, PatientVisitActivity.class);
+                        if (p2 != null) {
+                            intent.putExtra("patient", p2);
+                        }
+                        intent.putExtra(Const.KEY_IS_TRIAGE, true);
+                        dialog.dismiss();
+                        startActivity(intent);
+                        break;
+                    case Const.ID_CONSULTATION:
+                        intent = new Intent(c, PatientVisitActivity.class);
+                        if (p2 != null) {
+                            intent.putExtra("patient", p2);
+                        }
+                        intent.putExtra(Const.KEY_IS_TRIAGE, false);
+                        dialog.dismiss();
+                        startActivity(intent);
+                        break;
                 }
-                dialog.dismiss();
-                startActivity(intent);
+
             }
         });
-
-
         dialog.show();
     }
 
@@ -527,18 +555,46 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             super(fm);
         }
 
+        /**
+         * @param position
+         * @return
+         */
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    Log.d(TAG, "0");
-                    if (fListLeft == null)
-                        fListLeft = PatientsRecyclerViewFragment.newInstance(Const.PATIENT_LIST_POST_TRIAGE);
+                    Log.d(TAG, "Left page");
+                    if (fListLeft == null) {
+                        switch (whichPage) {
+                            case Const.ID_TRIAGE:
+                                fListLeft = PatientsRecyclerViewFragment.newInstance(Const.PATIENT_LIST_POST_TRIAGE);
+                                break;
+                            case Const.ID_CONSULTATION:
+                                fListLeft = PatientsRecyclerViewFragment.newInstance(Const.PATIENT_LIST_PRE_CONSULTATION);
+                                break;
+                            case Const.ID_PHARMACY:
+                                fListLeft = PatientsRecyclerViewFragment.newInstance(Const.PATIENT_LIST_PRE_PHARMACY);
+                                break;
+                        }
+                    }
+                    ocslLeft = fListLeft;
                     return fListLeft;
                 case 1:
-                    Log.d(TAG, "1");
-                    if (fListRight == null)
-                        fListRight = PatientsRecyclerViewFragment.newInstance(Const.PATIENT_LIST_ALL_PATIENTS);
+                    Log.d(TAG, "Right page");
+                    if (fListRight == null) {
+                        switch (whichPage) {
+                            case Const.ID_TRIAGE:
+                                fListRight = PatientsRecyclerViewFragment.newInstance(Const.PATIENT_LIST_ALL_PATIENTS);
+                                break;
+                            case Const.ID_CONSULTATION:
+                                fListRight = PatientsRecyclerViewFragment.newInstance(Const.PATIENT_LIST_POST_CONSULTATION);
+                                break;
+                            case Const.ID_PHARMACY:
+                                fListRight = PatientsRecyclerViewFragment.newInstance(Const.PATIENT_LIST_ALL_TODAYS_PATIENT);
+                                break;
+                        }
+                    }
+                    ocslRight = fListRight;
                     return fListRight;
                 default:
                     Log.d(TAG, "default");

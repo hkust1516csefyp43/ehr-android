@@ -185,7 +185,7 @@ public class ListOfCardsFragment extends Fragment {
         Log.d("qqq179", "rotating");
         super.onSaveInstanceState(outState);
         outState.putString(Const.KEY_TITLE, title);
-        outState.putParcelableArrayList(Const.KEY_LOCF + title, adapter.getData());
+        outState.putParcelableArrayList(Const.KEY_LIST_OF_CARD_FRAGMENT + title, adapter.getData());
     }
 
     @Override
@@ -194,7 +194,7 @@ public class ListOfCardsFragment extends Fragment {
         Log.d("qqq174", "rotating");
         if (savedInstanceState != null) {
             title = savedInstanceState.getString(Const.KEY_TITLE);
-            ArrayList<Card> alc = savedInstanceState.getParcelableArrayList(Const.KEY_LOCF + title);
+            ArrayList<Card> alc = savedInstanceState.getParcelableArrayList(Const.KEY_LIST_OF_CARD_FRAGMENT + title);
             adapter.deleteAllCards();
             adapter.addCards(alc);
         }

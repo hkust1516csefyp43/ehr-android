@@ -17,7 +17,8 @@ import io.github.hkust1516csefyp43.ehr.R;
 public class Const {
     public final static int SPLASH_DISPLAY_LENGTH = 4000;
 
-    public final static Gson gson1 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+    public final static Gson GsonParserThatWorksWithPGTimestamp
+            = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
     public final static Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
 
     public final static int ID_TRIAGE = 1;
@@ -65,23 +66,26 @@ public class Const {
     public static final String KEY_HPI = "currentPatientHPI";
     public static final String KEY_FAMILY_HISTORY = "currentPatientFamilyHistory";
     public static final String KEY_SOCIAL_HISTORY = "currentPatientSocialHistory";
-
+    public static final String KEY_IS_TRIAGE = "istriage";
+    public static final String KEY_WHICH_STATION = "keywhichstation";
+    //------------------------------<current patient>------------------------------
     public static final String KEY_SNACKBAR_TEXT = "snackBarText";
     public final static String KEY_VIRGIN = "touch_for_the_very_first_time~";
     public final static String KEY_EMERGENCY_FIX = "\uD83D\uDE13";
     public final static int NUMBER_EMERGENCY_FIX = 1;
-
     public static final String FLAVOR_ONE_2_ONE_CAMBODIA = "one2onecambodia";
     public static final String FLAVOR_FREE = "free";
-
+    //------------------------------<server config>------------------------------
     public static final String CONFIG_CLOUD_HOST = "cloud_api_host";
     public static final String CONFIG_LOCAL_HOST = "local_api_host";
     public static final String CONFIG_SSID_LIST = "ssid_list";
-
+    //<One-2-One CAMBODIA specific data>
+    public static final String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
+    public static final String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
+    //------------------------------</server config>------------------------------
     public static final int ACTION_TAKE_PICTURE = 0;
     public static final int ACTION_SELECT_PICTURE = 1;
     public static final int ACTION_REMOVE_PICTURE = 2;
-
     public static final LibsBuilder ABOUT = new LibsBuilder()
             .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
             .withAboutVersionShown(true)
@@ -92,12 +96,6 @@ public class Const {
             .withAboutAppName("EHR")        //TODO how to get app name on the fly
             .withAboutDescription("EHR 2015-2016 from SIGHT@HKUST x CSE@HKUST")
             .withSortEnabled(true);
-
-    //------------------------------<One-2-One CAMBODIA specific data>----------------------------------
-    public static final String API_ONE2ONE_HEROKU = "https://ehr-api.herokuapp.com:443/v1";
-    public static final String API_ONE2ONE_RPi = "http://192.168.0.123:3000/v1";
-    public static final String EXTRA_CACHE_KEY = "cache_key";
-    public static final String EXTRA_WHICH_ONE = "which_list_of_patients";
     //----------------------------<Patients list>------------------------------------
     public static final int PATIENT_LIST_POST_TRIAGE = 1;
     public static final int PATIENT_LIST_ALL_PATIENTS = 2;
@@ -108,8 +106,8 @@ public class Const {
     public static final String KEY_TITLE = "title";
     public static final String KEY_PRE_FILL_ITEMS = "pre_fill_items";
     public static final String[] DEFAULT_PHYSICAL_EXAMINATION = {"General Appearance", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Other"};
-    public static final String[] DEFAULT_REVICE_OF_SYSTEM = {"EENT", "Raspiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Locomotor", "Neurology"};
-    public static final String KEY_CLINICS = "list_of_clinics";
+    public static final String[] DEFAULT_REVICE_OF_SYSTEM = {"EENT", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Locomotor", "Neurology"};
+    //------------------------------<Static activity data>----------------------------------
     public static final int STATIC_CLINIC = 0;
     public static final int STATIC_KEYWORD = 1;
     public static final int STATIC_SUITCASE = 2;
@@ -117,13 +115,17 @@ public class Const {
     public static final int STATIC_COUNTRIES = 4;
     public static final int STATIC_GENDER = 5;
     public static final int STATIC_USERS = 6;
+    //------------------------------</Static activity data>----------------------------------
     public static final String KEY_WHICH_STATIC = "key_which_static";
+    public static final String KEY_CLINICS = "list_of_clinics";
+    public static final String EXTRA_CACHE_KEY = "cache_key";
+    public static final String EXTRA_WHICH_ONE = "which_list_of_patients";
     public static final String KEY_BLOOD_TYPES = "kwy_blood_type";
+    public static String KEY_LIST_OF_CARD_FRAGMENT = "locf";
     public static JSONArray SSID_LIST_ONE2ONE;
     public static String API_LOCAL;
-    public static JSONArray LIST_SSID;
     public static String API_CLOUD;
-    public static String KEY_LOCF = "locf";
+    public static JSONArray LIST_SSID;
 
     static {
         try {
@@ -144,5 +146,4 @@ public class Const {
     public static void setListSSID(JSONArray ssid) {
         LIST_SSID = ssid;
     }
-
 }

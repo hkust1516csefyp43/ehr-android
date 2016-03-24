@@ -3,6 +3,7 @@ package io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.PatientCardRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
+import io.github.hkust1516csefyp43.ehr.listener.OnChangeStationListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 import io.github.hkust1516csefyp43.ehr.v1API;
@@ -30,16 +32,18 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragment {
+public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragment implements OnChangeStationListener {
     private static int station = 0;
     private int times = 0;
     // TODO: Rename parameter arguments, choose names that match
     private RecyclerView rv;
-//    private SwipeRefreshLayout srl;
+    private SwipeRefreshLayout srl;
     private TextView fail;
     private OnFragmentInteractionListener mListener;
     private ListCounterChangedListener lListener;
-    private int whichOne;
+    private int whichPage;                           //which station
+    private Call<List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient>> patientListCall;
+    private Callback<List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient>> patientListCallback;
 
     public PatientsRecyclerViewFragment() {
         // Required empty public constructor
@@ -75,8 +79,8 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            whichOne = getArguments().getInt(Const.EXTRA_WHICH_ONE);
-            Log.d("qqq42", "which one = " + whichOne);
+            whichPage = getArguments().getInt(Const.EXTRA_WHICH_ONE);
+            Log.d("qqq42", "which one = " + whichPage);
         }
     }
 
@@ -96,32 +100,27 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
         if (rootView != null) {
             if (rv == null)
                 rv = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-//            if (srl == null)
-//                srl = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefreshlayout);
+            if (srl == null)
+                srl = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefreshlayout);
             if (fail == null)
                 fail = (TextView) rootView.findViewById(R.id.fail);
             fail.setVisibility(View.GONE);
             rv.setLayoutManager(new LinearLayoutManager(c, LinearLayoutManager.VERTICAL, false));
-            rv.setAdapter(new PatientCardRecyclerViewAdapter(c));
+            rv.setAdapter(new PatientCardRecyclerViewAdapter(c, whichPage));
             Log.d("qqq", "rv lm and a all set");
         }
 
-        OkHttpClient ohc1 = new OkHttpClient();
-        ohc1.setReadTimeout(1, TimeUnit.MINUTES);
-        ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
-
-        OkHttpClient ohc15 = new OkHttpClient();
-        ohc15.setReadTimeout(15, TimeUnit.MINUTES);
-        ohc15.setConnectTimeout(15, TimeUnit.MINUTES);
+        OkHttpClient ohc = new OkHttpClient();
+        ohc.setReadTimeout(2, TimeUnit.MINUTES);
+        ohc.setConnectTimeout(2, TimeUnit.MINUTES);
 
         Retrofit retrofit = new Retrofit
                 .Builder()
                 .baseUrl(Const.API_ONE2ONE_HEROKU)
-                .addConverterFactory(GsonConverterFactory.create(Const.gson1))
-                .client(ohc1)
+                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                .client(ohc)
                 .build();
-        v1API apiService = retrofit.create(v1API.class);
-        //TODO only get patients where next_station = consultation
+        v1API apiService = retrofit.create(v1API.class);                                            //TODO v2API.class
         //TODO different Call depending on the station variable >>1/2/3
         final Call<List<Patient>> call2 = apiService.getPatients("hihi", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         final Callback<List<Patient>> cb = new Callback<List<Patient>>() {
@@ -141,24 +140,14 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
             }
         };
 
-//        srl.setOnRefreshListener(new OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-        refreshUI(call2, cb);
-//            }
-//        });
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshUI(call2, cb);
+            }
+        });
 
-//        srl.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (!srl.isRefreshing()) {
-//                    Log.d("qqq28", "set refresh to true: " + times);
-//                    times++;
-//                    srl.setRefreshing(true);
-//                    refreshUI(call2, cb);
-//                }
-//            }
-//        });
+        refreshUI(call2, cb);
     }
 
     private void refreshUI(Call<List<Patient>> call2, Callback<List<Patient>> cb) {
@@ -179,12 +168,13 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
             Cache.setPostTriagePatients(c, response.body());
             changeTabCounter(response.body().size());
 
-//            if (rv != null && c != null && srl != null) {
-            if (rv != null && c != null) {
+            if (rv != null && c != null && srl != null) {
+//            if (rv != null && c != null) {
                 rv.getAdapter().notifyDataSetChanged();
                 fail.setVisibility(View.GONE);
                 rv.setVisibility(View.VISIBLE);
-//                srl.setVisibility(View.VISIBLE);
+                srl.setVisibility(View.VISIBLE);
+                srl.setRefreshing(false);
                 Log.d("qqq25", "" + response.body().toString());
                 Log.d("qqq23", "rv/srl not showing occasionally");
             } else {
@@ -203,9 +193,8 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
         changeTabCounter(0);
         fail.setText(t.getMessage());
         fail.setVisibility(View.VISIBLE);
-//        srl.clearAnimation();
-//        srl.setRefreshing(false);
-//        srl.setVisibility(View.GONE);
+        srl.clearAnimation();
+        srl.setRefreshing(false);
         rv.setVisibility(View.GONE);
     }
 
@@ -222,5 +211,29 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
 
     public void scrollToTop() {
         rv.getLayoutManager().scrollToPosition(0);
+    }
+
+    /**
+     * TODO depends on whichPage to fetch from different API
+     */
+    private void fetchFromServer() {
+//        switch (whichPage) {
+//            case
+//        }
+    }
+
+    @Override
+    public void onStationChange(int newPageId) {
+        //TODO call API and refresh the UI
+        Log.d("qqq280", "" + newPageId);
+        whichPage = newPageId;
+        if (newPageId == Const.PATIENT_LIST_POST_TRIAGE || newPageId == Const.PATIENT_LIST_ALL_PATIENTS)
+            Cache.setWhichStation(getContext(), Const.ID_TRIAGE);
+        else if (newPageId == Const.PATIENT_LIST_PRE_CONSULTATION || newPageId == Const.PATIENT_LIST_POST_CONSULTATION)
+            Cache.setWhichStation(getContext(), Const.ID_CONSULTATION);
+        //TODO modify patientListCall and patientListCallback, and then call refreshUI
+        //still waiting for v2 api
+        //give rv new adapter instead of just notifychange >> pass the station id so that the viewholder can handle click correctly
+        rv.setAdapter(new PatientCardRecyclerViewAdapter(getContext(), whichPage));
     }
 }

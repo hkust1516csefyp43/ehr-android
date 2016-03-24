@@ -68,7 +68,14 @@ public class StaticItemListActivity extends AppCompatActivity {
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
-            ab.setTitle("Some text");
+            switch (whichOne) {
+                case Const.STATIC_BLOOD_TYPE:
+                    ab.setTitle("Blood types");
+                    break;
+                case Const.STATIC_CLINIC:
+                    ab.setTitle("Clinics");
+                    break;
+            }
         }
 
         rl = (RelativeLayout) findViewById(R.id.theWholeThing);
@@ -84,7 +91,7 @@ public class StaticItemListActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit
                 .Builder()
                 .baseUrl(Const.API_ONE2ONE_HEROKU)
-                .addConverterFactory(GsonConverterFactory.create(Const.gson1))
+                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
                 .client(ohc1)
                 .build();
         v2API apiService = retrofit.create(v2API.class);
