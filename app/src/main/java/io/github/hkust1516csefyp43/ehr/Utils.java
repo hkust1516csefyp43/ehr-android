@@ -2,6 +2,7 @@ package io.github.hkust1516csefyp43.ehr;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -12,6 +13,8 @@ import java.util.Locale;
 import java.util.Random;
 
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
+import io.github.hkust1516csefyp43.ehr.value.Const;
+import io.github.hkust1516csefyp43.ehr.value.Const.WeightForAgeStatus;
 
 /**
  * Created by Louis on 5/11/15.
@@ -230,6 +233,53 @@ public class Utils {
         return df.format(num);
     }
 
+    /**
+     * Check if weight vs age is normal
+     *
+     * @param ageMonths 0-60 (inclusive) i.e. newborn to 5 years old
+     * @param weight    of child in kh
+     * @param isMale    is true if is male
+     * @return Overweight, Normal, Underweight or Super underweight
+     */
+    public static WeightForAgeStatus getWeightForAgeStatus(int ageMonths, double weight, boolean isMale) {
+        if (ageMonths > 60)
+            return null;
+        double[] list = new double[5];
+        if (isMale) { //male
+            for (int i = 0; i < 5; i++) {
+                list[i] = Const.weightForAgeBoyUnder5[i][ageMonths];
+                Log.d("qqq290", "" + list[i]);
+            }
+        } else {    //female
+            for (int i = 0; i < 5; i++) {
+                list[i] = Const.weightForAgeGirlUnder5[i][ageMonths];
+                Log.d("qqq290", "" + list[i]);
+            }
+        }
+        int j = 4;
+        int position = -1;
+        while (j >= 0 && position == -1) {
+            Log.d("qqq292", "" + list[j] + " vs " + weight);
+            if (weight >= list[j])
+                position = j;
+            else
+                j--;
+        }
+        switch (position) {
+            case 0:             //super underweight
+                return WeightForAgeStatus.TOO_UNDERWEIGHT;
+            case 1:             //underweight
+                return WeightForAgeStatus.UNDERWEIGHT;
+            case 2:             //normal
+            case 3:             //normal
+                return WeightForAgeStatus.NORMAL;
+            case 4:             //overweight
+                return WeightForAgeStatus.OVERWEIGHT;
+            default:
+                return WeightForAgeStatus.NORMAL;
+        }
+    }
+
     public String getPackageName(Context context) {
         if (packageName == null) {
             packageName = context.getPackageName();
@@ -240,5 +290,4 @@ public class Utils {
     public void setPackageName(String pn) {
         packageName = pn;
     }
-
 }
