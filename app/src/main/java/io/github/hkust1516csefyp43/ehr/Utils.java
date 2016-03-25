@@ -12,7 +12,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Random;
 
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.value.Const.WeightForAgeStatus;
 
@@ -107,7 +106,7 @@ public class Utils {
      * @param p
      * @return
      */
-    public static String getTextDrawableText(Patient p) {
+    public static String getTextDrawableText(io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient p) {
         String op;
         if (p != null) {
             if (p.getFirstName() != null) {

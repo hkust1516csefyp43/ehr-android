@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
@@ -21,7 +20,7 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
     public TextView patientName;
     public TextView subtitle;
     public ImageView proPic;
-    Patient patient;
+    public io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient patient;
     int whichStation;
 
     public patientCardViewHolder(View view, final Context context, int which) {
@@ -79,7 +78,7 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
 //        });
     }
 
-    public void setPatient(Patient p) {
+    public void setPatient(io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient p) {
         patient = p;
     }
 }

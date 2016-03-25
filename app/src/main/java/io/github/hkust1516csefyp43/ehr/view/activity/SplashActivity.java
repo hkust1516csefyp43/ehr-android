@@ -27,7 +27,6 @@ import org.json.JSONObject;
 import io.github.hkust1516csefyp43.ehr.BuildConfig;
 import io.github.hkust1516csefyp43.ehr.Connectivity;
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.User;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 
@@ -40,7 +39,7 @@ import static android.provider.Settings.ACTION_WIFI_SETTINGS;
  */
 public class SplashActivity extends AppCompatActivity {
     JSONObject serverConfig;
-    User user;
+    io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

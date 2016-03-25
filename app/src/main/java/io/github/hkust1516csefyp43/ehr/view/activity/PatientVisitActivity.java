@@ -29,7 +29,6 @@ import com.mikepenz.iconics.IconicsDrawable;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ChiefComplainFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DocumentFragment;
@@ -71,7 +70,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             "Chief Complain",
             "Remark"
     };
-    Patient patient = null;
+    io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient patient = null;
     String mCC;
     boolean isTriage;
     private PersonalDataFragment pdf;
@@ -93,7 +92,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
-            patient = (Patient) getIntent().getSerializableExtra("patient");
+            patient = (io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient) getIntent().getSerializableExtra("patient");
             //TODO get another extra: edit/new/view, triage/consultation
             String title = "";
             String subtitle = "from Cannal Side";

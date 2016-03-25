@@ -22,10 +22,10 @@ import io.github.hkust1516csefyp43.ehr.adapter.PatientCardRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnChangeStationListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
-import io.github.hkust1516csefyp43.ehr.v1API;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
+import io.github.hkust1516csefyp43.ehr.view.v2API;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -42,8 +42,8 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
     private OnFragmentInteractionListener mListener;
     private ListCounterChangedListener lListener;
     private int whichPage;                           //which station
-    private Call<List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient>> patientListCall;
-    private Callback<List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient>> patientListCallback;
+    private Call<List<Patient>> patientListCall;
+    private Callback<List<Patient>> patientListCallback;
 
     public PatientsRecyclerViewFragment() {
         // Required empty public constructor
@@ -120,10 +120,10 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
                 .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
                 .client(ohc)
                 .build();
-        v1API apiService = retrofit.create(v1API.class);                                            //TODO v2API.class
+        v2API apiService2 = retrofit.create(v2API.class);
         //TODO different Call depending on the station variable >>1/2/3
-        final Call<List<Patient>> call2 = apiService.getPatients("hihi", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-        final Callback<List<Patient>> cb = new Callback<List<Patient>>() {
+        final Call<List<Patient>> call22 = apiService2.getPatients("1", null, "2", null, null, null, null, null, null); //2 == next station is consultation i.e. post triage
+        final Callback<List<Patient>> cb2 = new Callback<List<Patient>>() {
             @Override
             public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
                 Log.d("qqq27", "receiving: " + response.code() + " " + response.message());
@@ -139,15 +139,14 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
                 failing(t);
             }
         };
-
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshUI(call2, cb);
+                refreshUI(call22, cb2);
             }
         });
 
-        refreshUI(call2, cb);
+        refreshUI(call22, cb2);
     }
 
     private void refreshUI(Call<List<Patient>> call2, Callback<List<Patient>> cb) {
@@ -165,7 +164,7 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
 
     private void receiving(Context c, Response<List<Patient>> response) {
         if (response != null && response.body() != null && response.body().size() > 0) {
-            Cache.setPostTriagePatients(c, response.body());
+            Cache.setPostTriagePatients2(c, response.body());
             changeTabCounter(response.body().size());
 
             if (rv != null && c != null && srl != null) {

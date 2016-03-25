@@ -24,8 +24,6 @@ import java.util.GregorianCalendar;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Triage;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +56,7 @@ public class VitalSignsFragment extends Fragment {
         return new VitalSignsFragment();
     }
 
-    public static VitalSignsFragment newInstance(Patient p, Triage t) {
+    public static VitalSignsFragment newInstance(io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient p, io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Triage t) {
         //TODO
         return new VitalSignsFragment();
     }

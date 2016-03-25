@@ -3,7 +3,6 @@ package io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -20,9 +19,6 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONException;
@@ -31,10 +27,8 @@ import org.json.JSONObject;
 import java.util.GregorianCalendar;
 
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 
 /**
@@ -46,7 +40,7 @@ import io.github.hkust1516csefyp43.ehr.value.Const;
  * create an instance of this fragment.
  */
 public class PersonalDataFragment extends Fragment implements OnCameraRespond {
-    private static Patient patient;
+    private static io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient patient;
     private OnFragmentInteractionListener mListener;
     private EditText etFirstName;
     private EditText etLastName;
@@ -69,7 +63,7 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
         return new PersonalDataFragment();
     }
 
-    public static PersonalDataFragment newInstance(Patient p) {
+    public static PersonalDataFragment newInstance(io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient p) {
         if (p != null) {
             patient = p;
         }
@@ -153,16 +147,17 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
                 etFirstName.setText(patient.getFirstName());
             if (etLastName != null && patient.getLastName() != null)
                 etLastName.setText(patient.getLastName());
-            if (ivProfilePic != null && patient.getProfilePictureUrl() != null) {
-                String t = Utils.getTextDrawableText(patient);
-                Drawable backup = TextDrawable.builder().buildRound(t, Utils.getTextDrawableColor(t));
-                Glide.with(this).load(patient.getProfilePictureUrl())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .thumbnail(0.01f)
-                        .placeholder(backup)
-                        .fallback(backup)
-                        .into(ivProfilePic);
-            }
+            //TODO get url of image
+//            if (ivProfilePic != null && patient.getProfilePictureUrl() != null) {
+//                String t = Utils.getTextDrawableText(patient);
+//                Drawable backup = TextDrawable.builder().buildRound(t, Utils.getTextDrawableColor(t));
+//                Glide.with(this).load(patient.getProfilePictureUrl())
+//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                        .thumbnail(0.01f)
+//                        .placeholder(backup)
+//                        .fallback(backup)
+//                        .into(ivProfilePic);
+//            }
         }
         return v;
     }

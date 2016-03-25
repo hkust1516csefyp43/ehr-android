@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.User;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
@@ -398,7 +397,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 Answers.getInstance().logLogin(new LoginEvent().putMethod("Email & password").putSuccess(true));
-                Cache.setUser(getBaseContext(), new User(mEmail, mPassword));
+                Cache.setUser(getBaseContext(), new io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.User(mEmail, mPassword));
                 Intent i = new Intent(getApplicationContext(), TwoRecyclerViewPatientsActivity.class);
                 finish();
                 startActivity(i);

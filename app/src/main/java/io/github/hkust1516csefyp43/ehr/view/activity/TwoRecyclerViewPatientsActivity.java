@@ -55,7 +55,6 @@ import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnChangeStationListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.pojo.server_response.v1.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.fragment.two_recycler_view_patients_activity.PatientsRecyclerViewFragment;
@@ -467,7 +466,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
      *
      * @param p
      */
-    public void openPatientVisit(Patient p) {
+    public void openPatientVisit(io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient p) {
         final Dialog dialog = new Dialog(this, R.style.AppTheme);
         dialog.setContentView(R.layout.dialog_add_patient);
 
@@ -486,7 +485,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         LinearLayout llNewPatient = (LinearLayout) dialog.findViewById(R.id.llNewPatient);
 
         final Context c = this;
-        final Patient p2 = p;
+        final io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient p2 = p;
         llNewPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
