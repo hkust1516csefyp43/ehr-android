@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
+import org.json.JSONArray;
+
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -288,5 +290,17 @@ public class Utils {
 
     public void setPackageName(String pn) {
         packageName = pn;
+    }
+
+    public static void setCloudAPI(String api) {
+        Const.API_CLOUD = api;
+    }
+
+    public static void setLocalAPI(String api) {
+        Const.API_LOCAL = api;
+    }
+
+    public static void setListSSID(JSONArray ssid) {
+        Const.LIST_SSID = ssid;
     }
 }

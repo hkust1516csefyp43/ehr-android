@@ -158,18 +158,6 @@ public class Const {
         }
     }
 
-    public static void setCloudAPI(String api) {
-        API_CLOUD = api;
-    }
-
-    public static void setLocalAPI(String api) {
-        API_LOCAL = api;
-    }
-
-    public static void setListSSID(JSONArray ssid) {
-        LIST_SSID = ssid;
-    }
-
     public enum WeightForAgeStatus {
         OVERWEIGHT, NORMAL, UNDERWEIGHT, TOO_UNDERWEIGHT
     }

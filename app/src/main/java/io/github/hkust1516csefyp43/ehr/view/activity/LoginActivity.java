@@ -42,9 +42,9 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
+import io.github.hkust1516csefyp43.ehr.v2API;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
-import io.github.hkust1516csefyp43.ehr.view.v2API;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -94,8 +94,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mSlumsView = (LinearLayout) findViewById(R.id.slums_list);
         clppb = (ContentLoadingProgressBar) findViewById(R.id.loading_slums);
 
-        //TODO call api and get list of slums (just names)
-        //TODO GET http://ehr-testing.herokuapp.com/v2/location/clinics/
         OkHttpClient ohc1 = new OkHttpClient();
         ohc1.setReadTimeout(1, TimeUnit.MINUTES);
         ohc1.setConnectTimeout(1, TimeUnit.MINUTES);

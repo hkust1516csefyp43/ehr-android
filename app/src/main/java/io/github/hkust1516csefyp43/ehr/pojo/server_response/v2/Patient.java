@@ -13,11 +13,11 @@ public class Patient implements Serializable {
     @SerializedName("address")
     String address;
     @SerializedName("birth_date")
-    String birthDate;
+    Integer birthDate;
     @SerializedName("birth_month")
-    String birthMoneh;
+    Integer birthMonth;
     @SerializedName("birth_year")
-    String birthYear;
+    Integer birthYear;
     @SerializedName("blood_type_id")
     String bloodTypeId;
     @SerializedName("clinic_id")
@@ -49,10 +49,10 @@ public class Patient implements Serializable {
     @SerializedName("phone_number_country_code")
     String phoneNumberCountryCode;
 
-    public Patient(String address, String birthDate, String birthMoneh, String birthYear, String bloodTypeId, String clinicId, Date createTimeStamp, String email, String firstName, String genderId, String honorific, String imageId, String lastName, String middleName, String nativeName, Integer nextStation, String patientId, String phoneNumber, String phoneNumberCountryCode) {
+    public Patient(String address, Integer birthDate, Integer birthMonth, Integer birthYear, String bloodTypeId, String clinicId, Date createTimeStamp, String email, String firstName, String genderId, String honorific, String imageId, String lastName, String middleName, String nativeName, Integer nextStation, String patientId, String phoneNumber, String phoneNumberCountryCode) {
         this.address = address;
         this.birthDate = birthDate;
-        this.birthMoneh = birthMoneh;
+        this.birthMonth = birthMonth;
         this.birthYear = birthYear;
         this.bloodTypeId = bloodTypeId;
         this.clinicId = clinicId;
@@ -79,27 +79,27 @@ public class Patient implements Serializable {
         this.address = address;
     }
 
-    public String getBirthDate() {
+    public Integer getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
+    public Integer getBirthMonth() {
+        return birthMonth;
     }
 
-    public String getBirthMoneh() {
-        return birthMoneh;
-    }
-
-    public void setBirthMoneh(String birthMoneh) {
-        this.birthMoneh = birthMoneh;
-    }
-
-    public String getBirthYear() {
+    public Integer getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(String birthYear) {
+    public void setBirthDate(Integer birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setBirthMonth(Integer birthMonth) {
+        this.birthMonth = birthMonth;
+    }
+
+    public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
     }
 
@@ -228,7 +228,7 @@ public class Patient implements Serializable {
         return "Patient{" +
                 "address='" + address + '\'' +
                 ", birthDate='" + birthDate + '\'' +
-                ", birthMoneh='" + birthMoneh + '\'' +
+                ", birthMonth='" + birthMonth + '\'' +
                 ", birthYear='" + birthYear + '\'' +
                 ", bloodTypeId='" + bloodTypeId + '\'' +
                 ", clinicId='" + clinicId + '\'' +

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.okhttp.OkHttpClient;
@@ -21,11 +22,10 @@ import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.PatientCardRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnChangeStationListener;
-import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
+import io.github.hkust1516csefyp43.ehr.v2API;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
-import io.github.hkust1516csefyp43.ehr.view.v2API;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -33,24 +33,18 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragment implements OnChangeStationListener {
-    private static int station = 0;
-    private int times = 0;
-    // TODO: Rename parameter arguments, choose names that match
+    public final String TAG = this.getClass().getSimpleName();
     private RecyclerView rv;
     private SwipeRefreshLayout srl;
     private TextView fail;
-    private OnFragmentInteractionListener mListener;
+    private ProgressBar pb;
     private ListCounterChangedListener lListener;
     private int whichPage;                           //which station
-    private Call<List<Patient>> patientListCall;
-    private Callback<List<Patient>> patientListCallback;
 
     public PatientsRecyclerViewFragment() {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
     public static PatientsRecyclerViewFragment newInstance() {
         return new PatientsRecyclerViewFragment();
     }
@@ -68,7 +62,6 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
         super.onAttach(context);
         Log.d("qqq41", "onAttach");
         try {
-            mListener = (OnFragmentInteractionListener) context;
             lListener = (ListCounterChangedListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement OnFragmentInteractionListener");
@@ -104,16 +97,19 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
                 srl = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefreshlayout);
             if (fail == null)
                 fail = (TextView) rootView.findViewById(R.id.fail);
+            if (pb == null)
+                pb = (ProgressBar) rootView.findViewById(R.id.loading_wheel);
             fail.setVisibility(View.GONE);
+            pb.setVisibility(View.VISIBLE);
             rv.setLayoutManager(new LinearLayoutManager(c, LinearLayoutManager.VERTICAL, false));
             rv.setAdapter(new PatientCardRecyclerViewAdapter(c, whichPage));
+            rv.setVisibility(View.GONE);
             Log.d("qqq", "rv lm and a all set");
         }
 
         OkHttpClient ohc = new OkHttpClient();
         ohc.setReadTimeout(2, TimeUnit.MINUTES);
         ohc.setConnectTimeout(2, TimeUnit.MINUTES);
-
         Retrofit retrofit = new Retrofit
                 .Builder()
                 .baseUrl(Const.API_ONE2ONE_HEROKU)
@@ -122,7 +118,32 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
                 .build();
         v2API apiService2 = retrofit.create(v2API.class);
         //TODO different Call depending on the station variable >>1/2/3
-        final Call<List<Patient>> call22 = apiService2.getPatients("1", null, "2", null, null, null, null, null, null); //2 == next station is consultation i.e. post triage
+        final Call<List<Patient>> call22;
+        switch (whichPage) {
+            case Const.PATIENT_LIST_ALL_PATIENTS:
+                Log.d(TAG, "all patients");
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null);
+                break;
+            case Const.PATIENT_LIST_ALL_TODAYS_PATIENT:
+                Log.d(TAG, "all today patients");
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null);
+                break;
+            case Const.PATIENT_LIST_POST_CONSULTATION:
+                Log.d(TAG, "post consultation");
+                call22 = apiService2.getPatients("1", null, "3", null, null, null, null, null, null); //3 == next station is pharmacy
+                break;
+            case Const.PATIENT_LIST_POST_TRIAGE:
+                Log.d(TAG, "post triage");
+                call22 = apiService2.getPatients("1", null, "2", null, null, null, null, null, null); //2 == next station is consultation i.e. post triage
+                break;
+            case Const.PATIENT_LIST_PRE_PHARMACY:
+                Log.d(TAG, "pre pharmacy ");
+                call22 = apiService2.getPatients("1", null, "1", null, null, null, null, null, null); //1 == next station is triage i.e. ended, loop back to 1
+                break;
+            default:
+                Log.d(TAG, "default = ?");
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null);
+        }
         final Callback<List<Patient>> cb2 = new Callback<List<Patient>>() {
             @Override
             public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
@@ -145,11 +166,12 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
                 refreshUI(call22, cb2);
             }
         });
-
         refreshUI(call22, cb2);
     }
 
     private void refreshUI(Call<List<Patient>> call2, Callback<List<Patient>> cb) {
+        rv.setVisibility(View.GONE);
+        pb.setVisibility(View.VISIBLE);
         Log.d("qqq29", "refreshing");
         Call<List<Patient>> call = call2.clone();
         call.enqueue(cb);
@@ -158,7 +180,6 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         lListener = null;
     }
 
@@ -166,10 +187,12 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
         if (response != null && response.body() != null && response.body().size() > 0) {
             Cache.setPostTriagePatients2(c, response.body());
             changeTabCounter(response.body().size());
+            pb.setVisibility(View.GONE);
 
             if (rv != null && c != null && srl != null) {
 //            if (rv != null && c != null) {
-                rv.getAdapter().notifyDataSetChanged();
+//                rv.getAdapter().notifyDataSetChanged();
+                rv.swapAdapter(new PatientCardRecyclerViewAdapter(c, whichPage), false);            //i don't know what would happen if set to true
                 fail.setVisibility(View.GONE);
                 rv.setVisibility(View.VISIBLE);
                 srl.setVisibility(View.VISIBLE);
@@ -190,6 +213,7 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
     private void failing(Throwable t) {
         Log.d("qqq19", "failing");
         changeTabCounter(0);
+        pb.setVisibility(View.GONE);
         fail.setText(t.getMessage());
         fail.setVisibility(View.VISIBLE);
         srl.clearAnimation();
@@ -231,8 +255,62 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
         else if (newPageId == Const.PATIENT_LIST_PRE_CONSULTATION || newPageId == Const.PATIENT_LIST_POST_CONSULTATION)
             Cache.setWhichStation(getContext(), Const.ID_CONSULTATION);
         //TODO modify patientListCall and patientListCallback, and then call refreshUI
-        //still waiting for v2 api
+
+        OkHttpClient ohc = new OkHttpClient();
+        ohc.setReadTimeout(2, TimeUnit.MINUTES);
+        ohc.setConnectTimeout(2, TimeUnit.MINUTES);
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(Const.API_ONE2ONE_HEROKU)
+                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                .client(ohc)
+                .build();
+        v2API apiService2 = retrofit.create(v2API.class);
+        //TODO different Call depending on the station variable >>1/2/3
+        final Call<List<Patient>> call22;
+        switch (whichPage) {
+            case Const.PATIENT_LIST_ALL_PATIENTS:
+                Log.d(TAG, "all patients");
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null);
+                break;
+            case Const.PATIENT_LIST_ALL_TODAYS_PATIENT:
+                Log.d(TAG, "all today patients");
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null);
+                break;
+            case Const.PATIENT_LIST_POST_CONSULTATION:
+                Log.d(TAG, "post consultation");
+                call22 = apiService2.getPatients("1", null, "3", null, null, null, null, null, null); //3 == next station is pharmacy
+                break;
+            case Const.PATIENT_LIST_POST_TRIAGE:
+                Log.d(TAG, "post triage");
+                call22 = apiService2.getPatients("1", null, "2", null, null, null, null, null, null); //2 == next station is consultation i.e. post triage
+                break;
+            case Const.PATIENT_LIST_PRE_PHARMACY:
+                Log.d(TAG, "pre pharmacy ");
+                call22 = apiService2.getPatients("1", null, "1", null, null, null, null, null, null); //1 == next station is triage i.e. ended, loop back to 1
+                break;
+            default:
+                Log.d(TAG, "default = ?");
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null);
+        }
+        final Callback<List<Patient>> cb2 = new Callback<List<Patient>>() {
+            @Override
+            public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+                Log.d("qqq27", "receiving: " + response.code() + " " + response.message());
+                if (response.code() >= 500 && response.code() < 600)
+                    onFailure(new Throwable(response.code() + "/" + response.message()));
+                else
+                    receiving(getContext(), response);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.d("qqq27", "receives nothing/error");
+                failing(t);
+            }
+        };
+        refreshUI(call22, cb2);
         //give rv new adapter instead of just notifychange >> pass the station id so that the viewholder can handle click correctly
-        rv.setAdapter(new PatientCardRecyclerViewAdapter(getContext(), whichPage));
+//        rv.setAdapter(new PatientCardRecyclerViewAdapter(getContext(), whichPage));
     }
 }

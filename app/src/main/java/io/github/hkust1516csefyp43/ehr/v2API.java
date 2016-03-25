@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.ehr.view;
+package io.github.hkust1516csefyp43.ehr;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public interface v2API {
      * @return
      */
     @GET("v2/clinics")
-    Call<List<Clinic>> getSimplifiedClinics();                              //
+    Call<List<Clinic>> getSimplifiedClinics();
 
     /**
      * Get list of clinics

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
@@ -19,14 +20,16 @@ import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
 public final class patientCardViewHolder extends RecyclerView.ViewHolder {
     public TextView patientName;
     public TextView subtitle;
+    public TextView nativeName;
     public ImageView proPic;
-    public io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient patient;
+    public Patient patient;
     int whichStation;
 
     public patientCardViewHolder(View view, final Context context, int which) {
         super(view);
         patientName = (TextView) itemView.findViewById(R.id.tvPatientName);
         subtitle = (TextView) itemView.findViewById(R.id.tvSubtitle);
+        nativeName = (TextView) itemView.findViewById(R.id.tvPatientNativeName);
         proPic = (ImageView) itemView.findViewById(R.id.ivPatientPic);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +81,7 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
 //        });
     }
 
-    public void setPatient(io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient p) {
+    public void setPatient(Patient p) {
         patient = p;
     }
 }

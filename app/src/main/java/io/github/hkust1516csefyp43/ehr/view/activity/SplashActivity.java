@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import io.github.hkust1516csefyp43.ehr.BuildConfig;
 import io.github.hkust1516csefyp43.ehr.Connectivity;
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 
@@ -113,19 +114,19 @@ public class SplashActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         try {
-            Const.setCloudAPI(serverConfig.getString(Const.CONFIG_CLOUD_HOST));
+            Utils.setCloudAPI(serverConfig.getString(Const.CONFIG_CLOUD_HOST));
         } catch (JSONException e) {
             //TODO missing cloud api
             e.printStackTrace();
         }
         try {
-            Const.setLocalAPI(serverConfig.getString(Const.CONFIG_LOCAL_HOST));
+            Utils.setLocalAPI(serverConfig.getString(Const.CONFIG_LOCAL_HOST));
         } catch (JSONException e) {
             //TODO missing local api
             e.printStackTrace();
         }
         try {
-            Const.setListSSID(serverConfig.getJSONArray(Const.CONFIG_SSID_LIST));
+            Utils.setListSSID(serverConfig.getJSONArray(Const.CONFIG_SSID_LIST));
         } catch (JSONException e) {
             //TODO missing ssid
             e.printStackTrace();

@@ -13,6 +13,7 @@ import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.Utils;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.view.viewholder.patientCardViewHolder;
 
@@ -39,9 +40,9 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
         if (context != null) {
             patientCardViewHolder ph = (patientCardViewHolder) holder;
             StringBuilder name = new StringBuilder();
-            List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> listOfPatients = Cache.getPostTriagePatients(context);
+            List<Patient> listOfPatients = Cache.getPostTriagePatients(context);
             if (listOfPatients != null && listOfPatients.size() > 0) {
-                io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient aPatient = listOfPatients.get(position);
+                Patient aPatient = listOfPatients.get(position);
                 ph.setPatient(aPatient);
                 //TODO a setting to change first or last name in the front
                 if (aPatient.getLastName() != null) {
@@ -51,15 +52,12 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
                 name.append(aPatient.getFirstName());
                 ph.patientName.setText(name.toString());
                 //TODO replace gender with symbols (save screen space)
-                //TODO once the age came you can start calculate that
-                ph.subtitle.setText(" age (TBC)");
+                ph.subtitle.setText(Utils.birthdayToAgeString(aPatient.getBirthYear(), aPatient.getBirthMonth(), aPatient.getBirthDate()));
+                ph.nativeName.setText(aPatient.getNativeName());
                 //TODO 1) Check if photo is null >> TextDrawable or load image
-                //TODO 2) find a range of acceptable RGB (currently 50+)
-                //TODO 3) save color combination of each patient? (if just getting from cache, just use the old color?)
                 //e.g. Gmail: each letter have their own pre-defined color combination
                 String t = Utils.getTextDrawableText(aPatient);
                 Drawable backup = TextDrawable.builder().buildRound(t, Utils.getTextDrawableColor(t));
-
                 ph.proPic.setImageDrawable(backup);
             } else {
                 //TODO no patient list >> display sth on UI
@@ -70,7 +68,7 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         if (context != null) {
-            List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> temp = Cache.getPostTriagePatients(context);
+            List<Patient> temp = Cache.getPostTriagePatients(context);
             if (temp != null) {
                 return temp.size();
             } else
