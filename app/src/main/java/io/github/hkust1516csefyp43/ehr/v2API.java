@@ -12,6 +12,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Gender;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import retrofit.Call;
+import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -25,35 +26,84 @@ import retrofit.http.Query;
  */
 public interface v2API {
 
-    @GET("v2/attachments")
-    Call<List<Attachment>> getAttachments(@Header("token") String token);
+    interface attachments {
+        @GET("v2/attachments")
+        Call<List<Attachment>> getAttachments(
+                @Header("token") String token,
+                @Query("cloudinary_url") String url,
+                @Query("file_name") String name,
+                @Query("user_id") String userId,
+                @Query("offset") Integer offset,
+                @Query("sort_by") String sortBy,
+                @Query("limit") Integer limit
+        );
 
-    @GET("v2/attachments/{id}")
-    Call<Attachment> getAttachment(@Header("token") String token);
+        @GET("v2/attachments/{id}")
+        Call<Attachment> getAttachment(
+                @Header("token") String token,
+                @Path("id") String id
+        );
 
-    @POST("v2/attachments/")
-    Call<Attachment> addAttachment(@Header("token") String token);
+        @POST("v2/attachments/")
+        Call<Attachment> addAttachment(
+                @Header("token") String token,
+                @Body Attachment attachment
+        );
 
-    @PUT("v2/attachments/{id}")
-    Call<Attachment> editAttachment(@Header("token") String token);
+        @PUT("v2/attachments/{id}")
+        Call<Attachment> editAttachment(
+                @Header("token") String token,
+                @Path("id") String id,
+                @Body Attachment attachment
+        );
 
-    @DELETE("v2/attachments/{id}")
-    Call<Attachment> deleteAttachment(@Header("token") String token);
+        @DELETE("v2/attachments/{id}")
+        Call<Attachment> deleteAttachment(
+                @Header("token") String token,
+                @Path("id") String id
+        );
+    }
 
-    @GET("v2/blocked_devices")
-    Call<List<BlockedDevice>> getBlockedDevices(@Header("token") String token);
+    interface blockedDevices {
+        @GET("v2/blocked_devices")
+        Call<List<BlockedDevice>> getBlockedDevices(
+                @Header("token") String token,
+                @Query("reporter_id") String reporterId,
+                @Query("victim_id") String victimId,
+                @Query("remark") String remark,
+                @Query("offset") Integer offset,
+                @Query("sort_by") String sortBy,
+                @Query("limit") Integer limit
+        );
 
-    @GET("v2/blocked_devices/{id}")
-    Call<BlockedDevice> getBlockedDevice(@Header("token") String token);
+        @GET("v2/blocked_devices/{id}")
+        Call<BlockedDevice> getBlockedDevice(
+                @Header("token") String token,
+                @Path("id") String id
+        );
 
-    @POST("v2/blocked_devices/")
-    Call<BlockedDevice> addBlockedDevice(@Header("token") String token);
+        @POST("v2/blocked_devices/")
+        Call<BlockedDevice> addBlockedDevice(
+                @Header("token") String token,
+                @Body BlockedDevice blockedDevice
+        );
 
-    @PUT("v2/blocked_devices/{id}")
-    Call<BlockedDevice> editBlockedDevice(@Header("token") String token);
+        @PUT("v2/blocked_devices/{id}")
+        Call<BlockedDevice> editBlockedDevice(
+                @Header("token") String token,
+                @Path("id") String id,
+                @Body BlockedDevice blockedDevice
+        );
 
-    @DELETE("v2/blocked_devices/{id}")
-    Call<BlockedDevice> deleteBlockedDevice(@Header("token") String token);
+        @DELETE("v2/blocked_devices/{id}")
+        Call<BlockedDevice> deleteBlockedDevice(
+                @Header("token") String token,
+                @Path("id") String id
+        );
+    }
+
+    interface bloodTypes {
+    }
 
     @GET("v2/blood_types")
     Call<List<BloodType>> getBloodTypes(
@@ -76,7 +126,8 @@ public interface v2API {
     @DELETE("v2/blood_types/{id}")
     Call<BloodType> deleteBloodType(@Header("token") String token);
 
-
+    interface clinics {
+    }
 
     /**
      * Get list of clinics without token >> clinic_id & english_name only
@@ -111,65 +162,154 @@ public interface v2API {
 
     @GET("v2/clinics/{id}")
     Call<Clinic> getClinic(
-            @Path("id") String clinicId
+            @Header("token") String token,
+            @Path("id") String id
     );
 
-    @GET("v2/countries")
-    Call<List<Country>> getCountrys(@Header("token") String token);
+    interface countries {
+        @GET("v2/countries")
+        Call<List<Country>> getCountries(
+                @Header("token") String token,
+                @Query("english_name") String englishName,
+                @Query("native_name") String nativeName,
+                @Query("phone_country_code") Integer phoneCountryCode,
+                @Query("phone_number_syntax") String phoneNumberSyntax,
+                @Query("emoji") String emoji,
+                @Query("offset") Integer offset,
+                @Query("sort_by") String sortBy,
+                @Query("limit") Integer limit
+        );
 
-    @GET("v2/countries/{id}")
-    Call<Country> getCountry(@Header("token") String token);
+        @GET("v2/countries/{id}")
+        Call<Country> getCountry(
+                @Header("token") String token,
+                @Path("id") String id
+        );
 
-    @POST("v2/countries/")
-    Call<Country> addCountry(@Header("token") String token);
+        @POST("v2/countries/")
+        Call<Country> addCountry(
+                @Header("token") String token,
+                @Body Country country
+        );
 
-    @PUT("v2/countries/{id}")
-    Call<Country> editCountry(@Header("token") String token);
+        @PUT("v2/countries/{id}")
+        Call<Country> editCountry(
+                @Header("token") String token,
+                @Path("id") String id,
+                @Body Country country
+        );
 
-    @DELETE("v2/countries/{id}")
-    Call<Country> deleteCountry(@Header("token") String token);
+        @DELETE("v2/countries/{id}")
+        Call<Country> deleteCountry(
+                @Header("token") String token,
+                @Path("id") String id
+        );
+    }
 
-    @GET("v2/document_types")
-    Call<List<DocumentType>> getDocumentTypes(@Header("token") String token);
+    interface documentTypes {
+        @GET("v2/document_types")
+        Call<List<DocumentType>> getDocumentTypes(
+                @Header("token") String token,
+                @Query("type") String type,
+                @Query("offset") Integer offset,
+                @Query("sort_by") String sortBy,
+                @Query("limit") Integer limit
+        );
 
-    @GET("v2/document_types/{id}")
-    Call<DocumentType> getDocumentType(@Header("token") String token);
+        @GET("v2/document_types/{id}")
+        Call<DocumentType> getDocumentType(
+                @Header("token") String token,
+                @Path("id") String id
+        );
 
-    @POST("v2/document_types/")
-    Call<DocumentType> addDocumentType(@Header("token") String token);
+        @POST("v2/document_types/")
+        Call<DocumentType> addDocumentType(
+                @Header("token") String token,
+                @Body DocumentType documentType
+        );
 
-    @PUT("v2/document_types/{id}")
-    Call<DocumentType> editDocumentType(@Header("token") String token);
+        @PUT("v2/document_types/{id}")
+        Call<DocumentType> editDocumentType(
+                @Header("token") String token,
+                @Path("id") String id,
+                @Body DocumentType documentType
+        );
 
-    @DELETE("v2/document_types/{id}")
-    Call<DocumentType> deleteDocumentType(@Header("token") String token);
+        @DELETE("v2/document_types/{id}")
+        Call<DocumentType> deleteDocumentType(
+                @Header("token") String token,
+                @Path("id") String id
+        );
+    }
 
-    @GET("v2/genders")
-    Call<List<Gender>> getGenders(@Header("token") String token);
+    interface genders {
+        @GET("v2/genders")
+        Call<List<Gender>> getGenders(
+                @Header("token") String token
+        );
 
-    @POST("v2/genders/")
-    Call<Gender> addGender(@Header("token") String token);
+        @POST("v2/genders/")
+        Call<Gender> addGender(
+                @Header("token") String token
+        );
 
-    @PUT("v2/genders/{id}")
-    Call<Gender> editGender(@Header("token") String token);
+        @PUT("v2/genders/{id}")
+        Call<Gender> editGender(
+                @Header("token") String token,
+                @Path("id") String id,
+                @Body Gender gender
+        );
 
-    @DELETE("v2/genders/{id}")
-    Call<Gender> deleteGender(@Header("token") String token);
+        @DELETE("v2/genders/{id}")
+        Call<Gender> deleteGender(
+                @Header("token") String token,
+                @Path("id") String id
+        );
+    }
 
-    @GET("v2/keywords")
-    Call<List<Keyword>> getKeywords(@Header("token") String token);
+    interface keywords {
+        @GET("v2/keywords")
+        Call<List<Keyword>> getKeywords(
+                @Header("token") String token,
+                @Query("keyword") String keyword,
+                @Query("chief_complain") Boolean cc,
+                @Query("diagnosis") Boolean diagnosis,
+                @Query("screening") Boolean screening,
+                @Query("allergen") Boolean allergen,
+                @Query("follow-up") Boolean followUp,
+                @Query("advice") Boolean advice,
+                @Query("education") Boolean education,
+                @Query("general") Boolean general,
+                @Query("medication_route") Boolean medicationRoute,
+                @Query("medication_form") Boolean medicationForm,
+                @Query("medication_frequency") Boolean medicationFrequency,
+                @Query("unit") Boolean unit,
+                @Query("investigation") Boolean investigation,
+                @Query("relationship_type") Boolean relationshipType
+        );
 
-    @GET("v2/keywords/{id}")
-    Call<Keyword> getKeyword(@Header("token") String token);
+        @GET("v2/keywords/{id}")
+        Call<Keyword> getKeyword(
+                @Header("token") String token,
+                @Path("id") String id
+        );
 
-    @POST("v2/keywords/")
-    Call<Keyword> addKeyword(@Header("token") String token);
+        @POST("v2/keywords/")
+        Call<Keyword> addKeyword(
+                @Header("token") String token,
+                @Body Keyword keyword
+        );
 
-    @PUT("v2/keywords/{id}")
-    Call<Keyword> editKeyword(@Header("token") String token);
+        @PUT("v2/keywords/{id}")
+        Call<Keyword> editKeyword(
+                @Header("token") String token,
+                @Path("id") String id,
+                @Body Keyword keyword
+        );
 
-    @DELETE("v2/keywords/{id}")
-    Call<Keyword> deleteKeyword(@Header("token") String token);
+        @DELETE("v2/keywords/{id}")
+        Call<Keyword> deleteKeyword(@Header("token") String token);
+    }
 
     /**
      * TODO age, age_ot and age_yt
