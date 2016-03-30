@@ -135,7 +135,7 @@ public interface v2API {
      * @return
      */
     @GET("v2/clinics")
-    Call<List<Clinic>> getSimplifiedClinics(@Header("token") String token);
+    Call<List<Clinic>> getSimplifiedClinics();
 
     /**
      * Get list of clinics
@@ -314,9 +314,9 @@ public interface v2API {
     /**
      * TODO age, age_ot and age_yt
      */
-    @GET("v2/patient/")
+    @GET("v2/patients/")
     Call<List<Patient>> getPatients(
-            @Query("token") String token,                                       //TODO replace Query with Header later
+            @Header("token") String token,                                       //TODO replace Query with Header later
             @Query("clinic_id") String client,
             @Query("next_station") String nextStation,
             @Query("gender_id") String gender,
@@ -324,7 +324,8 @@ public interface v2API {
             @Query("email") String email,
             @Query("first_name") String firstName,
             @Query("middle_name") String middleName,
-            @Query("last_name") String lastName                                 //TODO add "name"
+            @Query("last_name") String lastName,                                 //TODO add "name"
+            @Query("visit_date") String visitDate
     );
 
 }

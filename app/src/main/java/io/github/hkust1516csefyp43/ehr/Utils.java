@@ -303,4 +303,10 @@ public class Utils {
     public static void setListSSID(JSONArray ssid) {
         Const.LIST_SSID = ssid;
     }
+
+    public static String todayString() {
+        GregorianCalendar gc = new GregorianCalendar();
+        return "" + gc.get(Calendar.YEAR) + "-" + (gc.get(Calendar.MONTH) + 1) + "-" + gc.get(Calendar.DAY_OF_MONTH);
+
+    }
 }

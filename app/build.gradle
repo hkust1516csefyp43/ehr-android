@@ -88,5 +88,5 @@ dependencies {
     compile 'com.wdullaer:materialdatetimepicker:2.2.0'
     compile('com.mikepenz:aboutlibraries:5.5.7@aar') { transitive = true }
     compile 'de.cketti.library.changelog:ckchangelog:1.2.2'
-    compile 'com.turingtechnologies.materialscrollbar:lib:8.1.0'
+    compile 'com.turingtechnologies.materialscrollbar:lib:9.1.0'
 }

@@ -44,7 +44,7 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
             if (listOfPatients != null && listOfPatients.size() > 0) {
                 Patient aPatient = listOfPatients.get(position);
                 ph.setPatient(aPatient);
-                //TODO a setting to change first or last name in the front
+                //TODO check if it got tag number
                 if (aPatient.getLastName() != null) {
                     name.append(aPatient.getLastName());
                     name.append(" ");

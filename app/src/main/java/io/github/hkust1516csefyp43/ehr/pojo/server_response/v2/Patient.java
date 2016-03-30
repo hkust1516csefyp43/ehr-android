@@ -40,16 +40,21 @@ public class Patient implements Serializable {
     String middleName;
     @SerializedName("native_name")
     String nativeName;
-    @SerializedName("next_station")
-    Integer nextStation;
     @SerializedName("patient_id")
     String patientId;
     @SerializedName("phone_number")
     String phoneNumber;
     @SerializedName("phone_number_country_code")
     String phoneNumberCountryCode;
+    //extra stuff from v2.visits
+    @SerializedName("visit_id")
+    String visitId;
+    @SerializedName("tag")
+    Integer tag;
+    @SerializedName("next_station")
+    Integer nextStation;
 
-    public Patient(String address, Integer birthDate, Integer birthMonth, Integer birthYear, String bloodTypeId, String clinicId, Date createTimeStamp, String email, String firstName, String genderId, String honorific, String imageId, String lastName, String middleName, String nativeName, Integer nextStation, String patientId, String phoneNumber, String phoneNumberCountryCode) {
+    public Patient(String address, Integer birthDate, Integer birthMonth, Integer birthYear, String bloodTypeId, String clinicId, Date createTimeStamp, String email, String firstName, String genderId, String honorific, String imageId, String lastName, String middleName, String nativeName, String patientId, String phoneNumber, String phoneNumberCountryCode) {
         this.address = address;
         this.birthDate = birthDate;
         this.birthMonth = birthMonth;
@@ -65,7 +70,6 @@ public class Patient implements Serializable {
         this.lastName = lastName;
         this.middleName = middleName;
         this.nativeName = nativeName;
-        this.nextStation = nextStation;
         this.patientId = patientId;
         this.phoneNumber = phoneNumber;
         this.phoneNumberCountryCode = phoneNumberCountryCode;
@@ -227,9 +231,9 @@ public class Patient implements Serializable {
     public String toString() {
         return "Patient{" +
                 "address='" + address + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", birthMonth='" + birthMonth + '\'' +
-                ", birthYear='" + birthYear + '\'' +
+                ", birthDate=" + birthDate +
+                ", birthMonth=" + birthMonth +
+                ", birthYear=" + birthYear +
                 ", bloodTypeId='" + bloodTypeId + '\'' +
                 ", clinicId='" + clinicId + '\'' +
                 ", createTimeStamp=" + createTimeStamp +
@@ -241,10 +245,12 @@ public class Patient implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", nativeName='" + nativeName + '\'' +
-                ", nextStation=" + nextStation +
                 ", patientId='" + patientId + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", phoneNumberCountryCode='" + phoneNumberCountryCode + '\'' +
+                ", visitId='" + visitId + '\'' +
+                ", tag=" + tag +
+                ", nextStation=" + nextStation +
                 '}';
     }
 }
