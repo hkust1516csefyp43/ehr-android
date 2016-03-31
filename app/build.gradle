@@ -24,8 +24,8 @@ android {
         applicationId "io.github.hkust1516csefyp43.ehr"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 12
-        versionName "1.1.1"
+        versionCode 13
+        versionName "1.1.2"
     }
     buildTypes {
         release {
@@ -37,15 +37,15 @@ android {
     productFlavors {
         free {
             applicationId "io.github.hkust1516csefyp43.ehr.free"
-            versionName "1.1.1f"
+            versionName "1.1.2f"
         }
         one2onecambodia {
             applicationId "io.github.hkust1516csefyp43.ehr.one2onecambodia"
-            versionName "1.1.1o"
+            versionName "1.1.2o"
         }
         staging {
             applicationId "io.github.hkust1516csefyp43.ehr.demo"
-            versionName "1.1.1t"
+            versionName "1.1.2t"
         }
     }
 }
