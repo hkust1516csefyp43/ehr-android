@@ -325,6 +325,7 @@ public interface v2API {
             @Query("first_name") String firstName,
             @Query("middle_name") String middleName,
             @Query("last_name") String lastName,                                 //TODO add "name"
+            @Query("name") String name,
             @Query("visit_date") String visitDate
     );
 

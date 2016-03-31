@@ -483,6 +483,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         ivOpenSaves.setImageDrawable(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_folder_open).color(getResources().getColor(R.color.secondary_text_color)).sizeDp(32));
 
         LinearLayout llNewPatient = (LinearLayout) dialog.findViewById(R.id.llNewPatient);
+        LinearLayout llExistingPatient = (LinearLayout) dialog.findViewById(R.id.llExistingPatient);
 
         final Context c = this;
         final io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient p2 = p;
@@ -513,11 +514,22 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
             }
         });
+        llExistingPatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(c, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
         dialog.show();
     }
 
     private void ptrvfRecyclerViewScrollToTop() {
         fListLeft.scrollToTop();
+    }
+
+    private void openSearch() {
+
     }
 
     /**

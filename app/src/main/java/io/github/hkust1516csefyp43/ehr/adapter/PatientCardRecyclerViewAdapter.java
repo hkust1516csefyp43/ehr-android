@@ -45,6 +45,10 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
                 Patient aPatient = listOfPatients.get(position);
                 ph.setPatient(aPatient);
                 //TODO check if it got tag number
+                if (aPatient.getTag() != null) {
+                    name.append(aPatient.getTag().toString());
+                    name.append(". ");
+                }
                 if (aPatient.getLastName() != null) {
                     name.append(aPatient.getLastName());
                     name.append(" ");

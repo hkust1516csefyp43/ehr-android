@@ -227,6 +227,22 @@ public class Patient implements Serializable {
         this.phoneNumberCountryCode = phoneNumberCountryCode;
     }
 
+    public Integer getTag() {
+        return tag;
+    }
+
+    public void setTag(Integer tag) {
+        this.tag = tag;
+    }
+
+    public String getVisitId() {
+        return visitId;
+    }
+
+    public void setVisitId(String visitId) {
+        this.visitId = visitId;
+    }
+
     @Override
     public String toString() {
         return "Patient{" +

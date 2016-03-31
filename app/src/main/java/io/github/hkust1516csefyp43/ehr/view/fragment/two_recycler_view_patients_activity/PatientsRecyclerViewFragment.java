@@ -123,27 +123,27 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
         switch (whichPage) {
             case Const.PATIENT_LIST_ALL_PATIENTS:
                 Log.d(TAG, "all patients");
-                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, null);
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, null, null);
                 break;
             case Const.PATIENT_LIST_ALL_TODAYS_PATIENT:
                 Log.d(TAG, "all today patients");
-                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, Utils.todayString());
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, null, Utils.todayString());
                 break;
             case Const.PATIENT_LIST_POST_CONSULTATION:
                 Log.d(TAG, "post consultation");
-                call22 = apiService2.getPatients("1", null, "3", null, null, null, null, null, null, Utils.todayString()); //3 == next station is pharmacy
+                call22 = apiService2.getPatients("1", null, "3", null, null, null, null, null, null, null, Utils.todayString()); //3 == next station is pharmacy
                 break;
             case Const.PATIENT_LIST_POST_TRIAGE:
                 Log.d(TAG, "post triage");
-                call22 = apiService2.getPatients("1", null, "2", null, null, null, null, null, null, Utils.todayString()); //2 == next station is consultation i.e. post triage
+                call22 = apiService2.getPatients("1", null, "2", null, null, null, null, null, null, null, Utils.todayString()); //2 == next station is consultation i.e. post triage
                 break;
             case Const.PATIENT_LIST_PRE_PHARMACY:
                 Log.d(TAG, "pre pharmacy ");
-                call22 = apiService2.getPatients("1", null, "1", null, null, null, null, null, null, Utils.todayString()); //1 == next station is triage i.e. ended, loop back to 1
+                call22 = apiService2.getPatients("1", null, "1", null, null, null, null, null, null, null, Utils.todayString()); //1 == next station is triage i.e. ended, loop back to 1
                 break;
             default:
                 Log.d(TAG, "default = ?");
-                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, null);
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, null, null);
         }
         final Callback<List<Patient>> cb2 = new Callback<List<Patient>>() {
             @Override
@@ -272,27 +272,27 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
         switch (whichPage) {
             case Const.PATIENT_LIST_ALL_PATIENTS:
                 Log.d(TAG, "all patients");
-                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, null);
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, null, null);
                 break;
             case Const.PATIENT_LIST_ALL_TODAYS_PATIENT:
                 Log.d(TAG, "all today patients");
-                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, Utils.todayString());
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, null, Utils.todayString());
                 break;
             case Const.PATIENT_LIST_POST_CONSULTATION:
                 Log.d(TAG, "post consultation");
-                call22 = apiService2.getPatients("1", null, "3", null, null, null, null, null, null, Utils.todayString()); //3 == next station is pharmacy
+                call22 = apiService2.getPatients("1", null, "3", null, null, null, null, null, null, null, Utils.todayString()); //3 == next station is pharmacy
                 break;
             case Const.PATIENT_LIST_POST_TRIAGE:
                 Log.d(TAG, "post triage");
-                call22 = apiService2.getPatients("1", null, "2", null, null, null, null, null, null, Utils.todayString()); //2 == next station is consultation i.e. post triage
+                call22 = apiService2.getPatients("1", null, "2", null, null, null, null, null, null, null, Utils.todayString()); //2 == next station is consultation i.e. post triage
                 break;
             case Const.PATIENT_LIST_PRE_PHARMACY:
                 Log.d(TAG, "pre pharmacy ");
-                call22 = apiService2.getPatients("1", null, "1", null, null, null, null, null, null, Utils.todayString()); //1 == next station is triage i.e. ended, loop back to 1
+                call22 = apiService2.getPatients("1", null, "1", null, null, null, null, null, null, null, Utils.todayString()); //1 == next station is triage i.e. ended, loop back to 1
                 break;
             default:
                 Log.d(TAG, "default = ?");
-                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, null);
+                call22 = apiService2.getPatients("1", null, null, null, null, null, null, null, null, null, null);
         }
         final Callback<List<Patient>> cb2 = new Callback<List<Patient>>() {
             @Override
