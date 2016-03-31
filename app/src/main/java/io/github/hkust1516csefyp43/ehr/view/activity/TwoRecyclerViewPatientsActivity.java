@@ -518,6 +518,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(c, SearchActivity.class);
+                intent.putExtra(Const.KEY_WHICH_STATION, whichPage);
                 startActivity(intent);
             }
         });

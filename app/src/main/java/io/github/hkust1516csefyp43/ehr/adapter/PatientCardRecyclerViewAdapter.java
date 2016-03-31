@@ -40,7 +40,7 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
         if (context != null) {
             patientCardViewHolder ph = (patientCardViewHolder) holder;
             StringBuilder name = new StringBuilder();
-            List<Patient> listOfPatients = Cache.getPostTriagePatients(context);
+            List<Patient> listOfPatients = Cache.getPostTriagePatients(context);                    //TODO not always get from PostTriage
             if (listOfPatients != null && listOfPatients.size() > 0) {
                 Patient aPatient = listOfPatients.get(position);
                 ph.setPatient(aPatient);

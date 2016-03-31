@@ -2,8 +2,11 @@ package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.quinny898.library.persistentsearch.SearchBox;
 import com.quinny898.library.persistentsearch.SearchResult;
 import com.squareup.okhttp.OkHttpClient;
@@ -12,8 +15,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.adapter.PatientCardRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.v2API;
+import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.custom_view.FixedRecyclerView;
 import retrofit.Call;
@@ -25,6 +30,7 @@ import retrofit.Retrofit;
 public class SearchActivity extends AppCompatActivity {
     SearchBox searchBox;
     FixedRecyclerView recyclerView;
+    int whichStation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         searchBox = (SearchBox) findViewById(R.id.searchbox);
+        searchBox.addSearchable(new SearchResult("{search history}", new IconicsDrawable(this, GoogleMaterial.Icon.gmd_history).color(getResources().getColor(R.color.secondary_text_color)).actionBar().paddingDp(2)));
         searchBox.setSearchListener(new SearchBox.SearchListener() {
             @Override
             public void onSearchOpened() {
@@ -71,6 +78,10 @@ public class SearchActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
                         Log.d("qqq27", "receiving: " + response.code() + " " + response.message() + " " + response.body());
+                        if (response.body() != null && response.body().size() > 0) {
+                            Cache.setPostTriagePatients2(getBaseContext(), response.body());
+                            recyclerView.swapAdapter(new PatientCardRecyclerViewAdapter(getBaseContext(), whichStation), false);
+                        }
                     }
 
                     @Override
@@ -87,6 +98,8 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         recyclerView = (FixedRecyclerView) findViewById(R.id.recyclerView);
-        //TODO adapter, viewholder, everything
+        whichStation = getIntent().getIntExtra(Const.KEY_WHICH_STATION, Const.ID_TRIAGE);
+        recyclerView.setAdapter(new PatientCardRecyclerViewAdapter(this, whichStation));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
