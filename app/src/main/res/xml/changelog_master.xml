@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
     <release
-        version="1.0.11"
+        version="1.1.1"
+        versioncode="12">
+        <change>Bug fixes</change>
+        <change>Update everything to v2 API</change>
+    </release>
+    <release
+        version="1.1.0"
         versioncode="11">
         <change>Blood type and Clinics in Admin now have some content</change>
         <change>Pull to refresh is coming back, kind of</change>
