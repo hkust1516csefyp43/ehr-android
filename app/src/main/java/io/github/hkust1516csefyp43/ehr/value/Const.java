@@ -121,6 +121,7 @@ public class Const {
     public static final String EXTRA_CACHE_KEY = "cache_key";
     public static final String EXTRA_WHICH_ONE = "which_list_of_patients";
     public static final String KEY_BLOOD_TYPES = "kwy_blood_type";
+    public static final String KEY_KEYWORDS = "just_keywords";
     public static String KEY_LIST_OF_CARD_FRAGMENT = "locf";
     public static JSONArray SSID_LIST_ONE2ONE;
     public static String API_LOCAL;

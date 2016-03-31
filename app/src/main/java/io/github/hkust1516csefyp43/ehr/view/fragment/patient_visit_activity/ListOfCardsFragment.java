@@ -22,11 +22,14 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.adapter.FragRecyclerViewAdapter;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Card;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
+import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.custom_view.TwoEditTextDialogCustomView;
 
@@ -115,18 +118,22 @@ public class ListOfCardsFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         fab = (FloatingActionButton) v.findViewById(R.id.floatingactionbutton);
         fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
-        //TODO call api and get list of keywords (& cache them)
+        List<Keyword> keywords = Cache.getKeywords(getContext());
         ArrayList<String> a = new ArrayList<>();
-        a.add("a");
-        a.add("ab");
-        a.add("abc");
-        a.add("abcd");
-        a.add("abcde");
-        a.add("abcdef");
-        a.add("abcdefg");
-        a.add("headache");
-        a.add("head");
-        a.add("leg");
+        //TODO call api and get list of keywords (& cache them)
+        for (Keyword k : keywords) {
+            a.add(k.getKeyword());
+        }
+//        a.add("a");
+//        a.add("ab");
+//        a.add("abc");
+//        a.add("abcd");
+//        a.add("abcde");
+//        a.add("abcdef");
+//        a.add("abcdefg");
+//        a.add("headache");
+//        a.add("head");
+//        a.add("leg");
         final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), a, title);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

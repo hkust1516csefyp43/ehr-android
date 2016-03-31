@@ -15,6 +15,7 @@ import java.util.List;
 
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.BloodType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
 
 /**
  * Created by Louis on 5/11/15.
@@ -225,4 +226,27 @@ public class Cache {
         prefs.edit().putInt(Const.KEY_WHICH_STATION, w).apply();
     }
 
+    public static void setKeywords(Context context, List<Keyword> keywords) {
+        Gson gson = new GsonBuilder().create();
+        String jsonString = gson.toJson(keywords);
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putString(Const.KEY_KEYWORDS, jsonString).apply();
+    }
+
+    public static List<Keyword> getKeywords(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        String value = prefs.getString(Const.KEY_KEYWORDS, null);
+        if (value != null) {
+            try {
+                List<Keyword> lp = new Gson().fromJson(value, new TypeToken<List<Keyword>>() {
+                }.getType());
+                return lp;
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+                Log.d("qqq131", value);
+                //TODO for some reason it occasionally got incorrect syntax stuff -_-
+            }
+        }
+        return null;
+    }
 }

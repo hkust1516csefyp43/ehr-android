@@ -25,10 +25,17 @@ import com.afollestad.materialdialogs.MaterialDialog.SingleButtonCallback;
 import com.afollestad.materialdialogs.Theme;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.squareup.okhttp.OkHttpClient;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
+import io.github.hkust1516csefyp43.ehr.v2API;
+import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ChiefComplainFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DocumentFragment;
@@ -39,6 +46,11 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.Pers
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.RemarkFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.VitalSignsFragment;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class PatientVisitActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -110,6 +122,29 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             ab.setTitle(title);
             ab.setSubtitle(subtitle);
         }
+
+        OkHttpClient ohc1 = new OkHttpClient();
+        ohc1.setReadTimeout(1, TimeUnit.MINUTES);
+        ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(Const.API_ONE2ONE_HEROKU)
+                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                .client(ohc1)
+                .build();
+        v2API.keywords apiService = retrofit.create(v2API.keywords.class);
+        Call<List<Keyword>> ck = apiService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        ck.enqueue(new Callback<List<Keyword>>() {
+            @Override
+            public void onResponse(Response<List<Keyword>> response, Retrofit retrofit) {
+                Cache.setKeywords(getBaseContext(), response.body());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
 
         //Setup tabs
         TabLayout tl = (TabLayout) findViewById(R.id.tlPatientVisit);
