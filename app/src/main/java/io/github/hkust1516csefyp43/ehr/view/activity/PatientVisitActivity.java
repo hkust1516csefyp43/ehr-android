@@ -33,7 +33,10 @@ import java.util.concurrent.TimeUnit;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Consultation;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Triage;
 import io.github.hkust1516csefyp43.ehr.v2API;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
@@ -82,11 +85,13 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             "Chief Complain",
             "Remark"
     };
-    io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient patient = null;
-    String mCC;
-    boolean isTriage;
+    private Patient patient = null;
+    private String mCC;
+    private boolean isTriage;
     private PersonalDataFragment pdf;
     private OnCameraRespond ocrPDF;
+    private Triage triage;
+    private Consultation consultation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +99,12 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         setContentView(R.layout.activity_patient_visit);
 
         Intent i = getIntent();
-        if (i != null)
+        if (i != null) {
             isTriage = i.getBooleanExtra(Const.KEY_IS_TRIAGE, true);
+            patient = (Patient) i.getSerializableExtra(Const.KEY_PATIENT);
+            triage = (Triage) i.getSerializableExtra(Const.KEY_TRIAGE);
+            consultation = (Consultation) i.getSerializableExtra(Const.KEY_CONSULTATION);
+        }
 
         //setup toolbar
         Toolbar tb = (Toolbar) findViewById(R.id.tbPatientVisit);
@@ -104,8 +113,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
-            patient = (io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient) getIntent().getSerializableExtra("patient");
-            //TODO get another extra: edit/new/view, triage/consultation
+
             String title = "";
             String subtitle = "from Cannal Side";
             if (patient != null) {
@@ -241,7 +249,65 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 //TODO POST/PUT triage/consultation
-
+                OkHttpClient ohc1 = new OkHttpClient();
+                ohc1.setReadTimeout(1, TimeUnit.MINUTES);
+                ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+                Retrofit retrofit = new Retrofit
+                        .Builder()
+                        .baseUrl(Const.API_ONE2ONE_HEROKU)
+                        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                        .client(ohc1)
+                        .build();
+                if (isTriage) {
+                    if (patient == null) {
+                        if (triage == null) {
+                            //TODO new patient new triage
+                            //1. POST patient
+                            //2. POST visit
+                            //3. POST triage
+                        }
+                        //else makes not sense (new patient edit triage!?)
+                    } else {
+                        if (triage == null) {
+                            //TODO existing patient new triage
+                            //1. POST visit
+                            //2. POST triage
+                        } else {
+                            //TODO existing patient edit triage
+                            //1. PUT triage
+                        }
+                    }
+                } else {
+                    if (patient == null) {
+                        if (consultation == null) {
+                            //TODO new patient new consultation
+                            //1. POST patient
+                            //2. POST visit
+                            //3. POST triage
+                            //4. POST consultation
+                        }
+                        //else makes no sense (new patient edit consultation!?)
+                    } else {
+                        if (consultation == null) {
+                            if (triage == null) {
+                                //TODO existing patient new consultation (skipped triage)
+                                //1. POST triage
+                                //2. POST consultation
+                            } else {
+                                //TODO existing patient new consultation
+                                //1. PUT triage
+                                //2. POST consultation
+                            }
+                        } else {
+                            if (triage != null) {
+                                //TODO existing patient edit consultation
+                                //1. PUT triage
+                                //2. PUT consultation
+                            }
+                            //else makes no sense (how can you edit consultation without a triage record?
+                        }
+                    }
+                }
                 return false;
             }
         });

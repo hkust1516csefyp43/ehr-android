@@ -123,6 +123,9 @@ public class Const {
     public static final String KEY_BLOOD_TYPES = "kwy_blood_type";
     public static final String KEY_KEYWORDS = "just_keywords";
     public static final String KEY_CURRENT_CLINIC = "currentclinic";
+    public static final String KEY_PATIENT = "thePatientIsBeingPassedToPVA";
+    public static final String KEY_TRIAGE = "theTriageIsBeingPassedToPVA";
+    public static final String KEY_CONSULTATION = "theConsultationIsBeingPassedToPVA";
     public static String KEY_LIST_OF_CARD_FRAGMENT = "locf";
     public static JSONArray SSID_LIST_ONE2ONE;
     public static String API_LOCAL;

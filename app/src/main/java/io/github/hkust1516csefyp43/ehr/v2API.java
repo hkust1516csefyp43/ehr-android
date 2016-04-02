@@ -11,9 +11,12 @@ import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.DocumentType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Gender;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Triage;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Visit;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.POST;
@@ -312,6 +315,25 @@ public interface v2API {
     }
 
     interface patients {
+        /**
+         * TODO age, age_ot and age_yt
+         */
+        @GET("v2/patients/")
+        Call<List<Patient>> getPatients(
+                @Header("token") String token,                                       //TODO replace Query with Header later
+                @Query("clinic_id") String client,
+                @Query("next_station") String nextStation,
+                @Query("gender_id") String gender,
+                @Query("phone_number_country_code") String phoneCountryCode,        //phone number is missing?
+                @Query("email") String email,
+                @Query("first_name") String firstName,
+                @Query("middle_name") String middleName,
+                @Query("last_name") String lastName,                                 //TODO add "name"
+                @Query("name") String name,
+                @Query("visit_date") String visitDate
+        );
+
+        @FormUrlEncoded
         @POST("v2/patients")
         Call<Patient> addPatient(
                 @Header("token") String token,
@@ -325,8 +347,39 @@ public interface v2API {
         );
     }
 
+    interface triages {
+        /**
+         * TODO fill me up
+         * @param token
+         * @return
+         */
+        @GET("v2/triages")
+        Call<List<Triage>> getTriages (
+                @Header("token") String token
+        );
+
+        @POST("v2/triages")
+        Call<Triage> addTriage (
+                @Header("token")    String token,
+                @Body               Triage triage
+        );
+    }
+
+    interface visits {
+        @GET("v2/visits")
+        Call<List<Visit>> getVisits (
+                @Header("token") String token
+        );
+
+        @POST("v2/visits")
+        Call<Visit> addVisit (
+                @Header("token")    String token,
+                @Body               Visit visit
+        );
+    }
+
     /**
-     * TODO age, age_ot and age_yt
+     * TODO change it to the one inside interface
      */
     @GET("v2/patients/")
     Call<List<Patient>> getPatients(
@@ -342,5 +395,4 @@ public interface v2API {
             @Query("name") String name,
             @Query("visit_date") String visitDate
     );
-
 }

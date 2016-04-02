@@ -495,7 +495,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                     case Const.ID_TRIAGE:
                         intent = new Intent(c, PatientVisitActivity.class);
                         if (p2 != null) {
-                            intent.putExtra("patient", p2);
+                            intent.putExtra(Const.KEY_PATIENT, p2);
                         }
                         intent.putExtra(Const.KEY_IS_TRIAGE, true);
                         dialog.dismiss();
@@ -504,7 +504,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                     case Const.ID_CONSULTATION:
                         intent = new Intent(c, PatientVisitActivity.class);
                         if (p2 != null) {
-                            intent.putExtra("patient", p2);
+                            intent.putExtra(Const.KEY_PATIENT, p2);
                         }
                         intent.putExtra(Const.KEY_IS_TRIAGE, false);
                         dialog.dismiss();

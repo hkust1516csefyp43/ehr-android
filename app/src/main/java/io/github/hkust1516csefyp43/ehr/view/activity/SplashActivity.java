@@ -258,6 +258,7 @@ public class SplashActivity extends AppCompatActivity {
                 //go to login screen
                 c = LoginActivity.class;
             } else {
+                //TODO check if token still valid
                 c = TwoRecyclerViewPatientsActivity.class;
             }
             new Handler().postDelayed(new Runnable() {

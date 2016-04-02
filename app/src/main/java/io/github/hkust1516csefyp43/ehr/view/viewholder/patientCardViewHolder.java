@@ -40,7 +40,7 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
                     whichStation = Cache.getWhichStation(context);
                     Log.d("qqq122", "station: " + whichStation);
                     Intent intent = new Intent(context, PatientVisitActivity.class);
-                    intent.putExtra("patient", patient);
+                    intent.putExtra(Const.KEY_PATIENT, patient);
                     //TODO show less tab for triage
                     switch (whichStation) {
                         case Const.ID_TRIAGE:

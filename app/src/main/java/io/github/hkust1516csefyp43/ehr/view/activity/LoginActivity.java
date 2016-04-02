@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.ContentLoadingProgressBar;
@@ -58,6 +59,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+    private static final String TAG = LoginActivity.class.getSimpleName();
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -95,6 +97,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         clppb = (ContentLoadingProgressBar) findViewById(R.id.loading_slums);
         acs = (AppCompatSpinner) findViewById(R.id.spinner);
+
+        //TODO use this as device_id
+        Log.d(TAG, "ANDROID_ID = " + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
 
         OkHttpClient ohc1 = new OkHttpClient();
         ohc1.setReadTimeout(1, TimeUnit.MINUTES);
