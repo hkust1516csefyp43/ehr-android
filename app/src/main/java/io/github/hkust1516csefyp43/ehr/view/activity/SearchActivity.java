@@ -72,7 +72,8 @@ public class SearchActivity extends AppCompatActivity {
                         .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
                         .client(ohc1)
                         .build();
-                v2API apiService = retrofit.create(v2API.class);
+//                v2API apiService = retrofit.create(v2API.class);
+                v2API.patients apiService = retrofit.create(v2API.patients.class);
                 Call<List<Patient>> clinicListCall = apiService.getPatients("1", null, null, null, null, null, null, null, null, s, null);
                 clinicListCall.enqueue(new Callback<List<Patient>>() {
                     @Override

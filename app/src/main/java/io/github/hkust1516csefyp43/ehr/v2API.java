@@ -6,6 +6,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Attachment;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.BlockedDevice;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.BloodType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Consultation;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Country;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.DocumentType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Gender;
@@ -363,6 +364,13 @@ public interface v2API {
                 @Header("token")    String token,
                 @Body               Triage triage
         );
+
+        @PUT("v2/triages")
+        Call<Visit> editTriage(
+                @Header("token") String token,
+                @Body Triage triage,
+                @Path("id") String id
+        );
     }
 
     interface visits {
@@ -376,23 +384,32 @@ public interface v2API {
                 @Header("token")    String token,
                 @Body               Visit visit
         );
+
+        @PUT("v2/visits/{id}")
+        Call<Visit> editVisit(
+                @Header("token") String token,
+                @Body Visit visit,
+                @Path("id") String id
+        );
     }
 
-    /**
-     * TODO change it to the one inside interface
-     */
-    @GET("v2/patients/")
-    Call<List<Patient>> getPatients(
-            @Header("token") String token,                                       //TODO replace Query with Header later
-            @Query("clinic_id") String client,
-            @Query("next_station") String nextStation,
-            @Query("gender_id") String gender,
-            @Query("phone_number_country_code") String phoneCountryCode,        //phone number is missing?
-            @Query("email") String email,
-            @Query("first_name") String firstName,
-            @Query("middle_name") String middleName,
-            @Query("last_name") String lastName,                                 //TODO add "name"
-            @Query("name") String name,
-            @Query("visit_date") String visitDate
-    );
+    interface consultations {
+        @GET("v2/consultations")
+        Call<List<Consultation>> getConsultations(
+                @Header("token") String token
+        );
+
+        @POST("v2/consultations")
+        Call<Consultation> addConsultation(
+                @Header("token") String token,
+                @Body Consultation consultation
+        );
+
+        @PUT("v2/consultations/{id}")
+        Call<Consultation> editConsultation(
+                @Header("token") String token,
+                @Body Consultation consultation,
+                @Path("id") String id
+        );
+    }
 }

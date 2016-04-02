@@ -117,7 +117,8 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
                 .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
                 .client(ohc)
                 .build();
-        v2API apiService2 = retrofit.create(v2API.class);
+//        v2API apiService2 = retrofit.create(v2API.class);
+        v2API.patients apiService2 = retrofit.create(v2API.patients.class);
         //TODO different Call depending on the station variable >>1/2/3
         final Call<List<Patient>> call22;
         switch (whichPage) {
@@ -266,7 +267,8 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
                 .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
                 .client(ohc)
                 .build();
-        v2API apiService2 = retrofit.create(v2API.class);
+//        v2API apiService2 = retrofit.create(v2API.class);
+        v2API.patients apiService2 = retrofit.create(v2API.patients.class);
         //TODO different Call depending on the station variable >>1/2/3
         final Call<List<Patient>> call22;
         switch (whichPage) {
