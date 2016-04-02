@@ -18,17 +18,18 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,14 +74,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+    private String selectedClinicId;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private LinearLayout mSlumsView;
     private ContentLoadingProgressBar clppb;
+    private AppCompatSpinner acs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +93,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView = (EditText) findViewById(R.id.password);
         mProgressView = findViewById(R.id.login_progress);
         mLoginFormView = findViewById(R.id.login_form);
-        mSlumsView = (LinearLayout) findViewById(R.id.slums_list);
         clppb = (ContentLoadingProgressBar) findViewById(R.id.loading_slums);
+        acs = (AppCompatSpinner) findViewById(R.id.spinner);
 
         OkHttpClient ohc1 = new OkHttpClient();
         ohc1.setReadTimeout(1, TimeUnit.MINUTES);
@@ -107,16 +109,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Call<List<Clinic>> clinicListCall = apiService.getSimplifiedClinics();
         clinicListCall.enqueue(new Callback<List<Clinic>>() {
             @Override
-            public void onResponse(Response<List<Clinic>> response, Retrofit retrofit) {
+            public void onResponse(final Response<List<Clinic>> response, Retrofit retrofit) {
                 Log.d("qqq27", "receiving: " + response.code() + " " + response.message() + " " + response.body());
                 if (response.body() != null && response.body().size() > 0) {
                     clppb.setVisibility(View.GONE);
-                    mSlumsView.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < response.body().size(); i++) {
-                        Button button = new Button(getBaseContext());
-                        button.setText(response.body().get(i).getEnglishName());
-                        mSlumsView.addView(button);
-                    }
+                    acs.setVisibility(View.VISIBLE);
+                    //TODO fix the text color later
+                    ArrayAdapter<Clinic> clinicArrayAdapter = new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_grey_on_white, response.body());
+                    acs.setAdapter(clinicArrayAdapter);
+                    acs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            Log.d("qqq320", "yes: " + response.body().get(position).getEnglishName());
+                            selectedClinicId = response.body().get(position).getClinicId();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            Log.d("qqq321", "?");
+                        }
+                    });
                 }
             }
 
@@ -395,6 +407,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 Answers.getInstance().logLogin(new LoginEvent().putMethod("Email & password").putSuccess(true));
+                Log.d("qqq320", "saving: " + selectedClinicId);
+                Cache.setCurrentClinicId(getBaseContext(), selectedClinicId);
                 Cache.setUser(getBaseContext(), new io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.User(mEmail, mPassword));
                 Intent i = new Intent(getApplicationContext(), TwoRecyclerViewPatientsActivity.class);
                 finish();

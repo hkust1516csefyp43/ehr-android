@@ -47,8 +47,14 @@ public class Cache {
         prefs.edit().remove(Const.KEY_CURRENT_USER).apply();
     }
 
-    public static void setCurrentClinicId(Context context) {
-        //TODO save id only (to put in back to each api)
+    public static void setCurrentClinicId(Context context, String id) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putString(Const.KEY_CURRENT_CLINIC, id).apply();
+    }
+
+    public static String getCurrentClinicId(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        return prefs.getString(Const.KEY_CURRENT_CLINIC, null);
     }
 
     //==============================</Currently>==================================

@@ -49,19 +49,11 @@ public class Clinic implements haveTitle {
 
     @Override
     public String toString() {
-        return "Clinic{" +
-                "clinicId='" + clinicId + '\'' +
-                ", englishName='" + englishName + '\'' +
-                ", nativeName='" + nativeName + '\'' +
-                ", countryId='" + countryId + '\'' +
-                ", suitcaseId='" + suitcaseId + '\'' +
-                ", isActive=" + isActive +
-                ", isGlobal=" + isGlobal +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", remark='" + remark + '\'' +
-                ", create_timestamp=" + create_timestamp +
-                '}';
+        return getEnglishName();
+    }
+
+    public String getClinicId() {
+        return clinicId;
     }
 
     public String getEnglishName() {

@@ -145,6 +145,33 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
 
             }
         });
+//        TODO post patient testADD
+//        v2API.patients patientService = retrofit.create(v2API.patients.class);
+//        String clinicId = Cache.getCurrentClinicId(this);
+//        Log.d("qqq310", "id = " + clinicId);
+//        Patient p = new Patient("address", 16, 9, 1994, null, clinicId, null, "email.com", "louis", "caw23232", null, null, "Tsai", null, null, null, null, null);
+//        Log.d("qqq310", p.toString());
+//        Call<Patient> patientCall = patientService.addPatient("1", p);
+//        patientCall.enqueue(new Callback<Patient>() {
+//            @Override
+//            public void onResponse(Response<Patient> response, Retrofit retrofit) {
+//                if (response != null) {
+//                    Log.d("qqq310", "yes: " + response.code() + " / " + response.message());
+//                    if (response.errorBody() != null) {
+//                        try {
+//                            Log.d("qqq310", "not really: " + response.errorBody().string());
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//                Log.d("qqq311", "no");
+//            }
+//        });
 
         //Setup tabs
         TabLayout tl = (TabLayout) findViewById(R.id.tlPatientVisit);
@@ -213,6 +240,8 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         menu.findItem(R.id.action_confirm).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                //TODO POST/PUT triage/consultation
+
                 return false;
             }
         });

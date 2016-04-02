@@ -311,6 +311,20 @@ public interface v2API {
         Call<Keyword> deleteKeyword(@Header("token") String token);
     }
 
+    interface patients {
+        @POST("v2/patients")
+        Call<Patient> addPatient(
+                @Header("token") String token,
+                @Body Patient patient
+        );
+
+        @PUT("v2/patients/{id}")
+        Call<Patient> editPatient(
+                @Header("token") String token,
+                @Path("id") String id
+        );
+    }
+
     /**
      * TODO age, age_ot and age_yt
      */
