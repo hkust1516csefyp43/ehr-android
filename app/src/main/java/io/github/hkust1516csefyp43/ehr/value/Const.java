@@ -15,7 +15,7 @@ import io.github.hkust1516csefyp43.ehr.R;
  * Created by Louis on 17/9/15.
  */
 public class Const {
-    public final static int SPLASH_DISPLAY_LENGTH = 4000;
+    public final static int SPLASH_DISPLAY_LENGTH = 4000;       //4 seconds
 
     public final static Gson GsonParserThatWorksWithPGTimestamp
             = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
@@ -128,6 +128,14 @@ public class Const {
     public static final String KEY_CONSULTATION = "theConsultationIsBeingPassedToPVA";
     public static String KEY_LIST_OF_CARD_FRAGMENT = "locf";
     public static JSONArray SSID_LIST_ONE2ONE;
+
+    static {
+        try {
+            SSID_LIST_ONE2ONE = new JSONArray("['sight_network', 'sight_network2', 'One-2-One Cambodia GroundFlor']");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     public static String API_LOCAL;
     public static String API_CLOUD;
     public static JSONArray LIST_SSID;
@@ -143,6 +151,7 @@ public class Const {
             {4.4, 5.8, 7.1, 8.0, 8.7, 9.3, 9.8, 10.3, 10.7, 11.0, 11.4, 11.7, 12.0, 12.3, 12.6, 12.8, 13.1, 13.4, 13.7, 13.9, 14.2, 14.5, 14.7, 15.0, 15.3, 15.5, 15.8, 16.1, 16.3, 16.6, 16.9, 17.1, 17.4, 17.6, 17.8, 18.1, 18.3, 18.6, 18.8, 19.0, 19.3, 19.5, 19.7, 20.0, 20.2, 20.5, 20.7, 20.9, 21.2, 21.4, 21.7, 21.9, 22.2, 22.4, 22.7, 22.9, 23.2, 23.4, 23.7, 23.9, 24.2},
             {5.0, 6.6, 8.0, 9.0, 9.7, 10.4, 10.9, 11.4, 11.9, 12.3, 12.7, 13.0, 13.3, 13.7, 14.0, 14.3, 14.6, 14.9, 15.3, 15.6, 15.9, 16.2, 16.5, 16.8, 17.1, 17.5, 17.8, 18.1, 18.4, 18.7, 19.0, 19.3, 19.6, 19.9, 20.2, 20.4, 20.7, 21.0, 21.3, 21.6, 21.9, 22.1, 22.4, 22.7, 23.0, 23.3, 23.6, 23.9, 24.2, 24.5, 24.8, 25.1, 25.4, 25.7, 26.0, 26.3, 26.6, 26.9, 27.2, 27.6, 27.9}
     };
+
     /**
      * GIRL
      * http://www.who.int/childgrowth/standards/WFA_girls_0_5_zscores.pdf?ua=1
@@ -154,14 +163,6 @@ public class Const {
             {4.2, 5.5, 6.6, 7.5, 8.2, 8.8, 9.3, 9.8, 10.2, 10.5, 10.9, 11.2, 11.5, 11.8, 12.1, 12.4, 12.6, 12.9, 13.2, 13.5, 13.7, 14.0, 14.3, 14.6, 14.8, 15.1, 15.4, 15.7, 16.0, 16.2, 16.5, 16.8, 17.1, 17.3, 17.6, 17.9, 18.1, 18.4, 18.7, 19.0, 19.2, 19.5, 19.8, 20.1, 20.4, 20.7, 20.9, 21.2, 21.5, 21.8, 22.1, 22.4, 22.6, 22.9, 23.2, 23.5, 23.8, 24.1, 24.4, 24.6, 24.9},
             {4.8, 6.2, 7.5, 8.5, 9.3, 10.0, 10.6, 11.1, 11.6, 12.0, 12.4, 12.8, 13.1, 13.5, 13.8, 14.1, 14.5, 14.8, 15.1, 15.4, 15.7, 16.0, 16.4, 16.7, 17.0, 17.3, 17.7, 18.0, 18.3, 18.7, 19.0, 19.3, 19.6, 20.0, 20.3, 20.6, 20.9, 21.3, 21.6, 22.0, 22.3, 22.7, 23.0, 23.4, 23.7, 24.1, 24.5, 24.8, 25.2, 25.5, 25.9, 26.3, 26.6, 27.0, 27.4, 27.7, 28.1, 28.5, 28.8, 29.2, 20.5}
     };
-
-    static {
-        try {
-            SSID_LIST_ONE2ONE = new JSONArray("['sight_network', 'sight_network2', 'One-2-One Cambodia GroundFlor']");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     public enum WeightForAgeStatus {
         OVERWEIGHT, NORMAL, UNDERWEIGHT, TOO_UNDERWEIGHT

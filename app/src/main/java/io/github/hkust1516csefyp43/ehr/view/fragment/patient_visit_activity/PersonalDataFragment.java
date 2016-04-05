@@ -19,17 +19,27 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.squareup.okhttp.OkHttpClient;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Attachment;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
+import io.github.hkust1516csefyp43.ehr.v2API;
 import io.github.hkust1516csefyp43.ehr.value.Const;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +50,7 @@ import io.github.hkust1516csefyp43.ehr.value.Const;
  * create an instance of this fragment.
  */
 public class PersonalDataFragment extends Fragment implements OnCameraRespond {
-    private static io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient patient;
+    private static Patient patient;
     private OnFragmentInteractionListener mListener;
     private EditText etFirstName;
     private EditText etLastName;
@@ -63,7 +73,7 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
         return new PersonalDataFragment();
     }
 
-    public static PersonalDataFragment newInstance(io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient p) {
+    public static PersonalDataFragment newInstance(Patient p) {
         if (p != null) {
             patient = p;
         }
@@ -148,6 +158,29 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
             if (etLastName != null && patient.getLastName() != null)
                 etLastName.setText(patient.getLastName());
             //TODO get url of image
+            OkHttpClient ohc1 = new OkHttpClient();
+            ohc1.setReadTimeout(1, TimeUnit.MINUTES);
+            ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+            Retrofit retrofit = new Retrofit
+                    .Builder()
+                    .baseUrl(Const.API_ONE2ONE_HEROKU)
+                    .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                    .client(ohc1)
+                    .build();
+            v2API.attachments attachmentService = retrofit.create(v2API.attachments.class);
+            Call<Attachment> attachmentCall = attachmentService.getAttachment("1", patient.getImageId());
+            attachmentCall.enqueue(new Callback<Attachment>() {
+                @Override
+                public void onResponse(Response<Attachment> response, Retrofit retrofit) {
+                    //TODO if local >> file_name; else >> cloudinary_url
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    //No need to load image
+                }
+            });
+
 //            if (ivProfilePic != null && patient.getProfilePictureUrl() != null) {
 //                String t = Utils.getTextDrawableText(patient);
 //                Drawable backup = TextDrawable.builder().buildRound(t, Utils.getTextDrawableColor(t));

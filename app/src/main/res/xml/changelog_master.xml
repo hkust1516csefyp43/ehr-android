@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
     <release
+        version="1.1.3"
+        versioncode="14">
+        <change>
+            Auto fill keywords from database
+        </change>
+    </release>
+    <release
         version="1.1.2"
         versioncode="13">
         <change>Search is coming</change>

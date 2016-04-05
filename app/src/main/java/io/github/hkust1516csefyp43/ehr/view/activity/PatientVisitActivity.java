@@ -153,6 +153,17 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
 
             }
         });
+
+        v2API.patients patientService = retrofit.create(v2API.patients.class);
+        v2API.triages triageService = retrofit.create(v2API.triages.class);
+        v2API.consultations consultationService = retrofit.create(v2API.consultations.class);
+
+//        Call<Patient> patientCall = patientService.addPatient("1", new Patient());
+//        Call<Triage> triageCall = triageService.addTriage();
+//        Call<Consultation> consultationCall = consultationService.addConsultation();
+
+
+
 //        TODO post patient testADD
 //        v2API.patients patientService = retrofit.create(v2API.patients.class);
 //        String clinicId = Cache.getCurrentClinicId(this);

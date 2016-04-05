@@ -87,20 +87,20 @@ public class Patient implements Serializable {
         return birthDate;
     }
 
-    public Integer getBirthMonth() {
-        return birthMonth;
-    }
-
-    public Integer getBirthYear() {
-        return birthYear;
-    }
-
     public void setBirthDate(Integer birthDate) {
         this.birthDate = birthDate;
     }
 
+    public Integer getBirthMonth() {
+        return birthMonth;
+    }
+
     public void setBirthMonth(Integer birthMonth) {
         this.birthMonth = birthMonth;
+    }
+
+    public Integer getBirthYear() {
+        return birthYear;
     }
 
     public void setBirthYear(Integer birthYear) {
@@ -195,14 +195,6 @@ public class Patient implements Serializable {
         this.nativeName = nativeName;
     }
 
-    public Integer getNextStation() {
-        return nextStation;
-    }
-
-    public void setNextStation(Integer nextStation) {
-        this.nextStation = nextStation;
-    }
-
     public String getPatientId() {
         return patientId;
     }
@@ -227,6 +219,14 @@ public class Patient implements Serializable {
         this.phoneNumberCountryCode = phoneNumberCountryCode;
     }
 
+    public String getVisitId() {
+        return visitId;
+    }
+
+    public void setVisitId(String visitId) {
+        this.visitId = visitId;
+    }
+
     public Integer getTag() {
         return tag;
     }
@@ -235,12 +235,12 @@ public class Patient implements Serializable {
         this.tag = tag;
     }
 
-    public String getVisitId() {
-        return visitId;
+    public Integer getNextStation() {
+        return nextStation;
     }
 
-    public void setVisitId(String visitId) {
-        this.visitId = visitId;
+    public void setNextStation(Integer nextStation) {
+        this.nextStation = nextStation;
     }
 
     @Override

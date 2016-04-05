@@ -317,7 +317,7 @@ public interface v2API {
 
     interface patients {
         /**
-         * TODO age, age_ot and age_yt
+         * TODO fill me up
          */
         @GET("v2/patients/")
         Call<List<Patient>> getPatients(
@@ -374,6 +374,12 @@ public interface v2API {
     }
 
     interface visits {
+        /**
+         * TODO fill me up
+         *
+         * @param token
+         * @return
+         */
         @GET("v2/visits")
         Call<List<Visit>> getVisits (
                 @Header("token") String token
@@ -394,6 +400,11 @@ public interface v2API {
     }
 
     interface consultations {
+        /**
+         * TODO fill me up
+         * @param token
+         * @return
+         */
         @GET("v2/consultations")
         Call<List<Consultation>> getConsultations(
                 @Header("token") String token
