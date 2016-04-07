@@ -7,19 +7,11 @@
     tools:context=".view.activity.TwoRecyclerViewPatientsActivity">
 
     <!--TODO fix this-->
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefreshlayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
-
-        <io.github.hkust1516csefyp43.ehr.view.custom_view.FixedRecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible">
-        </io.github.hkust1516csefyp43.ehr.view.custom_view.FixedRecyclerView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+    <!--android:id="@+id/swiperefreshlayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:visibility="visible">-->
 
     <!--<io.github.hkust1516csefyp43.ehr.view.custom_view.FixedRecyclerView-->
     <!--android:id="@+id/recyclerView"-->
@@ -27,6 +19,14 @@
     <!--android:layout_height="wrap_content"-->
     <!--android:visibility="visible">-->
     <!--</io.github.hkust1516csefyp43.ehr.view.custom_view.FixedRecyclerView>-->
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+
+    <io.github.hkust1516csefyp43.ehr.view.custom_view.FixedRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+    </io.github.hkust1516csefyp43.ehr.view.custom_view.FixedRecyclerView>
 
     <TextView
         android:id="@+id/fail"

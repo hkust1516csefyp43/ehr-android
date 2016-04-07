@@ -27,6 +27,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
+//TODO dismiss this activity when someone click a card
 public class SearchActivity extends AppCompatActivity {
   SearchBox searchBox;
   FixedRecyclerView recyclerView;
