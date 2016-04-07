@@ -15,10 +15,10 @@ import android.widget.EditText;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
+import io.github.hkust1516csefyp43.ehr.listener.onSendData;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Remark;
 
-public class RemarkFragment extends Fragment implements OnSendData {
+public class RemarkFragment extends Fragment implements onSendData {
     private OnFragmentInteractionListener mListener;
     private SwitchCompat scRemark;
     private EditText etRemark;

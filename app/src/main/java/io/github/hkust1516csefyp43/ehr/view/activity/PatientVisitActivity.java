@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
+import io.github.hkust1516csefyp43.ehr.listener.onSendData;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.ChiefComplain;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PersonalData;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Remark;
@@ -107,10 +107,10 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
   private Triage triage;
   private Consultation consultation;
 
-  private OnSendData osdPersonalData;
-  private OnSendData osdVitalSigns;
-  private OnSendData osdChiefComplain;
-  private OnSendData osdRemark;
+  private onSendData osdPersonalData;
+  private onSendData osdVitalSigns;
+  private onSendData osdChiefComplain;
+  private onSendData osdRemark;
 
   private Date startTime;
 

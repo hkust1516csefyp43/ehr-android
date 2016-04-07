@@ -11,16 +11,17 @@ import android.view.ViewGroup;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.listener.onSendData;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PregnancyFragment.OnFragmentInteractionListener} interface
+ * {@link PregnancyFragment OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link PregnancyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PregnancyFragment extends Fragment {
+public class PregnancyFragment extends Fragment implements onSendData {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -92,5 +93,11 @@ public class PregnancyFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public Object onSendData() {
+
+        return null;
     }
 }

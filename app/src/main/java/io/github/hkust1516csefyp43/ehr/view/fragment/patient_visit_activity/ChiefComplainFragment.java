@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
+import io.github.hkust1516csefyp43.ehr.listener.onSendData;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.ChiefComplain;
 
 /**
@@ -23,7 +23,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.ChiefComplain;
  * Use the {@link ChiefComplainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChiefComplainFragment extends Fragment implements OnSendData {
+public class ChiefComplainFragment extends Fragment implements onSendData {
 
     private OnFragmentInteractionListener mListener;
     private AppCompatMultiAutoCompleteTextView acmactv;
