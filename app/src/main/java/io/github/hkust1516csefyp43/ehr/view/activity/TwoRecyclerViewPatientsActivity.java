@@ -201,23 +201,23 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         .withActivity(this)
         .withHeaderBackground(R.drawable.header_background)
         .addProfiles(new ProfileDrawerItem()
-            //TODO get and set the actual image. If image does not exist, load drawable
-            .withIcon(TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRound("LT", ContextCompat.getColor(this, R.color.accent_color)))
-            .withName("Louis Tsai M.D.")
-            .withEmail("louis@email.com"))
+                //TODO get and set the actual image. If image does not exist, load drawable
+                .withIcon(TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRound("LT", ContextCompat.getColor(this, R.color.accent_color)))
+                .withName("Louis Tsai M.D.")
+                .withEmail("louis@email.com"))
         .withSelectionListEnabledForSingleProfile(false)
         .withProfileImagesClickable(false)
         .withOnAccountHeaderSelectionViewClickListener(new AccountHeader.OnAccountHeaderSelectionViewClickListener() {
-          @Override
-          public boolean onClick(View view, IProfile iProfile) {
-            //TODO ProfileActivity
-            openProfile();
-            Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("Profile account header")
-                .putContentType("Profile")
-                .putContentId("profile_header"));
-            return false;
-          }
+            @Override
+            public boolean onClick(View view, IProfile iProfile) {
+                //TODO ProfileActivity
+                openProfile();
+                Answers.getInstance().logContentView(new ContentViewEvent()
+                        .putContentName("Profile account header")
+                        .putContentType("Profile")
+                        .putContentId("profile_header"));
+                return false;
+            }
         })
         .build();
 
@@ -243,11 +243,11 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             whichPage = Const.ID_TRIAGE;
             Cache.setWhichStation(getBaseContext(), Const.ID_TRIAGE);
             //TODO call the 2 pages and call server
-            ocslLeft.onStationChange(Const.PATIENT_LIST_POST_TRIAGE);
-            ocslRight.onStationChange(Const.PATIENT_LIST_ALL_PATIENTS);
+              if (ocslLeft != null) ocslLeft.onStationChange(Const.PATIENT_LIST_POST_TRIAGE);
+              if (ocslRight != null)ocslRight.onStationChange(Const.PATIENT_LIST_ALL_PATIENTS);
             hideAdmin();
             tl.getTabAt(0).setText("Finished Triage");
-            tl.getTabAt(1).setText("In this clinic");
+              tl.getTabAt(1).setText("In this clinic");
             ptrvfRecyclerViewScrollToTop();
             Answers.getInstance().logContentView(new ContentViewEvent()
                 .putContentName("Triage")
@@ -260,95 +260,95 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             whichPage = Const.ID_CONSULTATION;
             Cache.setWhichStation(getBaseContext(), Const.ID_CONSULTATION);
             //TODO call the 2 pages and call server
-            ocslLeft.onStationChange(Const.PATIENT_LIST_PRE_CONSULTATION);
-            ocslRight.onStationChange(Const.PATIENT_LIST_POST_CONSULTATION);
-            hideAdmin();
+            if (ocslLeft != null)  ocslLeft.onStationChange(Const.PATIENT_LIST_PRE_CONSULTATION);
+            if (ocslRight != null)  ocslRight.onStationChange(Const.PATIENT_LIST_POST_CONSULTATION);
+              hideAdmin();
             tl.getTabAt(0).setText("Waitlist");
             tl.getTabAt(1).setText("Finished");
             Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("Consultation")
-                .putContentType("Station")
-                .putContentId("consultation"));
+                    .putContentName("Consultation")
+                    .putContentType("Station")
+                    .putContentId("consultation"));
             break;
           case Const.ID_PHARMACY:
-            getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
+              getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
             getSupportActionBar().setSubtitle("Cannal Side");
             whichPage = Const.ID_PHARMACY;
             Cache.setWhichStation(getBaseContext(), Const.ID_PHARMACY);
             //TODO call the 2 pages and call server
-            hideAdmin();
+              hideAdmin();
             tl.getTabAt(0).setText("Waitlist");
             tl.getTabAt(1).setText("Finished");
             Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("Pharmacy")
-                .putContentType("Station")
-                .putContentId("pharmacy"));
+                    .putContentName("Pharmacy")
+                    .putContentType("Station")
+                    .putContentId("pharmacy"));
             break;
           case Const.ID_INVENTORY:
             showInventory();
             getSupportActionBar().setTitle(getResources().getString(R.string.inventory));
             Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("Inventory")
-                .putContentType("Admin")
-                .putContentId("inventory"));
+                    .putContentName("Inventory")
+                    .putContentType("Admin")
+                    .putContentId("inventory"));
             break;
           case Const.ID_ADMIN:
             getSupportActionBar().setTitle(getResources().getString(R.string.admin));
             getSupportActionBar().setSubtitle(null);
             showAdmin();
             Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("Admin")
-                .putContentType("Admin")
-                .putContentId("admin"));
+                    .putContentName("Admin")
+                    .putContentType("Admin")
+                    .putContentId("admin"));
             break;
           case Const.ID_SETTINGS:
             openSettings();
             Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("Settings")
-                .putContentType("Settings & About")
-                .putContentId("settings"));
+                    .putContentName("Settings")
+                    .putContentType("Settings & About")
+                    .putContentId("settings"));
             break;
           case Const.ID_ABOUT:
             openAbout();
             getSupportActionBar().setTitle(getResources().getString(R.string.about));
             getSupportActionBar().setSubtitle(null);
             Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("About")
-                .putContentType("Settings & About")
-                .putContentId("about"));
+                    .putContentName("About")
+                    .putContentType("Settings & About")
+                    .putContentId("about"));
             break;
           case Const.ID_LOGOUT:
             new MaterialDialog.Builder(c)
-                .theme(Theme.LIGHT)
-                .autoDismiss(true)
-                .content("Are you sure you want to logout?")
-                .positiveText("Logout")
+                    .theme(Theme.LIGHT)
+                    .autoDismiss(true)
+                    .content("Are you sure you want to logout?")
+                    .positiveText("Logout")
                 //TODO icon?
                 //TODO different color for +ve and -ve text
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                  @Override
-                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.dismiss();
-                    Cache.clearUser(getApplicationContext());
-                    Cache.clearCurrentClinicId(getApplicationContext());
-                    openLogin();
-                    c.finish();
-                  }
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                            Cache.clearUser(getApplicationContext());
+                            Cache.clearCurrentClinicId(getApplicationContext());
+                            openLogin();
+                            c.finish();
+                        }
                 })
-                .negativeText("Dismiss")
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                  @Override
-                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.dismiss();
-                  }
+                    .negativeText("Dismiss")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
                 })
-                .show();
+                    .show();
             getSupportActionBar().setTitle(getResources().getString(R.string.settings));
             getSupportActionBar().setSubtitle(null);
             Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("Logout")
-                .putContentType("Logout")
-                .putContentId("logout"));
+                    .putContentName("Logout")
+                    .putContentType("Logout")
+                    .putContentId("logout"));
             break;
         }
         return false;
@@ -356,9 +356,9 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     });
 
     Answers.getInstance().logContentView(new ContentViewEvent()
-        .putContentName("Triage")
-        .putContentType("Station")
-        .putContentId("triage"));
+            .putContentName("Triage")
+            .putContentType("Station")
+            .putContentId("triage"));
 
 
     /**
@@ -382,9 +382,9 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
       public boolean onMenuItemClick(MenuItem item) {
         Answers.getInstance().logSearch(new SearchEvent());
         Answers.getInstance().logContentView(new ContentViewEvent()
-            .putContentName("Search")
-            .putContentType("Search")
-            .putContentId("search"));
+                .putContentName("Search")
+                .putContentType("Search")
+                .putContentId("search"));
         return false;
       }
     });

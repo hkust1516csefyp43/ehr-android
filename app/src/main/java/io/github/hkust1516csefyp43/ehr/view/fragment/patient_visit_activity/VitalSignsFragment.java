@@ -24,7 +24,7 @@ import java.util.GregorianCalendar;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
+import io.github.hkust1516csefyp43.ehr.listener.onSendData;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.VitalSigns;
 
 /**
@@ -35,7 +35,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.VitalSigns;
  * Use the {@link VitalSignsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VitalSignsFragment extends Fragment implements OnSendData {
+public class VitalSignsFragment extends Fragment implements onSendData {
     private OnFragmentInteractionListener mListener;
     private TextView tvLDD;
     private TextView tvBMI;

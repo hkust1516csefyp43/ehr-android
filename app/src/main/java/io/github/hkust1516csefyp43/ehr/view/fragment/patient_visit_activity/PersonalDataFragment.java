@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
+import io.github.hkust1516csefyp43.ehr.listener.onSendData;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PersonalData;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Attachment;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
@@ -57,7 +57,7 @@ import retrofit.Retrofit;
  * Use the {@link PersonalDataFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PersonalDataFragment extends Fragment implements OnCameraRespond, OnSendData {
+public class PersonalDataFragment extends Fragment implements OnCameraRespond, onSendData {
   private static Patient patient;
   private OnFragmentInteractionListener mListener;
   private EditText etFirstName;
@@ -280,6 +280,50 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond, O
   public void onResume() {
     //TODO restore cache if exists
     super.onResume();
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString("TagNum", tvTagNumber.getText().toString());
+    outState.putString("LastName", etLastName.getText().toString());
+    outState.putString("MiddleName", etMiddleName.getText().toString());
+    outState.putString("FirstName", etFirstName.getText().toString());
+    outState.putString("NativeName", etNativeName.getText().toString());
+    outState.putInt("BDayYear", birthday[0]);
+    outState.putInt("BDayMonth", birthday[1]);
+    outState.putInt("BDayDate", birthday[2]);
+    outState.putString("Address", etAddress.getText().toString());
+    outState.putString("PhoneNum", etPhoneNumber.getText().toString());
+
+  }
+
+  @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    if (savedInstanceState != null){
+      if (tvTagNumber != null)
+        tvTagNumber.setText(savedInstanceState.getString("TagNum"));
+      if (etLastName != null)
+        etLastName.setText(savedInstanceState.getString("LastName"));
+      if (etMiddleName != null)
+        etMiddleName.setText(savedInstanceState.getString("Middlename"));
+      if (etFirstName != null)
+        etFirstName.setText(savedInstanceState.getString("FirstName"));
+      if (etNativeName != null)
+        etNativeName.setText(savedInstanceState.getString("NativeName"));
+      if (etAddress != null)
+        etAddress.setText(savedInstanceState.getString("Address"));
+      if (tvBirthday != null){
+        birthday[0] = savedInstanceState.getInt("BDayYear");
+        birthday[1] = savedInstanceState.getInt("BDayMonth");
+        birthday[2] = savedInstanceState.getInt("BDayDate");
+        String date = "" + birthday[0] + "/" + (birthday[1] + 1) + "/" + birthday[2];
+        tvBirthday.setText(date);
+      }
+      if (etPhoneNumber != null)
+        etPhoneNumber.setText(savedInstanceState.getString("PhoneNum"));
+    }
   }
 
   @Override

@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
+import io.github.hkust1516csefyp43.ehr.listener.onSendData;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.ChiefComplain;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PersonalData;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Remark;
@@ -55,6 +55,7 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.Chie
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DocumentFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.InvestigationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ListOfCardsFragment;
+import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.MedicationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PersonalDataFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.RemarkFragment;
@@ -97,20 +98,21 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
   private Patient patient = null;
   private String mCC;
   private boolean isTriage;
-  private PersonalDataFragment pdf;
 
+  private PersonalDataFragment pdf;
   private VitalSignsFragment vsf;
   private ChiefComplainFragment ccf;
   private RemarkFragment rf;
-  private OnCameraRespond ocrPDF;
 
+  private OnCameraRespond ocrPDF;
   private Triage triage;
   private Consultation consultation;
-  private OnSendData osdPersonalData;
 
-  private OnSendData osdVitalSigns;
-  private OnSendData osdChiefComplain;
-  private OnSendData osdRemark;
+  private onSendData osdPersonalData;
+  private onSendData osdVitalSigns;
+  private onSendData osdChiefComplain;
+  private onSendData osdRemark;
+
   private Date startTime;
 
   private ProgressBar pb;
