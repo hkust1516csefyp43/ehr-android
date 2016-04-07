@@ -25,6 +25,7 @@ import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.VitalSigns;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -250,6 +251,8 @@ public class VitalSignsFragment extends Fragment implements OnSendData {
 
     @Override
     public Object onSendData() {
-        return null;
+        VitalSigns vs = new VitalSigns();
+
+        return vs;
     }
 }

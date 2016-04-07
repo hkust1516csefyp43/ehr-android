@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Tag number"
+                    android:text="@string/tag_number"
                     android:textSize="18sp"/>
 
                 <TextView
@@ -93,7 +93,19 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!-- Special picker for birthday? -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/native_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/native_name"
+                    android:inputType="text"
+                    android:maxLines="1"/>
+
+            </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -169,7 +181,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edAddress"
+                    android:id="@+id/etAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Add logo to left: Address"
@@ -184,7 +196,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/evPhoneNumber"
+                    android:id="@+id/etPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Add logo to left: Phone number"

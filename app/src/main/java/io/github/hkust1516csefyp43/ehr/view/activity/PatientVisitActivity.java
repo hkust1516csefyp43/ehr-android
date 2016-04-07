@@ -288,7 +288,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                         if (triage == null) {   //TODO new patient new triage
                             //1. POST patient
                             PersonalData pd = (PersonalData) osdPersonalData.onSendData();
-
+                            Log.d("qqq331", pd.toString());
                             //2. POST visit
                             //tag & patient_id
 

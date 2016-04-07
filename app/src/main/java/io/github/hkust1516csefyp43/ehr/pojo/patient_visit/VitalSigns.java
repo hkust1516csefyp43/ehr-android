@@ -10,11 +10,15 @@ public class VitalSigns implements Serializable {
     private Integer diastolic;
     private Integer pulseRate;
     private Integer respiratoryRate;
-    private Float temperature;          //Celcius
+    private Float temperature;          //Celsius
     private Integer spo2;
     private Float weight;               //kg
     private Float height;               //m
     private Integer bloodSugar;         //mg/dL
+
+    public VitalSigns() {
+        //default empty constructor
+    }
 
     public VitalSigns(Integer systolic, Integer diastolic, Integer pulseRate, Integer respiratoryRate, Float temperature, Integer spo2, Float weight, Float height, Integer bloodSugar) {
         this.systolic = systolic;

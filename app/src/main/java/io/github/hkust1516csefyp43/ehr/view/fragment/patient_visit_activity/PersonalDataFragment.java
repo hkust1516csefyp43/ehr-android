@@ -36,6 +36,7 @@ import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PersonalData;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Attachment;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.v2API;
@@ -54,16 +55,21 @@ import retrofit.Retrofit;
  * Use the {@link PersonalDataFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PersonalDataFragment extends Fragment implements OnCameraRespond, OnSendData, NumberPickerDialogHandlerV2 {
+public class PersonalDataFragment extends Fragment implements OnCameraRespond, OnSendData {
     private static Patient patient;
     private OnFragmentInteractionListener mListener;
     private EditText etFirstName;
+    private EditText etMiddleName;
     private EditText etLastName;
+    private EditText etNativeName;
+    private EditText etAddress;
+    //TODO phone country code spinner
+    private EditText etPhoneNumber;
     private ImageView ivProfilePic;
     private TextView tvBirthday;
     private TextView tvTagNumber;
     private Spinner sGender;
-    private int[] birthday;
+    private int[] birthday = new int[3];
 
     public PersonalDataFragment() {
         // Required empty public constructor
@@ -91,8 +97,14 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond, O
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View v = localInflater.inflate(R.layout.fragment_personal_data, container, false);
+        //TODO type year and get approximate birthday
         etFirstName = (EditText) v.findViewById(R.id.first_name);
+        etMiddleName = (EditText) v.findViewById(R.id.middle_name);
         etLastName = (EditText) v.findViewById(R.id.last_name);
+        etNativeName = (EditText) v.findViewById(R.id.native_name);
+        etAddress = (EditText) v.findViewById(R.id.etAddress);
+        //TODO phone country code
+        etPhoneNumber = (EditText) v.findViewById(R.id.etPhoneNumber);
         ivProfilePic = (ImageView) v.findViewById(R.id.iv_profile_pic);
         tvBirthday = (TextView) v.findViewById(R.id.tvBirthday);
         tvTagNumber = (TextView) v.findViewById(R.id.tvTagNumber);
@@ -176,7 +188,7 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond, O
                                 tvBirthday.setText(date);
                             }
                         }
-                    }, 1992, 9, 14);            //Channat's birthday
+                    }, 1992, 8, 14);            //Channat's birthday (14th September 1992)
                     dpd.showYearPickerFirst(true);
                     dpd.show(getActivity().getFragmentManager(), "qqq");
                 }
@@ -305,6 +317,37 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond, O
 
     @Override
     public Object onSendData() {
-        return null;
+        PersonalData pd = new PersonalData();
+        if (etFirstName != null) {
+            pd.setFirstName(etFirstName.getText().toString());
+        }
+        if (etMiddleName != null) {
+            pd.setMiddleName(etMiddleName.getText().toString());
+        }
+        if (etLastName != null) {
+            pd.setLastName(etLastName.getText().toString());
+        }
+        if (etNativeName != null) {
+            pd.setNativeName(etNativeName.getText().toString());
+        }
+        if (tvTagNumber != null) {
+            try {
+                pd.setTagNumber(Integer.parseInt(tvTagNumber.getText().toString()));
+            } catch (NumberFormatException e) {
+                //i.e. the text is not number (e.g. "Click here")
+            }
+        }
+        if (tvBirthday != null) {
+            pd.setBirthYear(birthday[0]);
+            pd.setBirthMonth(birthday[1]);
+            pd.setBirthDate(birthday[2]);
+        }
+        if (etAddress != null) {
+            pd.setAddress(etAddress.getText().toString());
+        }
+        if (etPhoneNumber != null) {
+            pd.setPhoneNumber(etPhoneNumber.getText().toString());
+        }
+        return pd;
     }
 }

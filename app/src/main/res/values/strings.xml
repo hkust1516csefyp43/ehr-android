@@ -115,6 +115,8 @@
     <string name="pid">Patient ID</string>
     <string name="no_tel">Tel no.</string>
     <string name="address">Address</string>
+    <string name="tag_number">Tag number</string>
+    <string name="native_name">Native name</string>
 
     <string-array name="drug_array">
         <item>medicine</item>
