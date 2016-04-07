@@ -35,7 +35,6 @@ import com.afollestad.materialdialogs.Theme;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
-import com.crashlytics.android.answers.SearchEvent;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -411,11 +410,11 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_notifications_none).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
       @Override
       public boolean onMenuItemClick(MenuItem item) {
-        Answers.getInstance().logSearch(new SearchEvent());
         Answers.getInstance().logContentView(new ContentViewEvent()
-            .putContentName("Search")
-            .putContentType("Search")
-            .putContentId("search"));
+            .putContentName("Notification")
+            .putContentType("Notification")
+            .putContentId("notification"));
+        openNotification();
         return false;
       }
     });
@@ -499,6 +498,11 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
   public void openSettings() {
     Intent intent = new Intent(this, SettingsActivity.class);
+    startActivity(intent);
+  }
+
+  public void openNotification() {
+    Intent intent = new Intent(this, NotificationActivity.class);
     startActivity(intent);
   }
 

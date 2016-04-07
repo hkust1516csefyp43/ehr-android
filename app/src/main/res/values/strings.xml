@@ -124,6 +124,7 @@
     <string name="mg_dl">mg/dl</string>
     <string name="percent">%</string>
     <string name="spo2">SpO2</string>
+    <string name="notifications">Notifications</string>
 
     <string-array name="drug_array">
         <item>medicine</item>
