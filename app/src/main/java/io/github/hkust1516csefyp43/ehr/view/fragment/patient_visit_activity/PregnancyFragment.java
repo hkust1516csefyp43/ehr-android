@@ -8,6 +8,11 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
@@ -32,6 +37,21 @@ public class PregnancyFragment extends Fragment implements onSendData {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private TextView LMPDate;
+    private CheckBox isPregnant;
+    private TextView gestation;
+    private CheckBox isBreastFeeding;
+    private CheckBox isContraceptive;
+    private EditText noPregnancy;
+    private EditText noLiveBirth;
+    private EditText noMiscarriage;
+    private EditText noAbortion;
+    private EditText noStillBirth;
+    private EditText otherInfo;
+
+    private int[] pregDate = new int[3];
+
 
     public PregnancyFragment() {
         // Required empty public constructor
@@ -64,11 +84,46 @@ public class PregnancyFragment extends Fragment implements onSendData {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_pregnancy, container, false);
+        View view = localInflater.inflate(R.layout.fragment_pregnancy, container, false);
+        if (view != null){
+            LMPDate = (TextView) view.findViewById(R.id.pgdate);
+            isPregnant = (CheckBox) view.findViewById(R.id.ispregnant);
+            gestation = (TextView) view.findViewById(R.id.gestation);
+            isBreastFeeding = (CheckBox) view.findViewById(R.id.breastfeeding);
+            isContraceptive = (CheckBox) view.findViewById(R.id.contraceptive);
+            noPregnancy = (EditText) view.findViewById(R.id.no_preg);
+            noLiveBirth = (EditText) view.findViewById(R.id.no_livebirth);
+            noMiscarriage = (EditText) view.findViewById(R.id.no_miscarriage);
+            noAbortion = (EditText) view.findViewById(R.id.no_abortion);
+            noStillBirth = (EditText) view.findViewById(R.id.no_stillbirth);
+            otherInfo = (EditText) view.findViewById(R.id.other_info);
+        }
+        if (LMPDate != null){
+            LMPDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    GregorianCalendar calendar = new GregorianCalendar();
+                    DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                            String date = "" + year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+                            pregDate[0] = year;
+                            pregDate[1] = monthOfYear;
+                            pregDate[2] = dayOfMonth;
+                            LMPDate.setText(date);
+                        }
+                    }, 1992, 8, 14);
+                    datePickerDialog.showYearPickerFirst(true);
+                    datePickerDialog.show(getActivity().getFragmentManager(), "qqq");
+                }
+            });
+        }
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -76,6 +131,11 @@ public class PregnancyFragment extends Fragment implements onSendData {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -94,6 +154,83 @@ public class PregnancyFragment extends Fragment implements onSendData {
         super.onDetach();
         mListener = null;
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("pgDate", pregDate[0]);
+        outState.putInt("pgMonth", pregDate[1]);
+        outState.putInt("pgYear", pregDate[2]);
+        if (isPregnant.isChecked()){
+            outState.putBoolean("isPreg", true);
+            outState.putString("gestation", gestation.getText().toString());
+        }
+        else
+            outState.putBoolean("isPreg", false);
+
+        if (isBreastFeeding.isChecked())
+            outState.putBoolean("isBreastFeed", true);
+        else
+            outState.putBoolean("isBreastFeed", false);
+
+        if (isContraceptive.isChecked())
+            outState.putBoolean("isContra", true);
+        else
+            outState.putBoolean("isContra", false);
+
+        outState.putString("noPreg", noPregnancy.getText().toString());
+        outState.putString("noLiveBirth", noLiveBirth.getText().toString());
+        outState.putString("noMiscarriage", noMiscarriage.getText().toString());
+        outState.putString("noAbortion", noAbortion.getText().toString());
+        outState.putString("noStillBirth", noStillBirth.getText().toString());
+        outState.putString("otherInfo", otherInfo.getText().toString());
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null){
+            if (LMPDate != null){
+                pregDate[0] = savedInstanceState.getInt("pgDate");
+                pregDate[1] = savedInstanceState.getInt("pgMonth");
+                pregDate[2] = savedInstanceState.getInt("pgYear");
+                String date = "" + pregDate[0] + "/" + (pregDate[1] + 1) + "/" + pregDate[2];
+                LMPDate.setText(date);
+            }
+            if (isPregnant != null){
+                if (savedInstanceState.getBoolean("isPreg"))
+                    isPregnant.setChecked(true);
+                else
+                    isPregnant.setChecked(false);
+            }
+            if (isBreastFeeding != null){
+                if (savedInstanceState.getBoolean("isBreastFeed"))
+                    isBreastFeeding.setChecked(true);
+                else
+                    isBreastFeeding.setChecked(false);
+            }
+            if (isContraceptive != null){
+                if (savedInstanceState.getBoolean("isContra"))
+                    isContraceptive.setChecked(true);
+                else
+                    isContraceptive.setChecked(false);
+            }
+            if (noPregnancy != null)
+                noPregnancy.setText(savedInstanceState.getString("noPreg"));
+            if (noLiveBirth != null)
+                noLiveBirth.setText(savedInstanceState.getString("noLiveBirth"));
+            if (noMiscarriage != null)
+                noMiscarriage.setText(savedInstanceState.getString("noMiscarriage"));
+            if (noAbortion != null)
+                noAbortion.setText(savedInstanceState.getString("noAbortion"));
+            if (noStillBirth != null)
+                noStillBirth.setText(savedInstanceState.getString("noStillBirth"));
+            if (otherInfo != null)
+                otherInfo.setText(savedInstanceState.getString("otherInfo"));
+        }
+    }
+
+
 
     @Override
     public Object onSendData() {

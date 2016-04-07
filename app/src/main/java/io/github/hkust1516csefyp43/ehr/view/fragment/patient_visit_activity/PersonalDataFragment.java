@@ -31,7 +31,6 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
@@ -203,7 +202,7 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond, o
       tvBirthday.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          GregorianCalendar gc = new GregorianCalendar();
+//          GregorianCalendar gc = new GregorianCalendar();
           DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
