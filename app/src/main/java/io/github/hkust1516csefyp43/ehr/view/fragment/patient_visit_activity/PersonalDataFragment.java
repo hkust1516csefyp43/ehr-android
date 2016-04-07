@@ -369,6 +369,9 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond, O
                     pd.setTagNumber(Integer.parseInt(tvTagNumber.getText().toString()));
                 } catch (NumberFormatException e) {
                     //i.e. the text is not number (e.g. "Click here")
+                    tvTagNumber.setError("You must set a tag number");
+                    error = true;
+                    return null;
                 }
             }
             if (tvBirthday != null) {

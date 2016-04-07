@@ -27,6 +27,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.squareup.okhttp.OkHttpClient;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +43,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Consultation;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Triage;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Visit;
 import io.github.hkust1516csefyp43.ehr.v2API;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
@@ -64,31 +66,31 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
 
     ViewPager viewPager;
     String[] consultationTabs = {
-            "Personal Data",
-            "Vital Signs",
-            "Chief Complain",
-            "HPI",
-            "Previous Medical History",
-            "Family History",
-            "Social History",
-            "Drug History",
-            "Screening",
-            "Allergy",
-            "Pregnancy (Female only)",
-            "Review of the System",
-            "Physical Examination",
-            "Clinical Diagnosis",
-            "Investigation",
-            "Medication",
-            "Advice",
-            "Follow-up",
-            "Remark"
+        "Personal Data",
+        "Vital Signs",
+        "Chief Complain",
+        "HPI",
+        "Previous Medical History",
+        "Family History",
+        "Social History",
+        "Drug History",
+        "Screening",
+        "Allergy",
+        "Pregnancy (Female only)",
+        "Review of the System",
+        "Physical Examination",
+        "Clinical Diagnosis",
+        "Investigation",
+        "Medication",
+        "Advice",
+        "Follow-up",
+        "Remark"
     };
     String[] triageTabs = {
-            "Personal Data",
-            "Vital Signs",
-            "Chief Complain",
-            "Remark"
+        "Personal Data",
+        "Vital Signs",
+        "Chief Complain",
+        "Remark"
     };
     private Patient patient = null;
     private String mCC;
@@ -150,11 +152,11 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         ohc1.setReadTimeout(1, TimeUnit.MINUTES);
         ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
         Retrofit retrofit = new Retrofit
-                .Builder()
-                .baseUrl(Const.API_ONE2ONE_HEROKU)
-                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-                .client(ohc1)
-                .build();
+            .Builder()
+            .baseUrl(Const.API_ONE2ONE_HEROKU)
+            .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+            .client(ohc1)
+            .build();
         v2API.keywords apiService = retrofit.create(v2API.keywords.class);
         Call<List<Keyword>> ck = apiService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         ck.enqueue(new Callback<List<Keyword>>() {
@@ -278,18 +280,18 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                 ohc1.setReadTimeout(1, TimeUnit.MINUTES);
                 ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
                 Retrofit retrofit = new Retrofit
-                        .Builder()
-                        .baseUrl(Const.API_ONE2ONE_HEROKU)
-                        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-                        .client(ohc1)
-                        .build();
+                    .Builder()
+                    .baseUrl(Const.API_ONE2ONE_HEROKU)
+                    .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                    .client(ohc1)
+                    .build();
                 if (isTriage) {
                     if (patient == null) {
                         if (triage == null) {   //TODO new patient new triage
                             //1. POST patient
                             Object o = osdPersonalData.onSendData();
                             if (o != null) {
-                                PersonalData pd = (PersonalData) o;
+                                final PersonalData pd = (PersonalData) o;
                                 Log.d("qqq331", pd.toString());
                                 v2API.patients patientService = retrofit.create(v2API.patients.class);
                                 Patient p = inflatePatient(pd);
@@ -301,23 +303,94 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                                     public void onResponse(Response<Patient> response, Retrofit retrofit) {
                                         Log.d("qqq331a", "receiving: " + response.code() + " " + response.message() + " " + response.body());
                                         //TODO use dialog to display 400
+                                        if (response.code() < 300 && response.code() > 199) {       //yes
+                                            //2. POST visit
+                                            Visit v = inflateVisit(pd, response.body());
+                                            Log.d("qqq3321", v.toString());
+                                            v2API.visits visitService = retrofit.create(v2API.visits.class);
+                                            Call<Visit> visitCall = visitService.addVisit("1", v);
+                                            visitCall.enqueue(new Callback<Visit>() {
+                                                @Override
+                                                public void onResponse(Response<Visit> response, Retrofit retrofit) {
+                                                    Log.d("qqq331b", "receiving: " + response.code() + " " + response.message() + " " + response.body());
+                                                    if (response.code() < 300 && response.code() > 199) {
+                                                        //3. POST triage
+                                                        Object o2 = null;
+                                                        VitalSigns vs = null;
+                                                        ChiefComplain cc = null;
+                                                        Remark r = null;
+                                                        if (osdVitalSigns != null) {
+                                                            o2 = osdVitalSigns.onSendData();
+                                                            if (o2 != null) {
+                                                                vs = (VitalSigns) o2;
+                                                                Log.d("qqq332", vs.toString());
+                                                            } else {
+                                                                viewPager.setCurrentItem(1);
+                                                            }
+                                                        }
+                                                        if (osdChiefComplain != null) {
+                                                            o2 = osdChiefComplain.onSendData();
+                                                            if (o2 != null) {
+                                                                cc = (ChiefComplain) o2;
+                                                                Log.d("qqq333", cc.toString());
+                                                            } else {
+                                                                viewPager.setCurrentItem(2);
+                                                            }
+                                                        }
+                                                        if (osdRemark != null) {
+                                                            o2 = osdRemark.onSendData();
+                                                            if (o2 != null) {
+                                                                r = (Remark) o2;
+                                                                Log.d("qqq334", r.toString());
+                                                            } else {
+                                                                viewPager.setCurrentItem(3);
+                                                            }
+                                                        }
+                                                        Triage t = inflateTriage(pd, vs, cc, r, response.body());
+                                                        Log.d("qqq335", t.toString());
+
+                                                        v2API.triages triageService = retrofit.create(v2API.triages.class);
+                                                        Call<Triage> triageCall = triageService.addTriage("1", t);
+                                                        triageCall.enqueue(new Callback<Triage>() {
+                                                            @Override
+                                                            public void onResponse(Response<Triage> response, Retrofit retrofit) {
+                                                                Log.d("qqq331c", "receiving: " + response.code() + " " + response.message() + " " + response.body());
+                                                                if (response.code() < 300 && response.code() > 199) {
+
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onFailure(Throwable t) {
+                                                                Log.d("qqq332c", "no");
+                                                            }
+                                                        });
+
+                                                    } else {
+                                                        //oh no >> send to onFailure
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Throwable t) {
+                                                    Log.d("qqq332b", "no");
+                                                }
+                                            });
+                                        } else {
+                                            try {
+                                                onFailure(new Throwable(response.errorBody().string()));
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
                                     }
 
                                     @Override
                                     public void onFailure(Throwable t) {
-                                        Log.d("qqq331b", "no");
+                                        Log.d("qqq332a", "no");
                                     }
                                 });
-                                //2. POST visit
-                                //tag & patient_id
 
-                                //3. POST triage
-//                            VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
-//                            Log.d("qqq332", vs.toString());
-//                            ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
-//                            Log.d("qqq333", cc.toString());
-//                            Remark r = (Remark) osdRemark.onSendData();
-//                            Log.d("qqq334", r.toString());
                             } else {
                                 viewPager.setCurrentItem(0);
                             }
@@ -387,18 +460,18 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             public boolean onMenuItemClick(MenuItem item) {
                 if (mCC != null) {
                     new MaterialDialog.Builder(mContext)
-                            .title("Chief Complain")
-                            .content(mCC)
-                            .autoDismiss(true)
-                            .onPositive(new SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .theme(Theme.LIGHT)
-                            .positiveText("Dismiss")
-                            .show();
+                        .title("Chief Complain")
+                        .content(mCC)
+                        .autoDismiss(true)
+                        .onPositive(new SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .theme(Theme.LIGHT)
+                        .positiveText("Dismiss")
+                        .show();
                 } else {
                     Snackbar.make(viewPager, "No CC", Snackbar.LENGTH_LONG).show();
                 }
@@ -434,15 +507,15 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             }
         };
         new MaterialDialog.Builder(this)
-                .title(R.string.dismiss_dialog_title)
-                .content(R.string.dismiss_dialog_content)
-                .positiveText(R.string.dismiss_dialog_positive_text)
-                .negativeText(R.string.dismiss_dialog_negative_text)
-                .onPositive(yes)
-                .onNegative(no)
-                .autoDismiss(false)
-                .theme(Theme.LIGHT)
-                .show();
+            .title(R.string.dismiss_dialog_title)
+            .content(R.string.dismiss_dialog_content)
+            .positiveText(R.string.dismiss_dialog_positive_text)
+            .negativeText(R.string.dismiss_dialog_negative_text)
+            .onPositive(yes)
+            .onNegative(no)
+            .autoDismiss(false)
+            .theme(Theme.LIGHT)
+            .show();
     }
 
     @Override
@@ -544,11 +617,22 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         p.setLastName(pd.getLastName());
         p.setNativeName(pd.getNativeName());
         p.setPhoneNumber(pd.getPhoneNumber());
-        p.setTag(pd.getTagNumber());
         return p;
     }
 
-    private Triage inflateTriage(VitalSigns vs, ChiefComplain cc, Remark r) {
+    private Visit inflateVisit(PersonalData pd, Patient p) {
+        Visit v = new Visit();
+        try {
+            v.setTag(Integer.parseInt(String.valueOf(pd.getTagNumber())));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        v.setPatientId(p.getPatientId());
+        v.setNextStation(Const.ID_CONSULTATION);
+        return v;
+    }
+
+    private Triage inflateTriage(PersonalData pd, VitalSigns vs, ChiefComplain cc, Remark r, Visit v) {
         Triage t = new Triage();
         return t;
     }

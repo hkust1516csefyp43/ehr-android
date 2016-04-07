@@ -19,6 +19,9 @@ public class Visit {
     @SerializedName("create_timestamp")
     Date createTimestamp;
 
+    public Visit() {
+    }
+
     public Visit(String id, Integer tag, String patientId, Integer nextStation, Date createTimestamp) {
         this.id = id;
         this.tag = tag;
