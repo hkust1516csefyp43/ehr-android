@@ -55,7 +55,6 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.Chie
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DocumentFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.InvestigationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ListOfCardsFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.MedicationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PersonalDataFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.RemarkFragment;
@@ -684,7 +683,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         case 14:
           return InvestigationFragment.newInstance("", "");
         case 15:
-          return MedicationFragment.newInstance("", "");
+          return ListOfCardsFragment.newInstance("Medication");
         case 16:
           return ListOfCardsFragment.newInstance("Advice");
         case 17:

@@ -38,6 +38,8 @@ public class SearchActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_search);
 
+    Cache.setWhichStation(this, whichStation);
+
     searchBox = (SearchBox) findViewById(R.id.searchbox);
     searchBox.addSearchable(new SearchResult("{search history}", new IconicsDrawable(this, GoogleMaterial.Icon.gmd_history).color(getResources().getColor(R.color.secondary_text_color)).actionBar().paddingDp(2)));
     searchBox.setSearchListener(new SearchBox.SearchListener() {

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
+import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
 
@@ -38,7 +39,7 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
         if (patient != null) {
           Log.d("qqq120", patient.toString());
           Log.d("qqq121", "station: " + whichStation);
-//          whichStation = Cache.getWhichStation(context);                //TODO why I do this?
+          whichStation = Cache.getWhichStation(context);                //TODO need this for existing patient new consultation, but it will mess with existing patient new triage
           Log.d("qqq122", "station: " + whichStation);
           Intent intent = new Intent(context, PatientVisitActivity.class);
           intent.putExtra(Const.KEY_PATIENT, patient);
