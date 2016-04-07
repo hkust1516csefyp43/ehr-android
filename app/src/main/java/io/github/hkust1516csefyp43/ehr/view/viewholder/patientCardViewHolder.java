@@ -13,6 +13,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.activity.PatientVisitActivity;
+import io.github.hkust1516csefyp43.ehr.view.activity.PharmacyActivity;
 
 /**
  * Created by Louis on 25/11/15.
@@ -41,21 +42,27 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
           Log.d("qqq121", "station: " + whichStation);
           whichStation = Cache.getWhichStation(context);                //TODO need this for existing patient new consultation, but it will mess with existing patient new triage
           Log.d("qqq122", "station: " + whichStation);
-          Intent intent = new Intent(context, PatientVisitActivity.class);
-          intent.putExtra(Const.KEY_PATIENT, patient);
-          Log.d("qqq350", String.valueOf(whichStation));
-          switch (whichStation) {
-            case Const.ID_TRIAGE:
-              intent.putExtra(Const.KEY_IS_TRIAGE, true);
-              break;
-            case Const.ID_CONSULTATION:
-              intent.putExtra(Const.KEY_IS_TRIAGE, false);
-              break;
+          if (whichStation == Const.ID_PHARMACY) {
+            Intent intent = new Intent(context, PharmacyActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+          } else {
+            Intent intent = new Intent(context, PatientVisitActivity.class);
+            intent.putExtra(Const.KEY_PATIENT, patient);
+            Log.d("qqq350", String.valueOf(whichStation));
+            switch (whichStation) {
+              case Const.ID_TRIAGE:
+                intent.putExtra(Const.KEY_IS_TRIAGE, true);
+                break;
+              case Const.ID_CONSULTATION:
+                intent.putExtra(Const.KEY_IS_TRIAGE, false);
+                break;
+            }
+            //need_cc == true for consultation station only
+            intent.putExtra(Const.KEY_SNACKBAR_TEXT, "Headache, Headache, Headache, Headache, Headache, Headache");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
           }
-          //need_cc == true for consultation station only
-          intent.putExtra(Const.KEY_SNACKBAR_TEXT, "Headache, Headache, Headache, Headache, Headache, Headache");
-          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-          context.startActivity(intent);
         } else {
           Log.d("qqq11", "no patient");
         }

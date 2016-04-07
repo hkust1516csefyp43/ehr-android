@@ -241,6 +241,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             getSupportActionBar().setTitle(getResources().getString(R.string.triage));
             getSupportActionBar().setSubtitle("Cannal Side");
             whichPage = Const.ID_TRIAGE;
+            Cache.setWhichStation(getBaseContext(), Const.ID_TRIAGE);
             //TODO call the 2 pages and call server
             ocslLeft.onStationChange(Const.PATIENT_LIST_POST_TRIAGE);
             ocslRight.onStationChange(Const.PATIENT_LIST_ALL_PATIENTS);
@@ -257,6 +258,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             getSupportActionBar().setTitle(getResources().getString(R.string.consultation));
             getSupportActionBar().setSubtitle("Cannal Side");
             whichPage = Const.ID_CONSULTATION;
+            Cache.setWhichStation(getBaseContext(), Const.ID_CONSULTATION);
             //TODO call the 2 pages and call server
             ocslLeft.onStationChange(Const.PATIENT_LIST_PRE_CONSULTATION);
             ocslRight.onStationChange(Const.PATIENT_LIST_POST_CONSULTATION);
@@ -272,6 +274,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             getSupportActionBar().setTitle(getResources().getString(R.string.pharmacy));
             getSupportActionBar().setSubtitle("Cannal Side");
             whichPage = Const.ID_PHARMACY;
+            Cache.setWhichStation(getBaseContext(), Const.ID_PHARMACY);
             //TODO call the 2 pages and call server
             hideAdmin();
             tl.getTabAt(0).setText("Waitlist");
