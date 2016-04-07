@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.AppCompatMultiAutoCompleteTextView
+            android:id="@+id/chief_complain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="The major health problem or concern, and its time course (e.g. chest pain for past 4 hours)"/>

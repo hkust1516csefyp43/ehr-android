@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatMultiAutoCompleteTextView;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,26 +13,20 @@ import android.view.ViewGroup;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.ChiefComplain;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ChiefComplainFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link ChiefComplainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class ChiefComplainFragment extends Fragment implements OnSendData {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private AppCompatMultiAutoCompleteTextView acmactv;
 
     public ChiefComplainFragment() {
         // Required empty public constructor
@@ -48,27 +43,21 @@ public class ChiefComplainFragment extends Fragment implements OnSendData {
     // TODO: Rename and change types and number of parameters
     public static ChiefComplainFragment newInstance(String param1, String param2) {
         ChiefComplainFragment fragment = new ChiefComplainFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        return localInflater.inflate(R.layout.fragment_chief_complain, container, false);
+        View v = localInflater.inflate(R.layout.fragment_chief_complain, container, false);
+        acmactv = (AppCompatMultiAutoCompleteTextView) v.findViewById(R.id.chief_complain);
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -97,6 +86,10 @@ public class ChiefComplainFragment extends Fragment implements OnSendData {
 
     @Override
     public Object onSendData() {
-        return null;
+        ChiefComplain cc = new ChiefComplain();
+        if (acmactv != null) {
+            cc.setChiefComplain(acmactv.getText().toString());
+        }
+        return cc;
     }
 }
