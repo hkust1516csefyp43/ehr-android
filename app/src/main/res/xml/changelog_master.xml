@@ -4,6 +4,12 @@
         version="1.1.4"
         versioncode="15">
         <change>Tag number added</change>
+        <change>Add new triage record for new patient works</change>
+        <change>Add new triage record for existing patient works</change>
+        <change>Now display correct clinic name</change>
+        <change>Notifications</change>
+        <change>Pharmacy now visible</change>
+        <change>Minor bug fixes everywhere</change>
     </release>
     <release
         version="1.1.3"
