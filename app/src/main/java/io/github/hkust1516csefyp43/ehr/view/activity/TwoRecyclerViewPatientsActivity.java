@@ -75,8 +75,11 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
+/**
+ * TODO create a util to get theme color according to package
+ * TODO hide FAB in Pharmacy
+ */
 public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implements ListCounterChangedListener, OnFragmentInteractionListener {
-  //TODO create a util to get theme color according to package
 
   public final static int PAGES = 2;
   public final String TAG = getClass().getSimpleName();
@@ -277,6 +280,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             hideAdmin();
             tl.getTabAt(0).setText("Finished Triage");
             tl.getTabAt(1).setText("In this clinic");
+            fab.setVisibility(View.VISIBLE);
             ptrvfRecyclerViewScrollToTop();
             Answers.getInstance().logContentView(new ContentViewEvent()
                 .putContentName("Triage")
@@ -297,6 +301,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             hideAdmin();
             tl.getTabAt(0).setText("Waitlist");
             tl.getTabAt(1).setText("Finished");
+            fab.setVisibility(View.VISIBLE);
             Answers.getInstance().logContentView(new ContentViewEvent()
                 .putContentName("Consultation")
                 .putContentType("Station")
@@ -310,10 +315,12 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
             }
             whichPage = Const.ID_PHARMACY;
             Cache.setWhichStation(getBaseContext(), Const.ID_PHARMACY);
-            //TODO call the 2 pages and call server
+            if (ocslLeft != null) ocslLeft.onStationChange(Const.PATIENT_LIST_PRE_PHARMACY);
+            if (ocslRight != null) ocslRight.onStationChange(Const.PATIENT_LIST_ALL_TODAYS_PATIENT);
             hideAdmin();
             tl.getTabAt(0).setText("Waitlist");
             tl.getTabAt(1).setText("Finished");
+            fab.setVisibility(View.GONE);
             Answers.getInstance().logContentView(new ContentViewEvent()
                 .putContentName("Pharmacy")
                 .putContentType("Station")

@@ -13,6 +13,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Gender;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Notification;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Prescription;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Triage;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Visit;
 import retrofit.Call;
@@ -367,6 +368,46 @@ public interface v2API {
         @Header("token") String token,
         @Path("id") String id,
         @Body Patient patient
+    );
+  }
+
+  interface prescriptions {
+
+    @GET("v2/prescriptions")
+    Call<List<Prescription>> getPrescriptions(
+        @Header("token") String token,
+        @Query("visit_id") String visitId,
+        @Query("medication_id") String medicationId,
+        @Query("consultation_id") String consultationId,
+        @Query("prescription_detail") String prescriptionDetail,
+        @Query("sory_by") String sortBy,
+        @Query("limit") Integer limit,
+        @Query("offset") Integer offset
+    );
+
+    @GET("v2/prescriptions/{id}")
+    Call<Prescription> getPrescription(
+        @Header("token") String token,
+        @Path("id") String id
+    );
+
+    @PUT("v2/prescriptions/{id}")
+    Call<Prescription> editPrescription(
+        @Header("token") String token,
+        @Path("id") String id,
+        @Body Prescription prescription
+    );
+
+    @POST("v2/prescriptions/")
+    Call<Prescription> addPrescription(
+        @Header("token") String token,
+        @Body Prescription prescription
+    );
+
+    @DELETE("v2/prescriptions/{id}")
+    Call<Prescription> deletePrescription(
+        @Header("token") String token,
+        @Path("id") String id
     );
   }
 

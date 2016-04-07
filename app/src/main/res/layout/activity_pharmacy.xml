@@ -21,9 +21,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <fragment
-        android:name="io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ListOfCardsFragment"
-        android:id="@+id/medication_fragment"
+    <io.github.hkust1516csefyp43.ehr.view.custom_view.FixedRecyclerView
+        android:id="@+id/rvPrescriptions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

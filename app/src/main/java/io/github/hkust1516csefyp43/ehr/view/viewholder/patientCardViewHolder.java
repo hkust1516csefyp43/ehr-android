@@ -44,6 +44,7 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
           Log.d("qqq122", "station: " + whichStation);
           if (whichStation == Const.ID_PHARMACY) {
             Intent intent = new Intent(context, PharmacyActivity.class);
+            intent.putExtra(Const.KEY_PATIENT, patient);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
           } else {
