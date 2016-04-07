@@ -41,71 +41,6 @@
 
         </LinearLayout>
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_gravity="center_vertical">-->
-
-            <!--<TextView-->
-                <!--android:layout_width="128dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/LMP"-->
-                <!--android:layout_gravity="center"/>-->
-
-            <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1">-->
-
-                <!--<EditText-->
-                    <!--android:id="@+id/pgdatedd"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:hint="@string/day_hint"/>-->
-
-            <!--</android.support.design.widget.TextInputLayout>-->
-
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="/"-->
-                <!--android:layout_gravity="center" />-->
-
-            <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1">-->
-
-                <!--<EditText-->
-                    <!--android:id="@+id/pgdatemm"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:hint="@string/month_hint"/>-->
-
-            <!--</android.support.design.widget.TextInputLayout>-->
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="/"-->
-                <!--android:layout_gravity="center" />-->
-
-            <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1">-->
-
-                <!--<EditText-->
-                    <!--android:id="@+id/pgdateyyyy"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:hint="@string/year_hint"/>-->
-
-            <!--</android.support.design.widget.TextInputLayout>-->
-
-        <!--</LinearLayout>-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -116,6 +51,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/ispregnant"
                 android:layout_gravity="center"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/scIsPregnant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:visibility="gone"/>
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -130,13 +72,63 @@
             <EditText
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/int_hint"
+                android:inputType="number"
                 android:id="@+id/gestation"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/week"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llIfPregnant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="128dp"
+                    android:layout_height="wrap_content"
+                    android:text="How many: "/>
+
+                <EditText
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/etHowMany"/>
+
+            </LinearLayout>
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="128dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/gestation"/>-->
+
+            <!--<EditText-->
+            <!--android:layout_width="70dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:inputType="number"-->
+            <!--android:id="@+id/gestation"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/week"/>-->
+
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 
@@ -183,8 +175,8 @@
             <EditText
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/int_hint"
-                android:id="@+id/no_preg"/>
+                android:id="@+id/no_preg"
+                android:inputType="number"/>
         </LinearLayout>
 
         <LinearLayout
@@ -199,8 +191,8 @@
             <EditText
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/int_hint"
-                android:id="@+id/no_livebirth"/>
+                android:id="@+id/no_livebirth"
+                android:inputType="number"/>
         </LinearLayout>
 
         <LinearLayout
@@ -215,7 +207,7 @@
             <EditText
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/int_hint"
+                android:inputType="number"
                 android:id="@+id/no_miscarriage"/>
         </LinearLayout>
 
@@ -231,7 +223,7 @@
             <EditText
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/int_hint"
+                android:inputType="number"
                 android:id="@+id/no_abortion"/>
         </LinearLayout>
 
@@ -247,7 +239,7 @@
             <EditText
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/int_hint"
+                android:inputType="number"
                 android:id="@+id/no_stillbirth"/>
         </LinearLayout>
 

@@ -679,7 +679,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         case 9:
           return ListOfCardsFragment.newInstance("Allergy");
         case 10:
-          return PregnancyFragment.newInstance("", "");
+          return PregnancyFragment.newInstance();
         case 11:
           return ListOfCardsFragment.newInstance("RoS", Const.DEFAULT_REVICE_OF_SYSTEM);
         case 12:
