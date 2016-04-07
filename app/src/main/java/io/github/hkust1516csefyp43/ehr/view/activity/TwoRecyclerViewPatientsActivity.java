@@ -2,6 +2,8 @@ package io.github.hkust1516csefyp43.ehr.view.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,10 +16,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -51,6 +55,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.squareup.okhttp.OkHttpClient;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.cketti.library.changelog.ChangeLog;
@@ -59,6 +64,7 @@ import io.github.hkust1516csefyp43.ehr.listener.ListCounterChangedListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnChangeStationListener;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Notification;
 import io.github.hkust1516csefyp43.ehr.v2API;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
 import io.github.hkust1516csefyp43.ehr.value.Const;
@@ -93,7 +99,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
     Clinic clinic = Cache.getCurrentClinic(this);
     if (clinic != null) {
-      getClinicAsyncTask gcat = new getClinicAsyncTask(this, clinic.getClinicId());
+      fetchDataInBackgroundAsyncTask gcat = new fetchDataInBackgroundAsyncTask(this, clinic.getClinicId());
       gcat.execute();
     }
 
@@ -407,15 +413,69 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu_main, menu);
     //TODO if notification change it to gmd_notifications
-    menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_notifications_none).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+    menu.findItem(R.id.action_search).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_notifications_none).color(Color.WHITE).actionBar().paddingDp(2));
+
+    OkHttpClient ohc1 = new OkHttpClient();
+    ohc1.setReadTimeout(1, TimeUnit.MINUTES);
+    ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+    Retrofit retrofit = new Retrofit
+        .Builder()
+        .baseUrl(Const.API_ONE2ONE_HEROKU)
+        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+        .client(ohc1)
+        .build();
+    v2API.notifications notificationService = retrofit.create(v2API.notifications.class);
+    Call<List<Notification>> notificationListCall = notificationService.getMyNotifications("1");
+    final Menu m = menu;
+    notificationListCall.enqueue(new Callback<List<Notification>>() {
       @Override
-      public boolean onMenuItemClick(MenuItem item) {
-        Answers.getInstance().logContentView(new ContentViewEvent()
-            .putContentName("Notification")
-            .putContentType("Notification")
-            .putContentId("notification"));
-        openNotification();
-        return false;
+      public void onResponse(Response<List<Notification>> response, Retrofit retrofit) {
+        Log.d("qqq27", "receiving: " + response.code() + " " + response.message() + " " + response.body());
+        if (response.code() > 199 && response.code() < 300) {
+          MenuItem mi = m.findItem(R.id.action_search);
+          if (response.body().size() >= 1) {
+            Log.d("qqq273", response.body().toString());
+            //TODO save to cache
+            if (mi != null) {
+              //TODO change icon + set notification iff there are unread notifications
+              mi.setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_notifications_active).color(Color.WHITE).actionBar().paddingDp(2));
+              android.support.v4.app.NotificationCompat.Builder mBuilder =
+                  new NotificationCompat.Builder(getBaseContext())
+                      .setSmallIcon(R.drawable.leak_canary_icon)
+                      .setContentTitle("n notifications")
+                      .setContentText("Click here to enter Easymed")
+                      .setVibrate(new long[]{500, 500});
+              Intent resultIntent = new Intent(getBaseContext(), NotificationActivity.class);
+              TaskStackBuilder stackBuilder = TaskStackBuilder.create(getBaseContext());
+              stackBuilder.addParentStack(NotificationActivity.class);
+              stackBuilder.addNextIntent(resultIntent);
+              PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+              mBuilder.setContentIntent(resultPendingIntent);
+              NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+              mNotificationManager.notify(6174, mBuilder.build());      // mId(6174) allows you to update the notification later on.
+              mi.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                  Answers.getInstance().logContentView(new ContentViewEvent()
+                      .putContentName("Notification")
+                      .putContentType("Notification")
+                      .putContentId("notification"));
+                  openNotification();
+                  return false;
+                }
+              });
+            }
+          } else {
+            if (mi != null) {
+              mi.setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_notifications_none).color(Color.WHITE).actionBar().paddingDp(2));
+            }
+          }
+        }
+      }
+
+      @Override
+      public void onFailure(Throwable t) {
+
       }
     });
     return true;
@@ -681,11 +741,11 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
     }
   }
 
-  private class getClinicAsyncTask extends AsyncTask<Void, Void, Void> {
+  private class fetchDataInBackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
     Context context;
     String clinicId;
 
-    public getClinicAsyncTask(Context context, String clinicId) {
+    public fetchDataInBackgroundAsyncTask(Context context, String clinicId) {
       this.context = context;
       this.clinicId = clinicId;
     }
@@ -701,6 +761,8 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
           .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
           .client(ohc1)
           .build();
+
+      //Get the whole current clinic
       v2API.clinics clinicService = retrofit.create(v2API.clinics.class);
       Call<Clinic> clinicCall = clinicService.getClinic("1", clinicId);
       clinicCall.enqueue(new Callback<Clinic>() {
@@ -719,6 +781,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
 
         }
       });
+
       return null;
     }
   }

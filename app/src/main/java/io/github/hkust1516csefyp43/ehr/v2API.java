@@ -11,6 +11,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Country;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.DocumentType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Gender;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Notification;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Triage;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Visit;
@@ -314,6 +315,26 @@ public interface v2API {
 
     @DELETE("v2/keywords/{id}")
     Call<Keyword> deleteKeyword(@Header("token") String token);
+  }
+
+  interface notifications {
+    @GET("v2/notifications/")
+    Call<List<Notification>> getMyNotifications(
+        @Header("token") String token
+    );
+
+    @PUT("v2/notifications/{id}")
+    Call<Notification> editMyNotification(
+        @Header("token") String token,
+        @Path("id") String id,
+        @Body Notification notification
+    );
+
+    @POST("v2/notifications/")
+    Call<Notification> createNotification(
+        @Header("token") String token,
+        @Body Notification notification
+    );
   }
 
   interface patients {

@@ -16,7 +16,7 @@ public class NotificationActivity extends AppCompatActivity {
     setContentView(R.layout.activity_notification);
 
     Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
-    tb.setTitle(getString(R.string.notifications));
+    tb.setTitle(getString(R.string.notifications));   //TODO suffix (how many)
     this.setSupportActionBar(tb);
 
 
