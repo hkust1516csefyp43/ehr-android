@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +21,7 @@ import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
  * Use the {@link ChiefComplainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChiefComplainFragment extends Fragment {
+public class ChiefComplainFragment extends Fragment implements OnSendData {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -92,5 +93,10 @@ public class ChiefComplainFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public Object onSendData() {
+        return null;
     }
 }

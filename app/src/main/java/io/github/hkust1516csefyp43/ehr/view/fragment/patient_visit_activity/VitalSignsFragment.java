@@ -24,6 +24,7 @@ import java.util.GregorianCalendar;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +34,7 @@ import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
  * Use the {@link VitalSignsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VitalSignsFragment extends Fragment {
+public class VitalSignsFragment extends Fragment implements OnSendData {
     private OnFragmentInteractionListener mListener;
     private TextView tvLDD;
     private TextView tvBMI;
@@ -245,5 +246,10 @@ public class VitalSignsFragment extends Fragment {
         bd = bd.round(new MathContext(3));
         h2 = bd.doubleValue();
         return Utils.roundNumber(h2, 2);
+    }
+
+    @Override
+    public Object onSendData() {
+        return null;
     }
 }

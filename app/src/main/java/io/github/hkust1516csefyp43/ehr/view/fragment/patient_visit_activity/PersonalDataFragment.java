@@ -19,18 +19,23 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
+import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment.NumberPickerDialogHandlerV2;
 import com.squareup.okhttp.OkHttpClient;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Attachment;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.v2API;
@@ -49,13 +54,14 @@ import retrofit.Retrofit;
  * Use the {@link PersonalDataFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PersonalDataFragment extends Fragment implements OnCameraRespond {
+public class PersonalDataFragment extends Fragment implements OnCameraRespond, OnSendData, NumberPickerDialogHandlerV2 {
     private static Patient patient;
     private OnFragmentInteractionListener mListener;
     private EditText etFirstName;
     private EditText etLastName;
     private ImageView ivProfilePic;
     private TextView tvBirthday;
+    private TextView tvTagNumber;
     private Spinner sGender;
     private int[] birthday;
 
@@ -85,11 +91,36 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View v = localInflater.inflate(R.layout.fragment_personal_data, container, false);
-        //TODO findViewById
         etFirstName = (EditText) v.findViewById(R.id.first_name);
         etLastName = (EditText) v.findViewById(R.id.last_name);
         ivProfilePic = (ImageView) v.findViewById(R.id.iv_profile_pic);
         tvBirthday = (TextView) v.findViewById(R.id.tvBirthday);
+        tvTagNumber = (TextView) v.findViewById(R.id.tvTagNumber);
+        if (tvTagNumber != null) {
+            tvTagNumber.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO better dialog (number)
+                    NumberPickerBuilder npb = new NumberPickerBuilder()
+                            .setFragmentManager(getFragmentManager())
+                            .setStyleResId(R.style.BetterPickersDialogFragment)
+                            .setMinNumber(new BigDecimal(1))
+                            .setPlusMinusVisibility(View.GONE)
+                            .setDecimalVisibility(View.GONE)
+                            .addNumberPickerDialogHandler(new NumberPickerDialogHandlerV2() {
+                                @Override
+                                public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
+                                    Log.d("qqq330", number.toString() + " / " + decimal + " / " + isNegative + " / " + fullNumber.toString());
+                                    if (tvTagNumber != null) {
+                                        tvTagNumber.setText(number.toString());
+                                    }
+                                }
+                            });
+                    npb.show();
+                }
+
+            });
+        }
         sGender = (Spinner) v.findViewById(R.id.sGender);
         sGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -161,6 +192,7 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
             OkHttpClient ohc1 = new OkHttpClient();
             ohc1.setReadTimeout(1, TimeUnit.MINUTES);
             ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+            //TODO don't just use Const.API_ONE2ONE_HEROKU anymore
             Retrofit retrofit = new Retrofit
                     .Builder()
                     .baseUrl(Const.API_ONE2ONE_HEROKU)
@@ -269,5 +301,10 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond {
                 Log.d("qqq811", "umm the image is null");
             }
         }
+    }
+
+    @Override
+    public Object onSendData() {
+        return null;
     }
 }

@@ -33,6 +33,11 @@ import java.util.concurrent.TimeUnit;
 import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.listener.OnCameraRespond;
 import io.github.hkust1516csefyp43.ehr.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.ehr.listener.OnSendData;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.ChiefComplain;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PersonalData;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Remark;
+import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.VitalSigns;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Consultation;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
@@ -88,10 +93,20 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
     private Patient patient = null;
     private String mCC;
     private boolean isTriage;
+
     private PersonalDataFragment pdf;
+    private VitalSignsFragment vsf;
+    private ChiefComplainFragment ccf;
+    private RemarkFragment rf;
+
     private OnCameraRespond ocrPDF;
     private Triage triage;
     private Consultation consultation;
+
+    private OnSendData osdPersonalData;
+    private OnSendData osdVitalSigns;
+    private OnSendData osdChiefComplain;
+    private OnSendData osdRemark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,7 +274,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         menu.findItem(R.id.action_confirm).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                //TODO POST/PUT triage/consultation
                 OkHttpClient ohc1 = new OkHttpClient();
                 ohc1.setReadTimeout(1, TimeUnit.MINUTES);
                 ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
@@ -271,48 +285,68 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                         .build();
                 if (isTriage) {
                     if (patient == null) {
-                        if (triage == null) {
-                            //TODO new patient new triage
+                        if (triage == null) {   //TODO new patient new triage
                             //1. POST patient
+                            PersonalData pd = (PersonalData) osdPersonalData.onSendData();
+
                             //2. POST visit
+                            //tag & patient_id
+
                             //3. POST triage
+                            VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
+                            ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
+                            Remark r = (Remark) osdRemark.onSendData();
                         }
                         //else makes not sense (new patient edit triage!?)
                     } else {
-                        if (triage == null) {
-                            //TODO existing patient new triage
+                        if (triage == null) {       //TODO existing patient new triage
                             //1. POST visit
+                            //tag & patient_id
                             //2. POST triage
-                        } else {
-                            //TODO existing patient edit triage
+                            VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
+                            ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
+                            Remark r = (Remark) osdRemark.onSendData();
+                        } else {                    //TODO existing patient edit triage
                             //1. PUT triage
+                            VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
+                            ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
+                            Remark r = (Remark) osdRemark.onSendData();
                         }
                     }
                 } else {
                     if (patient == null) {
-                        if (consultation == null) {
-                            //TODO new patient new consultation
+                        if (consultation == null) { //TODO new patient new consultation
                             //1. POST patient
+                            PersonalData pd = (PersonalData) osdPersonalData.onSendData();
                             //2. POST visit
                             //3. POST triage
+                            VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
+                            ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
+                            Remark r = (Remark) osdRemark.onSendData();
                             //4. POST consultation
                         }
                         //else makes no sense (new patient edit consultation!?)
                     } else {
                         if (consultation == null) {
-                            if (triage == null) {
-                                //TODO existing patient new consultation (skipped triage)
+                            if (triage == null) {   //TODO existing patient new consultation (skipped triage)
                                 //1. POST triage
+                                VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
+                                ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
+                                Remark r = (Remark) osdRemark.onSendData();
                                 //2. POST consultation
-                            } else {
-                                //TODO existing patient new consultation
+                            } else {                //TODO existing patient new consultation
                                 //1. PUT triage
+                                VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
+                                ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
+                                Remark r = (Remark) osdRemark.onSendData();
                                 //2. POST consultation
                             }
                         } else {
-                            if (triage != null) {
-                                //TODO existing patient edit consultation
+                            if (triage != null) {   //TODO existing patient edit consultation
                                 //1. PUT triage
+                                VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
+                                ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
+                                Remark r = (Remark) osdRemark.onSendData();
                                 //2. PUT consultation
                             }
                             //else makes no sense (how can you edit consultation without a triage record?
@@ -407,15 +441,27 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                     if (pdf == null) {
                         pdf = PersonalDataFragment.newInstance(patient);
                         ocrPDF = pdf;
+                        osdPersonalData = pdf;
                     }
                     return pdf;
                 case 1:
-                    return VitalSignsFragment.newInstance();
+                    if (vsf == null) {
+                        vsf = VitalSignsFragment.newInstance();
+                        osdVitalSigns = vsf;
+                    }
+                    return vsf;
                 case 2:
-                    return ChiefComplainFragment.newInstance("", "");
+                    if (ccf == null) {
+                        ccf = ChiefComplainFragment.newInstance("", "");
+                        osdChiefComplain = ccf;
+                    }
+                    return ccf;
                 case 3:
-                    if (triage)
-                        return RemarkFragment.newInstance("", "");
+                    if (triage) {
+                        rf = RemarkFragment.newInstance("", "");
+                        osdRemark = rf;
+                        return rf;
+                    }
                     else
                         return DocumentFragment.newInstance(Const.KEY_HPI, null);
                 case 4:
