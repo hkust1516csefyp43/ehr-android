@@ -1,7 +1,6 @@
 package io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatMultiAutoCompleteTextView;
@@ -35,12 +34,8 @@ public class ChiefComplainFragment extends Fragment implements onSendData {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ChiefComplainFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ChiefComplainFragment newInstance(String param1, String param2) {
         ChiefComplainFragment fragment = new ChiefComplainFragment();
         return fragment;
@@ -58,13 +53,6 @@ public class ChiefComplainFragment extends Fragment implements onSendData {
         View v = localInflater.inflate(R.layout.fragment_chief_complain, container, false);
         acmactv = (AppCompatMultiAutoCompleteTextView) v.findViewById(R.id.chief_complain);
         return v;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override

@@ -9,7 +9,6 @@
     android:theme="@style/AppTheme2"
     tools:context="io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

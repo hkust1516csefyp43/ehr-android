@@ -34,9 +34,6 @@ import jp.wasabeef.richeditor.RichEditor;
  * create an instance of this fragment.
  */
 public class DocumentFragment extends Fragment implements onSendData {
-  // TODO: Rename parameter arguments, choose names that match
-
-  // TODO: Rename and change types of parameters
   private RichEditor mEditor;
   private OnFragmentInteractionListener mListener;
   private LinearLayout hsvLL;
@@ -46,12 +43,10 @@ public class DocumentFragment extends Fragment implements onSendData {
     // Required empty public constructor
   }
 
-  // TODO: Rename and change types and number of parameters
   public static DocumentFragment newInstance(String cache_key, @Nullable String data) {
     DocumentFragment fragment = new DocumentFragment();
     Bundle args = new Bundle();
     args.putString(Const.EXTRA_CACHE_KEY, cache_key);
-//        args.putString(ARG_PARAM2, param2);
     fragment.setArguments(args);
     return fragment;
   }

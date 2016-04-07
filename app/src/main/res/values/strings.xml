@@ -37,7 +37,6 @@
     <string name="gender">Gender</string>
     <string name="status">Status</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="confirm">Confirm</string>
     <string name="our_website" translatable="false">http://hkust1516csefyp43.github.io</string>

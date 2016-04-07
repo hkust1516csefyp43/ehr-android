@@ -12,7 +12,7 @@ public class Notification {
     @SerializedName("message")          private String message;
     @SerializedName("user_id")          private String userId;
     @SerializedName("read")             private Boolean read;
-    @SerializedName("remind_date")      private Date remindDate;                                    //TODO not sure if GSON can correctly parse this
+    @SerializedName("remind_date")      private Date remindDate;
 
     public Notification(String id, String message, String userId, Boolean read, Date remindDate) {
         this.id = id;

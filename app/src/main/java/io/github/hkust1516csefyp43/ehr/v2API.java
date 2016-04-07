@@ -343,7 +343,7 @@ public interface v2API {
      */
     @GET("v2/patients/")
     Call<List<Patient>> getPatients(
-        @Header("token") String token,                                       //TODO replace Query with Header later
+        @Header("token") String token,
         @Query("clinic_id") String client,
         @Query("next_station") String nextStation,
         @Query("gender_id") String gender,
@@ -351,7 +351,7 @@ public interface v2API {
         @Query("email") String email,
         @Query("first_name") String firstName,
         @Query("middle_name") String middleName,
-        @Query("last_name") String lastName,                                 //TODO add "name"
+        @Query("last_name") String lastName,
         @Query("name") String name,
         @Query("visit_date") String visitDate
     );

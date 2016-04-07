@@ -40,7 +40,7 @@ public final class patientCardViewHolder extends RecyclerView.ViewHolder {
         if (patient != null) {
           Log.d("qqq120", patient.toString());
           Log.d("qqq121", "station: " + whichStation);
-          whichStation = Cache.getWhichStation(context);                //TODO need this for existing patient new consultation, but it will mess with existing patient new triage
+          whichStation = Cache.getWhichStation(context);
           Log.d("qqq122", "station: " + whichStation);
           if (whichStation == Const.ID_PHARMACY) {
             Intent intent = new Intent(context, PharmacyActivity.class);

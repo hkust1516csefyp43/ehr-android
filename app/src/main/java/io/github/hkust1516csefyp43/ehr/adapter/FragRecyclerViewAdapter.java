@@ -38,7 +38,7 @@ public class FragRecyclerViewAdapter extends Adapter<FragCardViewHolder> {
      *
      * @param source if there is any default cards
      * @param c      is the context, nothing special
-     * @param d      is true if you want to display switches on each individual card. It will also A) disable fab and B) TODO disable edit on title
+     * @param d      is true if you want to display switches on each individual card. It will also A) disable fab and B)disable edit on title
      * @param sugg   i.e. a list of suggestions for auto complete
      * @param t      i.e. the title for the dialog
      */

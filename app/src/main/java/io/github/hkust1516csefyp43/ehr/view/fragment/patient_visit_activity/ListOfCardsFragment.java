@@ -126,16 +126,6 @@ public class ListOfCardsFragment extends Fragment implements onSendData {
     for (Keyword k : keywords) {
       a.add(k.getKeyword());
     }
-//        a.add("a");
-//        a.add("ab");
-//        a.add("abc");
-//        a.add("abcd");
-//        a.add("abcde");
-//        a.add("abcdef");
-//        a.add("abcdefg");
-//        a.add("headache");
-//        a.add("head");
-//        a.add("leg");
     final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), a, title);
     fab.setOnClickListener(new View.OnClickListener() {
       @Override

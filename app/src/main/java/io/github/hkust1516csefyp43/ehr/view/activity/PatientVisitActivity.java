@@ -234,7 +234,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
 
 
     if (viewPager != null) {
-      viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager(), isTriage));         //TODO the false >> consultation, true >> triage
+      viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager(), isTriage));
       viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
       mCC = getIntent().getStringExtra(Const.KEY_SNACKBAR_TEXT);
       if (mCC != null) {
@@ -298,7 +298,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             .build();
         if (isTriage) {
           if (patient == null) {
-            if (triage == null) {   //TODO new patient new triage
+            if (triage == null) {   //new patient new triage
               Log.d("qqq333a", "new patient new triage");
               //1. POST patient
               Object o = osdPersonalData.onSendData();
@@ -425,7 +425,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             }
             //else makes not sense (new patient edit triage!?)
           } else {
-            if (triage == null) {       //TODO existing patient new triage
+            if (triage == null) {       //existing patient new triage
               Log.d("qqq333b", "existing patient new triage");
               //1. PUT patient
               Object o = osdPersonalData.onSendData();
@@ -550,39 +550,32 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
           if (patient == null) {
             if (consultation == null) { //TODO new patient new consultation
               //1. POST patient
-              PersonalData pd = (PersonalData) osdPersonalData.onSendData();
               //2. POST visit
               //3. POST triage
-              VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
-              ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
-              Remark r = (Remark) osdRemark.onSendData();
               //4. POST consultation
             }
             //else makes no sense (new patient edit consultation!?)
           } else {
             if (consultation == null) {
               if (triage == null) {   //TODO existing patient new consultation (skipped triage)
-                //1. POST triage
-                VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
-                ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
-                Remark r = (Remark) osdRemark.onSendData();
-                //2. POST consultation
+                //1. PUT patient
+                //2. POST visit
+                //2. POST triage
+                //3. POST consultation
               } else {                //TODO existing patient new consultation
-                //1. PUT triage
-                VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
-                ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
-                Remark r = (Remark) osdRemark.onSendData();
-                //2. POST consultation
+                //1. PUT patient
+                //2. POST visit
+                //2. PUT triage
+                //3. POST consultation
               }
             } else {
               if (triage != null) {   //TODO existing patient edit consultation
-                //1. PUT triage
-                VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
-                ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
-                Remark r = (Remark) osdRemark.onSendData();
-                //2. PUT consultation
+                //1. PUT patient
+                //2. PUT visit (tag number)
+                //2. PUT triage
+                //3. PUT consultation
               }
-              //else makes no sense (how can you edit consultation without a triage record?
+              //else makes no sense (how can you edit consultation without a triage record?)
             }
           }
         }

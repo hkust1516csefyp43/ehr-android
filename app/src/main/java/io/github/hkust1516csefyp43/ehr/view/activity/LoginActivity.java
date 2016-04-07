@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.ehr.R;
+import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 import io.github.hkust1516csefyp43.ehr.v2API;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
@@ -64,10 +65,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
    * Id to identity READ_CONTACTS permission request.
    */
   private static final int REQUEST_READ_CONTACTS = 0;
-  /**
-   * A dummy authentication store containing known user names and passwords.
-   * TODO: remove after connecting to a real authentication system.
-   */
   private static final String[] DUMMY_CREDENTIALS = new String[]{
       "foo@example.com:hello", "bar@example.com:world"
   };
@@ -98,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     clppb = (ContentLoadingProgressBar) findViewById(R.id.loading_slums);
     acs = (AppCompatSpinner) findViewById(R.id.spinner);
 
-    //TODO use this as device_id
+    //TODO use this as device_id to login
     Log.d(TAG, "ANDROID_ID = " + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
 
     OkHttpClient ohc1 = new OkHttpClient();
@@ -256,7 +253,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
       mEmailView.setError(getString(R.string.error_field_required));
       focusView = mEmailView;
       cancel = true;
-    } else if (!isEmailValid(email)) {
+    } else if (!Utils.isValidEmailAddress(email)) {
       mEmailView.setError(getString(R.string.error_invalid_email));
       focusView = mEmailView;
       cancel = true;
@@ -274,11 +271,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
       mAuthTask = new UserLoginTask(email, password);
       mAuthTask.execute((Void) null);
     }
-  }
-
-  private boolean isEmailValid(String email) {
-    //TODO: Replace this with your own logic
-    return email.contains("@");
   }
 
   private boolean isPasswordValid(String password) {
@@ -330,10 +322,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
   @Override
   public void onBackPressed() {
-    //TODO press twice to leave the app
-    //http://stackoverflow.com/questions/8430805/android-clicking-twice-the-back-button-to-exit-activity
-//        super.onBackPressed();
-
     if (doubleBackToExitPressedOnce) {
       super.onBackPressed();
       return;

@@ -14,7 +14,6 @@
         android:background="@color/primary_color"
         android:gravity="center">
 
-        <!--TODO icon gmd_search-->
         <ImageView
             android:id="@+id/ivExistingPatient"
             android:layout_width="wrap_content"
@@ -40,7 +39,6 @@
         android:background="@color/primary_light_color"
         android:gravity="center">
 
-        <!--TODO icon faw_question-->
         <ImageView
             android:id="@+id/ivNotSure"
             android:layout_width="wrap_content"
@@ -66,7 +64,6 @@
         android:background="@color/primary_lighter_color"
         android:gravity="center">
 
-        <!--TODO icon gmd_add-->
         <ImageView
             android:id="@+id/ivNewPatient"
             android:layout_width="wrap_content"
@@ -91,7 +88,6 @@
         android:background="@color/primary_lightest_color"
         android:gravity="center">
 
-        <!--TODO icon gmd_folder_open-->
         <ImageView
             android:id="@+id/ivOpenSaves"
             android:layout_width="wrap_content"
