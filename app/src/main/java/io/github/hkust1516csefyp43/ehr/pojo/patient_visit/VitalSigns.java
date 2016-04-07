@@ -10,26 +10,14 @@ public class VitalSigns implements Serializable {
     private Integer diastolic;
     private Integer pulseRate;
     private Integer respiratoryRate;
-    private Float temperature;          //Celsius
-    private Integer spo2;
-    private Float weight;               //kg
-    private Float height;               //m
+    private Double temperature;          //Celsius
+    private Integer spo2;               //%
+    private Double weight;              //kg
+    private Double height;              //m
     private Integer bloodSugar;         //mg/dL
 
     public VitalSigns() {
         //default empty constructor
-    }
-
-    public VitalSigns(Integer systolic, Integer diastolic, Integer pulseRate, Integer respiratoryRate, Float temperature, Integer spo2, Float weight, Float height, Integer bloodSugar) {
-        this.systolic = systolic;
-        this.diastolic = diastolic;
-        this.pulseRate = pulseRate;
-        this.respiratoryRate = respiratoryRate;
-        this.temperature = temperature;
-        this.spo2 = spo2;
-        this.weight = weight;
-        this.height = height;
-        this.bloodSugar = bloodSugar;
     }
 
     public Integer getSystolic() {
@@ -64,11 +52,11 @@ public class VitalSigns implements Serializable {
         this.respiratoryRate = respiratoryRate;
     }
 
-    public Float getTemperature() {
+    public Double getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(Float temperature) {
+    public void setTemperature(Double temperature) {
         this.temperature = temperature;
     }
 
@@ -80,19 +68,19 @@ public class VitalSigns implements Serializable {
         this.spo2 = spo2;
     }
 
-    public Float getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(Float weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
-    public Float getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public void setHeight(Float height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 

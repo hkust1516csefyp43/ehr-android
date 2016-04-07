@@ -294,8 +294,9 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
 
                             //3. POST triage
                             VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
-                            ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
-                            Remark r = (Remark) osdRemark.onSendData();
+                            Log.d("qqq332", vs.toString());
+//                            ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
+//                            Remark r = (Remark) osdRemark.onSendData();
                         }
                         //else makes not sense (new patient edit triage!?)
                     } else {
