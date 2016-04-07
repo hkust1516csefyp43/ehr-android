@@ -18,6 +18,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -66,7 +68,6 @@ import retrofit.Retrofit;
 
 public class PatientVisitActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
-  ViewPager viewPager;
   String[] consultationTabs = {
       "Personal Data",
       "Vital Signs",
@@ -97,27 +98,32 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
   private Patient patient = null;
   private String mCC;
   private boolean isTriage;
-
   private PersonalDataFragment pdf;
+
   private VitalSignsFragment vsf;
   private ChiefComplainFragment ccf;
   private RemarkFragment rf;
-
   private OnCameraRespond ocrPDF;
+
   private Triage triage;
   private Consultation consultation;
-
   private OnSendData osdPersonalData;
+
   private OnSendData osdVitalSigns;
   private OnSendData osdChiefComplain;
   private OnSendData osdRemark;
-
   private Date startTime;
+
+  private ProgressBar pb;
+  ViewPager viewPager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_patient_visit);
+
+    viewPager = (ViewPager) findViewById(R.id.viewpager);
+    pb = (ProgressBar) findViewById(R.id.loading_wheel);
 
     Intent i = getIntent();
     if (i != null) {
@@ -191,7 +197,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
       }
     }
 
-    viewPager = (ViewPager) findViewById(R.id.viewpager);
+
     if (viewPager != null) {
       viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager(), isTriage));         //TODO the false >> consultation, true >> triage
       viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
@@ -245,6 +251,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
     menu.findItem(R.id.action_confirm).setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar().paddingDp(2)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
       @Override
       public boolean onMenuItemClick(MenuItem item) {
+        pb.setVisibility(View.VISIBLE);
         OkHttpClient ohc1 = new OkHttpClient();
         ohc1.setReadTimeout(1, TimeUnit.MINUTES);
         ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
@@ -295,6 +302,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                                 vs = (VitalSigns) o2;
                                 Log.d("qqq332", vs.toString());
                               } else {
+                                pb.setVisibility(View.GONE);
                                 viewPager.setCurrentItem(1);
                               }
                             }
@@ -304,6 +312,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                                 cc = (ChiefComplain) o2;
                                 Log.d("qqq333", cc.toString());
                               } else {
+                                pb.setVisibility(View.GONE);
                                 viewPager.setCurrentItem(2);
                               }
                             }
@@ -313,6 +322,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                                 r = (Remark) o2;
                                 Log.d("qqq334", r.toString());
                               } else {
+                                pb.setVisibility(View.GONE);
                                 viewPager.setCurrentItem(3);
                               }
                             }
@@ -326,6 +336,8 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                               public void onResponse(Response<Triage> response, Retrofit retrofit) {
                                 Log.d("qqq331c", "receiving: " + response.code() + " " + response.message() + " " + response.body());
                                 if (response.code() < 300 && response.code() > 199) {
+                                  //TODO make it a tick
+                                  pb.setVisibility(View.GONE);
                                   finish();
                                 } else {
                                   try {
@@ -338,6 +350,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
 
                               @Override
                               public void onFailure(Throwable t) {
+                                pb.setVisibility(View.GONE);
                                 Log.d("qqq332c", "no");
                               }
                             });
@@ -349,6 +362,7 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
 
                         @Override
                         public void onFailure(Throwable t) {
+                          pb.setVisibility(View.GONE);
                           Log.d("qqq332b", "no");
                         }
                       });
@@ -364,11 +378,13 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                   @Override
                   public void onFailure(Throwable t) {
                     t.printStackTrace();
+                    pb.setVisibility(View.GONE);
                     Log.d("qqq332a2", "no" + t.toString());
                   }
                 });
 
               } else {
+                pb.setVisibility(View.GONE);
                 viewPager.setCurrentItem(0);
               }
             }
@@ -493,9 +509,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
               //1. PUT patient
               //2. PUT visit (tag number)
               //1. PUT triage
-              VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
-              ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
-              Remark r = (Remark) osdRemark.onSendData();
             }
           }
         } else {

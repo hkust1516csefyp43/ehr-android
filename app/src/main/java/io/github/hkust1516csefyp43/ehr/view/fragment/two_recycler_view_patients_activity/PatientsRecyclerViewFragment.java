@@ -84,7 +84,6 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
     if (rootView != null) {
       if (rv == null)
         rv = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-      rv.setAdapter(new PatientCardRecyclerViewAdapter(getContext(), whichPage));
 //            if (srl == null)
 //                srl = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefreshlayout);
       if (fail == null)

@@ -56,11 +56,10 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
         name.append(aPatient.getFirstName());
         ph.patientName.setText(name.toString());
         //TODO replace gender with symbols (save screen space)
-        if (aPatient.getBirthYear() != null && aPatient.getBirthMonth() != null && aPatient.getBirthDate() != null)
+        if (aPatient.getBirthYear() != null || aPatient.getBirthMonth() != null || aPatient.getBirthDate() != null)
           ph.subtitle.setText(Utils.birthdayToAgeString(aPatient.getBirthYear(), aPatient.getBirthMonth(), aPatient.getBirthDate()));
         ph.nativeName.setText(aPatient.getNativeName());
         //TODO 1) Check if photo is null >> TextDrawable or load image
-        //e.g. Gmail: each letter have their own pre-defined color combination
         String t = Utils.getTextDrawableText(aPatient);
         Drawable backup = TextDrawable.builder().buildRound(t, Utils.getTextDrawableColor(t));
         ph.proPic.setImageDrawable(backup);
