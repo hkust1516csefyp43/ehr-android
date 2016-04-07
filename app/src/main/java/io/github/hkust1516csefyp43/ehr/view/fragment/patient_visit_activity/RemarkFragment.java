@@ -93,9 +93,10 @@ public class RemarkFragment extends Fragment implements OnSendData {
 
     @Override
     public Object onSendData() {
+        Remark r = new Remark();
         if (etRemark != null) {
-            return new Remark(etRemark.getText().toString());
+            r.setRemark(etRemark.getText().toString());
         }
-        return null;
+        return r;
     }
 }

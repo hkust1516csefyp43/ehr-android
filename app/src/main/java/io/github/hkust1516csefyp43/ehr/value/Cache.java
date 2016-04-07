@@ -57,6 +57,11 @@ public class Cache {
         return prefs.getString(Const.KEY_CURRENT_CLINIC, null);
     }
 
+    public static void clearCurrentClinicId(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().remove(Const.KEY_CURRENT_CLINIC).apply();
+    }
+
     //==============================</Currently>==================================
 
     //The basic functions: get, set and delete

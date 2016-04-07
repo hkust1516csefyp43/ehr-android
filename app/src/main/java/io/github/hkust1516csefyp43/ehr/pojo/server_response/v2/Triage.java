@@ -28,6 +28,10 @@ public class Triage implements Serializable{
     @SerializedName("spo2")                     Integer spo2;
     @SerializedName("temperature")              Double temperature;
 
+    public Triage() {
+        //empty constructor
+    }
+
     public Triage(String id, String userId, String visitId, String chiefComplains, Integer diastolic, Integer systolic, Date startTime, Date endTime, Boolean editedInConsultation, Double headCircumference, Integer heartRate, Double height, Double weight, Date lastDewormingTabletDate, String remark, Integer respiratoryRate, Integer spo2, Double temperature) {
         this.id = id;
         this.userId = userId;

@@ -321,6 +321,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         dialog.dismiss();
                                         Cache.clearUser(getApplicationContext());
+                                        Cache.clearCurrentClinicId(getApplicationContext());
                                         openLogin();
                                         c.finish();
                                     }

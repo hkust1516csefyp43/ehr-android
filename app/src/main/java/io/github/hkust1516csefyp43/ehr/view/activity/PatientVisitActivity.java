@@ -287,17 +287,40 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
                     if (patient == null) {
                         if (triage == null) {   //TODO new patient new triage
                             //1. POST patient
-                            PersonalData pd = (PersonalData) osdPersonalData.onSendData();
-                            Log.d("qqq331", pd.toString());
-                            //2. POST visit
-                            //tag & patient_id
+                            Object o = osdPersonalData.onSendData();
+                            if (o != null) {
+                                PersonalData pd = (PersonalData) o;
+                                Log.d("qqq331", pd.toString());
+                                v2API.patients patientService = retrofit.create(v2API.patients.class);
+                                Patient p = inflatePatient(pd);
+                                p.setClinicId(Cache.getCurrentClinicId(getBaseContext()));
+                                Log.d("qqq3312", p.toString());
+                                Call<Patient> patientCall = patientService.addPatient("1", p);
+                                patientCall.enqueue(new Callback<Patient>() {
+                                    @Override
+                                    public void onResponse(Response<Patient> response, Retrofit retrofit) {
+                                        Log.d("qqq331a", "receiving: " + response.code() + " " + response.message() + " " + response.body());
+                                        //TODO use dialog to display 400
+                                    }
 
-                            //3. POST triage
-                            VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
-                            Log.d("qqq332", vs.toString());
-                            ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
-                            Log.d("qqq333", cc.toString());
+                                    @Override
+                                    public void onFailure(Throwable t) {
+                                        Log.d("qqq331b", "no");
+                                    }
+                                });
+                                //2. POST visit
+                                //tag & patient_id
+
+                                //3. POST triage
+//                            VitalSigns vs = (VitalSigns) osdVitalSigns.onSendData();
+//                            Log.d("qqq332", vs.toString());
+//                            ChiefComplain cc = (ChiefComplain) osdChiefComplain.onSendData();
+//                            Log.d("qqq333", cc.toString());
 //                            Remark r = (Remark) osdRemark.onSendData();
+//                            Log.d("qqq334", r.toString());
+                            } else {
+                                viewPager.setCurrentItem(0);
+                            }
                         }
                         //else makes not sense (new patient edit triage!?)
                     } else {
@@ -508,5 +531,25 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
             else
                 return consultationTabs.length;
         }
+    }
+
+    private Patient inflatePatient(PersonalData pd) {
+        Patient p = new Patient();
+        p.setAddress(pd.getAddress());
+        p.setBirthDate(pd.getBirthDate());
+        p.setBirthMonth(pd.getBirthMonth());
+        p.setBirthYear(pd.getBirthYear());
+        p.setFirstName(pd.getFirstName());
+        p.setMiddleName(pd.getMiddleName());
+        p.setLastName(pd.getLastName());
+        p.setNativeName(pd.getNativeName());
+        p.setPhoneNumber(pd.getPhoneNumber());
+        p.setTag(pd.getTagNumber());
+        return p;
+    }
+
+    private Triage inflateTriage(VitalSigns vs, ChiefComplain cc, Remark r) {
+        Triage t = new Triage();
+        return t;
     }
 }

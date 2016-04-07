@@ -8,6 +8,10 @@ import java.io.Serializable;
 public class Remark implements Serializable {
     private String remark;
 
+    public Remark() {
+        //empty constructor
+    }
+
     public Remark(String remark) {
         this.remark = remark;
     }

@@ -54,6 +54,10 @@ public class Patient implements Serializable {
     @SerializedName("next_station")
     Integer nextStation;
 
+    public Patient() {
+        //empty constructor
+    }
+
     public Patient(String address, Integer birthDate, Integer birthMonth, Integer birthYear, String bloodTypeId, String clinicId, Date createTimeStamp, String email, String firstName, String genderId, String honorific, String imageId, String lastName, String middleName, String nativeName, String patientId, String phoneNumber, String phoneNumberCountryCode) {
         this.address = address;
         this.birthDate = birthDate;

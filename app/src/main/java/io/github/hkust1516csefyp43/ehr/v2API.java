@@ -17,7 +17,6 @@ import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Visit;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
-import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.POST;
@@ -334,7 +333,6 @@ public interface v2API {
                 @Query("visit_date") String visitDate
         );
 
-        @FormUrlEncoded
         @POST("v2/patients")
         Call<Patient> addPatient(
                 @Header("token") String token,

@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -70,6 +72,7 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond, O
     private TextView tvTagNumber;
     private Spinner sGender;
     private int[] birthday = new int[3];
+    private boolean error = false;
 
     public PersonalDataFragment() {
         // Required empty public constructor
@@ -99,6 +102,27 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond, O
         View v = localInflater.inflate(R.layout.fragment_personal_data, container, false);
         //TODO type year and get approximate birthday
         etFirstName = (EditText) v.findViewById(R.id.first_name);
+        etFirstName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() < 1) {
+                    error = true;
+                    etFirstName.setError("Patient must have a first name");
+                } else {
+                    error = false;
+                }
+            }
+        });
         etMiddleName = (EditText) v.findViewById(R.id.middle_name);
         etLastName = (EditText) v.findViewById(R.id.last_name);
         etNativeName = (EditText) v.findViewById(R.id.native_name);
@@ -317,37 +341,48 @@ public class PersonalDataFragment extends Fragment implements OnCameraRespond, O
 
     @Override
     public Object onSendData() {
-        PersonalData pd = new PersonalData();
-        if (etFirstName != null) {
-            pd.setFirstName(etFirstName.getText().toString());
-        }
-        if (etMiddleName != null) {
-            pd.setMiddleName(etMiddleName.getText().toString());
-        }
-        if (etLastName != null) {
-            pd.setLastName(etLastName.getText().toString());
-        }
-        if (etNativeName != null) {
-            pd.setNativeName(etNativeName.getText().toString());
-        }
-        if (tvTagNumber != null) {
-            try {
-                pd.setTagNumber(Integer.parseInt(tvTagNumber.getText().toString()));
-            } catch (NumberFormatException e) {
-                //i.e. the text is not number (e.g. "Click here")
+        if (error)
+            return null;
+        else {
+            PersonalData pd = new PersonalData();
+            if (etFirstName != null) {
+                if (etFirstName.getText().toString().length() < 1) {
+                    error = true;
+                    etFirstName.setError("Patient must have a first name");
+                    return null;
+                } else {
+                    error = false;
+                    pd.setFirstName(etFirstName.getText().toString());
+                }
             }
+            if (etMiddleName != null) {
+                pd.setMiddleName(etMiddleName.getText().toString());
+            }
+            if (etLastName != null) {
+                pd.setLastName(etLastName.getText().toString());
+            }
+            if (etNativeName != null) {
+                pd.setNativeName(etNativeName.getText().toString());
+            }
+            if (tvTagNumber != null) {
+                try {
+                    pd.setTagNumber(Integer.parseInt(tvTagNumber.getText().toString()));
+                } catch (NumberFormatException e) {
+                    //i.e. the text is not number (e.g. "Click here")
+                }
+            }
+            if (tvBirthday != null) {
+                pd.setBirthYear(birthday[0]);
+                pd.setBirthMonth(birthday[1]);
+                pd.setBirthDate(birthday[2]);
+            }
+            if (etAddress != null) {
+                pd.setAddress(etAddress.getText().toString());
+            }
+            if (etPhoneNumber != null) {
+                pd.setPhoneNumber(etPhoneNumber.getText().toString());
+            }
+            return pd;
         }
-        if (tvBirthday != null) {
-            pd.setBirthYear(birthday[0]);
-            pd.setBirthMonth(birthday[1]);
-            pd.setBirthDate(birthday[2]);
-        }
-        if (etAddress != null) {
-            pd.setAddress(etAddress.getText().toString());
-        }
-        if (etPhoneNumber != null) {
-            pd.setPhoneNumber(etPhoneNumber.getText().toString());
-        }
-        return pd;
     }
 }
