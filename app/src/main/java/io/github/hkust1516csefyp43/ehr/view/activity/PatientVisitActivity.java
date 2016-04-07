@@ -102,6 +102,21 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
   private PersonalDataFragment pdf;
   private VitalSignsFragment vsf;
   private ChiefComplainFragment ccf;
+  private DocumentFragment dfHPI;
+  private ListOfCardsFragment locfPMH;
+  private DocumentFragment dfFamily;
+  private DocumentFragment dfSocial;
+  private ListOfCardsFragment locfDrugHistory;
+  private ListOfCardsFragment locfScreening;
+  private ListOfCardsFragment locfAllergy;
+  private PregnancyFragment pf;
+  private ListOfCardsFragment locfRoS;
+  private ListOfCardsFragment locfPE;
+  private ListOfCardsFragment locfDiagnosis;
+  private InvestigationFragment invf;
+  private ListOfCardsFragment locfMedication;
+  private ListOfCardsFragment locfAdvice;
+  private ListOfCardsFragment locfFollowUp;
   private RemarkFragment rf;
 
   private OnCameraRespond ocrPDF;
@@ -111,12 +126,27 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
   private onSendData osdPersonalData;
   private onSendData osdVitalSigns;
   private onSendData osdChiefComplain;
+  private onSendData osdHPI;
+  private onSendData osdPMH;
+  private onSendData osdFamilyHistory;
+  private onSendData osdSocialHistory;
+  private onSendData osdDrugHistory;
+  private onSendData osdScreening;
+  private onSendData osdAllergy;
+  private onSendData osdPregnancy;
+  private onSendData osdRoS;
+  private onSendData osdPE;
+  private onSendData osdDiagnosis;
+  private onSendData osdInvestigation;
+  private onSendData osdMedication;
+  private onSendData osdAdvice;
+  private onSendData osdFollowUp;
   private onSendData osdRemark;
 
   private Date startTime;
 
   private ProgressBar pb;
-  ViewPager viewPager;
+  private ViewPager viewPager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -661,41 +691,105 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
           return ccf;
         case 3:
           if (triage) {
-            rf = RemarkFragment.newInstance("", "");
-            osdRemark = rf;
+            if (rf == null) {
+              rf = RemarkFragment.newInstance();
+              osdRemark = rf;
+            }
             return rf;
-          } else
-            return DocumentFragment.newInstance(Const.KEY_HPI, null);
+          } else {
+            if (dfHPI == null) {
+              dfHPI = DocumentFragment.newInstance(Const.KEY_HPI, null);
+              osdHPI = dfHPI;
+            }
+            return dfHPI;
+          }
         case 4:
-          return ListOfCardsFragment.newInstance("PMH");
+          if (locfPMH == null) {
+            locfPMH = ListOfCardsFragment.newInstance("PMH");
+            osdPMH = locfPMH;
+          }
+          return locfPMH;
         case 5:
-          return DocumentFragment.newInstance(Const.KEY_FAMILY_HISTORY, null);
+          if (dfFamily == null) {
+            dfFamily = DocumentFragment.newInstance(Const.KEY_FAMILY_HISTORY, null);
+            osdFamilyHistory = dfFamily;
+          }
+          return dfFamily;
         case 6:
-          return DocumentFragment.newInstance(Const.KEY_SOCIAL_HISTORY, null);
+          if (dfSocial == null) {
+            dfSocial = DocumentFragment.newInstance(Const.KEY_SOCIAL_HISTORY, null);
+            osdSocialHistory = dfSocial;
+          }
+          return dfSocial;
         case 7:
-          return ListOfCardsFragment.newInstance("Drug History");
+          if (locfDrugHistory == null) {
+            locfDrugHistory = ListOfCardsFragment.newInstance("Drug History");
+            osdDrugHistory = locfDrugHistory;
+          }
+          return locfDrugHistory;
         case 8:
-          return ListOfCardsFragment.newInstance("Screening");
+          if (locfScreening == null) {
+            locfScreening = ListOfCardsFragment.newInstance("Screening");
+            osdScreening = locfScreening;
+          }
+          return locfScreening;
         case 9:
-          return ListOfCardsFragment.newInstance("Allergy");
+          if (locfAllergy == null) {
+            locfAllergy = ListOfCardsFragment.newInstance("Allergy");
+            osdAllergy = locfAllergy;
+          }
+          return locfAllergy;
         case 10:
-          return PregnancyFragment.newInstance();
+          if (pf == null) {
+            pf = PregnancyFragment.newInstance();
+            osdPregnancy = pf;
+          }
+          return pf;
         case 11:
-          return ListOfCardsFragment.newInstance("RoS", Const.DEFAULT_REVICE_OF_SYSTEM);
+          if (locfRoS == null) {
+            locfRoS = ListOfCardsFragment.newInstance("RoS", Const.DEFAULT_REVICE_OF_SYSTEM);
+            osdRoS = locfRoS;
+          }
+          return locfRoS;
         case 12:
-          return ListOfCardsFragment.newInstance("PE", Const.DEFAULT_PHYSICAL_EXAMINATION);
+          if (locfPE == null) {
+            locfPE = ListOfCardsFragment.newInstance("PE", Const.DEFAULT_PHYSICAL_EXAMINATION);
+            osdPE = locfPE;
+          }
+          return locfPE;
         case 13:
-          return ListOfCardsFragment.newInstance("Diagnosis");
+          if (locfDiagnosis == null) {
+            locfDiagnosis = ListOfCardsFragment.newInstance("Diagnosis");
+            osdDiagnosis = locfDiagnosis;
+          }
+          return locfDiagnosis;
         case 14:
+          //TODO figure out what it should look like first
           return InvestigationFragment.newInstance("", "");
         case 15:
-          return ListOfCardsFragment.newInstance("Medication");
+          if (locfMedication == null) {
+            locfMedication = ListOfCardsFragment.newInstance("Medication");
+            osdMedication = locfMedication;
+          }
+          return locfMedication;
         case 16:
-          return ListOfCardsFragment.newInstance("Advice");
+          if (locfAdvice == null) {
+            locfAdvice = ListOfCardsFragment.newInstance("Advice");
+            osdAdvice = locfAdvice;
+          }
+          return locfAdvice;
         case 17:
-          return ListOfCardsFragment.newInstance("Follow-up");
+          if (locfFollowUp == null) {
+            locfFollowUp = ListOfCardsFragment.newInstance("Follow-up");
+            osdFollowUp = locfFollowUp;
+          }
+          return locfFollowUp;
         case 18:
-          return RemarkFragment.newInstance("", "");
+          if (rf == null) {
+            rf = RemarkFragment.newInstance();
+            osdRemark = rf;
+          }
+          return rf;
         default:
           return PersonalDataFragment.newInstance();
       }

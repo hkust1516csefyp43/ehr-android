@@ -19,84 +19,84 @@ import io.github.hkust1516csefyp43.ehr.listener.onSendData;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Remark;
 
 public class RemarkFragment extends Fragment implements onSendData {
-    private OnFragmentInteractionListener mListener;
-    private SwitchCompat scRemark;
-    private EditText etRemark;
-    private TextInputLayout tilRemark;
+  private OnFragmentInteractionListener mListener;
+  private SwitchCompat scRemark;
+  private EditText etRemark;
+  private TextInputLayout tilRemark;
 
-    public RemarkFragment() {
-        // Required empty public constructor
+  public RemarkFragment() {
+    // Required empty public constructor
+  }
+
+  public static RemarkFragment newInstance() {
+    RemarkFragment fragment = new RemarkFragment();
+    return fragment;
+  }
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (getArguments() != null) {
     }
+  }
 
-    public static RemarkFragment newInstance(String param1, String param2) {
-        RemarkFragment fragment = new RemarkFragment();
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
-        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        View v = localInflater.inflate(R.layout.fragment_remark, container, false);
-        scRemark = (SwitchCompat) v.findViewById(R.id.scRemark);
-        etRemark = (EditText) v.findViewById(R.id.etRemark);
-        tilRemark = (TextInputLayout) v.findViewById(R.id.tilRemark);
-        scRemark.setChecked(true);
-        if (!scRemark.isChecked())
-            tilRemark.setVisibility(View.GONE);
-        else
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme2);
+    LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+    View v = localInflater.inflate(R.layout.fragment_remark, container, false);
+    scRemark = (SwitchCompat) v.findViewById(R.id.scRemark);
+    etRemark = (EditText) v.findViewById(R.id.etRemark);
+    tilRemark = (TextInputLayout) v.findViewById(R.id.tilRemark);
+    scRemark.setChecked(true);
+    if (!scRemark.isChecked())
+      tilRemark.setVisibility(View.GONE);
+    else
+      tilRemark.setVisibility(View.VISIBLE);
+    scRemark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (tilRemark != null) {
+          if (isChecked)
             tilRemark.setVisibility(View.VISIBLE);
-        scRemark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (tilRemark != null) {
-                    if (isChecked)
-                        tilRemark.setVisibility(View.VISIBLE);
-                    else
-                        tilRemark.setVisibility(View.GONE);
-                }
-
-            }
-        });
-        return v;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+          else
+            tilRemark.setVisibility(View.GONE);
         }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-        }
-    }
+      }
+    });
+    return v;
+  }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+  // TODO: Rename method, update argument and hook method into UI event
+  public void onButtonPressed(Uri uri) {
+    if (mListener != null) {
+      mListener.onFragmentInteraction(uri);
     }
+  }
 
-    @Override
-    public Object onSendData() {
-        Remark r = new Remark();
-        if (etRemark != null) {
-            r.setRemark(etRemark.getText().toString());
-        }
-        return r;
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+    if (context instanceof OnFragmentInteractionListener) {
+      mListener = (OnFragmentInteractionListener) context;
+    } else {
+      throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
     }
+  }
+
+  @Override
+  public void onDetach() {
+    super.onDetach();
+    mListener = null;
+  }
+
+  @Override
+  public Object onSendData() {
+    Remark r = new Remark();
+    if (etRemark != null) {
+      r.setRemark(etRemark.getText().toString());
+    }
+    return r;
+  }
 }
