@@ -638,7 +638,8 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
   }
 
   private void ptrvfRecyclerViewScrollToTop() {
-    fListLeft.scrollToTop();
+    if (fListLeft != null)
+      fListLeft.scrollToTop();
   }
 
   private void openSearch() {

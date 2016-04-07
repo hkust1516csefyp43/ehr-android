@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -15,6 +16,7 @@ import io.github.hkust1516csefyp43.ehr.R;
 import io.github.hkust1516csefyp43.ehr.Utils;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.value.Cache;
+import io.github.hkust1516csefyp43.ehr.value.Const;
 import io.github.hkust1516csefyp43.ehr.view.viewholder.patientCardViewHolder;
 
 
@@ -40,7 +42,34 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
     if (context != null) {
       patientCardViewHolder ph = (patientCardViewHolder) holder;
       StringBuilder name = new StringBuilder();
-      List<Patient> listOfPatients = Cache.getPostTriagePatients(context);                    //TODO not always get from PostTriage
+      List<Patient> listOfPatients;
+      switch (whichStation) {
+        case Const.PATIENT_LIST_ALL_PATIENTS:
+          listOfPatients = Cache.getClinicAllPatients(context);
+          break;
+        case Const.PATIENT_LIST_ALL_TODAYS_PATIENT:
+          listOfPatients = Cache.getPostPharmacyPatients(context);
+          break;
+        case Const.PATIENT_LIST_POST_CONSULTATION:
+          listOfPatients = Cache.getPostConsultationPatients(context);
+          break;
+        case Const.PATIENT_LIST_POST_TRIAGE:
+          listOfPatients = Cache.getPostTriagePatients(context);
+          break;
+        case Const.PATIENT_LIST_PRE_PHARMACY:
+          listOfPatients = Cache.getPrePharmacyPatients(context);
+          break;
+        case Const.PATIENT_LIST_SEARCH_TRIAGE:
+          listOfPatients = Cache.getSearchResultPatients(context);
+          Log.d("qqq279", String.valueOf(listOfPatients.size()));
+          break;
+        case Const.PATIENT_LIST_SEARCH_CONSULTATION:
+          listOfPatients = Cache.getSearchResultPatients(context);
+          Log.d("qqq279", String.valueOf(listOfPatients.size()));
+          break;
+        default:
+          listOfPatients = Cache.getPostTriagePatients(context);
+      }
       if (listOfPatients != null && listOfPatients.size() > 0) {
         Patient aPatient = listOfPatients.get(position);
         ph.setPatient(aPatient);
@@ -71,7 +100,32 @@ public class PatientCardRecyclerViewAdapter extends RecyclerView.Adapter {
   @Override
   public int getItemCount() {
     if (context != null) {
-      List<Patient> temp = Cache.getPostTriagePatients(context);
+      List<Patient> temp;
+      switch (whichStation) {
+        case Const.PATIENT_LIST_ALL_PATIENTS:
+          temp = Cache.getClinicAllPatients(context);
+          break;
+        case Const.PATIENT_LIST_ALL_TODAYS_PATIENT:
+          temp = Cache.getPostPharmacyPatients(context);
+          break;
+        case Const.PATIENT_LIST_POST_CONSULTATION:
+          temp = Cache.getPostConsultationPatients(context);
+          break;
+        case Const.PATIENT_LIST_POST_TRIAGE:
+          temp = Cache.getPostTriagePatients(context);
+          break;
+        case Const.PATIENT_LIST_PRE_PHARMACY:
+          temp = Cache.getPrePharmacyPatients(context);
+          break;
+        case Const.PATIENT_LIST_SEARCH_TRIAGE:
+          temp = Cache.getSearchResultPatients(context);
+          break;
+        case Const.PATIENT_LIST_SEARCH_CONSULTATION:
+          temp = Cache.getSearchResultPatients(context);
+          break;
+        default:
+          temp = Cache.getPostTriagePatients(context);
+      }
       if (temp != null) {
         return temp.size();
       } else

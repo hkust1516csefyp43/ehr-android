@@ -38,7 +38,7 @@ public class SearchActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_search);
 
-    Cache.setWhichStation(this, whichStation);
+//    Cache.setWhichStation(this, whichStation);
 
     searchBox = (SearchBox) findViewById(R.id.searchbox);
     searchBox.addSearchable(new SearchResult("{search history}", new IconicsDrawable(this, GoogleMaterial.Icon.gmd_history).color(getResources().getColor(R.color.secondary_text_color)).actionBar().paddingDp(2)));
@@ -82,9 +82,12 @@ public class SearchActivity extends AppCompatActivity {
           public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
             Log.d("qqq27", "receiving: " + response.code() + " " + response.message() + " " + response.body());
             if (response.body() != null && response.body().size() > 0) {
-              Cache.setPostTriagePatients2(getBaseContext(), response.body());
+              Cache.setSearchResultPatients(getBaseContext(), response.body());
               Log.d("qqq354", String.valueOf(whichStation));
-              recyclerView.swapAdapter(new PatientCardRecyclerViewAdapter(getBaseContext(), whichStation), false);
+              if (whichStation == Const.ID_CONSULTATION)
+                recyclerView.swapAdapter(new PatientCardRecyclerViewAdapter(getBaseContext(), Const.PATIENT_LIST_SEARCH_CONSULTATION), false);
+              else if (whichStation == Const.ID_TRIAGE)
+                recyclerView.swapAdapter(new PatientCardRecyclerViewAdapter(getBaseContext(), Const.PATIENT_LIST_SEARCH_TRIAGE), false);
             }
           }
 

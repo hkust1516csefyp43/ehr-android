@@ -10,7 +10,8 @@
         android:id="@+id/accbPrescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="false"/>
+        android:checked="false"
+        android:layout_centerVertical="true"/>
 
     <LinearLayout
         android:id="@+id/llPrescription"

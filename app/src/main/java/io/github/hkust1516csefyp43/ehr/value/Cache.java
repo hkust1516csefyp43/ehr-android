@@ -16,6 +16,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.BloodType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.User;
 
 /**
@@ -99,12 +100,12 @@ public class Cache {
    * @param key     is the string on how & where to find
    * @return
    */
-  private static List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> getPatients(Context context, String key) {
+  private static List<Patient> getPatients(Context context, String key) {
     SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
     String value = prefs.getString(key, null);
     if (value != null) {
       try {
-        List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> lp = new Gson().fromJson(value, new TypeToken<List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient>>() {
+        List<Patient> lp = new Gson().fromJson(value, new TypeToken<List<Patient>>() {
         }.getType());
         return lp;
       } catch (JsonSyntaxException e) {
@@ -116,14 +117,14 @@ public class Cache {
     return null;
   }
 
-  private static void setPatients(Context context, String key, List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> patients) {
+  private static void setPatients(Context context, String key, List<Patient> patients) {
     Gson gson = new GsonBuilder().create();
     String jsonString = gson.toJson(patients);
     SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
     prefs.edit().putString(key, jsonString).apply();
   }
 
-  private static void setPatients2(Context context, String key, List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> patients) {
+  private static void setPatients2(Context context, String key, List<Patient> patients) {
     Gson gson = new GsonBuilder().create();
     String jsonString = gson.toJson(patients);
     SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
@@ -137,19 +138,11 @@ public class Cache {
 
   //------------------------- separation line ----------------------------------
 
-  /**
-   * @param context
-   * @return
-   */
-  public static List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> getPostTriagePatients(Context context) {
+  public static List<Patient> getPostTriagePatients(Context context) {
     return getPatients(context, Const.KEY_POST_TRIAGE_PATIENTS);
   }
 
-  public static void setPostTriagePatients(Context context, List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> postTriagePatients) {
-    setPatients(context, Const.KEY_POST_TRIAGE_PATIENTS, postTriagePatients);
-  }
-
-  public static void setPostTriagePatients2(Context context, List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> postTriagePatients) {
+  public static void setPostTriagePatients(Context context, List<Patient> postTriagePatients) {
     setPatients2(context, Const.KEY_POST_TRIAGE_PATIENTS, postTriagePatients);
   }
 
@@ -157,16 +150,48 @@ public class Cache {
     clearPatients(context, Const.KEY_POST_TRIAGE_PATIENTS);
   }
 
-  public static List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> getPostPharmacyPatients(Context context) {
+  public static List<Patient> getPostPharmacyPatients(Context context) {
     return getPatients(context, Const.KEY_POST_PHARMACY_PATIENTS);
   }
 
-  public static void setPostPharmacyPatients(Context context, List<io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient> postPharmacyPatients) {
+  public static void setPostPharmacyPatients(Context context, List<Patient> postPharmacyPatients) {
     setPatients(context, Const.KEY_POST_PHARMACY_PATIENTS, postPharmacyPatients);
   }
 
   public static void clearPostPharmacyPatients(Context context) {
     clearPatients(context, Const.KEY_POST_PHARMACY_PATIENTS);
+  }
+
+  public static void setPrePharmacyPatients(Context context, List<Patient> patientList) {
+    setPatients2(context, Const.KEY_PRE_PHARMACY_PATIENTS, patientList);
+  }
+
+  public static List<Patient> getPrePharmacyPatients(Context context) {
+    return getPatients(context, Const.KEY_PRE_PHARMACY_PATIENTS);
+  }
+
+  public static void setPostConsultationPatients(Context context, List<Patient> patientList) {
+    setPatients2(context, Const.KEY_POST_CONSULTATION_PATIENTS, patientList);
+  }
+
+  public static List<Patient> getPostConsultationPatients(Context context) {
+    return getPatients(context, Const.KEY_POST_CONSULTATION_PATIENTS);
+  }
+
+  public static void setClinicAllPatients(Context context, List<Patient> patientList) {
+    setPatients2(context, Const.KEY_CLINIC_ALL_PATIENTS, patientList);
+  }
+
+  public static List<Patient> getClinicAllPatients(Context context) {
+    return getPatients(context, Const.KEY_CLINIC_ALL_PATIENTS);
+  }
+
+  public static void setSearchResultPatients(Context context, List<Patient> patientList) {
+    setPatients2(context, Const.KEY_SEARCH_PATIENTS, patientList);
+  }
+
+  public static List<Patient> getSearchResultPatients(Context context) {
+    return getPatients(context, Const.KEY_SEARCH_PATIENTS);
   }
 
   //==============================<Current patient>==================================

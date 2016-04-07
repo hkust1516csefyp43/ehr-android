@@ -188,7 +188,28 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
 
   private void receiving(Context c, Response<List<Patient>> response) {
     if (response != null && response.body() != null && response.body().size() > 0) {
-      Cache.setPostTriagePatients2(c, response.body());
+      switch (whichPage) {
+        case Const.PATIENT_LIST_ALL_PATIENTS:
+          Log.d(TAG, "all patients");
+          Cache.setClinicAllPatients(c, response.body());
+          break;
+        case Const.PATIENT_LIST_ALL_TODAYS_PATIENT:
+          Log.d(TAG, "all today patients");
+          Cache.setPostPharmacyPatients(c, response.body());
+          break;
+        case Const.PATIENT_LIST_POST_CONSULTATION:
+          Log.d(TAG, "post consultation");
+          Cache.setPostConsultationPatients(c, response.body());
+          break;
+        case Const.PATIENT_LIST_POST_TRIAGE:
+          Log.d(TAG, "post triage");
+          Cache.setPostTriagePatients(c, response.body());
+          break;
+        case Const.PATIENT_LIST_PRE_PHARMACY:
+          Log.d(TAG, "pre pharmacy ");
+          Cache.setPrePharmacyPatients(c, response.body());
+          break;
+      }
       changeTabCounter(response.body().size());
       pb.setVisibility(View.GONE);
 
@@ -255,15 +276,6 @@ public class PatientsRecyclerViewFragment extends android.support.v4.app.Fragmen
 
   public void scrollToTop() {
     rv.getLayoutManager().scrollToPosition(0);
-  }
-
-  /**
-   * TODO depends on whichPage to fetch from different API
-   */
-  private void fetchFromServer() {
-//        switch (whichPage) {
-//            case
-//        }
   }
 
   @Override
