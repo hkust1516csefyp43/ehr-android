@@ -106,70 +106,70 @@ public interface v2API {
   }
 
   interface bloodTypes {
+    @GET("v2/blood_types")
+    Call<List<BloodType>> getBloodTypes(
+        @Header("token") String token,
+        @Query("blood_type") String bloodType
+    );
+
+    @GET("v2/blood_types/{id}")
+    Call<BloodType> getBloodType(
+        @Header("token") String token,
+        @Path("id") String bloodTypeId
+    );
+
+    @POST("v2/blood_types/")
+    Call<BloodType> addBloodType(@Header("token") String token);
+
+    @PUT("v2/blood_types/{id}")
+    Call<BloodType> editBloodType(@Header("token") String token);
+
+    @DELETE("v2/blood_types/{id}")
+    Call<BloodType> deleteBloodType(@Header("token") String token);
+
   }
-
-  @GET("v2/blood_types")
-  Call<List<BloodType>> getBloodTypes(
-      @Header("token") String token,
-      @Query("blood_type") String bloodType
-  );
-
-  @GET("v2/blood_types/{id}")
-  Call<BloodType> getBloodType(
-      @Header("token") String token,
-      @Path("id") String bloodTypeId
-  );
-
-  @POST("v2/blood_types/")
-  Call<BloodType> addBloodType(@Header("token") String token);
-
-  @PUT("v2/blood_types/{id}")
-  Call<BloodType> editBloodType(@Header("token") String token);
-
-  @DELETE("v2/blood_types/{id}")
-  Call<BloodType> deleteBloodType(@Header("token") String token);
 
   interface clinics {
+    /**
+     * Get list of clinics without token >> clinic_id & english_name only
+     * No param/header/query/body needed
+     *
+     * @return
+     */
+    @GET("v2/clinics")
+    Call<List<Clinic>> getSimplifiedClinics();
+
+    /**
+     * Get list of clinics
+     *
+     * @param token >> access token
+     * @return
+     */
+    @GET("v2/clinics")
+    Call<List<Clinic>> getClinics(
+        @Header("token") String token,
+        @Query("country_id") String countryId,
+        @Query("is_active") Boolean isActive,
+        @Query("english_name") String englishName,
+        @Query("native_name") String nativeName,
+        @Query("latitude") Double latitude,
+        @Query("longitude") Double longitude,
+        @Query("create_timestamp") String createTimestamp,
+        @Query("remark") String remark,
+        @Query("is_global") Boolean isGlobal,
+        @Query("suitcase_id") String suitcaseId,
+        @Query("offset") Integer offset,
+        @Query("sort_by") String sortBy,
+        @Query("limit") Integer limit
+    );
+
+    @GET("v2/clinics/{id}")
+    Call<Clinic> getClinic(
+        @Header("token") String token,
+        @Path("id") String id
+    );
+
   }
-
-  /**
-   * Get list of clinics without token >> clinic_id & english_name only
-   * No param/header/query/body needed
-   *
-   * @return
-   */
-  @GET("v2/clinics")
-  Call<List<Clinic>> getSimplifiedClinics();
-
-  /**
-   * Get list of clinics
-   *
-   * @param token >> access token
-   * @return
-   */
-  @GET("v2/clinics")
-  Call<List<Clinic>> getClinics(
-      @Header("token") String token,
-      @Query("country_id") String countryId,
-      @Query("is_active") Boolean isActive,
-      @Query("english_name") String englishName,
-      @Query("native_name") String nativeName,
-      @Query("latitude") Double latitude,
-      @Query("longitude") Double longitude,
-      @Query("create_timestamp") String createTimestamp,
-      @Query("remark") String remark,
-      @Query("is_global") Boolean isGlobal,
-      @Query("suitcase_id") String suitcaseId,
-      @Query("offset") Integer offset,
-      @Query("sort_by") String sortBy,
-      @Query("limit") Integer limit
-  );
-
-  @GET("v2/clinics/{id}")
-  Call<Clinic> getClinic(
-      @Header("token") String token,
-      @Path("id") String id
-  );
 
   interface countries {
     @GET("v2/countries")

@@ -126,6 +126,7 @@ public class Const {
     public static final String KEY_PATIENT = "thePatientIsBeingPassedToPVA";
     public static final String KEY_TRIAGE = "theTriageIsBeingPassedToPVA";
     public static final String KEY_CONSULTATION = "theConsultationIsBeingPassedToPVA";
+    public static final String KEY_CURRENT_CLINIC_WHOLE = "theWholeClinicObject";
     public static String KEY_LIST_OF_CARD_FRAGMENT = "locf";
     public static JSONArray SSID_LIST_ONE2ONE;
 

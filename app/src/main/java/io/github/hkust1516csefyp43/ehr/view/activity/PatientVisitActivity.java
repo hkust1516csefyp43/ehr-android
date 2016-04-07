@@ -43,6 +43,7 @@ import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.ChiefComplain;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.PersonalData;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.Remark;
 import io.github.hkust1516csefyp43.ehr.pojo.patient_visit.VitalSigns;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Consultation;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
@@ -55,7 +56,6 @@ import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.Chie
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.DocumentFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.InvestigationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.ListOfCardsFragment;
-import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.MedicationFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PersonalDataFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.PregnancyFragment;
 import io.github.hkust1516csefyp43.ehr.view.fragment.patient_visit_activity.RemarkFragment;
@@ -146,7 +146,6 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
       ab.setDisplayShowHomeEnabled(true);
 
       String title = "";
-      String subtitle = "from Cannal Side";
       if (patient != null) {
         Log.d("qqq13", patient.toString());
         if (patient.getFirstName() != null)
@@ -159,7 +158,12 @@ public class PatientVisitActivity extends AppCompatActivity implements OnFragmen
         title = "New patient";
       }
       ab.setTitle(title);
-      ab.setSubtitle(subtitle);
+
+      Clinic clinic = Cache.getCurrentClinic(this);
+      if (clinic != null) {
+        String subtitle = clinic.getEnglishName();
+        ab.setSubtitle(subtitle);
+      }
     }
 
     OkHttpClient ohc1 = new OkHttpClient();
