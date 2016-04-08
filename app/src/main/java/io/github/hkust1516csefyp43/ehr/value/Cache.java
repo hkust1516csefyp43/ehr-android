@@ -16,6 +16,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.BloodType;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Clinic;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Keyword;
+import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Notification;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.Patient;
 import io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.User;
 
@@ -313,5 +314,29 @@ public class Cache {
       }
     }
     return null;
+  }
+
+  public static List<Notification> getNotifications(Context context) {
+    SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+    String value = prefs.getString(Const.KEY_NOTIFICATIONS, null);
+    if (value != null) {
+      try {
+        List<Notification> lp = new Gson().fromJson(value, new TypeToken<List<Notification>>() {
+        }.getType());
+        return lp;
+      } catch (JsonSyntaxException e) {
+        e.printStackTrace();
+        Log.d("qqq131", value);
+        //TODO for some reason it occasionally got incorrect syntax stuff -_-
+      }
+    }
+    return null;
+  }
+
+  public static void setNotifications(Context context, List<Notification> notificationList) {
+    Gson gson = new GsonBuilder().create();
+    String jsonString = gson.toJson(notificationList);
+    SharedPreferences prefs = context.getSharedPreferences(Const.KEY_SHARE_PREFERENCES, Context.MODE_PRIVATE);
+    prefs.edit().putString(Const.KEY_NOTIFICATIONS, jsonString).apply();
   }
 }

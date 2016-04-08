@@ -21,6 +21,7 @@
         android:gravity="center_vertical">
 
         <View
+            android:id="@+id/vUnreadCircle"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:background="@drawable/notification_blue_circle"/>

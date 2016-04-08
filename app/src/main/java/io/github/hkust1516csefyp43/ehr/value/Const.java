@@ -132,6 +132,7 @@ public class Const {
   public static final String KEY_PRE_PHARMACY_PATIENTS = "iHateYou";
   public static final String KEY_CLINIC_ALL_PATIENTS = "ImVerySleepyNow";
   public static final String KEY_SEARCH_PATIENTS = "searching...";
+  public static final String KEY_NOTIFICATIONS = "listOfNotifications";
   public static String KEY_LIST_OF_CARD_FRAGMENT = "locf";
   public static JSONArray SSID_LIST_ONE2ONE;
 

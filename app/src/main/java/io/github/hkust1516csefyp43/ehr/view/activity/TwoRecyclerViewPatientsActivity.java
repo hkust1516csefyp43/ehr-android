@@ -440,26 +440,36 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
         Log.d("qqq27", "receiving: " + response.code() + " " + response.message() + " " + response.body());
         if (response.code() > 199 && response.code() < 300) {
           MenuItem mi = m.findItem(R.id.action_search);
-          if (response.body().size() >= 1) {
-            Log.d("qqq273", response.body().toString());
+          List<Notification> notifications = response.body();
+          if (notifications.size() >= 1) {
+            Log.d("qqq273", notifications.toString());
             //TODO save to cache
+            Cache.setNotifications(getBaseContext(), notifications);
             if (mi != null) {
               //TODO change icon + set notification iff there are unread notifications
-              mi.setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_notifications_active).color(Color.WHITE).actionBar().paddingDp(2));
-              android.support.v4.app.NotificationCompat.Builder mBuilder =
-                  new NotificationCompat.Builder(getBaseContext())
-                      .setSmallIcon(R.drawable.leak_canary_icon)
-                      .setContentTitle("n notifications")
-                      .setContentText("Click here to enter Easymed")
-                      .setVibrate(new long[]{500, 500});
-              Intent resultIntent = new Intent(getBaseContext(), NotificationActivity.class);
-              TaskStackBuilder stackBuilder = TaskStackBuilder.create(getBaseContext());
-              stackBuilder.addParentStack(NotificationActivity.class);
-              stackBuilder.addNextIntent(resultIntent);
-              PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-              mBuilder.setContentIntent(resultPendingIntent);
-              NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-              mNotificationManager.notify(6174, mBuilder.build());      // mId(6174) allows you to update the notification later on.
+              boolean unreadIconSet = false;
+              for (Notification n : notifications) {
+                if (!n.getRead()) {
+                  if (!unreadIconSet) {
+                    unreadIconSet = true;
+                    mi.setIcon(new IconicsDrawable(getApplicationContext(), GoogleMaterial.Icon.gmd_notifications_active).color(Color.WHITE).actionBar().paddingDp(2));
+                  }
+                  android.support.v4.app.NotificationCompat.Builder mBuilder =
+                      new NotificationCompat.Builder(getBaseContext())
+                          .setSmallIcon(R.drawable.easymed_notification)
+                          .setContentTitle("New reminder from Easymed")
+                          .setContentText(n.getMessage())
+                          .setVibrate(new long[]{1000, 1000});
+                  Intent resultIntent = new Intent(getBaseContext(), NotificationActivity.class);
+                  TaskStackBuilder stackBuilder = TaskStackBuilder.create(getBaseContext());
+                  stackBuilder.addParentStack(NotificationActivity.class);
+                  stackBuilder.addNextIntent(resultIntent);
+                  PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                  mBuilder.setContentIntent(resultPendingIntent);
+                  NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                  mNotificationManager.notify(6174, mBuilder.build());      // mId(6174) allows you to update the notification later on.
+                }
+              }
               mi.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
