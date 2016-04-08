@@ -164,7 +164,7 @@ public class TwoRecyclerViewPatientsActivity extends AppCompatActivity implement
       tb.setCollapsible(true);
       clinic = Cache.getCurrentClinic(this);
       if (clinic != null) {
-        tb.setSubtitle(clinic.getEnglishName()); //TODO get it from cache (user login need to select clinic)
+        tb.setSubtitle(clinic.getEnglishName());
         tb.setTitleTextColor(ContextCompat.getColor(this, R.color.text_color));
         tb.setSubtitleTextColor(ContextCompat.getColor(this, R.color.text_color));
       }

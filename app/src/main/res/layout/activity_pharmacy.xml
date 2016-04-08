@@ -24,6 +24,7 @@
     <io.github.hkust1516csefyp43.ehr.view.custom_view.FixedRecyclerView
         android:id="@+id/rvPrescriptions"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBarLayout"/>
 
 </RelativeLayout>

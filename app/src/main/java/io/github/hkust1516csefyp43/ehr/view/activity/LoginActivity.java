@@ -407,6 +407,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Answers.getInstance().logLogin(new LoginEvent().putMethod("Email & password").putSuccess(true));
         Log.d("qqq320", "saving: " + currentClinic);
         Cache.setCurrentClinicId(getBaseContext(), currentClinic.getClinicId());
+        Cache.setCurrentClinic(getBaseContext(), currentClinic);
         Cache.setUser(getBaseContext(), new io.github.hkust1516csefyp43.ehr.pojo.server_response.v2.User(mEmail, mPassword));
         Intent i = new Intent(getApplicationContext(), TwoRecyclerViewPatientsActivity.class);
         finish();
