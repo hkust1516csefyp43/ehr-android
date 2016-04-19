@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group
-        android:id="@+id/group_main"
-        android:checkableBehavior="single">
-        <item
-            android:title="@string/triage"/>
-        <item
-            android:title="@string/consultation"/>
-        <item
-            android:title="@string/pharmacy"/>
-    </group>
-    <group
-        android:id="@+id/group_others"
-        android:checkableBehavior="single">
-        <item
-            android:title="@string/settings"/>
-        <item
-            android:title="@string/about"/>
-    </group>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/notification"
+        android:orderInCategory="100"
+        android:title="Notification"
+        app:showAsAction="ifRoom"/>
 </menu>
