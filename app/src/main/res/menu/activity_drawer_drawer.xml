@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/tcp">
+        <item
+            android:id="@+id/nav_triage"
+            android:title="Triage"/>
+        <item
+            android:id="@+id/nav_consultation"
+            android:title="Consultation"/>
+        <item
+            android:id="@+id/nav_pharmacy"
+            android:title="Pharmacy"/>
+    </group>
+
+    <group
+        android:id="@+id/ia">
+        <item
+            android:id="@+id/nav_inventory"
+            android:title="Inventory"/>
+        <item
+            android:id="@+id/nav_admin"
+            android:title="Admin"/>
+    </group>
+
+    <group
+        android:id="@+id/sal">
+        <item
+            android:id="@+id/nav_settings"
+            android:title="Settings"/>
+        <item
+            android:id="@+id/nav_about"
+            android:title="About"/>
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout"/>
+    </group>
+
+</menu>
