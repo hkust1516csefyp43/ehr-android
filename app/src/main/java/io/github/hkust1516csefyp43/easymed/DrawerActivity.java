@@ -219,6 +219,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       //Trigger AboutLibrary
     } else if (id == R.id.nav_logout) {
       //Confirmation dialog
+      Cache.CurrentUser.logout(this);
     }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -243,10 +244,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     protected Void doInBackground(Void... params) {
       //fetch notifications
       Log.d(TAG, "do in background");
+
       OkHttpClient ohc1 = new OkHttpClient();
       ohc1.setReadTimeout(1, TimeUnit.MINUTES);
       ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
-
 
       Retrofit retrofit = new Retrofit
           .Builder()
