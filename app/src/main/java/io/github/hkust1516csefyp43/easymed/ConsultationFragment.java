@@ -38,6 +38,7 @@ public class ConsultationFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_consultation, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+    toolbar.setTitle("Consultation");
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 

@@ -13,7 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.easymed.POJO.Clinic;
-import io.github.hkust1516csefyp43.easymed.v2API.Notification;
+import io.github.hkust1516csefyp43.easymed.POJO.Notification;
 
 /**
  * Created by Louis on 20/4/16.

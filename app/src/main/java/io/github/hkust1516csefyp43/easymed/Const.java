@@ -1,11 +1,16 @@
 package io.github.hkust1516csefyp43.easymed;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 /**
  * Created by Louis on 20/4/16.
  */
 public class Const {
   //not inner class >> other
   public final static int SPLASH_DISPLAY_LENGTH = 4000;       //4 seconds of Splash Screen
+  public final static Gson GsonParserThatWorksWithPGTimestamp
+      = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
 
   public class CacheKey {
     public static final String CURRENT_CLINIC = "j77RR5CGZQtYvnx1";

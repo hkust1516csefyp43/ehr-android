@@ -8,6 +8,7 @@
     tools:context="io.github.hkust1516csefyp43.easymed.NotificationActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -18,12 +19,14 @@
             android:layout_height="wrap_content"
             android:title="Notification"
             android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
+        android:layout_below="@id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

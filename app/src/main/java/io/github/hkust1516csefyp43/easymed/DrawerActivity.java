@@ -7,23 +7,37 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.context.IconicsLayoutInflater;
+import com.squareup.okhttp.OkHttpClient;
 
-public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TriageFragment.OnFragmentInteractionListener {
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.github.hkust1516csefyp43.easymed.POJO.Notification;
+import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import retrofit.GsonConverterFactory;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
+
+
+public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
   public final static String TAG = DrawerActivity.class.getSimpleName();
 
   @Override
@@ -31,6 +45,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_drawer);
+
+    Log.d(TAG, "before");
+    new ThingsToDoInBackground().execute();
+    Log.d(TAG, "after");
+
+
 //    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -56,14 +76,43 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       Menu menu = navigationView.getMenu();
       MenuItem menuItem = menu.findItem(R.id.nav_triage);
       if (menuItem != null) {
-//        menuItem.setIcon(new )
+        menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).actionBar().paddingDp(2));
+      }
+      menuItem = menu.findItem(R.id.nav_consultation);
+      if (menuItem != null) {
+        menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).actionBar().paddingDp(2));
+      }
+      menuItem = menu.findItem(R.id.nav_pharmacy);
+      if (menuItem != null) {
+        menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).actionBar().paddingDp(2));
+      }
+      menuItem = menu.findItem(R.id.nav_inventory);
+      if (menuItem != null) {
+        menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_medkit).color(Color.GRAY).actionBar().paddingDp(2));
+      }
+      menuItem = menu.findItem(R.id.nav_admin);
+      if (menuItem != null) {
+        menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_male).color(Color.GRAY).actionBar().paddingDp(2));
+      }
+      menuItem = menu.findItem(R.id.nav_settings);
+      if (menuItem != null) {
+        menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).actionBar().paddingDp(2));
+      }
+      menuItem = menu.findItem(R.id.nav_about);
+      if (menuItem != null) {
+        menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_info).color(Color.GRAY).actionBar().paddingDp(2));
+      }
+      menuItem = menu.findItem(R.id.nav_logout);
+      if (menuItem != null) {
+        menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_exit_to_app).color(Color.GRAY).actionBar().paddingDp(2));
       }
     }
 
     FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
     if (frameLayout != null) {
-      ConsultationFragment consultationFragment = new ConsultationFragment();
-      getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, consultationFragment).commit();
+//      ConsultationFragment consultationFragment = new ConsultationFragment();
+      TriageFragment triageFragment = new TriageFragment();
+      getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, triageFragment).commit();
     }
   }
 
@@ -115,11 +164,16 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
     if (id == R.id.nav_triage) {
       //change toolbar name
-      ActionBar actionBar = getSupportActionBar();
-      if (actionBar != null) {
-        actionBar.setTitle("Triage");
-      }
+//      ActionBar actionBar = getSupportActionBar();
+//      if (actionBar != null) {
+//        actionBar.setTitle("Triage");
+//      }
       //swap fragment to TriageFragment
+      TriageFragment triageFragment = new TriageFragment();
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      fragmentTransaction.replace(R.id.fragment_container, triageFragment);
+      fragmentTransaction.addToBackStack(null);
+      fragmentTransaction.commit();
     } else if (id == R.id.nav_consultation) {
       //change toolbar name
 //      ActionBar actionBar = getSupportActionBar();
@@ -127,6 +181,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 //        actionBar.setTitle("Consultation");
 //      }
       //swap fragment to ConsultationFragment
+      ConsultationFragment consultationFragment = new ConsultationFragment();
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      fragmentTransaction.replace(R.id.fragment_container, consultationFragment);
+      fragmentTransaction.addToBackStack(null);
+      fragmentTransaction.commit();
+
     } else if (id == R.id.nav_pharmacy) {
       //change toolbar name
       ActionBar actionBar = getSupportActionBar();
@@ -176,18 +236,46 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
   private class ThingsToDoInBackground extends AsyncTask<Void, Void, Void> {
 
     public ThingsToDoInBackground() {
-
+      Log.d(TAG, "ast constructor");
     }
 
     @Override
     protected Void doInBackground(Void... params) {
       //fetch notifications
+      Log.d(TAG, "do in background");
+      OkHttpClient ohc1 = new OkHttpClient();
+      ohc1.setReadTimeout(1, TimeUnit.MINUTES);
+      ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+
+
+      Retrofit retrofit = new Retrofit
+          .Builder()
+          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+          .client(ohc1)
+          .build();
+      v2API.notification notificationService = retrofit.create(v2API.notification.class);
+      Call<List<Notification>> notificationList = notificationService.getMyNotifications("1");
+      notificationList.enqueue(new Callback<List<Notification>>() {
+        @Override
+        public void onResponse(Response<List<Notification>> response, Retrofit retrofit) {
+          Log.d(TAG, response.toString());
+          Log.d(TAG, response.body().toString());
+          Cache.CurrentUser.setNotifications(getBaseContext(), response.body());
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+
+        }
+      });
       return null;
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
       super.onPostExecute(aVoid);
+      Log.d(TAG, "ope");
     }
   }
 }

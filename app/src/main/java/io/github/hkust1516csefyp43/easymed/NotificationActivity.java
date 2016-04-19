@@ -1,15 +1,22 @@
 package io.github.hkust1516csefyp43.easymed;
 
+import android.content.Context;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.List;
+
+import io.github.hkust1516csefyp43.easymed.POJO.Notification;
 
 public class NotificationActivity extends AppCompatActivity {
   public final static String TAG = NotificationActivity.class.getSimpleName();
@@ -33,7 +40,8 @@ public class NotificationActivity extends AppCompatActivity {
 
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     if (recyclerView != null) {
-
+      recyclerView.setAdapter(new NotificationRecyclerViewAdapter(getBaseContext()));
+      recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
     }
   }
 
@@ -59,24 +67,28 @@ public class NotificationActivity extends AppCompatActivity {
   }
 
   private class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<NotificationRecyclerViewViewHolder> {
+    List<Notification> notifications;
 
-    public NotificationRecyclerViewAdapter() {
-
+    public NotificationRecyclerViewAdapter(Context context) {
+      notifications = Cache.CurrentUser.getNotifications(context);
     }
 
     @Override
     public NotificationRecyclerViewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      return null;
+      return new NotificationRecyclerViewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notification, parent, false));
     }
 
     @Override
     public void onBindViewHolder(NotificationRecyclerViewViewHolder holder, int position) {
-
+      holder.tvNotification.setText(notifications.get(position).getMessage());
     }
 
     @Override
     public int getItemCount() {
-      return 0;
+      if (notifications != null)
+        return notifications.size();
+      else
+        return 0;
     }
   }
 }
