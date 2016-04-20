@@ -125,20 +125,8 @@ public class Clinic {
     this.create_timestamp = create_timestamp;
   }
 
-  @Override
-  public String toString() {
-    return "Clinic{" +
-        "clinicId='" + clinicId + '\'' +
-        ", englishName='" + englishName + '\'' +
-        ", nativeName='" + nativeName + '\'' +
-        ", countryId='" + countryId + '\'' +
-        ", suitcaseId='" + suitcaseId + '\'' +
-        ", isActive=" + isActive +
-        ", isGlobal=" + isGlobal +
-        ", latitude=" + latitude +
-        ", longitude=" + longitude +
-        ", remark='" + remark + '\'' +
-        ", create_timestamp=" + create_timestamp +
-        '}';
-  }
+@Override
+public String toString() {
+  return getEnglishName();
+}
 }
