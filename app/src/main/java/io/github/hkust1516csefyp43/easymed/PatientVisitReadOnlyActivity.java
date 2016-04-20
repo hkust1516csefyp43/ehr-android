@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,14 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity {
     setSupportActionBar(toolbar);
 
     thisPatient = (Patient) this.getIntent().getSerializableExtra(Const.BundleKey.READ_ONLY_PATIENT);
+    //TODO get extra triage
+    //TODO get extra consultation
+
+    //TODO experiment: tablayout to show history
+    TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+    tabLayout.addTab(tabLayout.newTab().setText("1"));
+    tabLayout.addTab(tabLayout.newTab().setText("2"));
+    tabLayout.addTab(tabLayout.newTab().setText("3"));
 
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {

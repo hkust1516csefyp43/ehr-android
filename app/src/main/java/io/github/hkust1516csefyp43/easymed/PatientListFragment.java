@@ -102,7 +102,8 @@ public class PatientListFragment extends Fragment{
     v2API.patients patientService = retrofit.create(v2API.patients.class);
 
     switch (whichPage) {
-      case Const.PatientListPageId.POST_TRIAGE:   // == PRE_CONSULTATION
+      case Const.PatientListPageId.POST_TRIAGE:
+      case Const.PatientListPageId.PRE_CONSULTATION:
         Call<List<Patient>> patientList = patientService.getPatients("1", null, "2", null, null, null, null, null, null, null, null);
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
@@ -155,7 +156,8 @@ public class PatientListFragment extends Fragment{
           }
         });
         break;
-      case Const.PatientListPageId.POST_CONSULTATION:   // == PRE_PHARMACY
+      case Const.PatientListPageId.POST_CONSULTATION:
+      case Const.PatientListPageId.PRE_PHARMACY:
         Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, null);
         patientList3.enqueue(new Callback<List<Patient>>() {
           @Override
@@ -294,13 +296,35 @@ public class PatientListFragment extends Fragment{
               Log.d(TAG, "going to edit patient " + aPatient.getFirstName());
               Intent intent = new Intent(getContext(), PatientVisitReadOnlyActivity.class);
               intent.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+              //put extra triage
               startActivity(intent);
               break;
             case Const.PatientListPageId.NOT_YET:
               Log.d(TAG, "going to ? patient " + aPatient.getFirstName());
               //TODO ?
               break;
+            case Const.PatientListPageId.PRE_CONSULTATION:
+              Intent intent1 = new Intent(getContext(), PatientVisitEditActivity.class);
+              //put extra patient
+              //put extra triage
+              startActivity(intent1);
+              break;
+            case Const.PatientListPageId.POST_CONSULTATION:
+              Intent intent2 = new Intent(getContext(), PatientVisitReadOnlyActivity.class);
+              intent2.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+              //put extra triage
+              //put extra consultation
+              startActivity(intent2);
+              break;
+            case Const.PatientListPageId.PRE_PHARMACY:
+              break;
+            case Const.PatientListPageId.POST_PHARMACY:
             default:
+              Intent intent3 = new Intent(getContext(), PatientVisitReadOnlyActivity.class);
+              intent3.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+              //put extra triage
+              //put extra consultation
+              startActivity(intent3);
 
           }
         }

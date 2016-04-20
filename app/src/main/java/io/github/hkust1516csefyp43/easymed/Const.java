@@ -15,10 +15,10 @@ public class Const {
   public class PatientListPageId {
     public static final int POST_TRIAGE = 1;
     public static final int NOT_YET = 2;
-    public static final int PRE_CONSULTATION = 1;
-    public static final int POST_CONSULTATION = 3;
-    public static final int PRE_PHARMACY = 3;
-    public static final int POST_PHARMACY = 4;
+    public static final int PRE_CONSULTATION = 3;
+    public static final int POST_CONSULTATION = 4;
+    public static final int PRE_PHARMACY = 5;
+    public static final int POST_PHARMACY = 6;
   }
 
   public class BundleKey {
