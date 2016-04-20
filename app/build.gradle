@@ -44,4 +44,7 @@ dependencies {
     compile('com.mikepenz:aboutlibraries:5.6.5@aar') {
         transitive = true
     }
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.8@aar') {
+        transitive = true
+    }
 }

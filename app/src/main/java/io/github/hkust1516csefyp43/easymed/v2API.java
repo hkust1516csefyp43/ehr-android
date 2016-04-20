@@ -445,7 +445,9 @@ public interface v2API {
      */
     @GET("visits")
     Call<List<Visit>> getVisits(
-        @Header("token") String token
+        @Header("token") String token,
+        @Query("next_station") Integer nextStation,
+        @Query("patient_id") String patientId
     );
 
     @POST("visits")

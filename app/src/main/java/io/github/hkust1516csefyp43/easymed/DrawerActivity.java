@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.aboutlibraries.ui.LibsFragment;
@@ -43,7 +47,7 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 
-public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, OnPatientsFetchedListener {
+public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, OnPatientsFetchedListener, MaterialDialog.SingleButtonCallback {
   public final static String TAG = DrawerActivity.class.getSimpleName();
 
   @Override
@@ -56,37 +60,16 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     new ThingsToDoInBackground().execute();
     Log.d(TAG, "after");
 
-
-//    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-//        Log.d(TAG, "clicking header");
-        Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
-        startActivity(intent);
-      }
-    });
-
-//    setSupportActionBar(toolbar);
-//
-//    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//    fab.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//            .setAction("Action", null).show();
-//      }
-//    });
-//
-//    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//    if (drawer != null) {
-//      drawer.setDrawerListener(toggle);
-//      toggle.syncState();
-//    }
-
     if (navigationView != null) {
+      navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+          startActivity(intent);
+        }
+      });
+
       navigationView.setNavigationItemSelectedListener(this);
       Menu menu = navigationView.getMenu();
       MenuItem menuItem = menu.findItem(R.id.nav_triage);
@@ -182,24 +165,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     int id = item.getItemId();
 
     if (id == R.id.nav_triage) {
-      //change toolbar name
-//      ActionBar actionBar = getSupportActionBar();
-//      if (actionBar != null) {
-//        actionBar.setTitle("Triage");
-//      }
-      //swap fragment to TriageFragment
       TriageFragment triageFragment = new TriageFragment();
       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
       fragmentTransaction.replace(R.id.fragment_container, triageFragment);
       fragmentTransaction.addToBackStack(null);
       fragmentTransaction.commit();
     } else if (id == R.id.nav_consultation) {
-      //change toolbar name
-//      ActionBar actionBar = getSupportActionBar();
-//      if (actionBar != null) {
-//        actionBar.setTitle("Consultation");
-//      }
-      //swap fragment to ConsultationFragment
       ConsultationFragment consultationFragment = new ConsultationFragment();
       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
       fragmentTransaction.replace(R.id.fragment_container, consultationFragment);
@@ -207,13 +178,11 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       fragmentTransaction.commit();
 
     } else if (id == R.id.nav_pharmacy) {
-      //change toolbar name
       PharmacyFragment pharmacyFragment = new PharmacyFragment();
       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
       fragmentTransaction.replace(R.id.fragment_container, pharmacyFragment);
       fragmentTransaction.addToBackStack(null);
       fragmentTransaction.commit();
-      //swap fragment to TriageFragment
     } else if (id == R.id.nav_inventory) {
       //change toolbar name
       ActionBar actionBar = getSupportActionBar();
@@ -252,11 +221,23 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
           .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
           .start(DrawerActivity.this);
     } else if (id == R.id.nav_logout) {
-      Cache.CurrentUser.logout(this);
-      //Confirmation dialog
-      Intent intent = new Intent(this, LoginActivity.class);
-      startActivity(intent);
-      finish();
+      new MaterialDialog.Builder(this)
+          .theme(Theme.LIGHT)
+          .autoDismiss(true)
+          .content("Are you sure you want to logout?")
+          .positiveText("Logout")
+          //TODO icon?
+          //TODO different color for +ve and -ve text
+          .onPositive(this)
+          .negativeText("Dismiss")
+          .onNegative(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+              dialog.dismiss();
+            }
+          })
+          .show();
+
     }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -264,6 +245,14 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       drawer.closeDrawer(GravityCompat.START);
     }
     return true;
+  }
+
+  @Override
+  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+    Cache.CurrentUser.logout(this);
+    Intent intent = new Intent(this, LoginActivity.class);
+    startActivity(intent);
+    finish();
   }
 
   @Override

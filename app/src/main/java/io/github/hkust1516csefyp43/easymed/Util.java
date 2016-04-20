@@ -288,18 +288,15 @@ public class Util {
     }
   }
 
+  public static String dateInString(Date date) {
+    GregorianCalendar gc = new GregorianCalendar();
+    gc.setTime(date);
+    return "" + gc.get(Calendar.YEAR) + "-" + (gc.get(Calendar.MONTH) + 1) + "-" + gc.get(Calendar.DAY_OF_MONTH);
+  }
 
   public static String todayString() {
     GregorianCalendar gc = new GregorianCalendar();
     return "" + gc.get(Calendar.YEAR) + "-" + (gc.get(Calendar.MONTH) + 1) + "-" + gc.get(Calendar.DAY_OF_MONTH);
-  }
-
-  public static boolean isValidEmailAddress(String email) {
-    if (!email.contains("@"))
-      return false;
-    if (email.length() < 3)
-      return false;
-    return true;
   }
 
 }
