@@ -75,6 +75,12 @@ public class PatientListFragment extends Fragment{
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
     progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
     swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl);
+    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        onResume();
+      }
+    });
     recyclerView.setVisibility(View.GONE);
     progressBar.setVisibility(View.VISIBLE);
     return view;
@@ -111,12 +117,7 @@ public class PatientListFragment extends Fragment{
             recyclerView.setAdapter(new PatientRecyclerViewAdapter());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             if (swipeRefreshLayout != null) {
-              swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-
-                }
-              });
+              swipeRefreshLayout.setRefreshing(false);
             }
             recyclerView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
@@ -141,6 +142,9 @@ public class PatientListFragment extends Fragment{
             }
             recyclerView.setAdapter(new PatientRecyclerViewAdapter());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            if (swipeRefreshLayout != null) {
+              swipeRefreshLayout.setRefreshing(false);
+            }
             recyclerView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
           }
@@ -164,6 +168,9 @@ public class PatientListFragment extends Fragment{
             }
             recyclerView.setAdapter(new PatientRecyclerViewAdapter());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            if (swipeRefreshLayout != null) {
+              swipeRefreshLayout.setRefreshing(false);
+            }
             recyclerView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
           }
@@ -187,6 +194,9 @@ public class PatientListFragment extends Fragment{
             }
             recyclerView.setAdapter(new PatientRecyclerViewAdapter());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            if (swipeRefreshLayout != null) {
+              swipeRefreshLayout.setRefreshing(false);
+            }
             recyclerView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
           }
