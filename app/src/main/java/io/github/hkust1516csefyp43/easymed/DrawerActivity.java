@@ -101,6 +101,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       if (menuItem != null) {
         menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_medkit).color(Color.GRAY).actionBar().paddingDp(2));
       }
+      menuItem = menu.findItem(R.id.nav_statistics);
+      if (menuItem != null) {
+        menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_file_chart).color(Color.GRAY).actionBar().paddingDp(2));
+      }
       menuItem = menu.findItem(R.id.nav_admin);
       if (menuItem != null) {
         menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_male).color(Color.GRAY).actionBar().paddingDp(2));
@@ -213,6 +217,13 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         actionBar.setTitle("Inventory");
       }
       //swap fragment to InventoryFragment
+    } else if (id == R.id.nav_statistics) {
+      //change toolbar name
+      ActionBar actionBar = getSupportActionBar();
+      if (actionBar != null) {
+        actionBar.setTitle("Statistics");
+      }
+      //?
     } else if (id == R.id.nav_admin) {
       //change toolbar name
       ActionBar actionBar = getSupportActionBar();
@@ -275,7 +286,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
           .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
           .client(ohc1)
           .build();
-      v2API.notification notificationService = retrofit.create(v2API.notification.class);
+      v2API.notifications notificationService = retrofit.create(v2API.notifications.class);
       Call<List<Notification>> notificationList = notificationService.getMyNotifications("1");
       notificationList.enqueue(new Callback<List<Notification>>() {
         @Override

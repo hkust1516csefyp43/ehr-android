@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 public class Const {
   //not inner class >> other
   public final static int SPLASH_DISPLAY_LENGTH = 4000;       //4 seconds of Splash Screen
+  public final static int TOKEN_LENGTH = 16;                  //TODO make it programmable >> easier to scale up/down
   public final static Gson GsonParserThatWorksWithPGTimestamp = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
 
   public class PatientListPageId {

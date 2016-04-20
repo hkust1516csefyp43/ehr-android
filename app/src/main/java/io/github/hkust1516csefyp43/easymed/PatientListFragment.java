@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,14 +33,19 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class PatientListFragment extends Fragment {
+public class PatientListFragment extends Fragment{
   public static final String TAG = PatientListFragment.class.getSimpleName();
+
   private List<Patient> patients;
+
+  private int whichPage;
+
   private OnFragmentInteractionListener mListener;
   private OnPatientsFetchedListener numberListener;
+
   private RecyclerView recyclerView;
   private ProgressBar progressBar;
-  private int whichPage;
+  private SwipeRefreshLayout swipeRefreshLayout;
 
   public static PatientListFragment newInstance(int whichPage) {
     PatientListFragment fragment = new PatientListFragment();
@@ -68,6 +74,7 @@ public class PatientListFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_patient_list, container, false);
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
     progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+    swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl);
     recyclerView.setVisibility(View.GONE);
     progressBar.setVisibility(View.VISIBLE);
     return view;
@@ -90,7 +97,7 @@ public class PatientListFragment extends Fragment {
 
     switch (whichPage) {
       case Const.PatientListPageId.POST_TRIAGE:   // == PRE_CONSULTATION
-        Call<List<Patient>> patientList = patientService.getPatients("1", null, "2", null, null, null, null, null, null, null, null, null);
+        Call<List<Patient>> patientList = patientService.getPatients("1", null, "2", null, null, null, null, null, null, null, null);
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
@@ -103,6 +110,14 @@ public class PatientListFragment extends Fragment {
             }
             recyclerView.setAdapter(new PatientRecyclerViewAdapter());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            if (swipeRefreshLayout != null) {
+              swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+
+                }
+              });
+            }
             recyclerView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
           }
@@ -114,7 +129,7 @@ public class PatientListFragment extends Fragment {
         });
         break;
       case Const.PatientListPageId.NOT_YET:
-        Call<List<Patient>> patientList2 = patientService.getPatients("1", null, null, null, null, null, null, null, null, null, null, null);
+        Call<List<Patient>> patientList2 = patientService.getPatients("1", null, null, null, null, null, null, null, null, null, null);
         patientList2.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
@@ -137,7 +152,7 @@ public class PatientListFragment extends Fragment {
         });
         break;
       case Const.PatientListPageId.POST_CONSULTATION:   // == PRE_PHARMACY
-        Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, null, null);
+        Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, null);
         patientList3.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
@@ -160,7 +175,7 @@ public class PatientListFragment extends Fragment {
         });
         break;
       case Const.PatientListPageId.POST_PHARMACY:
-        Call<List<Patient>> patientList4 = patientService.getPatients("1", null, "1", null, null, null, null, null, null, null, null, null);
+        Call<List<Patient>> patientList4 = patientService.getPatients("1", null, "1", null, null, null, null, null, null, null, null);
         patientList4.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
