@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.POJO.Notification;
+import io.github.hkust1516csefyp43.easymed.POJO.User;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import retrofit.GsonConverterFactory;
@@ -41,6 +43,7 @@ import retrofit.Retrofit;
 
 public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, OnPatientsFetchedListener {
   public final static String TAG = DrawerActivity.class.getSimpleName();
+  private User currentUser;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,9 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 //    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+    currentUser = Cache.CurrentUser.getUser(getApplicationContext());
+    TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView);
+    uEmail.setText(currentUser.getEmail());
     navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

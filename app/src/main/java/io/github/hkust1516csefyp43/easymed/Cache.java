@@ -52,6 +52,9 @@ public class Cache {
       }
     }
 
+    public static void removeUser(Context context) {
+      deleteSomething(context, Const.CacheKey.CURRENT_USER_INFO);
+    }
     //tokens (CURRENT_ACCESS_TOKEN)
 
     //clinic
@@ -102,6 +105,7 @@ public class Cache {
 
     //logout (clear everything)
     public static void logout(Context context) {
+      removeUser(context);
       removeClinic(context);
       clearNotifications(context);
     }

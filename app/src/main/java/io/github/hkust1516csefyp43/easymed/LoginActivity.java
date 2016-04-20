@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.POJO.Clinic;
+import io.github.hkust1516csefyp43.easymed.POJO.User;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -344,7 +345,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return false;
       }
 
-      openEverything();
 //      for (String credential : DUMMY_CREDENTIALS) {
 //        String[] pieces = credential.split(":");
 //        if (pieces[0].equals(mEmail)) {
@@ -352,8 +352,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //          return pieces[1].equals(mPassword);
 //        }
 //      }
-
-      // TODO: register the new account here.
       return true;
     }
 
@@ -363,6 +361,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
       showProgress(false);
 
       if (success) {
+        openEverything();
+        User user = new User();
+        user.setEmail(mEmail);
+        Cache.CurrentUser.setClinic(getApplicationContext(), currentClinic);
+        Cache.CurrentUser.setUser(getApplicationContext(), user);
         finish();
       } else {
         mPasswordView.setError(getString(R.string.error_incorrect_password));
