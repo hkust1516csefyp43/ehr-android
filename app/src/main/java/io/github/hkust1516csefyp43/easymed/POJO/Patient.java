@@ -247,6 +247,10 @@ public class Patient implements Serializable, Comparable<Patient> {
     this.nextStation = nextStation;
   }
 
+  public String getLastNameSpaceFirstName() {
+    return getLastName() + " " + getFirstName();
+  }
+
   @Override
   public String toString() {
     return "Patient{" +

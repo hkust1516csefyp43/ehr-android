@@ -95,7 +95,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       }
       menuItem = menu.findItem(R.id.nav_pharmacy);
       if (menuItem != null) {
-        menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).actionBar().paddingDp(2));
+        menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).actionBar().paddingDp(2));
       }
       menuItem = menu.findItem(R.id.nav_inventory);
       if (menuItem != null) {
@@ -200,10 +200,11 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
     } else if (id == R.id.nav_pharmacy) {
       //change toolbar name
-      ActionBar actionBar = getSupportActionBar();
-      if (actionBar != null) {
-        actionBar.setTitle("Pharmacy");
-      }
+      PharmacyFragment pharmacyFragment = new PharmacyFragment();
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      fragmentTransaction.replace(R.id.fragment_container, pharmacyFragment);
+      fragmentTransaction.addToBackStack(null);
+      fragmentTransaction.commit();
       //swap fragment to TriageFragment
     } else if (id == R.id.nav_inventory) {
       //change toolbar name

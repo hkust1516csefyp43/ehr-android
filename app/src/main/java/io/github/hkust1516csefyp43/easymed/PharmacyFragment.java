@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 
-public class ConsultationFragment extends Fragment {
+public class PharmacyFragment extends Fragment {
 
   private OnFragmentInteractionListener mListener;
   private TabLayout tabLayout;
@@ -27,7 +27,7 @@ public class ConsultationFragment extends Fragment {
 //    return fragment;
 //  }
 
-  public ConsultationFragment() {
+  public PharmacyFragment() {
     // Required empty public constructor
   }
 
@@ -54,8 +54,8 @@ public class ConsultationFragment extends Fragment {
     }
 
     tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-    tabLayout.addTab(tabLayout.newTab().setText("Before"));
-    tabLayout.addTab(tabLayout.newTab().setText("After"));
+    tabLayout.addTab(tabLayout.newTab().setText("Waiting"));
+    tabLayout.addTab(tabLayout.newTab().setText("Finished"));
 
     ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
     viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
@@ -89,9 +89,9 @@ public class ConsultationFragment extends Fragment {
     public Fragment getItem(int position) {
       switch (position) {
         case 0:
-          return PatientListFragment.newInstance(Const.PatientListPageId.PRE_CONSULTATION);
+          return PatientListFragment.newInstance(Const.PatientListPageId.PRE_PHARMACY);
         case 1:
-          return PatientListFragment.newInstance(Const.PatientListPageId.POST_CONSULTATION);
+          return PatientListFragment.newInstance(Const.PatientListPageId.POST_PHARMACY);
         default:
           return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET);    //TODO idk?
 

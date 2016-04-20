@@ -13,15 +13,17 @@ public class Const {
 
   public class PatientListPageId {
     public static final int POST_TRIAGE = 1;
-    public static final int PRE_CONSULTATION = 2;
+    public static final int NOT_YET = 2;
+    public static final int PRE_CONSULTATION = 1;
     public static final int POST_CONSULTATION = 3;
     public static final int PRE_PHARMACY = 3;
     public static final int POST_PHARMACY = 4;
-    public static final int NOT_YET = 5;
   }
 
   public class BundleKey {
     public static final String WHICH_PATIENT_LIST_ID = "mMvUxFsUQF84Fkj4";
+    public static final String READ_ONLY_PATIENT = "AhYeXQg86VDvbN1P";
+    public static final String EDIT_PATIENT = "KWEpDV7VqbS3j7mw";
   }
 
   public class CacheKey {

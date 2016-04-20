@@ -37,6 +37,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PatientVisitReadOnlyActivity"
+            android:label="@string/title_activity_patient_visit_read_only"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name=".PatientVisitEditActivity"
+            android:label="@string/title_activity_patient_visit_edit"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

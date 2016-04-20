@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.easymed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -88,7 +89,7 @@ public class PatientListFragment extends Fragment {
     v2API.patients patientService = retrofit.create(v2API.patients.class);
 
     switch (whichPage) {
-      case Const.PatientListPageId.POST_TRIAGE:
+      case Const.PatientListPageId.POST_TRIAGE:   // == PRE_CONSULTATION
         Call<List<Patient>> patientList = patientService.getPatients("1", null, "2", null, null, null, null, null, null, null, null, null);
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
@@ -135,7 +136,52 @@ public class PatientListFragment extends Fragment {
           }
         });
         break;
+      case Const.PatientListPageId.POST_CONSULTATION:   // == PRE_PHARMACY
+        Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, null, null);
+        patientList3.enqueue(new Callback<List<Patient>>() {
+          @Override
+          public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+            Log.d(TAG, response.body().toString());
+            patients = response.body();
+            if (numberListener != null) {
+              Log.d(TAG, "not yet counter update triggered: " + patients.size());
+              numberListener.updateTabTitleCounter(whichPage, patients.size());
+            }
+            recyclerView.setAdapter(new PatientRecyclerViewAdapter());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+          }
 
+          @Override
+          public void onFailure(Throwable t) {
+
+          }
+        });
+        break;
+      case Const.PatientListPageId.POST_PHARMACY:
+        Call<List<Patient>> patientList4 = patientService.getPatients("1", null, "1", null, null, null, null, null, null, null, null, null);
+        patientList4.enqueue(new Callback<List<Patient>>() {
+          @Override
+          public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+            Log.d(TAG, response.body().toString());
+            patients = response.body();
+            if (numberListener != null) {
+              Log.d(TAG, "not yet counter update triggered: " + patients.size());
+              numberListener.updateTabTitleCounter(whichPage, patients.size());
+            }
+            recyclerView.setAdapter(new PatientRecyclerViewAdapter());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+          }
+
+          @Override
+          public void onFailure(Throwable t) {
+
+          }
+        });
+        break;
     }
   }
 
@@ -221,6 +267,9 @@ public class PatientListFragment extends Fragment {
             case Const.PatientListPageId.POST_TRIAGE:
               //TODO edit patient
               Log.d(TAG, "going to edit patient " + aPatient.getFirstName());
+              Intent intent = new Intent(getContext(), PatientVisitReadOnlyActivity.class);
+              intent.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+              startActivity(intent);
               break;
             case Const.PatientListPageId.NOT_YET:
               Log.d(TAG, "going to ? patient " + aPatient.getFirstName());
