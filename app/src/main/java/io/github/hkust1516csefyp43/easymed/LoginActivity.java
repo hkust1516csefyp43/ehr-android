@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
       public void onResponse(final Response<List<Clinic>> response, Retrofit retrofit) {
         if (response.body() != null && response.body().size() > 0){
           clinicList.setVisibility(View.VISIBLE);
-          ArrayAdapter<Clinic> clinicArrayAdapter = new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_grey_on_white, response.body());
+          ArrayAdapter<Clinic> clinicArrayAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, response.body());
           clinicList.setAdapter(clinicArrayAdapter);
           clinicList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

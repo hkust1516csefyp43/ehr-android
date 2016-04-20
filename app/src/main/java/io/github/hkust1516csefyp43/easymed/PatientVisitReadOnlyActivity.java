@@ -104,10 +104,11 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity {
       @Override
       public void onResponse(Response<List<Visit>> response, Retrofit retrofit) {
         visits = response.body();
-        if (tabLayout != null) {
+        if (tabLayout != null && viewPager != null) {
           for (Visit v: visits) {
             tabLayout.addTab(tabLayout.newTab().setText(Util.dateInString(v.getCreateTimestamp())));
           }
+
         }
       }
 

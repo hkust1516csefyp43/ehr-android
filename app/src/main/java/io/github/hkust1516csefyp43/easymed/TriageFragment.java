@@ -118,8 +118,19 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
     ivOpenSaves.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_folder_open).color(getResources().getColor(R.color.secondary_text_color)).sizeDp(32));
 
     LinearLayout llExistingPatient = (LinearLayout) dialog.findViewById(R.id.llExistingPatient);
+    //Search
+
     LinearLayout llNotSure = (LinearLayout) dialog.findViewById(R.id.llNotSure);
+    //Also search, but maybe a extra + button for easier add new patient?
+
     LinearLayout llNewPatient = (LinearLayout) dialog.findViewById(R.id.llNewPatient);
+    llNewPatient.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //New patient New Triage
+      }
+    });
+
     LinearLayout llOpenSave = (LinearLayout) dialog.findViewById(R.id.llOpenSave);
 
     dialog.show();
