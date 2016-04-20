@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,11 +17,14 @@ import android.widget.TextView;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.POJO.Patient;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -31,11 +35,16 @@ public class PatientListFragment extends Fragment {
   public static final String TAG = PatientListFragment.class.getSimpleName();
   private List<Patient> patients;
   private OnFragmentInteractionListener mListener;
+  private OnPatientsFetchedListener numberListener;
   private RecyclerView recyclerView;
   private ProgressBar progressBar;
+  private int whichPage;
 
-  public static PatientListFragment newInstance(String param1, String param2) {
+  public static PatientListFragment newInstance(int whichPage) {
     PatientListFragment fragment = new PatientListFragment();
+    Bundle extra = new Bundle();
+    extra.putInt(Const.BundleKey.WHICH_PATIENT_LIST_ID, whichPage);
+    fragment.setArguments(extra);
     return fragment;
   }
 
@@ -46,6 +55,10 @@ public class PatientListFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Bundle bundle = this.getArguments();
+    if (bundle != null) {
+      whichPage = bundle.getInt(Const.BundleKey.WHICH_PATIENT_LIST_ID);
+    }
   }
 
   @Override
@@ -73,30 +86,56 @@ public class PatientListFragment extends Fragment {
         .client(ohc1)
         .build();
     v2API.patients patientService = retrofit.create(v2API.patients.class);
-    Call<List<Patient>> patientList = patientService.getPatients("1");
-    patientList.enqueue(new Callback<List<Patient>>() {
-      @Override
-      public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
-        Log.d(TAG, response.toString());
-        Log.d(TAG, response.body().toString());
-        patients = response.body();
-        recyclerView.setAdapter(new PatientRecyclerViewAdapter());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
-      }
 
-      @Override
-      public void onFailure(Throwable t) {
+    switch (whichPage) {
+      case Const.PatientListPageId.POST_TRIAGE:
+        Call<List<Patient>> patientList = patientService.getPatients("1", null, "2", null, null, null, null, null, null, null, null, null);
+        patientList.enqueue(new Callback<List<Patient>>() {
+          @Override
+          public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+            Log.d(TAG, response.body().toString());
+            patients = response.body();
+            Collections.sort(patients);
+            if (numberListener != null) {
+              Log.d(TAG, "post triage counter update triggered: " + patients.size());
+              numberListener.updateTabTitleCounter(whichPage, patients.size());
+            }
+            recyclerView.setAdapter(new PatientRecyclerViewAdapter());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+          }
 
-      }
-    });
-  }
+          @Override
+          public void onFailure(Throwable t) {
 
-  // TODO: Rename method, update argument and hook method into UI event
-  public void onButtonPressed(Uri uri) {
-    if (mListener != null) {
-      mListener.onFragmentInteraction(uri);
+          }
+        });
+        break;
+      case Const.PatientListPageId.NOT_YET:
+        Call<List<Patient>> patientList2 = patientService.getPatients("1", null, null, null, null, null, null, null, null, null, null, null);
+        patientList2.enqueue(new Callback<List<Patient>>() {
+          @Override
+          public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+            Log.d(TAG, response.body().toString());
+            patients = response.body();
+            if (numberListener != null) {
+              Log.d(TAG, "not yet counter update triggered: " + patients.size());
+              numberListener.updateTabTitleCounter(whichPage, patients.size());
+            }
+            recyclerView.setAdapter(new PatientRecyclerViewAdapter());
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+          }
+
+          @Override
+          public void onFailure(Throwable t) {
+
+          }
+        });
+        break;
+
     }
   }
 
@@ -108,6 +147,10 @@ public class PatientListFragment extends Fragment {
     } else {
       throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
     }
+    if (context instanceof OnPatientsFetchedListener) {
+      Log.d(TAG, "OPFL attached");
+      numberListener = (OnPatientsFetchedListener) context;
+    } //TODO else idk
   }
 
   @Override
@@ -116,7 +159,8 @@ public class PatientListFragment extends Fragment {
     mListener = null;
   }
 
-  private class PatientRecyclerViewViewHolder extends RecyclerView.ViewHolder {
+  private class PatientRecyclerViewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public CardView theWholeCard;
     public TextView patientName;
     public TextView subtitle;
     public TextView nativeName;
@@ -124,17 +168,29 @@ public class PatientListFragment extends Fragment {
 
     public PatientRecyclerViewViewHolder(View itemView) {
       super(itemView);
+      theWholeCard = (CardView) itemView.findViewById(R.id.cardPatient);
+      theWholeCard.setOnClickListener(this);
       patientName = (TextView) itemView.findViewById(R.id.tvPatientName);
       subtitle = (TextView) itemView.findViewById(R.id.tvSubtitle);
       nativeName = (TextView) itemView.findViewById(R.id.tvPatientNativeName);
       proPic = (ImageView) itemView.findViewById(R.id.ivPatientPic);
     }
+
+    @Override
+    public void onClick(View v) {
+      //open patient visit
+    }
   }
 
   private class PatientRecyclerViewAdapter extends RecyclerView.Adapter<PatientRecyclerViewViewHolder> {
+    View.OnClickListener onClickListener;
 
     public PatientRecyclerViewAdapter() {
 
+    }
+
+    public PatientRecyclerViewAdapter(View.OnClickListener click) {
+      onClickListener = click;
     }
 
     @Override
@@ -144,7 +200,7 @@ public class PatientListFragment extends Fragment {
 
     @Override
     public void onBindViewHolder(PatientRecyclerViewViewHolder holder, int position) {
-      Patient aPatient = patients.get(position);
+      final Patient aPatient = patients.get(position);
       StringBuilder name = new StringBuilder();
       if (aPatient.getTag() != null) {
         name.append(aPatient.getTag().toString());
@@ -157,6 +213,25 @@ public class PatientListFragment extends Fragment {
       name.append(aPatient.getFirstName());
       holder.patientName.setText(name.toString());
       holder.nativeName.setText(aPatient.getNativeName());
+
+      holder.theWholeCard.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          switch (whichPage) {
+            case Const.PatientListPageId.POST_TRIAGE:
+              //TODO edit patient
+              Log.d(TAG, "going to edit patient " + aPatient.getFirstName());
+              break;
+            case Const.PatientListPageId.NOT_YET:
+              Log.d(TAG, "going to ? patient " + aPatient.getFirstName());
+              //TODO ?
+              break;
+            default:
+
+          }
+        }
+      });
+
     }
 
     @Override

@@ -9,8 +9,20 @@ import com.google.gson.GsonBuilder;
 public class Const {
   //not inner class >> other
   public final static int SPLASH_DISPLAY_LENGTH = 4000;       //4 seconds of Splash Screen
-  public final static Gson GsonParserThatWorksWithPGTimestamp
-      = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+  public final static Gson GsonParserThatWorksWithPGTimestamp = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+
+  public class PatientListPageId {
+    public static final int POST_TRIAGE = 1;
+    public static final int PRE_CONSULTATION = 2;
+    public static final int POST_CONSULTATION = 3;
+    public static final int PRE_PHARMACY = 3;
+    public static final int POST_PHARMACY = 4;
+    public static final int NOT_YET = 5;
+  }
+
+  public class BundleKey {
+    public static final String WHICH_PATIENT_LIST_ID = "mMvUxFsUQF84Fkj4";
+  }
 
   public class CacheKey {
     public static final String CURRENT_CLINIC = "j77RR5CGZQtYvnx1";

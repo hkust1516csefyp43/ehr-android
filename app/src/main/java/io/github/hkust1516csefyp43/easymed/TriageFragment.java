@@ -21,6 +21,7 @@ import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListene
 public class TriageFragment extends Fragment implements OnFragmentInteractionListener {
 
   private OnFragmentInteractionListener mListener;
+  private TabLayout tabLayout;
 
   public static TriageFragment newInstance(String param1, String param2) {
     TriageFragment fragment = new TriageFragment();
@@ -52,7 +53,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
       toggle.syncState();
     }
 
-    TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+    tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
     tabLayout.addTab(tabLayout.newTab().setText("After"));
     tabLayout.addTab(tabLayout.newTab().setText("Everyone else"));
 
@@ -60,12 +61,6 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
     viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
 
     return view;
-  }
-
-  public void onButtonPressed(Uri uri) {
-    if (mListener != null) {
-      mListener.onFragmentInteraction(uri);
-    }
   }
 
   @Override
@@ -88,6 +83,21 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
   public void onFragmentInteraction(Uri uri) {
 
   }
+//
+//  public void updateTabTitleCounter(int whichPage, int howMuch) {
+//    if (tabLayout != null) {
+//      switch (whichPage) {
+//        case Const.PatientListPageId.POST_TRIAGE:
+//            tabLayout.getTabAt(0).setText("AFTER (" + howMuch + ")");
+//          break;
+//        case Const.PatientListPageId.NOT_YET:
+//        default:        //TODO idk
+//          tabLayout.getTabAt(1).setText("AFTER (" + howMuch + ")");
+//          break;
+//
+//      }
+//    }
+//  }
 
   private class TwoPagesAdapter extends FragmentStatePagerAdapter {
 
@@ -98,12 +108,12 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
     @Override
     public Fragment getItem(int position) {
       switch (position) {
+        case 0:
+          return PatientListFragment.newInstance(Const.PatientListPageId.POST_TRIAGE);
         case 1:
-          return new PatientListFragment();
-        case 2:
-          return new PatientListFragment();
+          return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET);
         default:
-          return new PatientListFragment();
+          return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET);    //TODO idk?
 
       }
     }

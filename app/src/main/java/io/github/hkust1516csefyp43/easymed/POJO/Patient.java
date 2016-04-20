@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by Louis on 15/3/16.
  */
-public class Patient implements Serializable {
+public class Patient implements Serializable, Comparable<Patient> {
 
   @SerializedName("address")
   String address;
@@ -272,5 +272,15 @@ public class Patient implements Serializable {
         ", tag=" + tag +
         ", nextStation=" + nextStation +
         '}';
+  }
+
+  @Override
+  public int compareTo(Patient another) {
+    if (this.getTag() < another.getTag())
+      return -1;
+    else if (this.getTag() == another.getTag())
+      return 0;
+    else
+      return 1;
   }
 }

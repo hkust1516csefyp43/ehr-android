@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.POJO.Notification;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import retrofit.GsonConverterFactory;
 import retrofit.Call;
 import retrofit.Callback;
@@ -38,7 +39,7 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 
-public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
+public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, OnPatientsFetchedListener {
   public final static String TAG = DrawerActivity.class.getSimpleName();
 
   @Override
@@ -245,6 +246,11 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
   @Override
   public void onFragmentInteraction(Uri uri) {
 
+  }
+
+  @Override
+  public void updateTabTitleCounter(int whichPage, int howMuch) {
+    Log.d(TAG, "wp = " + whichPage + "; hm = " + howMuch);
   }
 
   private class ThingsToDoInBackground extends AsyncTask<Void, Void, Void> {
