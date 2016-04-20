@@ -19,6 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
+import com.mikepenz.aboutlibraries.ui.LibsFragment;
+import com.mikepenz.aboutlibraries.ui.LibsSupportFragment;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -240,6 +244,13 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       //swap fragment to SettingsFragment
     } else if (id == R.id.nav_about) {
       //Trigger AboutLibrary
+      new LibsBuilder()
+          .withActivityTitle("About")
+          .withAboutIconShown(true)
+          .withAboutVersionShown(true)
+          .withVersionShown(true)
+          .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+          .start(DrawerActivity.this);
     } else if (id == R.id.nav_logout) {
       Cache.CurrentUser.logout(this);
       //Confirmation dialog

@@ -23,11 +23,6 @@ public class PharmacyFragment extends Fragment {
   private TabLayout tabLayout;
   private ViewPager viewPager;
 
-//  public static ConsultationFragment newInstance(String param1, String param2) {
-//    ConsultationFragment fragment = new ConsultationFragment();
-//    return fragment;
-//  }
-
   public PharmacyFragment() {
     // Required empty public constructor
   }
@@ -43,7 +38,7 @@ public class PharmacyFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-    toolbar.setTitle("Consultation");
+    toolbar.setTitle("Pharmacy");
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 

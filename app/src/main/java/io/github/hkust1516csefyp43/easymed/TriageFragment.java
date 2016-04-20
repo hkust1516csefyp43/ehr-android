@@ -117,8 +117,10 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
     ImageView ivOpenSaves = (ImageView) dialog.findViewById(R.id.ivOpenSaves);
     ivOpenSaves.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_folder_open).color(getResources().getColor(R.color.secondary_text_color)).sizeDp(32));
 
-    LinearLayout llNewPatient = (LinearLayout) dialog.findViewById(R.id.llNewPatient);
     LinearLayout llExistingPatient = (LinearLayout) dialog.findViewById(R.id.llExistingPatient);
+    LinearLayout llNotSure = (LinearLayout) dialog.findViewById(R.id.llNotSure);
+    LinearLayout llNewPatient = (LinearLayout) dialog.findViewById(R.id.llNewPatient);
+    LinearLayout llOpenSave = (LinearLayout) dialog.findViewById(R.id.llOpenSave);
 
     dialog.show();
   }
