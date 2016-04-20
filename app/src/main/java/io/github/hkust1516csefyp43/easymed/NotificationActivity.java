@@ -34,7 +34,6 @@ public class NotificationActivity extends AppCompatActivity {
         actionBar.setTitle("Notification");
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-
       }
     }
 

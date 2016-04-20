@@ -15,6 +15,7 @@ public class Const {
   public class CacheKey {
     public static final String CURRENT_CLINIC = "j77RR5CGZQtYvnx1";
     public static final String MY_NOTIFICATIONS = "17PvcUhpCGA8GF1q";
+    public static final String CURRENT_USER_INFO = "vYTGy6Mhz3QkMMwy";
   }
 
   public class Database {

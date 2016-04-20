@@ -14,6 +14,7 @@ import java.util.List;
 
 import io.github.hkust1516csefyp43.easymed.POJO.Clinic;
 import io.github.hkust1516csefyp43.easymed.POJO.Notification;
+import io.github.hkust1516csefyp43.easymed.POJO.User;
 
 /**
  * Created by Louis on 20/4/16.
@@ -36,9 +37,22 @@ public class Cache {
 
   public static class CurrentUser {
     //user info
+    public static void setUser(Context context, User user) {
+      Gson gson = new GsonBuilder().create();
+      String jsonString = gson.toJson(user);
+      setString(context, jsonString, Const.CacheKey.CURRENT_USER_INFO);
+    }
 
+    public static User getUser(Context context) {
+      String value = getString(context, Const.CacheKey.CURRENT_USER_INFO, null);
+      if (value != null) {
+        return new Gson().fromJson(value, User.class);
+      } else {
+        return null;
+      }
+    }
 
-    //tokens
+    //tokens (CURRENT_ACCESS_TOKEN)
 
     //clinic
     public static void setClinic(Context context, Clinic clinic) {

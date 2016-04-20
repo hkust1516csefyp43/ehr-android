@@ -39,7 +39,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_consultation, container, false);
+    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     toolbar.setTitle("Triage");
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);

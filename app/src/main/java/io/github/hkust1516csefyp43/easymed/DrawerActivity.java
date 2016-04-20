@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -54,6 +55,15 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 //    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+    navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+//        Log.d(TAG, "clicking header");
+        Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+        startActivity(intent);
+      }
+    });
+
 //    setSupportActionBar(toolbar);
 //
 //    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -218,8 +228,11 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     } else if (id == R.id.nav_about) {
       //Trigger AboutLibrary
     } else if (id == R.id.nav_logout) {
-      //Confirmation dialog
       Cache.CurrentUser.logout(this);
+      //Confirmation dialog
+      Intent intent = new Intent(this, LoginActivity.class);
+      startActivity(intent);
+      finish();
     }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
