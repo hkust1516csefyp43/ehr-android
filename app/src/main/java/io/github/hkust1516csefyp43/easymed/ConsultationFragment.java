@@ -21,6 +21,7 @@ public class ConsultationFragment extends Fragment {
 
   private OnFragmentInteractionListener mListener;
   private TabLayout tabLayout;
+  private ViewPager viewPager;
 
 //  public static ConsultationFragment newInstance(String param1, String param2) {
 //    ConsultationFragment fragment = new ConsultationFragment();
@@ -56,9 +57,27 @@ public class ConsultationFragment extends Fragment {
     tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
     tabLayout.addTab(tabLayout.newTab().setText("Before"));
     tabLayout.addTab(tabLayout.newTab().setText("After"));
+    viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-    ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+      @Override
+      public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+      }
+
+      @Override
+      public void onTabUnselected(TabLayout.Tab tab) {
+
+      }
+
+      @Override
+      public void onTabReselected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+      }
+    });
+
     viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
+    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
     return view;
   }

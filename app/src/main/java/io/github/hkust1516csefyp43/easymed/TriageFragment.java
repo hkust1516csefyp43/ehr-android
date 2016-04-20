@@ -22,6 +22,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
 
   private OnFragmentInteractionListener mListener;
   private TabLayout tabLayout;
+  private ViewPager viewPager;
 
   public static TriageFragment newInstance(String param1, String param2) {
     TriageFragment fragment = new TriageFragment();
@@ -54,11 +55,29 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
     }
 
     tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+    viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+
     tabLayout.addTab(tabLayout.newTab().setText("After"));
     tabLayout.addTab(tabLayout.newTab().setText("Everyone else"));
+    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+      @Override
+      public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+      }
 
-    ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+      @Override
+      public void onTabUnselected(TabLayout.Tab tab) {
+
+      }
+
+      @Override
+      public void onTabReselected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+      }
+    });
+
     viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
+    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
     return view;
   }
