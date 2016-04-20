@@ -118,4 +118,5 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_patient_visit_read_only">PatientVisitReadOnlyActivity</string>
     <string name="title_activity_patient_visit_edit">PatientVisitEditActivity</string>
+    <string name="ehr">Easymed</string>
 </resources>

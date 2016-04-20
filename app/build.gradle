@@ -42,4 +42,6 @@ dependencies {
     compile 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.0.2'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:okhttp-integration:1.4.0@aar'
 }
