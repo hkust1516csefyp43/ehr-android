@@ -1,35 +1,49 @@
 package io.github.hkust1516csefyp43.easymed;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.github.hkust1516csefyp43.easymed.POJO.Clinic;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+  private static final String TAG = LoginActivity.class.getSimpleName();
 
   private UserLoginTask mAuthTask = null;
 
@@ -37,6 +51,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
   private EditText mPasswordView;
   private View mProgressView;
   private View mLoginFormView;
+  private AppCompatSpinner clinicList;
+  private Clinic currentClinic;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +84,48 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     mLoginFormView = findViewById(R.id.login_form);
     mProgressView = findViewById(R.id.login_progress);
+    clinicList = (AppCompatSpinner) findViewById(R.id.spinner);
+
+    Log.d(TAG, "ANDROID ID = " + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+
+    OkHttpClient httpClient = new OkHttpClient();
+    httpClient.setReadTimeout(1, TimeUnit.MINUTES);
+    httpClient.setConnectTimeout(1, TimeUnit.MINUTES);
+    Retrofit retrofit = new Retrofit
+        .Builder()
+        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+        .client(httpClient)
+        .build();
+    v2API.clinics clinicsService = retrofit.create(v2API.clinics.class);
+    Call<List<Clinic>> clinicListCall = clinicsService.getSimplifiedClinics();
+    clinicListCall.enqueue(new Callback<List<Clinic>>() {
+      @Override
+      public void onResponse(final Response<List<Clinic>> response, Retrofit retrofit) {
+        if (response.body() != null && response.body().size() > 0){
+          clinicList.setVisibility(View.VISIBLE);
+          ArrayAdapter<Clinic> clinicArrayAdapter = new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_grey_on_white, response.body());
+          clinicList.setAdapter(clinicArrayAdapter);
+          clinicList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+              Log.d(TAG, "Clinic: " + response.body().get(position).getEnglishName());
+              currentClinic = response.body().get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+              Log.d(TAG, "?");
+            }
+          });
+        }
+      }
+
+      @Override
+      public void onFailure(Throwable t) {
+        Log.d(TAG, "Received nothing");
+      }
+    });
   }
 
   /**
@@ -92,7 +150,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     View focusView = null;
 
     // Check for a valid password, if the user entered one.
-    if (!TextUtils.isEmpty(password) || !isPasswordValid(password)) {
+    if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
       mPasswordView.setError(getString(R.string.error_invalid_password));
       focusView = mPasswordView;
       cancel = true;
