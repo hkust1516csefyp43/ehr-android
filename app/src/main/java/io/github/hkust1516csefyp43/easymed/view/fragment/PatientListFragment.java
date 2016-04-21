@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.github.hkust1516csefyp43.easymed.Const;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.POJO.Patient;
 import io.github.hkust1516csefyp43.easymed.R;
-import io.github.hkust1516csefyp43.easymed.v2API;
+import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitReadOnlyActivity;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;

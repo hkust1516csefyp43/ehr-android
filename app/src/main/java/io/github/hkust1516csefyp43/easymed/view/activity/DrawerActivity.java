@@ -37,13 +37,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
-import io.github.hkust1516csefyp43.easymed.Const;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.POJO.Notification;
 import io.github.hkust1516csefyp43.easymed.POJO.User;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
-import io.github.hkust1516csefyp43.easymed.v2API;
+import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.ConsultationFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.PharmacyFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.TriageFragment;

@@ -3,6 +3,7 @@ package io.github.hkust1516csefyp43.easymed.view.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -24,19 +25,22 @@ import com.squareup.okhttp.OkHttpClient;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.github.hkust1516csefyp43.easymed.Const;
+import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.POJO.Patient;
 import io.github.hkust1516csefyp43.easymed.POJO.Visit;
 import io.github.hkust1516csefyp43.easymed.R;
-import io.github.hkust1516csefyp43.easymed.Util;
-import io.github.hkust1516csefyp43.easymed.v2API;
+import io.github.hkust1516csefyp43.easymed.utility.Util;
+import io.github.hkust1516csefyp43.easymed.utility.v2API;
+import io.github.hkust1516csefyp43.easymed.view.fragment.BioFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.VisitDetailFragment;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class PatientVisitReadOnlyActivity extends AppCompatActivity {
+public class PatientVisitReadOnlyActivity extends AppCompatActivity implements OnFragmentInteractionListener{
   public final static String TAG = PatientVisitReadOnlyActivity.class.getSimpleName();
 
   private Patient thisPatient;
@@ -117,12 +121,30 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity {
           for (Visit v: visits) {
             tabLayout.addTab(tabLayout.newTab().setText(Util.dateInStringOrToday(v.getCreateTimestamp())));
           }
+          viewPager.setAdapter(new patientHistory(getSupportFragmentManager()));
+          viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+          tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+              viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+              viewPager.setCurrentItem(tab.getPosition());
+            }
+          });
         }
 
         new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
           @Override
           public void run() {
-//            dialog.dismiss();
+            dialog.dismiss();
             //TODO dismiss animation
           }
         }, 1000);
@@ -147,6 +169,11 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity {
     }
   }
 
+  @Override
+  public void onFragmentInteraction(Uri uri) {
+
+  }
+
   private class patientHistory extends FragmentStatePagerAdapter {
 
     public patientHistory(FragmentManager fm) {
@@ -156,16 +183,16 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity {
     @Override
     public Fragment getItem(int position) {
       if (position == 0) {
-        //BIO fragment
+        return BioFragment.newInstance(thisPatient);
       } else {
-        //??? Fragment (extra: visit_id)
+        //TODO put extra visit_id
+        return new VisitDetailFragment();
       }
-      return null;
     }
 
     @Override
     public int getCount() {
-      return 0;
+      return visits.size()+1;
     }
   }
 

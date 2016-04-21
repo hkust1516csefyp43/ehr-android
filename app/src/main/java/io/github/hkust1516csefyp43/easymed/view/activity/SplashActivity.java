@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import io.github.hkust1516csefyp43.easymed.Cache;
-import io.github.hkust1516csefyp43.easymed.Const;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.R;
 
 public class SplashActivity extends AppCompatActivity {
