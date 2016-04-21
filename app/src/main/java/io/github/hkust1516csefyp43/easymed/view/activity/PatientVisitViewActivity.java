@@ -1,12 +1,9 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,10 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.util.List;
@@ -32,16 +26,16 @@ import io.github.hkust1516csefyp43.easymed.POJO.Visit;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
-import io.github.hkust1516csefyp43.easymed.view.fragment.BioFragment;
-import io.github.hkust1516csefyp43.easymed.view.fragment.VisitDetailFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_view.BioFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_view.VisitDetailFragment;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class PatientVisitReadOnlyActivity extends AppCompatActivity implements OnFragmentInteractionListener{
-  public final static String TAG = PatientVisitReadOnlyActivity.class.getSimpleName();
+public class PatientVisitViewActivity extends AppCompatActivity implements OnFragmentInteractionListener{
+  public final static String TAG = PatientVisitViewActivity.class.getSimpleName();
 
   private Patient thisPatient;
   private List<Visit> visits;

@@ -27,9 +27,10 @@ import io.github.hkust1516csefyp43.easymed.POJO.Patient;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
-import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitReadOnlyActivity;
+import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitViewActivity;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
+import io.github.hkust1516csefyp43.easymed.view.activity.PharmacyActivity;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -300,7 +301,7 @@ public class PatientListFragment extends Fragment{
             case Const.PatientListPageId.POST_TRIAGE:
               //TODO edit patient
               Log.d(TAG, "going to edit patient " + aPatient.getFirstName());
-              Intent intent = new Intent(getContext(), PatientVisitReadOnlyActivity.class);
+              Intent intent = new Intent(getContext(), PatientVisitViewActivity.class);
               intent.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
               //put extra triage
               startActivity(intent);
@@ -316,17 +317,19 @@ public class PatientListFragment extends Fragment{
               startActivity(intent1);
               break;
             case Const.PatientListPageId.POST_CONSULTATION:
-              Intent intent2 = new Intent(getContext(), PatientVisitReadOnlyActivity.class);
+              Intent intent2 = new Intent(getContext(), PatientVisitViewActivity.class);
               intent2.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
               //put extra triage
               //put extra consultation
               startActivity(intent2);
               break;
             case Const.PatientListPageId.PRE_PHARMACY:
+              Intent intent4 = new Intent(getContext(), PharmacyActivity.class);
+              startActivity(intent4);
               break;
             case Const.PatientListPageId.POST_PHARMACY:
             default:
-              Intent intent3 = new Intent(getContext(), PatientVisitReadOnlyActivity.class);
+              Intent intent3 = new Intent(getContext(), PatientVisitViewActivity.class);
               intent3.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
               //put extra triage
               //put extra consultation

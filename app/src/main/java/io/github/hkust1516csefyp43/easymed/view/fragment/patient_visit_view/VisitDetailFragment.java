@@ -1,7 +1,6 @@
-package io.github.hkust1516csefyp43.easymed.view.fragment;
+package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_view;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
