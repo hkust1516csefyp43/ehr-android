@@ -49,6 +49,8 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity implements O
   private ViewPager viewPager;
   private TabLayout tabLayout;
 
+  private Boolean fabOn = false;    //TODO What should the default be?
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -66,9 +68,10 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity implements O
     //TODO get extra triage
     //TODO get extra consultation
 
-    //TODO experiment: tablayout to show history
     tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-    tabLayout.addTab(tabLayout.newTab().setText("Bio"));
+    if (tabLayout != null) {
+      tabLayout.addTab(tabLayout.newTab().setText("Bio"));
+    }
 
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {
@@ -84,18 +87,19 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity implements O
       }
     }
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    if (fab != null) {
-      fab.setImageDrawable(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_edit).actionBar().color(Color.WHITE));
-      fab.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Intent intent = new Intent(getBaseContext(), PatientVisitEditActivity.class);
-          intent.putExtra(Const.BundleKey.EDIT_PATIENT, thisPatient);
-          startActivity(intent);
-        }
-      });
-    }
+    //TODO move to VisitDetailFragment (+ a extra param: fab on or off)
+//    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//    if (fab != null) {
+//      fab.setImageDrawable(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_edit).actionBar().color(Color.WHITE));
+//      fab.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//          Intent intent = new Intent(getBaseContext(), PatientVisitEditActivity.class);
+//          intent.putExtra(Const.BundleKey.EDIT_PATIENT, thisPatient);
+//          startActivity(intent);
+//        }
+//      });
+//    }
 
     viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -185,9 +189,13 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity implements O
       if (position == 0) {
         return BioFragment.newInstance(thisPatient);
       } else {
-        //TODO put extra visit_id
-        return new VisitDetailFragment();
+        if (visits != null) {
+          if (position < visits.size()) {
+            return VisitDetailFragment.newInstance(visits.get(position), fabOn);
+          }
+        }
       }
+      return new VisitDetailFragment();   //
     }
 
     @Override

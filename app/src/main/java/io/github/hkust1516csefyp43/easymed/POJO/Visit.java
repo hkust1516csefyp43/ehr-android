@@ -2,12 +2,13 @@ package io.github.hkust1516csefyp43.easymed.POJO;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Louis on 2/4/16.
  */
-public class Visit {
+public class Visit implements Serializable{
   @SerializedName("visit_id")
   String id;
   @SerializedName("tag")

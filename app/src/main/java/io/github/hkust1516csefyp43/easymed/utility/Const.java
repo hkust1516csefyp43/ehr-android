@@ -25,6 +25,8 @@ public class Const {
     public static final String WHICH_PATIENT_LIST_ID = "mMvUxFsUQF84Fkj4";
     public static final String READ_ONLY_PATIENT = "AhYeXQg86VDvbN1P";
     public static final String EDIT_PATIENT = "KWEpDV7VqbS3j7mw";
+    public static final String ON_OR_OFF = "42pKVznKCefTT4Dy";
+    public static final String VISIT_ID = "NxUkxT3JPN3c6etw";
   }
 
   public class CacheKey {
