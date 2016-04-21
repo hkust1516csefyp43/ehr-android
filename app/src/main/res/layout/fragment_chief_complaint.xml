@@ -1,0 +1,20 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:theme="@style/AppTheme">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.AppCompatMultiAutoCompleteTextView
+            android:id="@+id/chief_complain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="The major health problem or concern, and its time course (e.g. chest pain for past 4 hours)"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+</RelativeLayout>
