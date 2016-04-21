@@ -18,7 +18,7 @@ import io.github.hkust1516csefyp43.easymed.R;
 public class SplashActivity extends AppCompatActivity {
 
   private static final String TAG = SplashActivity.class.getSimpleName();
-  io.github.hkust1516csefyp43.easymed.POJO.User user;
+  io.github.hkust1516csefyp43.easymed.pojo.User user;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

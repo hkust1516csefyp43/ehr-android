@@ -13,7 +13,7 @@ import java.util.Random;
 
 import io.github.hkust1516csefyp43.easymed.utility.Const.BMI;
 import io.github.hkust1516csefyp43.easymed.utility.Const.BMI.WeightForAgeStatus;
-import io.github.hkust1516csefyp43.easymed.POJO.Patient;
+import io.github.hkust1516csefyp43.easymed.pojo.Patient;
 
 
 /**

@@ -22,8 +22,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
-import io.github.hkust1516csefyp43.easymed.POJO.Patient;
-import io.github.hkust1516csefyp43.easymed.POJO.Visit;
+import io.github.hkust1516csefyp43.easymed.pojo.Patient;
+import io.github.hkust1516csefyp43.easymed.pojo.Visit;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
@@ -172,12 +172,14 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
         return BioFragment.newInstance(thisPatient);
       } else {
         if (visits != null) {
-          if (position-1 < visits.size()) {
+          if (position-1 < visits.size()) {                                         //-1 because of the Bio page
             return VisitDetailFragment.newInstance(visits.get(position-1), fabOn);
           }
         }
       }
-      Log.d(TAG, "Something is wrong with this: visits.size(): " + visits.size() + "; position: " + position + "; the whole visits: " + visits.toString());
+      if (visits != null) {
+        Log.d(TAG, "Something is wrong with this: visits.size(): " + visits.size() + "; position: " + position + "; the whole visits: " + visits.toString());
+      }
       return new VisitDetailFragment();
     }
 

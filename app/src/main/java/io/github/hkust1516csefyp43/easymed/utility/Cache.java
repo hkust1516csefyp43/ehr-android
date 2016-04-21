@@ -12,9 +12,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
-import io.github.hkust1516csefyp43.easymed.POJO.Clinic;
-import io.github.hkust1516csefyp43.easymed.POJO.Notification;
-import io.github.hkust1516csefyp43.easymed.POJO.User;
+import io.github.hkust1516csefyp43.easymed.pojo.Clinic;
+import io.github.hkust1516csefyp43.easymed.pojo.Notification;
+import io.github.hkust1516csefyp43.easymed.pojo.User;
 
 /**
  * Created by Louis on 20/4/16.

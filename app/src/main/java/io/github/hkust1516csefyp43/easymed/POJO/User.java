@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed.POJO;
+package io.github.hkust1516csefyp43.easymed.pojo;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.Date;

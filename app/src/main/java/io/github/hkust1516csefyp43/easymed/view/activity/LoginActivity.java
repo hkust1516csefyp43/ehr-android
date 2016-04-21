@@ -36,8 +36,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
-import io.github.hkust1516csefyp43.easymed.POJO.Clinic;
-import io.github.hkust1516csefyp43.easymed.POJO.User;
+import io.github.hkust1516csefyp43.easymed.pojo.Clinic;
+import io.github.hkust1516csefyp43.easymed.pojo.User;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.utility.Validator;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;

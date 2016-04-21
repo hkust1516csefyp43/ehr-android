@@ -21,7 +21,7 @@ public class PharmacyActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_pharmacy);
 
-    //get extra
+    //get extra patient (w/ visit_id)
     //use visit id to get consultation
     //use consultation id to get prescriptions
     //add prescription programmatically

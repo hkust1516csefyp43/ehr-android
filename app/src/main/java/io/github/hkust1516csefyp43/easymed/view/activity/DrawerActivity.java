@@ -38,8 +38,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
-import io.github.hkust1516csefyp43.easymed.POJO.Notification;
-import io.github.hkust1516csefyp43.easymed.POJO.User;
+import io.github.hkust1516csefyp43.easymed.pojo.Notification;
+import io.github.hkust1516csefyp43.easymed.pojo.User;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;

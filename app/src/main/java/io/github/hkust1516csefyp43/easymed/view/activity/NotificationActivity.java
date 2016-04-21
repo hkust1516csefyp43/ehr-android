@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
-import io.github.hkust1516csefyp43.easymed.POJO.Notification;
+import io.github.hkust1516csefyp43.easymed.pojo.Notification;
 import io.github.hkust1516csefyp43.easymed.R;
 
 public class NotificationActivity extends AppCompatActivity {

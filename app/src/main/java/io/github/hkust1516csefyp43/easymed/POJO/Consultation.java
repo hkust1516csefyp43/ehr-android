@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed.POJO;
+package io.github.hkust1516csefyp43.easymed.pojo;
 
 import java.io.Serializable;
 
