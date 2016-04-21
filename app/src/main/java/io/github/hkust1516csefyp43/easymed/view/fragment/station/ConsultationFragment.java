@@ -1,7 +1,11 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.station;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,17 +18,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-import io.github.hkust1516csefyp43.easymed.utility.Const;
-import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
+import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
+import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
 
 public class ConsultationFragment extends Fragment {
 
   private OnFragmentInteractionListener mListener;
   private TabLayout tabLayout;
   private ViewPager viewPager;
+  private FloatingActionButton floatingActionButton;
 
 //  public static ConsultationFragment newInstance(String param1, String param2) {
 //    ConsultationFragment fragment = new ConsultationFragment();
@@ -82,7 +95,73 @@ public class ConsultationFragment extends Fragment {
     viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
     viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+    floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+    floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        addPatientDialog();
+      }
+    });
+
     return view;
+  }
+
+  private void addPatientDialog() {
+    final Dialog dialog = new Dialog(getContext(), R.style.AppTheme);
+    dialog.setContentView(R.layout.dialog_app_patient);
+
+    ImageView ivExistingPatient = (ImageView) dialog.findViewById(R.id.ivExistingPatient);
+    ivExistingPatient.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_search).color(Color.WHITE).sizeDp(32));
+
+    ImageView ivNotSure = (ImageView) dialog.findViewById(R.id.ivNotSure);
+    ivNotSure.setImageDrawable(new IconicsDrawable(getContext(), FontAwesome.Icon.faw_question).color(Color.WHITE).sizeDp(32));
+
+    ImageView ivNewPatient = (ImageView) dialog.findViewById(R.id.ivNewPatient);
+    ivNewPatient.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).sizeDp(32));
+
+    ImageView ivOpenSaves = (ImageView) dialog.findViewById(R.id.ivOpenSaves);
+    ivOpenSaves.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_folder_open).color(getResources().getColor(R.color.secondary_text_color)).sizeDp(32));
+
+    LinearLayout llExistingPatient = (LinearLayout) dialog.findViewById(R.id.llExistingPatient);
+    llExistingPatient.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), SearchActivity.class);
+        startActivity(intent);
+      }
+    });
+
+
+    LinearLayout llNotSure = (LinearLayout) dialog.findViewById(R.id.llNotSure);
+    llNotSure.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), SearchActivity.class);
+        //Also search, but maybe a extra + button for easier add new patient? (extra)
+        startActivity(intent);
+      }
+    });
+
+    LinearLayout llNewPatient = (LinearLayout) dialog.findViewById(R.id.llNewPatient);
+    llNewPatient.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), PatientVisitEditActivity.class);
+        //extra: isTriage=false
+        startActivity(intent);
+      }
+    });
+
+    LinearLayout llOpenSave = (LinearLayout) dialog.findViewById(R.id.llOpenSave);
+    llOpenSave.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //dialog shows list of saved stuff (can you show dialog on top of dialog? No >> dismiss this first)
+      }
+    });
+
+    dialog.show();
   }
 
   @Override

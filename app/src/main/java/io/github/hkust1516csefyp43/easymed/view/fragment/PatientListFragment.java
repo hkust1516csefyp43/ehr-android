@@ -16,19 +16,18 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.github.hkust1516csefyp43.easymed.utility.Const;
-import io.github.hkust1516csefyp43.easymed.pojo.Patient;
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
+import io.github.hkust1516csefyp43.easymed.pojo.Patient;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitViewActivity;
-import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import io.github.hkust1516csefyp43.easymed.view.activity.PharmacyActivity;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -316,6 +315,7 @@ public class PatientListFragment extends Fragment{
               Intent intent1 = new Intent(getContext(), PatientVisitEditActivity.class);
               intent1.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
               intent1.putExtra(Const.BundleKey.ON_OR_OFF, true);
+              intent1.putExtra(Const.BundleKey.IS_TRIAGE, false);
               startActivity(intent1);
               break;
             case Const.PatientListPageId.POST_CONSULTATION:

@@ -1,13 +1,19 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,9 +44,19 @@ public class PatientVisitEditActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     viewPager = (ViewPager) findViewById(R.id.viewPager);
-
+    if (tabLayout != null && viewPager != null) {
+      viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+      //viewpager need to set page adapter first
+//    tabLayout.setupWithViewPager(viewPager);
+    }
 
     setSupportActionBar(toolbar);
+    ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+      //Set patient name as title
+      actionBar.setDisplayHomeAsUpEnabled(true);
+      actionBar.setDisplayShowHomeEnabled(true);
+    }
 
     //get extra
     Intent intent = getIntent();
@@ -101,7 +117,7 @@ public class PatientVisitEditActivity extends AppCompatActivity {
       }
     }
 
-    //if patient comes with visit_id >> get triage or both triage and consultation if exis
+    //if patient comes with visit_id >> get triage or both triage and consultation if exist
 
 
     //set toolbar title (last name first name)
@@ -110,4 +126,23 @@ public class PatientVisitEditActivity extends AppCompatActivity {
     //confirm button >> dialog, progressbar, (some dialog if successful)
   }
 
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater menuInflater = getMenuInflater();
+    menuInflater.inflate(R.menu.menu_patient_edit, menu);
+    MenuItem menuItem = menu.findItem(R.id.confirm);
+    menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
+    return true;
+  }
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        // app icon in action bar clicked; goto parent activity.
+        this.finish();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
 }

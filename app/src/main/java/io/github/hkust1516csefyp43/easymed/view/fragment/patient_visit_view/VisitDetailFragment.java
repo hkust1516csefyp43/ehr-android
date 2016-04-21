@@ -110,6 +110,8 @@ public class VisitDetailFragment extends Fragment {
       progressBar.setLayoutParams(params);
       linearLayout.addView(progressBar);
 
+      //TODO fix sometimes triage first, sometimes consultation first
+
       //Triage
       OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
       ohc1.readTimeout(1, TimeUnit.MINUTES);
