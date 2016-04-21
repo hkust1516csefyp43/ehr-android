@@ -420,7 +420,8 @@ public interface v2API {
      */
     @GET("triages")
     Call<List<Triage>> getTriages(
-        @Header("token") String token
+        @Header("token") String token,
+        @Query("visit_id") String visitId
     );
 
     @POST("triages")
@@ -474,7 +475,8 @@ public interface v2API {
      */
     @GET("consultations")
     Call<List<Consultation>> getConsultations(
-        @Header("token") String token
+        @Header("token") String token,
+        @Query("visit_id") String visitId
     );
 
     @POST("consultations")
