@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.squareup.okhttp.OkHttpClient;
@@ -171,12 +172,13 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
         return BioFragment.newInstance(thisPatient);
       } else {
         if (visits != null) {
-          if (position < visits.size()) {
-            return VisitDetailFragment.newInstance(visits.get(position), fabOn);
+          if (position-1 < visits.size()) {
+            return VisitDetailFragment.newInstance(visits.get(position-1), fabOn);
           }
         }
       }
-      return new VisitDetailFragment();   //
+      Log.d(TAG, "Something is wrong with this: visits.size(): " + visits.size() + "; position: " + position + "; the whole visits: " + visits.toString());
+      return new VisitDetailFragment();
     }
 
     @Override
