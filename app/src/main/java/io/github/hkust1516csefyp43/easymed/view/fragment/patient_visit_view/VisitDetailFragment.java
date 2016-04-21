@@ -71,6 +71,7 @@ public class VisitDetailFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_visit_detail, container, false);
     floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+
     if (!fabOn) {
       floatingActionButton.setVisibility(View.GONE);
     } else {

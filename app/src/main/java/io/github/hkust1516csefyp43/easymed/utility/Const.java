@@ -27,6 +27,10 @@ public class Const {
     public static final String EDIT_PATIENT = "KWEpDV7VqbS3j7mw";
     public static final String ON_OR_OFF = "42pKVznKCefTT4Dy";
     public static final String VISIT_ID = "NxUkxT3JPN3c6etw";
+    public static final String WHOLE_TRIAGE = "1JCPeR28xeV64hBF";
+    public static final String IS_TRIAGE = "GpjBxP987NT5DBWu";
+    public static final String WHOLE_VISIT = "c8p1Zm57ZbMm6kv1";
+    public static final String WHOLE_CONSULTATION = "EmtnSNvzMU1FRqxp";
   }
 
   public class CacheKey {

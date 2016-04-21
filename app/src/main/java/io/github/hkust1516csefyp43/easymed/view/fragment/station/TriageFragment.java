@@ -2,6 +2,7 @@ package io.github.hkust1516csefyp43.easymed.view.fragment.station;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
+import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
 import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
@@ -121,20 +124,42 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
     ivOpenSaves.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_folder_open).color(getResources().getColor(R.color.secondary_text_color)).sizeDp(32));
 
     LinearLayout llExistingPatient = (LinearLayout) dialog.findViewById(R.id.llExistingPatient);
-    //Search
+    llExistingPatient.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), SearchActivity.class);
+        startActivity(intent);
+      }
+    });
+
 
     LinearLayout llNotSure = (LinearLayout) dialog.findViewById(R.id.llNotSure);
-    //Also search, but maybe a extra + button for easier add new patient?
+    llNotSure.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), SearchActivity.class);
+        //Also search, but maybe a extra + button for easier add new patient? (extra)
+        startActivity(intent);
+      }
+    });
 
     LinearLayout llNewPatient = (LinearLayout) dialog.findViewById(R.id.llNewPatient);
     llNewPatient.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //New patient New Triage
+        Intent intent = new Intent(getContext(), PatientVisitEditActivity.class);
+        //extra: triage
+        startActivity(intent);
       }
     });
 
     LinearLayout llOpenSave = (LinearLayout) dialog.findViewById(R.id.llOpenSave);
+    llOpenSave.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //dialog shows list of saved stuff (can you show dialog on top of dialog? No >> dismiss this first)
+      }
+    });
 
     dialog.show();
   }

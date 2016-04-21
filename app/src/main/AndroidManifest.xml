@@ -55,6 +55,8 @@
             android:label="@string/title_activity_pharmacy"
             android:theme="@style/AppTheme">
         </activity>
+        <activity android:name=".view.activity.SearchActivity">
+        </activity>
     </application>
 
 </manifest>
