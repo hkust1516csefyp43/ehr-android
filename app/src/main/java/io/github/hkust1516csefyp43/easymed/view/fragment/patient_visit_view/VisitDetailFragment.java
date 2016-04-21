@@ -60,7 +60,11 @@ public class VisitDetailFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_visit_detail, container, false);
+    View view = inflater.inflate(R.layout.fragment_visit_detail, container, false);
+    if (!fabOn) {
+      view.findViewById(R.id.fab).setVisibility(View.GONE);
+    }
+    return view;
   }
 
   @Override

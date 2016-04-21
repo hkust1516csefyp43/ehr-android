@@ -43,7 +43,7 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
   private ViewPager viewPager;
   private TabLayout tabLayout;
 
-  private Boolean fabOn = false;    //TODO What should the default be?
+  private Boolean fabOn = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,7 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
     setSupportActionBar(toolbar);
 
     thisPatient = (Patient) this.getIntent().getSerializableExtra(Const.BundleKey.READ_ONLY_PATIENT);
+    fabOn = getIntent().getBooleanExtra(Const.BundleKey.ON_OR_OFF, false);                          //TODO What should the default be?
     //TODO get extra triage
     //TODO get extra consultation
 
@@ -80,20 +81,6 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
         actionBar.setTitle(s.toString());
       }
     }
-
-    //TODO move to VisitDetailFragment (+ a extra param: fab on or off)
-//    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//    if (fab != null) {
-//      fab.setImageDrawable(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_edit).actionBar().color(Color.WHITE));
-//      fab.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//          Intent intent = new Intent(getBaseContext(), PatientVisitEditActivity.class);
-//          intent.putExtra(Const.BundleKey.EDIT_PATIENT, thisPatient);
-//          startActivity(intent);
-//        }
-//      });
-//    }
 
     viewPager = (ViewPager) findViewById(R.id.viewpager);
 

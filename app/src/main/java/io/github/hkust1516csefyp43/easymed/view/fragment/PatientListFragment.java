@@ -303,15 +303,21 @@ public class PatientListFragment extends Fragment{
               Log.d(TAG, "going to edit patient " + aPatient.getFirstName());
               Intent intent = new Intent(getContext(), PatientVisitViewActivity.class);
               intent.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+              intent.putExtra(Const.BundleKey.ON_OR_OFF, true);
               //put extra triage
               startActivity(intent);
               break;
             case Const.PatientListPageId.NOT_YET:
-              Log.d(TAG, "going to ? patient " + aPatient.getFirstName());
-              //TODO ?
+              Log.d(TAG, "going to edit patient " + aPatient.getFirstName());
+              Intent intent5 = new Intent(getContext(), PatientVisitViewActivity.class);
+              intent5.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+              intent5.putExtra(Const.BundleKey.ON_OR_OFF, false);
+              startActivity(intent5);
               break;
             case Const.PatientListPageId.PRE_CONSULTATION:
               Intent intent1 = new Intent(getContext(), PatientVisitEditActivity.class);
+              intent1.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+              intent1.putExtra(Const.BundleKey.ON_OR_OFF, true);
               //put extra patient
               //put extra triage
               startActivity(intent1);
@@ -319,6 +325,7 @@ public class PatientListFragment extends Fragment{
             case Const.PatientListPageId.POST_CONSULTATION:
               Intent intent2 = new Intent(getContext(), PatientVisitViewActivity.class);
               intent2.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+              intent2.putExtra(Const.BundleKey.ON_OR_OFF, true);
               //put extra triage
               //put extra consultation
               startActivity(intent2);
