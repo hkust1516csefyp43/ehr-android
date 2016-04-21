@@ -31,9 +31,6 @@ android {
 
 repositories {
     mavenCentral()
-    maven {
-        url "http://dl.bintray.com/jlmd/maven"
-    }
     maven { url 'https://maven.fabric.io/public' }
 }
 
@@ -46,6 +43,9 @@ dependencies {
     }
     compile('com.github.afollestad.material-dialogs:core:0.8.5.8@aar') {
         transitive = true
+    }
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
     }
     compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
@@ -64,8 +64,4 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
-    compile 'com.github.jlmd:AnimatedCircleLoadingView:1.1.5@aar'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
-        transitive = true;
-    }
 }

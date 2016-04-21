@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit;
+package io.github.hkust1516csefyp43.easymed.view.fragment;
 
 import android.content.Context;
 import android.net.Uri;
@@ -14,12 +14,12 @@ import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListene
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RemarkFragment.OnFragmentInteractionListener} interface
+ * {@link AdminFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link RemarkFragment#newInstance} factory method to
+ * Use the {@link AdminFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RemarkFragment extends Fragment {
+public class AdminFragment extends Fragment {
   // TODO: Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
   private static final String ARG_PARAM1 = "param1";
@@ -31,26 +31,26 @@ public class RemarkFragment extends Fragment {
 
   private OnFragmentInteractionListener mListener;
 
-  public RemarkFragment() {
-    // Required empty public constructor
-  }
-
   /**
    * Use this factory method to create a new instance of
    * this fragment using the provided parameters.
    *
    * @param param1 Parameter 1.
    * @param param2 Parameter 2.
-   * @return A new instance of fragment RemarkFragment.
+   * @return A new instance of fragment AdminFragment.
    */
   // TODO: Rename and change types and number of parameters
-  public static RemarkFragment newInstance(String param1, String param2) {
-    RemarkFragment fragment = new RemarkFragment();
+  public static AdminFragment newInstance(String param1, String param2) {
+    AdminFragment fragment = new AdminFragment();
     Bundle args = new Bundle();
     args.putString(ARG_PARAM1, param1);
     args.putString(ARG_PARAM2, param2);
     fragment.setArguments(args);
     return fragment;
+  }
+
+ public AdminFragment() {
+    // Required empty public constructor
   }
 
   @Override
@@ -66,7 +66,7 @@ public class RemarkFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_remark, container, false);
+    return inflater.inflate(R.layout.fragment_admin, container, false);
   }
 
   // TODO: Rename method, update argument and hook method into UI event
@@ -92,5 +92,4 @@ public class RemarkFragment extends Fragment {
     super.onDetach();
     mListener = null;
   }
-
 }

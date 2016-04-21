@@ -59,18 +59,4 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"/>
 
-    <com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/circle_loading_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="128dp"
-        android:background="@color/cardview_dark_background"
-        android:layout_centerInParent="true"
-        app:mainColor="@color/colorPrimary"
-        app:secondaryColor="@color/colorAccent"
-        app:textColor="@android:color/white"
-        android:visibility="gone"
-        android:layout_gravity="center"/>
-
 </android.support.design.widget.CoordinatorLayout>

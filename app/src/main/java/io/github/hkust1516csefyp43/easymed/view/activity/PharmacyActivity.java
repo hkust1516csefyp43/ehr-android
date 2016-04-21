@@ -20,7 +20,6 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -49,7 +48,6 @@ public class PharmacyActivity extends AppCompatActivity {
 
   private Dialog dialog;
   private RecyclerView rv;
-  private AnimatedCircleLoadingView animatedCircleLoadingView;
 
   private Patient patient;
 
@@ -68,7 +66,6 @@ public class PharmacyActivity extends AppCompatActivity {
     dialog.show();
 
     rv = (RecyclerView) findViewById(R.id.recycler_view);
-    animatedCircleLoadingView = (AnimatedCircleLoadingView) findViewById(R.id.circle_loading_view);
 
     //get extra patient (w/ visit_id)
     Intent intent = getIntent();
@@ -186,10 +183,6 @@ public class PharmacyActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
           //TODO click to confirm >> retrofit
-          if (animatedCircleLoadingView != null) {
-            animatedCircleLoadingView.setVisibility(View.VISIBLE);
-            animatedCircleLoadingView.startDeterminate();
-          }
           updateQueue = prescriptions.size();
           for (final Prescription p: prescriptions) {
             OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
@@ -219,10 +212,6 @@ public class PharmacyActivity extends AppCompatActivity {
                   if (response.body() != null) {
                     Log.d(TAG, "PUT response: " + response.body() + " vs " + p.getId());
                     if (response.body().getId().compareTo(p.getId()) == 0) {
-                      if (animatedCircleLoadingView != null) {
-                        int percentage = updateQueue / prescriptions.size() * 100;
-                        animatedCircleLoadingView.setPercent(percentage);
-                      }
                       updateQueue--;
                       ifFinishLeave();
                     } else {
@@ -253,9 +242,6 @@ public class PharmacyActivity extends AppCompatActivity {
   private void ifFinishLeave() {
     if (updateQueue <= 0) {
       if (!updateError) {
-        if (animatedCircleLoadingView != null) {
-          animatedCircleLoadingView.stopOk();
-        }
         new Handler().postDelayed(new Runnable() {
           @Override
           public void run() {
@@ -264,16 +250,7 @@ public class PharmacyActivity extends AppCompatActivity {
         }, 2000);
       } else {
         //TODO notify user, ask them to try again
-        if (animatedCircleLoadingView != null) {
-          animatedCircleLoadingView.stopFailure();
-          new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
-            @Override
-            public void run() {
-              animatedCircleLoadingView.setVisibility(View.GONE);
-              animatedCircleLoadingView.resetLoading();
-            }
-          }, 2000);
-        }
+
       }
     }
     //else >> not yet, do nothing and just wait for another response to trigger this
