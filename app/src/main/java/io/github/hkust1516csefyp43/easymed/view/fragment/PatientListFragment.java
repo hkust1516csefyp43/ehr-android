@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.okhttp.OkHttpClient;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,11 +30,12 @@ import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitViewActivit
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import io.github.hkust1516csefyp43.easymed.view.activity.PharmacyActivity;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PatientListFragment extends Fragment{
   public static final String TAG = PatientListFragment.class.getSimpleName();
@@ -94,14 +94,14 @@ public class PatientListFragment extends Fragment{
   public void onResume() {
     super.onResume();
 
-    OkHttpClient ohc1 = new OkHttpClient();
-    ohc1.setReadTimeout(1, TimeUnit.MINUTES);
-    ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+    OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+    ohc1.readTimeout(1, TimeUnit.MINUTES);
+    ohc1.connectTimeout(1, TimeUnit.MINUTES);
     Retrofit retrofit = new Retrofit
         .Builder()
         .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
         .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-        .client(ohc1)
+        .client(ohc1.build())
         .build();
     v2API.patients patientService = retrofit.create(v2API.patients.class);
 
@@ -112,7 +112,8 @@ public class PatientListFragment extends Fragment{
         Call<List<Patient>> patientList = patientService.getPatients("1", null, "2", null, null, null, null, null, null, null, null);
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
-          public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+          public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
+
             Log.d(TAG, response.body().toString());
             patients = response.body();
             Collections.sort(patients);
@@ -130,7 +131,7 @@ public class PatientListFragment extends Fragment{
           }
 
           @Override
-          public void onFailure(Throwable t) {
+          public void onFailure(Call<List<Patient>> call, Throwable t) {
 
           }
         });
@@ -139,7 +140,7 @@ public class PatientListFragment extends Fragment{
         Call<List<Patient>> patientList2 = patientService.getPatients("1", null, null, null, null, null, null, null, null, null, null);
         patientList2.enqueue(new Callback<List<Patient>>() {
           @Override
-          public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+          public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
             Log.d(TAG, response.body().toString());
             patients = response.body();
             if (numberListener != null) {
@@ -156,7 +157,7 @@ public class PatientListFragment extends Fragment{
           }
 
           @Override
-          public void onFailure(Throwable t) {
+          public void onFailure(Call<List<Patient>> call, Throwable t) {
 
           }
         });
@@ -167,7 +168,7 @@ public class PatientListFragment extends Fragment{
         Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, null);
         patientList3.enqueue(new Callback<List<Patient>>() {
           @Override
-          public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+          public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
             Log.d(TAG, response.body().toString());
             patients = response.body();
             if (numberListener != null) {
@@ -184,8 +185,7 @@ public class PatientListFragment extends Fragment{
           }
 
           @Override
-          public void onFailure(Throwable t) {
-
+          public void onFailure(Call<List<Patient>> call, Throwable t) {
           }
         });
         break;
@@ -194,7 +194,7 @@ public class PatientListFragment extends Fragment{
         Call<List<Patient>> patientList4 = patientService.getPatients("1", null, "1", null, null, null, null, null, null, null, null);
         patientList4.enqueue(new Callback<List<Patient>>() {
           @Override
-          public void onResponse(Response<List<Patient>> response, Retrofit retrofit) {
+          public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
             Log.d(TAG, response.body().toString());
             patients = response.body();
             if (numberListener != null) {
@@ -211,7 +211,7 @@ public class PatientListFragment extends Fragment{
           }
 
           @Override
-          public void onFailure(Throwable t) {
+          public void onFailure(Call<List<Patient>> call, Throwable t) {
 
           }
         });

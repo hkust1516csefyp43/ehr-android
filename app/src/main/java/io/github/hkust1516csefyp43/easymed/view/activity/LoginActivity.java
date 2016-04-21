@@ -28,7 +28,6 @@ import android.widget.TextView;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.squareup.okhttp.OkHttpClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +40,12 @@ import io.github.hkust1516csefyp43.easymed.pojo.User;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.utility.Validator;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A login screen that offers login via email/password.
@@ -114,20 +114,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     Log.d(TAG, "ANDROID ID = " + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
 
-    OkHttpClient httpClient = new OkHttpClient();
-    httpClient.setReadTimeout(1, TimeUnit.MINUTES);
-    httpClient.setConnectTimeout(1, TimeUnit.MINUTES);
+    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    httpClient.readTimeout(1, TimeUnit.MINUTES);
+    httpClient.connectTimeout(1, TimeUnit.MINUTES);
     Retrofit retrofit = new Retrofit
         .Builder()
         .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
         .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-        .client(httpClient)
+        .client(httpClient.build())
         .build();
     v2API.clinics clinicsService = retrofit.create(v2API.clinics.class);
     Call<List<Clinic>> clinicListCall = clinicsService.getSimplifiedClinics();
     clinicListCall.enqueue(new Callback<List<Clinic>>() {
       @Override
-      public void onResponse(final Response<List<Clinic>> response, Retrofit retrofit) {
+      public void onResponse(Call<List<Clinic>> call, final Response<List<Clinic>> response) {
         if (response.body() != null && response.body().size() > 0) {
           clinicList.setVisibility(View.VISIBLE);
           ArrayAdapter<Clinic> clinicArrayAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, response.body());
@@ -148,7 +148,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
       }
 
       @Override
-      public void onFailure(Throwable t) {
+      public void onFailure(Call<List<Clinic>> call, Throwable t) {
         Log.d(TAG, "Received nothing");
       }
     });

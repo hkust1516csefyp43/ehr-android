@@ -15,25 +15,24 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.squareup.okhttp.OkHttpClient;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.pojo.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.Visit;
-import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_view.BioFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_view.VisitDetailFragment;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PatientVisitViewActivity extends AppCompatActivity implements OnFragmentInteractionListener{
   public final static String TAG = PatientVisitViewActivity.class.getSimpleName();
@@ -87,20 +86,21 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
     //TODO /v2/visits/ token patient_id >> populate ui accordingly
     //>> get tcp of each visits >> the visit fragment (not create yet) will handle it
 
-    OkHttpClient ohc1 = new OkHttpClient();
-    ohc1.setReadTimeout(1, TimeUnit.MINUTES);
-    ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+    OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+    ohc1.readTimeout(1, TimeUnit.MINUTES);
+    ohc1.connectTimeout(1, TimeUnit.MINUTES);
     Retrofit retrofit = new Retrofit
         .Builder()
         .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
         .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-        .client(ohc1)
+        .client(ohc1.build())
         .build();
     v2API.visits visitService = retrofit.create(v2API.visits.class);
     Call<List<Visit>> visitsCall = visitService.getVisits("1", null, thisPatient.getPatientId());
     visitsCall.enqueue(new Callback<List<Visit>>() {
       @Override
-      public void onResponse(Response<List<Visit>> response, Retrofit retrofit) {
+      public void onResponse(Call<List<Visit>> call, Response<List<Visit>> response) {
+
         visits = response.body();
         if (tabLayout != null && viewPager != null) {
           for (Visit v: visits) {
@@ -136,7 +136,7 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
       }
 
       @Override
-      public void onFailure(Throwable t) {
+      public void onFailure(Call<List<Visit>> call, Throwable t) {
 
       }
     });

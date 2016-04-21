@@ -31,7 +31,6 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.context.IconicsLayoutInflater;
-import com.squareup.okhttp.OkHttpClient;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -47,11 +46,12 @@ import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.ConsultationFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.PharmacyFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.TriageFragment;
-import retrofit.GsonConverterFactory;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, OnPatientsFetchedListener, MaterialDialog.SingleButtonCallback {
@@ -74,14 +74,14 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (navigationView != null) {
       TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView);
       uEmail.setText(currentUser.getEmail());
+      navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+          startActivity(intent);
+        }
+      });
     }
-    navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
-        startActivity(intent);
-      }
-    });
 
 
     navigationView.setNavigationItemSelectedListener(this);
@@ -290,27 +290,27 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       //fetch notifications
       Log.d(TAG, "do in background");
 
-      OkHttpClient ohc1 = new OkHttpClient();
-      ohc1.setReadTimeout(1, TimeUnit.MINUTES);
-      ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
+      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+      ohc1.readTimeout(1, TimeUnit.MINUTES);
+      ohc1.connectTimeout(1, TimeUnit.MINUTES);
 
       Retrofit retrofit = new Retrofit
           .Builder()
           .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
           .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-          .client(ohc1)
+          .client(ohc1.build())
           .build();
       v2API.notifications notificationService = retrofit.create(v2API.notifications.class);
       Call<List<Notification>> notificationList = notificationService.getMyNotifications("1");
       notificationList.enqueue(new Callback<List<Notification>>() {
         @Override
-        public void onResponse(Response<List<Notification>> response, Retrofit retrofit) {
+        public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
           Log.d(TAG, response.body().toString());
           Cache.CurrentUser.setNotifications(getBaseContext(), response.body());
         }
 
         @Override
-        public void onFailure(Throwable t) {
+        public void onFailure(Call<List<Notification>> call, Throwable t) {
 
         }
       });

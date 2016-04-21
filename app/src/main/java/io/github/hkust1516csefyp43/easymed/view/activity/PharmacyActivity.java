@@ -16,11 +16,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.squareup.okhttp.OkHttpClient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,21 +35,28 @@ import io.github.hkust1516csefyp43.easymed.pojo.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.Prescription;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class PharmacyActivity extends AppCompatActivity {
   public static final String TAG = PharmacyActivity.class.getSimpleName();
 
   private Dialog dialog;
   private RecyclerView rv;
+  private AnimatedCircleLoadingView animatedCircleLoadingView;
 
   private Patient patient;
 
   private List<Prescription> prescriptions;
+
+  private int updateQueue;
+  private boolean updateError = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +68,7 @@ public class PharmacyActivity extends AppCompatActivity {
     dialog.show();
 
     rv = (RecyclerView) findViewById(R.id.recycler_view);
+    animatedCircleLoadingView = (AnimatedCircleLoadingView) findViewById(R.id.circle_loading_view);
 
     //get extra patient (w/ visit_id)
     Intent intent = getIntent();
@@ -79,21 +89,24 @@ public class PharmacyActivity extends AppCompatActivity {
       Log.d(TAG, "patient is not null: " + patient.toString());
       if (patient.getVisitId() != null) {
         Log.d(TAG, "vid exist: " + patient.getVisitId());
-        OkHttpClient ohc1 = new OkHttpClient();
-        ohc1.setReadTimeout(1, TimeUnit.MINUTES);
-        ohc1.setConnectTimeout(1, TimeUnit.MINUTES);
 
-        Retrofit retrofit = new Retrofit
+        OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+        ohc1.readTimeout(1, TimeUnit.MINUTES);
+        ohc1.connectTimeout(1, TimeUnit.MINUTES);
+
+
+        final Retrofit retrofit = new Retrofit
             .Builder()
             .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
             .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-            .client(ohc1)
+            .client(ohc1.build())
             .build();
         v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
         Call<List<Prescription>> prescriptionsCall = prescriptionService.getPrescriptions("1", patient.getVisitId(), null, null, null, null, null, null);
         prescriptionsCall.enqueue(new Callback<List<Prescription>>() {
           @Override
-          public void onResponse(Response<List<Prescription>> response, Retrofit retrofit) {
+          public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
+
             //TODO get name for each one
             if (response != null) {
               if (response.body() != null) {
@@ -107,7 +120,7 @@ public class PharmacyActivity extends AppCompatActivity {
                     final int j = i;
                     medicationCall.enqueue(new Callback<Medication>() {
                       @Override
-                      public void onResponse(Response<Medication> response, Retrofit retrofit) {
+                      public void onResponse(Call<Medication> call, Response<Medication> response) {
                         if (response != null) {
                           if (response.body() != null) {
                             if (response.body().getMedication() != null) {
@@ -117,18 +130,18 @@ public class PharmacyActivity extends AppCompatActivity {
                                 showUI();
                               }
                             } else {
-                              onFailure(new Throwable("Medication have no name -_-"));
+                              onFailure(null, new Throwable("Medication have no name -_-"));
                             }
                           } else {
-                            onFailure(new Throwable("Empty body"));
+                            onFailure(null, new Throwable("Empty body"));
                           }
                         } else {
-                          onFailure(new Throwable("No response"));
+                          onFailure(null, new Throwable("No response"));
                         }
                       }
 
                       @Override
-                      public void onFailure(Throwable t) {
+                      public void onFailure(Call<Medication> call, Throwable t) {
                         //How to handle if some medication cannot get medication (no name)
                         //>>solution: set the medication name to Const.EMPTY_STRING then check again
                         t.printStackTrace();
@@ -140,20 +153,20 @@ public class PharmacyActivity extends AppCompatActivity {
                     });
                   }
                 } else {    //the list id empty
-                  onFailure(new Throwable("No prescriptions"));
+                  onFailure(null, new Throwable("No prescriptions"));
                   //TODO set next station back to 1 + some dialog explain what happened.
                 }
               } else {  //the list is null
-                onFailure(new Throwable("No prescriptions"));
+                onFailure(null, new Throwable("No prescriptions"));
                 //TODO set next station back to 1 + some dialog explain what happened.
               }
             } else {
-              onFailure(new Throwable("No response"));
+              onFailure(null, new Throwable("No response"));
             }
           }
 
           @Override
-          public void onFailure(Throwable t) {
+          public void onFailure(Call<List<Prescription>> call, Throwable t) {
             t.printStackTrace();
             showUI();
           }
@@ -173,38 +186,134 @@ public class PharmacyActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
           //TODO click to confirm >> retrofit
+          if (animatedCircleLoadingView != null) {
+            animatedCircleLoadingView.setVisibility(View.VISIBLE);
+            animatedCircleLoadingView.startDeterminate();
+          }
+          updateQueue = prescriptions.size();
+          for (final Prescription p: prescriptions) {
+            OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            ohc1.readTimeout(1, TimeUnit.MINUTES);
+            ohc1.connectTimeout(1, TimeUnit.MINUTES);
+
+            ohc1.addInterceptor(logging);
+
+            Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                .client(ohc1.build())
+                .build();
+            v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
+            Log.d(TAG, "will update to this: " + p.toString());
+            Call<Prescription> prescriptionCall = prescriptionService.editPrescription("1", p.getId(), p);
+            prescriptionCall.enqueue(new Callback<Prescription>() {
+              @Override
+              public void onResponse(Call<Prescription> call, Response<Prescription> response) {
+                if (response != null) {
+                  Log.d(TAG, "code: " + response.code());
+                  if (response.body() != null) {
+                    Log.d(TAG, "PUT response: " + response.body() + " vs " + p.getId());
+                    if (response.body().getId().compareTo(p.getId()) == 0) {
+                      if (animatedCircleLoadingView != null) {
+                        int percentage = updateQueue / prescriptions.size() * 100;
+                        animatedCircleLoadingView.setPercent(percentage);
+                      }
+                      updateQueue--;
+                      ifFinishLeave();
+                    } else {
+                      onFailure(null, new Throwable("wrong id??? WTH?"));
+                    }
+                  } else {
+                    onFailure(null, new Throwable("response body is null"));
+                  }
+                } else {
+                  onFailure(null, new Throwable("empty response"));
+                }
+              }
+
+              @Override
+              public void onFailure(Call<Prescription> call, Throwable t) {
+                t.printStackTrace();
+                updateQueue--;
+                updateError = true;
+                ifFinishLeave();
+              }
+            });
+          }
         }
       });
     }
   }
 
-  private void showUI() {
-    if (prescriptions != null) {
-      Log.d(TAG, "before cleanup" + prescriptions.size());
-    }
-    //clean up invalid prescriptions
-    List<Prescription> newPrescriptions = new ArrayList<>();
-    for (Prescription p: prescriptions) {
-      if (p.getMedicationName() != null) {
-        if (p.getMedicationName() != Const.EMPTY_STRING) {
-          newPrescriptions.add(p);
+  private void ifFinishLeave() {
+    if (updateQueue <= 0) {
+      if (!updateError) {
+        if (animatedCircleLoadingView != null) {
+          animatedCircleLoadingView.stopOk();
+        }
+        new Handler().postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            imDone();
+          }
+        }, 2000);
+      } else {
+        //TODO notify user, ask them to try again
+        if (animatedCircleLoadingView != null) {
+          animatedCircleLoadingView.stopFailure();
+          new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
+            @Override
+            public void run() {
+              animatedCircleLoadingView.setVisibility(View.GONE);
+              animatedCircleLoadingView.resetLoading();
+            }
+          }, 2000);
         }
       }
     }
-    prescriptions = newPrescriptions;
-    Log.d(TAG, "after cleanup" + prescriptions.size());
-    if (dialog != null) {
-      //TODO set adapters and stuff
-      if (rv != null) {
-        rv.setAdapter(new prescriptionRVAdapter());
-        rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
-          @Override
-          public void run() {
-            dialog.dismiss();
-            //TODO dismiss animation
+    //else >> not yet, do nothing and just wait for another response to trigger this
+  }
+
+  private void imDone() {
+    finish();
+  }
+
+  private void showUI() {
+    if (prescriptions != null) {
+      Log.d(TAG, "before cleanup" + prescriptions.size());
+      //clean up invalid prescriptions
+      if (prescriptions.size() >= 1) {
+        List<Prescription> newPrescriptions = new ArrayList<>();
+        for (Prescription p: prescriptions) {
+          if (p.getMedicationName() != null) {
+            if (p.getMedicationName() != Const.EMPTY_STRING) {
+              newPrescriptions.add(p);
+            }
           }
-        }, 1000);
+        }
+        prescriptions = newPrescriptions;
+        Log.d(TAG, "after cleanup" + prescriptions.size());
+        if (dialog != null) {
+          //TODO set adapters and stuff
+          if (rv != null) {
+            rv.setAdapter(new prescriptionRVAdapter());
+            rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+            new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
+              @Override
+              public void run() {
+                dialog.dismiss();
+                //TODO dismiss animation
+              }
+            }, 1000);
+          }
+        }
+      } else {
+        //TODO PUT next_station to 1
       }
     }
   }
@@ -231,19 +340,15 @@ public class PharmacyActivity extends AppCompatActivity {
     AppCompatCheckBox appCompatCheckBox;
     TextView tvMedication;
     TextView tvPrescriptionDetail;
+    RelativeLayout rlTheWholeThing;
 
     public prescriptionsRVViewHolder(View itemView) {
       super(itemView);
       appCompatCheckBox = (AppCompatCheckBox) itemView.findViewById(R.id.accbPrescription);
       tvMedication = (TextView) itemView.findViewById(R.id.tvMedication);
       tvPrescriptionDetail = (TextView) itemView.findViewById(R.id.tvPrescriptionDetail);
-
-      appCompatCheckBox.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          //TODO PUT prescription (set to prescribed = true)
-        }
-      });
+      rlTheWholeThing = (RelativeLayout) itemView.findViewById(R.id.rlPrescription);
+      rlTheWholeThing.setLongClickable(true);
     }
 
   }
@@ -260,13 +365,30 @@ public class PharmacyActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBindViewHolder(prescriptionsRVViewHolder holder, int position) {
+    public void onBindViewHolder(final prescriptionsRVViewHolder holder, int position) {
       if (holder != null && prescriptions != null) {
         if (position < prescriptions.size()) {
-          if (prescriptions.get(position).getMedicationName() != Const.EMPTY_STRING) {
-            holder.tvMedication.setText(prescriptions.get(position).getMedicationName());       //TODO check for Const.EMPTY_STRING
-            holder.tvPrescriptionDetail.setText(prescriptions.get(position).getDetail());
-            holder.appCompatCheckBox.setChecked(prescriptions.get(position).getPrescribed());
+          if (prescriptions.get(holder.getAdapterPosition()).getMedicationName() != Const.EMPTY_STRING) {
+            holder.tvMedication.setText(prescriptions.get(holder.getAdapterPosition()).getMedicationName());
+            holder.tvPrescriptionDetail.setText(prescriptions.get(holder.getAdapterPosition()).getDetail());
+            holder.appCompatCheckBox.setChecked(prescriptions.get(holder.getAdapterPosition()).getPrescribed());
+            holder.appCompatCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+              @Override
+              public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d(TAG, prescriptions.get(holder.getAdapterPosition()) + " :" + String.valueOf(isChecked));
+                Prescription tempP = prescriptions.get(holder.getAdapterPosition());
+                tempP.setPrescribed(isChecked);
+                prescriptions.set(holder.getAdapterPosition(), tempP);
+              }
+            });
+            holder.rlTheWholeThing.setOnLongClickListener(new View.OnLongClickListener() {
+              @Override
+              public boolean onLongClick(View v) {
+                //TODO long click >> flag quantity (dialog maybe)
+                return false;
+              }
+            });
+
           }
         }
       }
