@@ -18,6 +18,8 @@ public class Prescription implements Serializable {
   String detail;
   @SerializedName("prescribed")
   Boolean prescribed;
+  String medicationName;
+
 
   public Prescription() {
     //empty constructor
@@ -63,6 +65,14 @@ public class Prescription implements Serializable {
     this.prescribed = prescribed;
   }
 
+  public String getMedicationName() {
+    return medicationName;
+  }
+
+  public void setMedicationName(String medicationName) {
+    this.medicationName = medicationName;
+  }
+
   @Override
   public String toString() {
     return "Prescription{" +
@@ -71,6 +81,7 @@ public class Prescription implements Serializable {
         ", medicationId='" + medicationId + '\'' +
         ", detail='" + detail + '\'' +
         ", prescribed=" + prescribed +
+        ", medicationName='" + medicationName + '\'' +
         '}';
   }
 }

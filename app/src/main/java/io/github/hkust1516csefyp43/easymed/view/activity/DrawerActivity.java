@@ -305,7 +305,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       notificationList.enqueue(new Callback<List<Notification>>() {
         @Override
         public void onResponse(Response<List<Notification>> response, Retrofit retrofit) {
-          Log.d(TAG, response.toString());
           Log.d(TAG, response.body().toString());
           Cache.CurrentUser.setNotifications(getBaseContext(), response.body());
         }

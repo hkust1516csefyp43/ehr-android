@@ -11,6 +11,7 @@ public class Const {
   public final static int SPLASH_DISPLAY_LENGTH = 4000;       //4 seconds of Splash Screen
   public final static int TOKEN_LENGTH = 16;                  //TODO make it programmable >> easier to scale up/down
   public final static Gson GsonParserThatWorksWithPGTimestamp = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+  public final static String EMPTY_STRING = "QGrpd142xvfTeS1A";    //if I find this in a string, it means it is empty (the possibility of sth having this name is super small)
 
   public class PatientListPageId {
     public static final int POST_TRIAGE = 1;

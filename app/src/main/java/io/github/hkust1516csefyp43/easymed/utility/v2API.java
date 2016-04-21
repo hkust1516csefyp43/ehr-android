@@ -11,6 +11,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.Country;
 import io.github.hkust1516csefyp43.easymed.pojo.DocumentType;
 import io.github.hkust1516csefyp43.easymed.pojo.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.Keyword;
+import io.github.hkust1516csefyp43.easymed.pojo.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.Notification;
 import io.github.hkust1516csefyp43.easymed.pojo.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.Prescription;
@@ -380,7 +381,7 @@ public interface v2API {
         @Query("medication_id") String medicationId,
         @Query("consultation_id") String consultationId,
         @Query("prescription_detail") String prescriptionDetail,
-        @Query("sory_by") String sortBy,
+        @Query("sort_by") String sortBy,
         @Query("limit") Integer limit,
         @Query("offset") Integer offset
     );
@@ -474,7 +475,8 @@ public interface v2API {
      */
     @GET("consultations")
     Call<List<Consultation>> getConsultations(
-        @Header("token") String token
+        @Header("token") String token,
+        @Query("visit_id") String visitId
     );
 
     @POST("consultations")
@@ -488,6 +490,25 @@ public interface v2API {
         @Header("token") String token,
         @Body Consultation consultation,
         @Path("id") String id
+    );
+  }
+
+  interface medication {
+    @GET("medications")
+    Call<List<Medication>> getMedications(
+        @Header("token") String token,
+        @Query("medication") String medication,
+        @Query("user_id") String userId,
+        @Query("suitcase_id") String suitcaseId,
+        @Query("sort_by") String sortBy,
+        @Query("limit") Integer limit,
+        @Query("offset") Integer offset
+    );
+
+    @GET("medications/{id}")
+    Call<Medication> getMedication(
+      @Header("token")  String token,
+      @Path("id")       String id
     );
   }
 }

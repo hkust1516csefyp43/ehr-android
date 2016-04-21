@@ -38,6 +38,8 @@ public class NotificationActivity extends AppCompatActivity {
       }
     }
 
+    //TODO pull to refresh
+
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     if (recyclerView != null) {
       recyclerView.setAdapter(new NotificationRecyclerViewAdapter(getBaseContext()));

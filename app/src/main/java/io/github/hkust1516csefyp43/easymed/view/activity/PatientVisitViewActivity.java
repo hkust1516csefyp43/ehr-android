@@ -53,7 +53,6 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
 
     final Dialog dialog = new Dialog(this, R.style.AppTheme);
     dialog.setContentView(R.layout.dialog_loading);
-
     dialog.show();
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
