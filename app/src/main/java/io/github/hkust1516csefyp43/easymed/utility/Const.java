@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed;
+package io.github.hkust1516csefyp43.easymed.utility;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

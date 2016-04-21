@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed;
+package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import android.view.View;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+
+import io.github.hkust1516csefyp43.easymed.R;
 
 public class ProfileActivity extends AppCompatActivity {
 

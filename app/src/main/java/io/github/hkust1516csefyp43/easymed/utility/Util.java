@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed;
+package io.github.hkust1516csefyp43.easymed.utility;
 
 import android.graphics.Color;
 import android.util.Log;
@@ -11,8 +11,8 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Random;
 
-import io.github.hkust1516csefyp43.easymed.Const.BMI;
-import io.github.hkust1516csefyp43.easymed.Const.BMI.WeightForAgeStatus;
+import io.github.hkust1516csefyp43.easymed.utility.Const.BMI;
+import io.github.hkust1516csefyp43.easymed.utility.Const.BMI.WeightForAgeStatus;
 import io.github.hkust1516csefyp43.easymed.POJO.Patient;
 
 
@@ -288,15 +288,30 @@ public class Util {
     }
   }
 
+  public static String dateInStringOrToday(Date date) {
+    GregorianCalendar gc = new GregorianCalendar();
+    gc.setTime(date);
+    GregorianCalendar today = new GregorianCalendar();
+    if (gc.get(Calendar.YEAR) == today.get(Calendar.YEAR) && gc.get(Calendar.MONTH) == today.get(Calendar.MONTH) && gc.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)) {
+      return "Today";
+    } else {
+      return dateInString(gc);
+    }
+  }
+
+  private static String dateInString(GregorianCalendar gc) {
+    return "" + gc.get(Calendar.YEAR) + "-" + (gc.get(Calendar.MONTH) + 1) + "-" + gc.get(Calendar.DAY_OF_MONTH);
+  }
+
   public static String dateInString(Date date) {
     GregorianCalendar gc = new GregorianCalendar();
     gc.setTime(date);
-    return "" + gc.get(Calendar.YEAR) + "-" + (gc.get(Calendar.MONTH) + 1) + "-" + gc.get(Calendar.DAY_OF_MONTH);
+    return dateInString(gc);
   }
 
   public static String todayString() {
     GregorianCalendar gc = new GregorianCalendar();
-    return "" + gc.get(Calendar.YEAR) + "-" + (gc.get(Calendar.MONTH) + 1) + "-" + gc.get(Calendar.DAY_OF_MONTH);
+    return dateInString(gc);
   }
 
 }

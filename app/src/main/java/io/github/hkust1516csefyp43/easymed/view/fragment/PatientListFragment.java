@@ -1,8 +1,7 @@
-package io.github.hkust1516csefyp43.easymed;
+package io.github.hkust1516csefyp43.easymed.view.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,12 +18,16 @@ import android.widget.TextView;
 
 import com.squareup.okhttp.OkHttpClient;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.github.hkust1516csefyp43.easymed.Const;
 import io.github.hkust1516csefyp43.easymed.POJO.Patient;
+import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.v2API;
+import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
+import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitReadOnlyActivity;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import retrofit.Call;

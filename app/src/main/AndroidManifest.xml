@@ -16,17 +16,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".DrawerActivity"
+            android:name=".view.activity.DrawerActivity"
             android:label="@string/app_name"></activity>
-        <activity android:name=".NotificationActivity"></activity>
+        <activity android:name=".view.activity.NotificationActivity"></activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".view.activity.LoginActivity"
             android:label="@string/title_activity_login"></activity>
         <activity
-            android:name=".ProfileActivity"
+            android:name=".view.activity.ProfileActivity"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme"></activity>
-        <activity android:name=".SplashActivity">
+        <activity android:name=".view.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,11 +34,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PatientVisitReadOnlyActivity"
+            android:name=".view.activity.PatientVisitReadOnlyActivity"
             android:label="@string/title_activity_patient_visit_read_only"
             android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".PatientVisitEditActivity"
+            android:name=".view.activity.PatientVisitEditActivity"
             android:label="@string/title_activity_patient_visit_edit"
             android:theme="@style/AppTheme"></activity>
         <!--
@@ -49,7 +49,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".view.activity.RegisterActivity"></activity>
     </application>
 
 </manifest>

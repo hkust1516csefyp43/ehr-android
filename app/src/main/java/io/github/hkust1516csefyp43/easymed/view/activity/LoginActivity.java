@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed;
+package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
@@ -34,8 +34,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.github.hkust1516csefyp43.easymed.Cache;
+import io.github.hkust1516csefyp43.easymed.Const;
 import io.github.hkust1516csefyp43.easymed.POJO.Clinic;
 import io.github.hkust1516csefyp43.easymed.POJO.User;
+import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.Validator;
+import io.github.hkust1516csefyp43.easymed.v2API;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;

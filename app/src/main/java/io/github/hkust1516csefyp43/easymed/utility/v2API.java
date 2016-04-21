@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed;
+package io.github.hkust1516csefyp43.easymed.utility;
 
 import java.util.List;
 
@@ -13,6 +13,7 @@ import io.github.hkust1516csefyp43.easymed.POJO.Gender;
 import io.github.hkust1516csefyp43.easymed.POJO.Keyword;
 import io.github.hkust1516csefyp43.easymed.POJO.Notification;
 import io.github.hkust1516csefyp43.easymed.POJO.Patient;
+import io.github.hkust1516csefyp43.easymed.POJO.Prescription;
 import io.github.hkust1516csefyp43.easymed.POJO.Triage;
 import io.github.hkust1516csefyp43.easymed.POJO.Visit;
 import retrofit.Call;

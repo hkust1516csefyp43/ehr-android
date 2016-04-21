@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed;
+package io.github.hkust1516csefyp43.easymed.utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;

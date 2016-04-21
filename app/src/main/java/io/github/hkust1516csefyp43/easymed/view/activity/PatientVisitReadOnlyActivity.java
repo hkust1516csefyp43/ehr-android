@@ -1,11 +1,12 @@
-package io.github.hkust1516csefyp43.easymed;
+package io.github.hkust1516csefyp43.easymed.view.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -15,8 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -25,8 +24,12 @@ import com.squareup.okhttp.OkHttpClient;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.github.hkust1516csefyp43.easymed.Const;
 import io.github.hkust1516csefyp43.easymed.POJO.Patient;
 import io.github.hkust1516csefyp43.easymed.POJO.Visit;
+import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.Util;
+import io.github.hkust1516csefyp43.easymed.v2API;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -46,6 +49,12 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_patient_visit_read_only);
+
+    final Dialog dialog = new Dialog(this, R.style.AppTheme);
+    dialog.setContentView(R.layout.dialog_loading);
+
+    dialog.show();
+
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
@@ -106,10 +115,17 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity {
         visits = response.body();
         if (tabLayout != null && viewPager != null) {
           for (Visit v: visits) {
-            tabLayout.addTab(tabLayout.newTab().setText(Util.dateInString(v.getCreateTimestamp())));
+            tabLayout.addTab(tabLayout.newTab().setText(Util.dateInStringOrToday(v.getCreateTimestamp())));
           }
-
         }
+
+        new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
+          @Override
+          public void run() {
+//            dialog.dismiss();
+            //TODO dismiss animation
+          }
+        }, 1000);
       }
 
       @Override
@@ -139,6 +155,11 @@ public class PatientVisitReadOnlyActivity extends AppCompatActivity {
 
     @Override
     public Fragment getItem(int position) {
+      if (position == 0) {
+        //BIO fragment
+      } else {
+        //??? Fragment (extra: visit_id)
+      }
       return null;
     }
 

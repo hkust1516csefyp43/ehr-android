@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed;
+package io.github.hkust1516csefyp43.easymed.view.fragment.station;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,20 +15,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import io.github.hkust1516csefyp43.easymed.Const;
+import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
+import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 
-public class ConsultationFragment extends Fragment {
+public class PharmacyFragment extends Fragment {
 
   private OnFragmentInteractionListener mListener;
   private TabLayout tabLayout;
   private ViewPager viewPager;
 
-//  public static ConsultationFragment newInstance(String param1, String param2) {
-//    ConsultationFragment fragment = new ConsultationFragment();
-//    return fragment;
-//  }
-
-  public ConsultationFragment() {
+  public PharmacyFragment() {
     // Required empty public constructor
   }
 
@@ -43,7 +41,7 @@ public class ConsultationFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-    toolbar.setTitle("Consultation");
+    toolbar.setTitle("Pharmacy");
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -55,8 +53,8 @@ public class ConsultationFragment extends Fragment {
     }
 
     tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-    tabLayout.addTab(tabLayout.newTab().setText("Before"));
-    tabLayout.addTab(tabLayout.newTab().setText("After"));
+    tabLayout.addTab(tabLayout.newTab().setText("Waiting"));
+    tabLayout.addTab(tabLayout.newTab().setText("Finished"));
     viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
     tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -108,9 +106,9 @@ public class ConsultationFragment extends Fragment {
     public Fragment getItem(int position) {
       switch (position) {
         case 0:
-          return PatientListFragment.newInstance(Const.PatientListPageId.PRE_CONSULTATION);
+          return PatientListFragment.newInstance(Const.PatientListPageId.PRE_PHARMACY);
         case 1:
-          return PatientListFragment.newInstance(Const.PatientListPageId.POST_CONSULTATION);
+          return PatientListFragment.newInstance(Const.PatientListPageId.POST_PHARMACY);
         default:
           return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET);    //TODO idk?
 

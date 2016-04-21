@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed;
+package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.content.Context;
 import android.support.v7.app.ActionBar;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +15,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import io.github.hkust1516csefyp43.easymed.Cache;
 import io.github.hkust1516csefyp43.easymed.POJO.Notification;
+import io.github.hkust1516csefyp43.easymed.R;
 
 public class NotificationActivity extends AppCompatActivity {
   public final static String TAG = NotificationActivity.class.getSimpleName();
