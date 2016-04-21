@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.POJO.Notification;
+import io.github.hkust1516csefyp43.easymed.POJO.User;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import retrofit.GsonConverterFactory;
@@ -49,6 +51,7 @@ import retrofit.Retrofit;
 
 public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, OnPatientsFetchedListener, MaterialDialog.SingleButtonCallback {
   public final static String TAG = DrawerActivity.class.getSimpleName();
+  private User currentUser;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +63,13 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     new ThingsToDoInBackground().execute();
     Log.d(TAG, "after");
 
+    currentUser = Cache.CurrentUser.getUser(getApplicationContext());
+
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     if (navigationView != null) {
+      TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView);
+      uEmail.setText(currentUser.getEmail());
+    }
       navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -69,6 +77,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
           startActivity(intent);
         }
       });
+
 
       navigationView.setNavigationItemSelectedListener(this);
       Menu menu = navigationView.getMenu();
