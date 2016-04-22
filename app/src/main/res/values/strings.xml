@@ -123,6 +123,4 @@
     <string name="action_register">Register Now</string>
     <string name="title_activity_pharmacy">PharmacyActivity</string>
     <string name="confirm">Confirm</string>
-
-    <string name="dynamicbox_retry">Report</string>
 </resources>

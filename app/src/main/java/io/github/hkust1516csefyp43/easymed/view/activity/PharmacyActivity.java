@@ -206,12 +206,14 @@ public class PharmacyActivity extends AppCompatActivity {
             for (final Prescription p: prescriptions) {
               OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
 
-              HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+              HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                @Override public void log(String message) {
+                  Log.d(TAG, "from put prescription: " + message);
+                }
+              });
               logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
               ohc1.readTimeout(1, TimeUnit.MINUTES);
               ohc1.connectTimeout(1, TimeUnit.MINUTES);
-
               ohc1.addInterceptor(logging);
 
               Retrofit retrofit = new Retrofit
@@ -318,16 +320,16 @@ public class PharmacyActivity extends AppCompatActivity {
 
   private void showNoPrescriptions() {
     if (box != null) {
-      box.setOtherExceptionTitle("No prescriptions");
-      box.setOtherExceptionMessage("Click here to report to server");
-      box.setClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          //TODO PUT next_station to 1
-          Log.d(TAG, "PUT next_station to 1");
-        }
-      });
-      box.showExceptionLayout();
+//      box.setClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//          //TODO PUT next_station to 1
+//          Log.d(TAG, "PUT next_station to 1");
+//        }
+//      });
+      box.addCustomView(getLayoutInflater().inflate(R.layout.exception_failure_report, null, false), "report");
+      //TODO user view to findviewbyid >> button onclick
+      box.showCustomView("report");
       if (floatingActionButton != null) {
         floatingActionButton.setVisibility(View.GONE);
       }

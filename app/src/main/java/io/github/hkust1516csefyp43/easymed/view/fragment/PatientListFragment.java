@@ -20,12 +20,14 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
@@ -46,6 +48,8 @@ public class PatientListFragment extends Fragment{
   private List<Patient> patients;
 
   private int whichPage;
+  private boolean displayGender = true;
+  private HashMap<String, String> gendersHashMap = new HashMap<>();
 
   private OnFragmentInteractionListener mListener;
   private OnPatientsFetchedListener numberListener;
@@ -97,6 +101,52 @@ public class PatientListFragment extends Fragment{
   public void onResume() {
     super.onResume();
 
+    OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+    ohc1.readTimeout(1, TimeUnit.MINUTES);
+    ohc1.connectTimeout(1, TimeUnit.MINUTES);
+    Retrofit retrofit = new Retrofit
+        .Builder()
+        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+        .client(ohc1.build())
+        .build();
+
+    v2API.genders genderService = retrofit.create(v2API.genders.class);
+    Call<List<Gender>> gendersCall = genderService.getGenders("1");
+    gendersCall.enqueue(new Callback<List<Gender>>() {
+      @Override
+      public void onResponse(Call<List<Gender>> call, Response<List<Gender>> response) {
+        if (response != null) {
+          if (response.body() != null) {
+            if (response.body().size() > 0) {
+              for (Gender g: response.body()) {
+                gendersHashMap.put(g.getId(), g.getGender());
+                proceed();
+              }
+            } else {
+              //size is 0
+              onFailure(null, new Throwable("size is 0"));
+            }
+          } else {
+            //empty body
+            onFailure(null, new Throwable("empty body"));
+          }
+        } else {
+          //null response
+          onFailure(null, new Throwable("null body"));
+        }
+      }
+
+      @Override
+      public void onFailure(Call<List<Gender>> call, Throwable t) {
+        t.printStackTrace();
+        displayGender = false;
+        proceed();
+      }
+    });
+  }
+
+  private void proceed() {
     OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
     ohc1.readTimeout(1, TimeUnit.MINUTES);
     ohc1.connectTimeout(1, TimeUnit.MINUTES);
@@ -295,10 +345,13 @@ public class PatientListFragment extends Fragment{
 
         StringBuilder subtitle = new StringBuilder();
         if (aPatient.getGenderId() != null) {
-          subtitle.append(aPatient.getGenderId());
+          subtitle.append(gendersHashMap.get(aPatient.getGenderId()));
         }
         if (aPatient.getBirthYear() != null && aPatient.getBirthYear() != null && aPatient.getBirthYear() != null) {
-          subtitle.append(" / ");
+//          Log.d(TAG, "here:" + subtitle.toString() + ":end; length: " + subtitle.toString().length());
+          if (subtitle.toString().length() > 0) {
+            subtitle.append(" / ");
+          }
           subtitle.append(Util.birthdayToAgeString(aPatient.getBirthYear(), aPatient.getBirthMonth(), aPatient.getBirthDate()));
         }
         holder.subtitle.setText(subtitle.toString());
