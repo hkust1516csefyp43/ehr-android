@@ -145,8 +145,11 @@ public class MedicationVariantListFragment extends Fragment {
       recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
       progressBar.setVisibility(View.GONE);
       swipeRefreshLayout.setVisibility(View.VISIBLE);
-      dragScrollBar = new DragScrollBar(getContext(), recyclerView, true);
-      dragScrollBar.addIndicator(new AlphabetIndicator(getContext()), true);
+      Context context = getContext();
+      if (context != null) {  //if context is null just skip the drag scroll bar /shrug
+        dragScrollBar = new DragScrollBar(context, recyclerView, true);
+        dragScrollBar.addIndicator(new AlphabetIndicator(getContext()), true);
+      }
     }
   }
 
