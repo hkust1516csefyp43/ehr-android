@@ -25,6 +25,7 @@ import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListene
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import io.github.hkust1516csefyp43.easymed.pojo.Patient;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitViewActivity;
@@ -279,65 +280,78 @@ public class PatientListFragment extends Fragment{
 
     @Override
     public void onBindViewHolder(PatientRecyclerViewViewHolder holder, int position) {
-      final Patient aPatient = patients.get(position);
-      StringBuilder name = new StringBuilder();
-      if (aPatient.getTag() != null) {
-        name.append(aPatient.getTag().toString());
-        name.append(". ");
-      }
-      if (aPatient.getLastName() != null) {
-        name.append(aPatient.getLastName());
-        name.append(" ");
-      }
-      name.append(aPatient.getFirstName());
-      holder.patientName.setText(name.toString());
-      holder.nativeName.setText(aPatient.getNativeName());
-
-      holder.theWholeCard.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          switch (whichPage) {
-            case Const.PatientListPageId.POST_TRIAGE:
-              Log.d(TAG, "going to edit patient " + aPatient.getFirstName());
-              Intent intent = new Intent(getContext(), PatientVisitViewActivity.class);
-              intent.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
-              intent.putExtra(Const.BundleKey.ON_OR_OFF, true);
-              startActivity(intent);
-              break;
-            case Const.PatientListPageId.NOT_YET:
-              Log.d(TAG, "going to edit patient " + aPatient.getFirstName());
-              Intent intent5 = new Intent(getContext(), PatientVisitViewActivity.class);
-              intent5.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
-              intent5.putExtra(Const.BundleKey.ON_OR_OFF, false);
-              startActivity(intent5);
-              break;
-            case Const.PatientListPageId.PRE_CONSULTATION:
-              Intent intent1 = new Intent(getContext(), PatientVisitEditActivity.class);
-              intent1.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
-              intent1.putExtra(Const.BundleKey.ON_OR_OFF, true);
-              intent1.putExtra(Const.BundleKey.IS_TRIAGE, false);
-              startActivity(intent1);
-              break;
-            case Const.PatientListPageId.POST_CONSULTATION:
-              Intent intent2 = new Intent(getContext(), PatientVisitViewActivity.class);
-              intent2.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
-              intent2.putExtra(Const.BundleKey.ON_OR_OFF, true);
-              startActivity(intent2);
-              break;
-            case Const.PatientListPageId.PRE_PHARMACY:
-              Intent intent4 = new Intent(getContext(), PharmacyActivity.class);
-              intent4.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
-              startActivity(intent4);
-              break;
-            case Const.PatientListPageId.POST_PHARMACY:
-            default:
-              Intent intent3 = new Intent(getContext(), PatientVisitViewActivity.class);
-              intent3.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
-              startActivity(intent3);
-
-          }
+      if (position < patients.size()) {
+        final Patient aPatient = patients.get(position);
+        StringBuilder name = new StringBuilder();
+        if (aPatient.getTag() != null) {
+          name.append(aPatient.getTag().toString());
+          name.append(". ");
         }
-      });
+        if (aPatient.getLastName() != null) {
+          name.append(aPatient.getLastName());
+          name.append(" ");
+        }
+        name.append(aPatient.getFirstName());
+        holder.patientName.setText(name.toString());
+        holder.nativeName.setText(aPatient.getNativeName());
+
+        StringBuilder subtitle = new StringBuilder();
+        if (aPatient.getGenderId() != null) {
+          subtitle.append(aPatient.getGenderId());
+        }
+        if (aPatient.getBirthYear() != null && aPatient.getBirthYear() != null && aPatient.getBirthYear() != null) {
+          subtitle.append(" / ");
+          subtitle.append(Util.birthdayToAgeString(aPatient.getBirthYear(), aPatient.getBirthMonth(), aPatient.getBirthDate()));
+        }
+        holder.subtitle.setText(subtitle.toString());
+
+        holder.theWholeCard.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            switch (whichPage) {
+              case Const.PatientListPageId.POST_TRIAGE:
+                Log.d(TAG, "going to edit patient " + aPatient.getFirstName());
+                Intent intent = new Intent(getContext(), PatientVisitViewActivity.class);
+                intent.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+                intent.putExtra(Const.BundleKey.ON_OR_OFF, true);
+                startActivity(intent);
+                break;
+              case Const.PatientListPageId.NOT_YET:
+                Log.d(TAG, "going to edit patient " + aPatient.getFirstName());
+                Intent intent5 = new Intent(getContext(), PatientVisitViewActivity.class);
+                intent5.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+                intent5.putExtra(Const.BundleKey.ON_OR_OFF, false);
+                startActivity(intent5);
+                break;
+              case Const.PatientListPageId.PRE_CONSULTATION:
+                Intent intent1 = new Intent(getContext(), PatientVisitEditActivity.class);
+                intent1.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+                intent1.putExtra(Const.BundleKey.ON_OR_OFF, true);
+                intent1.putExtra(Const.BundleKey.IS_TRIAGE, false);
+                startActivity(intent1);
+                break;
+              case Const.PatientListPageId.POST_CONSULTATION:
+                Intent intent2 = new Intent(getContext(), PatientVisitViewActivity.class);
+                intent2.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+                intent2.putExtra(Const.BundleKey.ON_OR_OFF, true);
+                startActivity(intent2);
+                break;
+              case Const.PatientListPageId.PRE_PHARMACY:
+                Intent intent4 = new Intent(getContext(), PharmacyActivity.class);
+                intent4.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+                startActivity(intent4);
+                break;
+              case Const.PatientListPageId.POST_PHARMACY:
+              default:
+                Intent intent3 = new Intent(getContext(), PatientVisitViewActivity.class);
+                intent3.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+                startActivity(intent3);
+
+            }
+          }
+        });
+      }
+
 
     }
 

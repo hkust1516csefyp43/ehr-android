@@ -1,42 +1,38 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment;
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 
 public class InventoryFragment extends Fragment {
-  // TODO: Rename parameter arguments, choose names that match
-  // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-  private static final String ARG_PARAM1 = "param1";
-  private static final String ARG_PARAM2 = "param2";
-
-  // TODO: Rename and change types of parameters
-  private String mParam1;
-  private String mParam2;
-
   private OnFragmentInteractionListener mListener;
 
-  /**
-   * Use this factory method to create a new instance of
-   * this fragment using the provided parameters.
-   *
-   * @param param1 Parameter 1.
-   * @param param2 Parameter 2.
-   * @return A new instance of fragment InventoryFragment.
-   */
-  // TODO: Rename and change types and number of parameters
+  private FloatingActionButton floatingActionButton;
+  private TabLayout tabLayout;
+  private ViewPager viewPager;
+
   public static InventoryFragment newInstance(String param1, String param2) {
     InventoryFragment fragment = new InventoryFragment();
     Bundle args = new Bundle();
-    args.putString(ARG_PARAM1, param1);
-    args.putString(ARG_PARAM2, param2);
+//    args.putString(ARG_PARAM1, param1);
+//    args.putString(ARG_PARAM2, param2);
     fragment.setArguments(args);
     return fragment;
   }
@@ -49,23 +45,63 @@ public class InventoryFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
-      mParam1 = getArguments().getString(ARG_PARAM1);
-      mParam2 = getArguments().getString(ARG_PARAM2);
+//      mParam1 = getArguments().getString(ARG_PARAM1);
+//      mParam2 = getArguments().getString(ARG_PARAM2);
     }
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_inventory, container, false);
-  }
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
+    Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+    toolbar.setTitle("Inventory");
+    DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+    ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-  // TODO: Rename method, update argument and hook method into UI event
-  public void onButtonPressed(Uri uri) {
-    if (mListener != null) {
-      mListener.onFragmentInteraction(uri);
+
+    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    if (drawer != null) {
+      drawer.setDrawerListener(toggle);
+      toggle.syncState();
     }
+
+
+    tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+    viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+
+    tabLayout.addTab(tabLayout.newTab().setText("Out of stock"));
+    tabLayout.addTab(tabLayout.newTab().setText("Inadequate"));
+    tabLayout.addTab(tabLayout.newTab().setText("Enough"));
+    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+      @Override
+      public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+      }
+
+      @Override
+      public void onTabUnselected(TabLayout.Tab tab) {
+
+      }
+
+      @Override
+      public void onTabReselected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+      }
+    });
+
+//    viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
+//    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+    floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+    floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //TODO
+      }
+    });
+
+    return view;
   }
 
   @Override

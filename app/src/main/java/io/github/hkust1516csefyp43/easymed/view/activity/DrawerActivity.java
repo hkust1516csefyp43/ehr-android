@@ -35,14 +35,17 @@ import com.mikepenz.iconics.context.IconicsLayoutInflater;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.github.hkust1516csefyp43.easymed.utility.Cache;
-import io.github.hkust1516csefyp43.easymed.utility.Const;
-import io.github.hkust1516csefyp43.easymed.pojo.Notification;
-import io.github.hkust1516csefyp43.easymed.pojo.User;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
+import io.github.hkust1516csefyp43.easymed.pojo.Notification;
+import io.github.hkust1516csefyp43.easymed.pojo.User;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
+import io.github.hkust1516csefyp43.easymed.view.fragment.AdminFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.InventoryFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.StatisticsFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.ConsultationFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.PharmacyFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.TriageFragment;
@@ -148,7 +151,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.drawer, menu);
     MenuItem mi = menu.findItem(R.id.notification);
     if (mi != null) {
@@ -181,43 +183,28 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (id == R.id.nav_triage) {
       TriageFragment triageFragment = new TriageFragment();
       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.fragment_container, triageFragment);
-      fragmentTransaction.addToBackStack(null);
-      fragmentTransaction.commit();
+      fragmentTransaction.replace(R.id.fragment_container, triageFragment).commit();
     } else if (id == R.id.nav_consultation) {
       ConsultationFragment consultationFragment = new ConsultationFragment();
       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.fragment_container, consultationFragment);
-      fragmentTransaction.addToBackStack(null);
-      fragmentTransaction.commit();
+      fragmentTransaction.replace(R.id.fragment_container, consultationFragment).commit();
 
     } else if (id == R.id.nav_pharmacy) {
       PharmacyFragment pharmacyFragment = new PharmacyFragment();
       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.fragment_container, pharmacyFragment);
-      fragmentTransaction.addToBackStack(null);
-      fragmentTransaction.commit();
+      fragmentTransaction.replace(R.id.fragment_container, pharmacyFragment).commit();
     } else if (id == R.id.nav_inventory) {
-      //change toolbar name
-      ActionBar actionBar = getSupportActionBar();
-      if (actionBar != null) {
-        actionBar.setTitle("Inventory");
-      }
-      //swap fragment to InventoryFragment
+      InventoryFragment inventoryFragment = new InventoryFragment();
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      fragmentTransaction.replace(R.id.fragment_container, inventoryFragment).commit();
     } else if (id == R.id.nav_statistics) {
-      //change toolbar name
-      ActionBar actionBar = getSupportActionBar();
-      if (actionBar != null) {
-        actionBar.setTitle("Statistics");
-      }
-      //?
+      StatisticsFragment statisticsFragment = new StatisticsFragment();
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      fragmentTransaction.replace(R.id.fragment_container, statisticsFragment).commit();
     } else if (id == R.id.nav_admin) {
-      //change toolbar name
-      ActionBar actionBar = getSupportActionBar();
-      if (actionBar != null) {
-        actionBar.setTitle("Admin");
-      }
-      //swap fragment to AdminFragment
+      AdminFragment adminFragment = new AdminFragment();
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      fragmentTransaction.replace(R.id.fragment_container, adminFragment).commit();
     } else if (id == R.id.nav_settings) {
       //change toolbar name
       ActionBar actionBar = getSupportActionBar();

@@ -26,12 +26,12 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
 import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
-import io.github.hkust1516csefyp43.easymed.R;
-import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 
 public class TriageFragment extends Fragment implements OnFragmentInteractionListener {
 
@@ -40,7 +40,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
   private ViewPager viewPager;
   private FloatingActionButton floatingActionButton;
 
-  public static TriageFragment newInstance(String param1, String param2) {
+  public static TriageFragment newInstance() {
     TriageFragment fragment = new TriageFragment();
     return fragment;
   }

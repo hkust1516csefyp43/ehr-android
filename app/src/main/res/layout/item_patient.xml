@@ -65,7 +65,7 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:maxLines="6"
-                android:text="CC/what should I put here is no age?"/>
+                android:text="gender/age"/>
 
         </LinearLayout>
 
