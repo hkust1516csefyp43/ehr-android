@@ -1,6 +1,5 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -52,7 +52,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PharmacyActivity extends AppCompatActivity {
   public static final String TAG = PharmacyActivity.class.getSimpleName();
 
-  private Dialog dialog;
   private RecyclerView rv;
   private DynamicBox box;
 
@@ -67,10 +66,6 @@ public class PharmacyActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_pharmacy);
-
-//    dialog = new Dialog(this, R.style.AppTheme);
-//    dialog.setContentView(R.layout.dialog_loading);
-//    dialog.show();
 
     rv = (RecyclerView) findViewById(R.id.recycler_view);
     if (rv != null) {
@@ -191,6 +186,8 @@ public class PharmacyActivity extends AppCompatActivity {
 
       if (actionBar != null) {
         actionBar.setTitle(patient.getLastNameSpaceFirstName());
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
       }
 
     }
@@ -300,14 +297,7 @@ public class PharmacyActivity extends AppCompatActivity {
             if (rv != null) {
               rv.setAdapter(new prescriptionRVAdapter());
               rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-              new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
-                @Override
-                public void run() {
-//                dialog.dismiss();
-                  box.hideAll();
-                  //TODO dismiss animation
-                }
-              }, 1000);
+              box.hideAll();
             }
           }
         } else {
@@ -350,6 +340,18 @@ public class PharmacyActivity extends AppCompatActivity {
       }
     }
     return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        // app icon in action bar clicked; goto parent activity.
+        this.finish();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   private class prescriptionsRVViewHolder extends RecyclerView.ViewHolder {
