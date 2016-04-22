@@ -251,21 +251,21 @@ public class VisitDetailFragment extends Fragment {
                 tvConsultationVisitId.setText("Visit ID: " + consultation.getVisitId());
                 linearLayout.addView(tvConsultationVisitId);
               }
-              if (triage.getHeight() != null){
-                TextView textView4 = new TextView(context);
-                textView4.setText(String.valueOf(triage.getHeight()));
-                linearLayout.addView(textView4);
-              }
-              if (triage.getRemark() != null){
-                TextView textView5 = new TextView(context);
-                textView5.setText(triage.getRemark());
-                linearLayout.addView(textView5);
-              }
-              if (triage.getChiefComplains() != null){
-                TextView textView7 = new TextView(context);
-                textView7.setText(triage.getChiefComplains());
-                linearLayout.addView(textView7);
-              }
+//              if (triage.getHeight() != null){
+//                TextView textView4 = new TextView(context);
+//                textView4.setText(String.valueOf(triage.getHeight()));
+//                linearLayout.addView(textView4);
+//              }
+//              if (triage.getRemark() != null){
+//                TextView textView5 = new TextView(context);
+//                textView5.setText(triage.getRemark());
+//                linearLayout.addView(textView5);
+//              }
+//              if (triage.getChiefComplains() != null){
+//                TextView textView7 = new TextView(context);
+//                textView7.setText(triage.getChiefComplains());
+//                linearLayout.addView(textView7);
+//              }
               }
             }
           } else {
