@@ -212,7 +212,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return personalDataFragment;
         case 1:
           if (vitalSignFragment == null){
-            vitalSignFragment = VitalSignFragment.newInstance("","");
+            vitalSignFragment = VitalSignFragment.newInstance();
           }
           return vitalSignFragment;
         case 2:
