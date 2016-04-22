@@ -148,7 +148,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), PatientVisitEditActivity.class);
-        //extra: triage
+
         startActivity(intent);
       }
     });

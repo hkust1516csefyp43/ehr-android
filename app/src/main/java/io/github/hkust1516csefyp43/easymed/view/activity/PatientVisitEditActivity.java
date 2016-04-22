@@ -155,9 +155,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     }
 
 
-
-
-
     //if patient comes with visit_id >> get triage or both triage and consultation if exist
 
 
@@ -165,9 +162,21 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     if (thisPatient != null && supportActionBar != null) {
       supportActionBar.setTitle(thisPatient.getLastNameSpaceFirstName());
     }
+    if (thisPatient == null && supportActionBar != null) {
+      supportActionBar.setTitle("New Patient");
+    }
     //set toolbar subtitle (clinic name)
     //cc button (only in consultation)
     //confirm button >> dialog, progressbar, (some dialog if successful)
+  }
+
+  @Override
+  public boolean onPrepareOptionsMenu(Menu menu) {
+    if (thisPatient == null){
+      MenuItem menuItem3 = menu.findItem(R.id.history);
+      menuItem3.setVisible(false);
+    }
+    return super.onPrepareOptionsMenu(menu);
   }
 
   @Override

@@ -96,60 +96,62 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
     //TODO /v2/visits/ token patient_id >> populate ui accordingly
     //>> get tcp of each visits >> the visit fragment (not create yet) will handle it
 
-    OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-    ohc1.readTimeout(1, TimeUnit.MINUTES);
-    ohc1.connectTimeout(1, TimeUnit.MINUTES);
-    Retrofit retrofit = new Retrofit
-        .Builder()
-        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
-        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-        .client(ohc1.build())
-        .build();
-    v2API.visits visitService = retrofit.create(v2API.visits.class);
-    Call<List<Visit>> visitsCall = visitService.getVisits("1", null, thisPatient.getPatientId());
-    visitsCall.enqueue(new Callback<List<Visit>>() {
-      @Override
-      public void onResponse(Call<List<Visit>> call, Response<List<Visit>> response) {
+    if (thisPatient != null) {
+      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+      ohc1.readTimeout(1, TimeUnit.MINUTES);
+      ohc1.connectTimeout(1, TimeUnit.MINUTES);
+      Retrofit retrofit = new Retrofit
+          .Builder()
+          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+          .client(ohc1.build())
+          .build();
+      v2API.visits visitService = retrofit.create(v2API.visits.class);
+      Call<List<Visit>> visitsCall = visitService.getVisits("1", null, thisPatient.getPatientId());
+      visitsCall.enqueue(new Callback<List<Visit>>() {
+        @Override
+        public void onResponse(Call<List<Visit>> call, Response<List<Visit>> response) {
 
-        visits = response.body();
-        if (tabLayout != null && viewPager != null) {
-          for (Visit v: visits) {
-            tabLayout.addTab(tabLayout.newTab().setText(Util.dateInStringOrToday(v.getCreateTimestamp())));
+          visits = response.body();
+          if (tabLayout != null && viewPager != null) {
+            for (Visit v: visits) {
+              tabLayout.addTab(tabLayout.newTab().setText(Util.dateInStringOrToday(v.getCreateTimestamp())));
+            }
+            viewPager.setAdapter(new patientHistory(getSupportFragmentManager()));
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+              @Override
+              public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+              }
+
+              @Override
+              public void onTabUnselected(TabLayout.Tab tab) {
+
+              }
+
+              @Override
+              public void onTabReselected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+              }
+            });
           }
-          viewPager.setAdapter(new patientHistory(getSupportFragmentManager()));
-          viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-          tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-              viewPager.setCurrentItem(tab.getPosition());
-            }
 
+          new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
+            public void run() {
+              dialog.dismiss();
+              //TODO dismiss animation
             }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-              viewPager.setCurrentItem(tab.getPosition());
-            }
-          });
+          }, 1000);
         }
 
-        new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
-          @Override
-          public void run() {
-            dialog.dismiss();
-            //TODO dismiss animation
-          }
-        }, 1000);
-      }
+        @Override
+        public void onFailure(Call<List<Visit>> call, Throwable t) {
 
-      @Override
-      public void onFailure(Call<List<Visit>> call, Throwable t) {
-
-      }
-    });
+        }
+      });
+    }
   }
 
   @Override
