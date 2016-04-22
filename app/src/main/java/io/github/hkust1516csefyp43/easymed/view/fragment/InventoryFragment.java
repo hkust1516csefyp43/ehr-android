@@ -73,7 +73,7 @@ public class InventoryFragment extends Fragment {
 
     viewPager.setAdapter(new medicationVariantsPagesAdapter(getFragmentManager()));
     tabLayout.setupWithViewPager(viewPager);
-    tabLayout.removeAllTabs();
+    tabLayout.removeAllTabs();        //because for some stupid reason setupwithviewpager will add 2 tabs automagically
 
     tabLayout.addTab(tabLayout.newTab().setText("Out of stock"));
     tabLayout.addTab(tabLayout.newTab().setText("Inadequate"));
