@@ -32,6 +32,7 @@ public class Const {
     public static final String IS_TRIAGE = "GpjBxP987NT5DBWu";
     public static final String WHOLE_VISIT = "c8p1Zm57ZbMm6kv1";
     public static final String WHOLE_CONSULTATION = "EmtnSNvzMU1FRqxp";
+    public static final String WHICH_MV_PAGE = "6mx1eqGFCdmjCVua";
   }
 
   public class CacheKey {

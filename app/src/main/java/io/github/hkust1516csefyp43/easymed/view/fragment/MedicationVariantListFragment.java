@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit;
+package io.github.hkust1516csefyp43.easymed.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,18 +9,23 @@ import android.view.ViewGroup;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 
-public class ChiefComplaintFragment extends Fragment {
+public class MedicationVariantListFragment extends Fragment {
   private OnFragmentInteractionListener mListener;
+  private static String key = Const.BundleKey.WHICH_MV_PAGE;
 
-  public static ChiefComplaintFragment newInstance(String param1, String param2) {
-    ChiefComplaintFragment fragment = new ChiefComplaintFragment();
+  private int whichPage;
+
+  public static MedicationVariantListFragment newInstance(int whichPage) {
+    MedicationVariantListFragment fragment = new MedicationVariantListFragment();
     Bundle args = new Bundle();
+    args.putInt(key, whichPage);
     fragment.setArguments(args);
     return fragment;
   }
 
-  public ChiefComplaintFragment() {
+  public MedicationVariantListFragment() {
     // Required empty public constructor
   }
 
@@ -28,12 +33,15 @@ public class ChiefComplaintFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
+      whichPage = getArguments().getInt(key);
     }
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_chief_complaint, container, false);
+    //whichPage are 0(out of stock), 1(inadequate) or 2(enough)
+    //recyclerview, call api, fill the list, add swipe refresh, fab >> new activity
+    return inflater.inflate(R.layout.fragment_medication_variant_list, container, false);
   }
 
   @Override
@@ -51,4 +59,5 @@ public class ChiefComplaintFragment extends Fragment {
     super.onDetach();
     mListener = null;
   }
+
 }

@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -45,11 +48,6 @@ public class PatientVisitEditActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     viewPager = (ViewPager) findViewById(R.id.viewPager);
-    if (tabLayout != null && viewPager != null) {
-      viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-      //viewpager need to set page adapter first
-//    tabLayout.setupWithViewPager(viewPager);
-    }
 
     setSupportActionBar(toolbar);
     supportActionBar = getSupportActionBar();
@@ -118,6 +116,12 @@ public class PatientVisitEditActivity extends AppCompatActivity {
       }
     }
 
+//    if (tabLayout != null && viewPager != null) {
+//      viewPager.setAdapter(new patientVisitEditViewPagerAdapter(getSupportFragmentManager()));
+//      viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//      tabLayout.setupWithViewPager(viewPager);
+//    }
+
     //if patient comes with visit_id >> get triage or both triage and consultation if exist
 
 
@@ -149,6 +153,67 @@ public class PatientVisitEditActivity extends AppCompatActivity {
         return true;
       default:
         return super.onOptionsItemSelected(item);
+    }
+  }
+
+  private class patientVisitEditViewPagerAdapter extends FragmentStatePagerAdapter {
+
+    public patientVisitEditViewPagerAdapter(FragmentManager fm) {
+      super(fm);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+      return null;
+//      switch (position) {
+//        case 1:
+//          break;
+//        case 2:
+//          break;
+//        case 3:
+//        break;
+//        case 4:
+//        break;
+//        case 5:
+//        break;
+//        case 6:
+//        break;
+//        case 7:
+//        break;
+//        case 8:
+//          break;
+//        case 9:
+//        break;
+//        case 10:
+//        break;
+//        case 11:
+//        break;
+//        case 12:
+//        break;
+//        case 13:
+//        break;
+//        case 14:
+//        break;
+//        case 15:
+//          break;
+//        case 16:
+//        break;
+//        case 17:
+//        break;
+//        case 18:
+//        break;
+//        case 19:
+//        break;
+//        case 20:
+//        break;
+//        case 21:
+//        break;
+//      }
+    }
+
+    @Override
+    public int getCount() {
+      return tabs.size();
     }
   }
 }

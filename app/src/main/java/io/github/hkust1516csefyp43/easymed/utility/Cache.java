@@ -110,4 +110,10 @@ public class Cache {
       clearNotifications(context);
     }
   }
+
+  public static class Synchronisation {
+    //last push
+    //last pull
+    //
+  }
 }

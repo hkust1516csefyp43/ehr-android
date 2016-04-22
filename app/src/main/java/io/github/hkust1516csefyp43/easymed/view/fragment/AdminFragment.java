@@ -53,6 +53,9 @@ public class AdminFragment extends Fragment {
       toggle.syncState();
     }
 
+    //TODO synchronize
+    //TODO data management
+
     return view;
   }
 
@@ -62,8 +65,7 @@ public class AdminFragment extends Fragment {
     if (context instanceof OnFragmentInteractionListener) {
       mListener = (OnFragmentInteractionListener) context;
     } else {
-      throw new RuntimeException(context.toString()
-          + " must implement OnFragmentInteractionListener");
+      throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
     }
   }
 

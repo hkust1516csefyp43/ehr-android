@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -69,28 +71,15 @@ public class InventoryFragment extends Fragment {
     tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
     viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
+    viewPager.setAdapter(new medicationVariantsPagesAdapter(getFragmentManager()));
+    tabLayout.setupWithViewPager(viewPager);
+    tabLayout.removeAllTabs();
+
     tabLayout.addTab(tabLayout.newTab().setText("Out of stock"));
     tabLayout.addTab(tabLayout.newTab().setText("Inadequate"));
     tabLayout.addTab(tabLayout.newTab().setText("Enough"));
-    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-      @Override
-      public void onTabSelected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
-      }
 
-      @Override
-      public void onTabUnselected(TabLayout.Tab tab) {
-
-      }
-
-      @Override
-      public void onTabReselected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
-      }
-    });
-
-//    viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
-//    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
     floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
     floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
@@ -118,5 +107,22 @@ public class InventoryFragment extends Fragment {
   public void onDetach() {
     super.onDetach();
     mListener = null;
+  }
+
+  private class medicationVariantsPagesAdapter extends FragmentPagerAdapter {
+
+    public medicationVariantsPagesAdapter(FragmentManager fm) {
+      super(fm);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+      return MedicationVariantListFragment.newInstance(position);
+    }
+
+    @Override
+    public int getCount() {
+      return 3;
+    }
   }
 }
