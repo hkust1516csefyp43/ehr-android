@@ -14,6 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -48,21 +52,25 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_patient_visit_read_only);
-
     final Dialog dialog = new Dialog(this, R.style.AppTheme);
     dialog.setContentView(R.layout.dialog_loading);
     dialog.show();
 
+    setContentView(R.layout.activity_patient_visit_read_only);
+
+    viewPager = (ViewPager) findViewById(R.id.viewpager);
+    tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
     setSupportActionBar(toolbar);
+
+    ImageView ivProfilePic = (ImageView) findViewById(R.id.profile_pic);
 
     thisPatient = (Patient) this.getIntent().getSerializableExtra(Const.BundleKey.READ_ONLY_PATIENT);
     fabOn = getIntent().getBooleanExtra(Const.BundleKey.ON_OR_OFF, false);                          //TODO What should the default be?
     //TODO get extra triage
     //TODO get extra consultation
 
-    tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     if (tabLayout != null) {
       tabLayout.addTab(tabLayout.newTab().setText("Bio"));
     }
@@ -81,7 +89,9 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
       }
     }
 
-    viewPager = (ViewPager) findViewById(R.id.viewpager);
+    if (ivProfilePic != null && thisPatient != null) {
+      ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(thisPatient.getLastNameSpaceFirstName())));
+    }
 
     //TODO /v2/visits/ token patient_id >> populate ui accordingly
     //>> get tcp of each visits >> the visit fragment (not create yet) will handle it

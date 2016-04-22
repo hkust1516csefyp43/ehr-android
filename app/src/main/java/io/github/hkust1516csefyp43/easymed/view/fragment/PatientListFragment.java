@@ -291,9 +291,7 @@ public class PatientListFragment extends Fragment{
         name.append(aPatient.getFirstName());
         holder.patientName.setText(name.toString());
         holder.nativeName.setText(aPatient.getNativeName());
-        int color = ColorGenerator.MATERIAL.getColor(aPatient.getLastNameSpaceFirstName());
-        TextDrawable textDrawable = TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), color);
-        holder.proPic.setImageDrawable(textDrawable);
+        holder.proPic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), ColorGenerator.MATERIAL.getColor(aPatient.getLastNameSpaceFirstName())));
 
         StringBuilder subtitle = new StringBuilder();
         if (aPatient.getGenderId() != null) {

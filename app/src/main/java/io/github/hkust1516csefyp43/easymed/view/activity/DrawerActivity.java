@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -77,6 +78,9 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (navigationView != null) {
       TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView);
       uEmail.setText(currentUser.getEmail());
+      ImageView uProPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
+      Log.d(TAG, "qqq" + currentUser.toString());
+//      uProPic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), ColorGenerator.MATERIAL.getColor(aPatient.getLastNameSpaceFirstName())));
       navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {

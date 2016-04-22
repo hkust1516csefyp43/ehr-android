@@ -17,9 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -33,6 +36,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.Prescription;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -78,12 +82,17 @@ public class PharmacyActivity extends AppCompatActivity {
     }
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
     setSupportActionBar(toolbar);
 
     ActionBar actionBar = getSupportActionBar();
 
     if (patient != null) {
       Log.d(TAG, "patient is not null: " + patient.toString());
+      ImageView ivProfilePic = (ImageView) findViewById(R.id.profile_pic);
+      if (ivProfilePic != null) {
+        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(patient.getLastNameSpaceFirstName())));
+      }
       if (patient.getVisitId() != null) {
         Log.d(TAG, "vid exist: " + patient.getVisitId());
 

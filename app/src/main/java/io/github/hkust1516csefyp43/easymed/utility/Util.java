@@ -164,47 +164,6 @@ public class Util {
     return Color.rgb(r, g, b);
   }
 
-  /**
-   * r >> first letter >> 1-37 >> 0-255 >> round(256x/37)
-   * g >> second letter >> 1-38 >> 0-255 >> round(256y/38)
-   * b >> first letter * second letter >> 1-1406 >> 0-255 >> round(256z/1406)
-   *
-   * return a color based on the text
-   * logic:
-   * 1. map the first letter to 1-37 (0-9, a-z, space) >> preR
-   * 2. map the second letter to 1-38 (null, 0-9, a-z, space) >> preG
-   * 3. third number = multiply of the first 2 >> preB
-   * 4. map preR to 0-255 >> R
-   * 5. map preG to 0-255 >> G
-   * 6. map preB to 0-255 >> B
-   * 7. return color
-   *
-   * @param text the 1/2 letter(s) on the TextDrawable
-   * @return a color-int
-   */
-  public static int getTextDrawableColor(String text) {
-    if (text.length() > 2) {
-      return getRandomColor();
-    } else {
-      String textLC = text.toLowerCase(Locale.ENGLISH);
-      Character first = textLC.charAt(0);         //extract first char >> r
-      Character second;
-      if (textLC.length() < 2)
-        second = null;
-      else
-        second = textLC.charAt(1);              //extract second char >> g
-      int preR = charToInt(first);                //map first char to 1-37
-      int preG = charToInt(second);               //map second char to 1-38
-      int preB = preR * preG;                     //r*g >> b (should match 1-1406)
-      int r = 256 * preR / 37;
-      int g = 256 * preG / 38;
-      int b = 256 * preB / 1406;
-//            Log.d("qqq63", text + " >> " + preR + "," + preG + "," + preB);
-//            Log.d("qqq64", text + " >> " + r + "," + g + "," + b);
-      return Color.rgb(r, g, b);
-    }
-  }
-
   private static int charToInt(Character c) {
     if (c == null)                      //null >> 1
       return 1;
