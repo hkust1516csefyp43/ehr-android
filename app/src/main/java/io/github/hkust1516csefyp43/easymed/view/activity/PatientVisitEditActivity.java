@@ -207,7 +207,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       switch (position){
         case 0:
           if (personalDataFragment == null){
-            personalDataFragment = PersonalDataFragment.newInstance("", "");
+            personalDataFragment = PersonalDataFragment.newInstance(thisPatient);
           }
           return personalDataFragment;
         case 1:
@@ -260,7 +260,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         case 20:
           return pregnancyFragment = PregnancyFragment.newInstance("","");
         default:
-          return personalDataFragment.newInstance("","");
+          return personalDataFragment.newInstance(thisPatient);
       }
     }
 
