@@ -253,9 +253,17 @@ public interface v2API {
   }
 
   interface genders {
+
+
     @GET("genders")
     Call<List<Gender>> getGenders(
         @Header("token") String token
+    );
+
+    @GET("gender/{id}")
+    Call<Gender> getGender(
+        @Header("token") String token,
+        @Path("id") String id
     );
 
     @POST("genders/")
