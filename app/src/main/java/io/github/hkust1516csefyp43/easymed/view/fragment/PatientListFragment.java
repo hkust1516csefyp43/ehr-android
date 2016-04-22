@@ -323,7 +323,7 @@ public class PatientListFragment extends Fragment{
                 break;
               case Const.PatientListPageId.PRE_CONSULTATION:
                 Intent intent1 = new Intent(getContext(), PatientVisitEditActivity.class);
-                intent1.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
+                intent1.putExtra(Const.BundleKey.EDIT_PATIENT, aPatient);
                 intent1.putExtra(Const.BundleKey.ON_OR_OFF, true);
                 intent1.putExtra(Const.BundleKey.IS_TRIAGE, false);
                 startActivity(intent1);

@@ -220,6 +220,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       //Trigger AboutLibrary
       new LibsBuilder()
           .withActivityTitle("About")
+          .withFields(R.string.class.getFields())
           .withAboutIconShown(true)
           .withAboutVersionShown(true)
           .withVersionShown(true)

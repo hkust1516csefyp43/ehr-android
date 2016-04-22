@@ -36,6 +36,7 @@ public class PatientVisitEditActivity extends AppCompatActivity {
 
   private TabLayout tabLayout;
   private ViewPager viewPager;
+  private ActionBar supportActionBar;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +52,11 @@ public class PatientVisitEditActivity extends AppCompatActivity {
     }
 
     setSupportActionBar(toolbar);
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
+    supportActionBar = getSupportActionBar();
+    if (supportActionBar != null) {
       //Set patient name as title
-      actionBar.setDisplayHomeAsUpEnabled(true);
-      actionBar.setDisplayShowHomeEnabled(true);
+      supportActionBar.setDisplayHomeAsUpEnabled(true);
+      supportActionBar.setDisplayShowHomeEnabled(true);
     }
 
     //get extra
@@ -121,6 +122,9 @@ public class PatientVisitEditActivity extends AppCompatActivity {
 
 
     //set toolbar title (last name first name)
+    if (thisPatient != null && supportActionBar != null) {
+      supportActionBar.setTitle(thisPatient.getLastNameSpaceFirstName());
+    }
     //set toolbar subtitle (clinic name)
     //cc button (only in consultation)
     //confirm button >> dialog, progressbar, (some dialog if successful)
@@ -130,8 +134,10 @@ public class PatientVisitEditActivity extends AppCompatActivity {
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater menuInflater = getMenuInflater();
     menuInflater.inflate(R.menu.menu_patient_edit, menu);
-    MenuItem menuItem = menu.findItem(R.id.confirm);
-    menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
+    MenuItem menuItem1 = menu.findItem(R.id.confirm);
+    menuItem1.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
+    MenuItem menuItem2 = menu.findItem(R.id.history);
+    menuItem2.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_history).color(Color.WHITE).actionBar());
     return true;
   }
   @Override

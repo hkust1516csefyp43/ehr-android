@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.Prescription;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
+import mehdi.sakout.dynamicbox.DynamicBox;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -52,6 +54,7 @@ public class PharmacyActivity extends AppCompatActivity {
 
   private Dialog dialog;
   private RecyclerView rv;
+  private DynamicBox box;
 
   private Patient patient;
 
@@ -65,11 +68,15 @@ public class PharmacyActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_pharmacy);
 
-    dialog = new Dialog(this, R.style.AppTheme);
-    dialog.setContentView(R.layout.dialog_loading);
-    dialog.show();
+//    dialog = new Dialog(this, R.style.AppTheme);
+//    dialog.setContentView(R.layout.dialog_loading);
+//    dialog.show();
 
     rv = (RecyclerView) findViewById(R.id.recycler_view);
+    if (rv != null) {
+      box = new DynamicBox(this,rv);
+      box.showLoadingLayout();
+    }
 
     //get extra patient (w/ visit_id)
     Intent intent = getIntent();
@@ -116,7 +123,7 @@ public class PharmacyActivity extends AppCompatActivity {
             //TODO get name for each one
             if (response != null) {
               if (response.body() != null) {
-                if (response.body().size() >=1 ) {
+                if (response.body().size() >= 1 ) {
                   prescriptions = response.body();
                   Log.d(TAG, prescriptions.toString());
                   for (int i = 0; i < prescriptions.size(); i++) {
@@ -133,7 +140,7 @@ public class PharmacyActivity extends AppCompatActivity {
                               prescriptions.get(j).setMedicationName(response.body().getMedication());
                               Log.d(TAG, "new name: " + response.body().getMedication());
                               if (theWholeListOfPrescriptionsGotName()) {
-                                showUI();
+                                showUI(null);
                               }
                             } else {
                               onFailure(null, new Throwable("Medication have no name -_-"));
@@ -152,8 +159,11 @@ public class PharmacyActivity extends AppCompatActivity {
                         //>>solution: set the medication name to Const.EMPTY_STRING then check again
                         t.printStackTrace();
                         prescriptions.get(j).setMedicationName(Const.EMPTY_STRING);
+                        Prescription tempP = prescriptions.get(j);
+                        tempP.setMedicationName(Const.EMPTY_STRING);
+                        prescriptions.set(j, tempP);
                         if (theWholeListOfPrescriptionsGotName()) {
-                          showUI();
+                          showUI(null);
                         }
                       }
                     });
@@ -174,7 +184,7 @@ public class PharmacyActivity extends AppCompatActivity {
           @Override
           public void onFailure(Call<List<Prescription>> call, Throwable t) {
             t.printStackTrace();
-            showUI();
+            showUI(t);
           }
         });
       }
@@ -269,38 +279,58 @@ public class PharmacyActivity extends AppCompatActivity {
     finish();
   }
 
-  private void showUI() {
-    if (prescriptions != null) {
-      Log.d(TAG, "before cleanup" + prescriptions.size());
-      //clean up invalid prescriptions
-      if (prescriptions.size() >= 1) {
-        List<Prescription> newPrescriptions = new ArrayList<>();
-        for (Prescription p: prescriptions) {
-          if (p.getMedicationName() != null) {
-            if (p.getMedicationName() != Const.EMPTY_STRING) {
-              newPrescriptions.add(p);
+  private void showUI(@Nullable Throwable throwable) {
+    if (throwable == null) {
+      if (prescriptions != null) {
+        Log.d(TAG, "before cleanup" + prescriptions.size());
+        //clean up invalid prescriptions
+        if (prescriptions.size() >= 1) {
+          List<Prescription> newPrescriptions = new ArrayList<>();
+          for (Prescription p: prescriptions) {
+            if (p.getMedicationName() != null) {
+              if (p.getMedicationName() != Const.EMPTY_STRING) {
+                newPrescriptions.add(p);
+              }
             }
           }
-        }
-        prescriptions = newPrescriptions;
-        Log.d(TAG, "after cleanup" + prescriptions.size());
-        if (dialog != null) {
-          //TODO set adapters and stuff
-          if (rv != null) {
-            rv.setAdapter(new prescriptionRVAdapter());
-            rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-            new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
-              @Override
-              public void run() {
-                dialog.dismiss();
-                //TODO dismiss animation
-              }
-            }, 1000);
+          prescriptions = newPrescriptions;
+          Log.d(TAG, "after cleanup" + prescriptions.size());
+          if (box != null) {
+            //TODO set adapters and stuff
+            if (rv != null) {
+              rv.setAdapter(new prescriptionRVAdapter());
+              rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+              new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
+                @Override
+                public void run() {
+//                dialog.dismiss();
+                  box.hideAll();
+                  //TODO dismiss animation
+                }
+              }, 1000);
+            }
           }
+        } else {
+          showNoPrescriptions();
         }
-      } else {
-        //TODO PUT next_station to 1
       }
+    } else {
+      showNoPrescriptions();
+    }
+  }
+
+  private void showNoPrescriptions() {
+    if (box != null) {
+      box.setOtherExceptionTitle("No prescriptions");
+      box.setOtherExceptionMessage("Click here to report to server");
+      box.setClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          //TODO PUT next_station to 1
+          Log.d(TAG, "PUT next_station to 1");
+        }
+      });
+      box.showExceptionLayout();
     }
   }
 
