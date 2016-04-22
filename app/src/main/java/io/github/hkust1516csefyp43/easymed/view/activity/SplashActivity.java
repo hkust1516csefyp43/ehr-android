@@ -34,8 +34,10 @@ public class SplashActivity extends AppCompatActivity {
 
   public void showLogo(){
     ImageView iv = (ImageView) findViewById(R.id.logo);
-    int logo = R.drawable.easymed;
-    Glide.with(this).load(logo).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv);                  //Crash
+    if (iv != null) {
+      int logo = R.drawable.easymed;
+      Glide.with(this).load(logo).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv);
+    }
   }
 
   private class SplashLogicAsyncTask extends AsyncTask<Void, Void, Void> {

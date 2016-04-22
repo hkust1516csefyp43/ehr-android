@@ -26,7 +26,9 @@
             android:name=".view.activity.ProfileActivity"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme"/>
-        <activity android:name=".view.activity.SplashActivity">
+        <activity
+            android:name=".view.activity.SplashActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

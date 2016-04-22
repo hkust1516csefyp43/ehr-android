@@ -25,6 +25,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -369,10 +371,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         openEverything();
         User user = new User();
         user.setEmail(mEmail);
+        Answers.getInstance().logLogin(new LoginEvent().putSuccess(true));
         Cache.CurrentUser.setClinic(getApplicationContext(), currentClinic);
         Cache.CurrentUser.setUser(getApplicationContext(), user);
         finish();
       } else {
+        Answers.getInstance().logLogin(new LoginEvent().putSuccess(false));
         mPasswordView.setError(getString(R.string.error_incorrect_password));
         mPasswordView.requestFocus();
       }

@@ -178,6 +178,18 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     menuItem1.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
     MenuItem menuItem2 = menu.findItem(R.id.history);
     menuItem2.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_history).color(Color.WHITE).actionBar());
+    menuItem2.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+      @Override
+      public boolean onMenuItemClick(MenuItem item) {
+        Intent intent = new Intent(getBaseContext(), PatientVisitViewActivity.class);
+        intent.putExtra(Const.BundleKey.ON_OR_OFF, false);
+        if (thisPatient != null) {
+          intent.putExtra(Const.BundleKey.READ_ONLY_PATIENT, thisPatient);
+        }
+        startActivity(intent);
+        return false;
+      }
+    });
     return true;
   }
   @Override
