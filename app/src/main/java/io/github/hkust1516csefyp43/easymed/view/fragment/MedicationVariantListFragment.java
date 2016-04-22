@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.turingtechnologies.materialscrollbar.AlphabetIndicator;
-import com.turingtechnologies.materialscrollbar.DragScrollBar;
 import com.turingtechnologies.materialscrollbar.INameableAdapter;
 
 import java.util.HashMap;
@@ -48,7 +46,7 @@ public class MedicationVariantListFragment extends Fragment {
   private SwipeRefreshLayout swipeRefreshLayout;
   private RecyclerView recyclerView;
   private ProgressBar progressBar;
-  private DragScrollBar dragScrollBar;
+//  private DragScrollBar dragScrollBar;
 
   private int whichPage;
   private int counter = 0;
@@ -225,11 +223,11 @@ public class MedicationVariantListFragment extends Fragment {
           onResume();
         }
       });
-      Context context = getContext();
-      if (context != null) {  //if context is null just skip the drag scroll bar /shrug
-        dragScrollBar = new DragScrollBar(context, recyclerView, true);
-        dragScrollBar.addIndicator(new AlphabetIndicator(getContext()), true);
-      }
+//      Context context = getContext();
+//      if (context != null) {  //if context is null just skip the drag scroll bar /shrug
+//        dragScrollBar = new DragScrollBar(context, recyclerView, true);
+//        dragScrollBar.addIndicator(new AlphabetIndicator(getContext()), true);
+//      }
       swipeRefreshLayout.setVisibility(View.VISIBLE);
     }
   }
@@ -306,7 +304,7 @@ public class MedicationVariantListFragment extends Fragment {
       if (medicationVariants != null) {
         if (medicationVariants.get(element) != null) {
           if (medicationVariants.get(element).getMedicationId() != null) {
-            return medicationVariants.get(element).getMedicationId().charAt(0);
+            return medicationNames.get(medicationVariants.get(element).getMedicationId()).charAt(0);
           }
         }
       }
