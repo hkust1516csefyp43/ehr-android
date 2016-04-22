@@ -54,6 +54,7 @@ public class PharmacyActivity extends AppCompatActivity {
 
   private RecyclerView rv;
   private DynamicBox box;
+  private FloatingActionButton floatingActionButton;
 
   private Patient patient;
 
@@ -192,63 +193,66 @@ public class PharmacyActivity extends AppCompatActivity {
 
     }
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    if (fab != null) {
-      fab.setImageDrawable(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
-      fab.setOnClickListener(new View.OnClickListener() {
+    floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+    if (floatingActionButton != null) {
+      floatingActionButton.setVisibility(View.GONE);
+      floatingActionButton.setImageDrawable(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
+      floatingActionButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
           //TODO click to confirm >> retrofit
-          updateQueue = prescriptions.size();
-          for (final Prescription p: prescriptions) {
-            OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+          if (prescriptions.size() > 0) {
+            updateQueue = prescriptions.size();
+            for (final Prescription p: prescriptions) {
+              OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
 
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+              HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+              logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            ohc1.readTimeout(1, TimeUnit.MINUTES);
-            ohc1.connectTimeout(1, TimeUnit.MINUTES);
+              ohc1.readTimeout(1, TimeUnit.MINUTES);
+              ohc1.connectTimeout(1, TimeUnit.MINUTES);
 
-            ohc1.addInterceptor(logging);
+              ohc1.addInterceptor(logging);
 
-            Retrofit retrofit = new Retrofit
-                .Builder()
-                .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
-                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-                .client(ohc1.build())
-                .build();
-            v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
-            Log.d(TAG, "will update to this: " + p.toString());
-            Call<Prescription> prescriptionCall = prescriptionService.editPrescription("1", p.getId(), p);
-            prescriptionCall.enqueue(new Callback<Prescription>() {
-              @Override
-              public void onResponse(Call<Prescription> call, Response<Prescription> response) {
-                if (response != null) {
-                  Log.d(TAG, "code: " + response.code());
-                  if (response.body() != null) {
-                    Log.d(TAG, "PUT response: " + response.body() + " vs " + p.getId());
-                    if (response.body().getId().compareTo(p.getId()) == 0) {
-                      updateQueue--;
-                      ifFinishLeave();
+              Retrofit retrofit = new Retrofit
+                  .Builder()
+                  .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+                  .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                  .client(ohc1.build())
+                  .build();
+              v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
+              Log.d(TAG, "will update to this: " + p.toString());
+              Call<Prescription> prescriptionCall = prescriptionService.editPrescription("1", p.getId(), p);
+              prescriptionCall.enqueue(new Callback<Prescription>() {
+                @Override
+                public void onResponse(Call<Prescription> call, Response<Prescription> response) {
+                  if (response != null) {
+                    Log.d(TAG, "code: " + response.code());
+                    if (response.body() != null) {
+                      Log.d(TAG, "PUT response: " + response.body() + " vs " + p.getId());
+                      if (response.body().getId().compareTo(p.getId()) == 0) {
+                        updateQueue--;
+                        ifFinishLeave();
+                      } else {
+                        onFailure(null, new Throwable("wrong id??? WTH?"));
+                      }
                     } else {
-                      onFailure(null, new Throwable("wrong id??? WTH?"));
+                      onFailure(null, new Throwable("response body is null"));
                     }
                   } else {
-                    onFailure(null, new Throwable("response body is null"));
+                    onFailure(null, new Throwable("empty response"));
                   }
-                } else {
-                  onFailure(null, new Throwable("empty response"));
                 }
-              }
 
-              @Override
-              public void onFailure(Call<Prescription> call, Throwable t) {
-                t.printStackTrace();
-                updateQueue--;
-                updateError = true;
-                ifFinishLeave();
-              }
-            });
+                @Override
+                public void onFailure(Call<Prescription> call, Throwable t) {
+                  t.printStackTrace();
+                  updateQueue--;
+                  updateError = true;
+                  ifFinishLeave();
+                }
+              });
+            }
           }
         }
       });
@@ -292,6 +296,9 @@ public class PharmacyActivity extends AppCompatActivity {
           }
           prescriptions = newPrescriptions;
           Log.d(TAG, "after cleanup" + prescriptions.size());
+          if (floatingActionButton != null) {
+            floatingActionButton.setVisibility(View.VISIBLE);
+          }
           if (box != null) {
             //TODO set adapters and stuff
             if (rv != null) {
@@ -321,6 +328,9 @@ public class PharmacyActivity extends AppCompatActivity {
         }
       });
       box.showExceptionLayout();
+      if (floatingActionButton != null) {
+        floatingActionButton.setVisibility(View.GONE);
+      }
     }
   }
 
