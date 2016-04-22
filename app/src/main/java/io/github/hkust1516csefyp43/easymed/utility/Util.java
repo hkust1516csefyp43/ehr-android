@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Random;
 
-import io.github.hkust1516csefyp43.easymed.pojo.Patient;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.utility.Const.BMI;
 import io.github.hkust1516csefyp43.easymed.utility.Const.BMI.WeightForAgeStatus;
 

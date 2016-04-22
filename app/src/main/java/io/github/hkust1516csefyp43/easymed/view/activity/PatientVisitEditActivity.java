@@ -19,10 +19,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import io.github.hkust1516csefyp43.easymed.R;
-import io.github.hkust1516csefyp43.easymed.pojo.Consultation;
-import io.github.hkust1516csefyp43.easymed.pojo.Patient;
-import io.github.hkust1516csefyp43.easymed.pojo.Triage;
-import io.github.hkust1516csefyp43.easymed.pojo.Visit;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 
 public class PatientVisitEditActivity extends AppCompatActivity {

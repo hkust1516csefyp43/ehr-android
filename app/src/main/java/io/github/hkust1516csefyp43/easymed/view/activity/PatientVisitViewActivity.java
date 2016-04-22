@@ -24,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.easymed.pojo.Patient;
-import io.github.hkust1516csefyp43.easymed.pojo.Visit;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
@@ -198,96 +198,5 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
     }
   }
 
-//  /**
-//   * Inflate the blank section of the page with content
-//   * TODO make it good looking (material design stuff: spacing, sizes of everything, animation, etc)
-//   */
-////  private void fillTheWholePage() {
-////    LinearLayout llPatientInfo = (LinearLayout) findViewById(R.id.llPatientInfo);
-////    fillPersonalData(llPatientInfo);
-////  }
-//
-//  private void fillPersonalData(LinearLayout l) {
-//    if (l != null) {
-//      TextView tv = new TextView(this);
-//      StringBuilder sb = new StringBuilder();
-//      if (thisPatient.getHonorific() != null) {
-//        sb.append(thisPatient.getHonorific()).append(" ");
-//      }
-//      if (thisPatient.getLastName() != null) {
-//        sb.append(thisPatient.getLastName()).append(" ");
-//      }
-//      if (thisPatient.getMiddleName() != null) {
-//        sb.append(thisPatient.getMiddleName()).append(" ");
-//      }
-//      sb.append(thisPatient.getFirstName());
-//      tv.setText(sb.toString());
-//
-//      TextInputLayout textInputLayout = new TextInputLayout(this);
-//      textInputLayout.addView(tv);
-//
-//      l.addView(textInputLayout);
-//      if (thisPatient.getNativeName() != null) {
-//        TextView tv2 = new TextView(this);
-//        tv2.setText(thisPatient.getNativeName());
-//        TextInputLayout textInputLayout2 = new TextInputLayout(this);
-//        textInputLayout2.addView(tv2);
-//        l.addView(textInputLayout2);
-//      }
-//    }
-//    if (thisPatient.getBirthYear() != null && thisPatient.getBirthMonth() != null && thisPatient.getBirthDate() != null) {
-//      //TODO user can customize display format (order and symbol)
-//      String birthday = "" + thisPatient.getBirthYear() + "/" + thisPatient.getBirthMonth() + "/" + thisPatient.getBirthDate() + " (" + Util.birthdayToAgeString(thisPatient.getBirthYear(), thisPatient.getBirthMonth(), thisPatient.getBirthDate()) + ")";
-//      TextView tv1 = new TextView(this);
-//      tv1.setText(birthday);
-//      l.addView(tv1);
-//    }
-//    //phone
-//    //address
-//    //email address
-//    //gender
-//    //blood type
-//  }
 
 }
-
-//{
-//    "consultation_id": "MSzaXkZFhT5G6B58",
-//    "end_timestamp": "2016-03-07T15:02:25.755Z",
-//    "pe_cardio": null,
-//    "pe_ent": null,
-//    "pe_gastro": null,
-//    "pe_general": null,
-//    "pe_genital": null,
-//    "pe_other": null,
-//    "pe_respiratory": null,
-//    "pe_skin": null,
-//    "preg_breast_feeding": null,
-//    "preg_contraceptive": null,
-//    "preg_curr_preg": null,
-//    "preg_gestration": null,
-//    "preg_lmp": null,
-//    "preg_num_abortion": null,
-//    "preg_num_live_birth": null,
-//    "preg_num_miscarriage": null,
-//    "preg_num_preg": null,
-//    "preg_num_still_birth": null,
-//    "preg_remark": null,
-//    "remark": null,
-//    "rf_alertness": null,
-//    "rf_breathing": null,
-//    "rf_circulation": null,
-//    "rf_defg": null,
-//    "rf_dehydration": null,
-//    "ros_cardio": null,
-//    "ros_ent": null,
-//    "ros_ga": null,
-//    "ros_gastro": null,
-//    "ros_genital": null,
-//    "ros_other": null,
-//    "ros_respi": null,
-//    "ros_skin": null,
-//    "start_timestamp": "2016-03-07T15:02:25.755Z",
-//    "user_id": "acwaeoiwlin",
-//    "visit_id": "41"
-//    }

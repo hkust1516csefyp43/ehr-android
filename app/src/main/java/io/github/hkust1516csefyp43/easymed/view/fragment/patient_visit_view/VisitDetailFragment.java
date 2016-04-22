@@ -25,9 +25,9 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
-import io.github.hkust1516csefyp43.easymed.pojo.Consultation;
-import io.github.hkust1516csefyp43.easymed.pojo.Triage;
-import io.github.hkust1516csefyp43.easymed.pojo.Visit;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import okhttp3.OkHttpClient;
@@ -61,7 +61,7 @@ public class VisitDetailFragment extends Fragment {
   private Visit visit;
   private Triage triage;
   private Consultation consultation;
-  //TODO Pharmacy POJO
+  //TODO prescriptions, documents, related data, etc
   private LinearLayout linearLayout;
 
 
@@ -99,6 +99,12 @@ public class VisitDetailFragment extends Fragment {
       floatingActionButton.setVisibility(View.GONE);
     } else {
       floatingActionButton.setImageDrawable(new IconicsDrawable(getContext()).icon(GoogleMaterial.Icon.gmd_edit).actionBar().color(Color.WHITE));
+      floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+      });
     }
     linearLayout = (LinearLayout) view.findViewById(R.id.ll_visit_info);
     if (linearLayout != null){
@@ -230,36 +236,36 @@ public class VisitDetailFragment extends Fragment {
                 tvConsultationTitle.setTypeface(null, Typeface.BOLD);
                 linearLayout.addView(tvConsultationTitle);
 
-//              if (consultation.getUserId() != null){
-//                TextView tvConsultationUserId = new TextView(context);
-//                tvConsultationUserId.setText("User ID: " + consultation.getUserId());
-//                linearLayout.addView(tvConsultationUserId);
-//              }
+              if (consultation.getUserId() != null){
+                TextView tvConsultationUserId = new TextView(context);
+                tvConsultationUserId.setText("User ID: " + consultation.getUserId());
+                linearLayout.addView(tvConsultationUserId);
+              }
                 if (consultation.getId() != null){
                   TextView tvConsultationId = new TextView(context);
                   tvConsultationId.setText("Consultation ID: " + consultation.getId());
                   linearLayout.addView(tvConsultationId);
                 }
-//              if (consultation.getVisitId() != null){
-//                TextView tvConsultationVisitId = new TextView(context);
-//                tvConsultationVisitId.setText("Visit ID: " + consultation.getVisitId());
-//                linearLayout.addView(tvConsultationVisitId);
-//              }
-//              if (triage.getHeight() != null){
-//                TextView textView4 = new TextView(context);
-//                textView4.setText(String.valueOf(triage.getHeight()));
-//                linearLayout.addView(textView4);
-//              }
-//              if (triage.getRemark() != null){
-//                TextView textView5 = new TextView(context);
-//                textView5.setText(triage.getRemark());
-//                linearLayout.addView(textView5);
-//              }
-//              if (triage.getChiefComplains() != null){
-//                TextView textView7 = new TextView(context);
-//                textView7.setText(triage.getChiefComplains());
-//                linearLayout.addView(textView7);
-//              }
+              if (consultation.getVisitId() != null){
+                TextView tvConsultationVisitId = new TextView(context);
+                tvConsultationVisitId.setText("Visit ID: " + consultation.getVisitId());
+                linearLayout.addView(tvConsultationVisitId);
+              }
+              if (triage.getHeight() != null){
+                TextView textView4 = new TextView(context);
+                textView4.setText(String.valueOf(triage.getHeight()));
+                linearLayout.addView(textView4);
+              }
+              if (triage.getRemark() != null){
+                TextView textView5 = new TextView(context);
+                textView5.setText(triage.getRemark());
+                linearLayout.addView(textView5);
+              }
+              if (triage.getChiefComplains() != null){
+                TextView textView7 = new TextView(context);
+                textView7.setText(triage.getChiefComplains());
+                linearLayout.addView(textView7);
+              }
               }
             }
           } else {
