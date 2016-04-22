@@ -30,6 +30,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ChiefComplaintFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ListOfCardsFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.PersonalDataFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.PregnancyFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.RemarkFragment;
@@ -42,6 +43,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   private ChiefComplaintFragment chiefComplaintFragment;
   private RemarkFragment remarkFragment;
   private PregnancyFragment pregnancyFragment;
+  private ListOfCardsFragment listOfCardsFragment;
 
   private Patient thisPatient;
   private Visit thisVisit;
@@ -228,39 +230,39 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           }
           return remarkFragment;
         case 4:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("HPI");
         case 5:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Previous Medical History");
         case 6:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Family History");
         case 7:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Social History");
         case 8:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Drug History");
         case 9:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Screening");
         case 10:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Allergy");
         case 11:
           return pregnancyFragment = PregnancyFragment.newInstance("","");
         case 12:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Review of System");
         case 13:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Red Flags");
         case 14:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Physical Examination");
         case 15:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis");
         case 16:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Investigation");
         case 17:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Medication");
         case 18:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Advice");
         case 19:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Follow-up");
         case 20:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          return remarkFragment = RemarkFragment.newInstance();
         default:
           return personalDataFragment.newInstance(thisPatient);
       }
