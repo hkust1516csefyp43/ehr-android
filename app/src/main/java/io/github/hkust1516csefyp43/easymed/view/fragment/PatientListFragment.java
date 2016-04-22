@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -288,6 +291,9 @@ public class PatientListFragment extends Fragment{
         name.append(aPatient.getFirstName());
         holder.patientName.setText(name.toString());
         holder.nativeName.setText(aPatient.getNativeName());
+        int color = ColorGenerator.MATERIAL.getColor(aPatient.getLastNameSpaceFirstName());
+        TextDrawable textDrawable = TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), color);
+        holder.proPic.setImageDrawable(textDrawable);
 
         StringBuilder subtitle = new StringBuilder();
         if (aPatient.getGenderId() != null) {

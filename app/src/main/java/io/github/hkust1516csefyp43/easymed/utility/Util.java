@@ -11,9 +11,9 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Random;
 
+import io.github.hkust1516csefyp43.easymed.pojo.Patient;
 import io.github.hkust1516csefyp43.easymed.utility.Const.BMI;
 import io.github.hkust1516csefyp43.easymed.utility.Const.BMI.WeightForAgeStatus;
-import io.github.hkust1516csefyp43.easymed.pojo.Patient;
 
 
 /**
@@ -116,25 +116,21 @@ public class Util {
    * @return
    */
   public static String getTextDrawableText(Patient p) {
-    String op;
     if (p != null) {
-      if (p.getFirstName() != null) {
-        if (p.getLastName() != null) {
-          op = p.getFirstName().substring(0, 1) + p.getLastName().substring(0, 1);
-        } else {
-          op = p.getFirstName().substring(0, 1);
-        }
-      } else {
-        if (p.getLastName() != null) {
-          op = p.getLastName().substring(0, 1);
-        } else {
-          op = "?";
-        }
+      StringBuilder output = new StringBuilder();
+      if (p.getLastName() != null) {
+        output.append(p.getLastName().substring(0,1));
       }
-    } else {
-      op = "?";
+      if (p.getFirstName() != null) {
+        output.append(p.getFirstName().substring(0,1));
+      }
+      if (output.toString().length() < 1 || output.toString().length() > 2) {
+        return "?";
+      } else {
+        return output.toString().toUpperCase(Locale.ENGLISH);
+      }
     }
-    return op.toUpperCase(Locale.ENGLISH);
+    return "?";
   }
 
   /**
