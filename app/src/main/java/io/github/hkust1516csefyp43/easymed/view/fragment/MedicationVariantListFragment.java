@@ -20,6 +20,7 @@ import com.turingtechnologies.materialscrollbar.INameableAdapter;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -50,6 +51,7 @@ public class MedicationVariantListFragment extends Fragment {
   private DragScrollBar dragScrollBar;
 
   private int whichPage;
+  private int counter = 0;
 
   private List<MedicationVariant> medicationVariants;
   private HashSet<String> medicationIdHashSet = new HashSet<>();
@@ -86,16 +88,14 @@ public class MedicationVariantListFragment extends Fragment {
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
     progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
     progressBar.setVisibility(View.VISIBLE);
+    refresh(view);
     return view;
   }
 
-  @Override
-  public void onResume() {
-    super.onResume();
-    View view = getView();
+  private void refresh(View view) {
     if (view != null) {
       if (recyclerView != null) {
-        Context context = getContext();
+        final Context context = getContext();
         if (context != null)
           recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -130,48 +130,52 @@ public class MedicationVariantListFragment extends Fragment {
                     medicationIdHashSet.add(mv.getMedicationId());
                   }
                   Log.d(TAG, "after: " + medicationIdHashSet.size());
-                  for (int i = 0; i < medicationIdHashSet.size(); i++) {
-
-                    Object o = medicationIdHashSet.toArray()[i];
-                    if (o instanceof MedicationVariant) {
-                      final MedicationVariant mv2 = (MedicationVariant) o;
-                      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-                      ohc1.readTimeout(1, TimeUnit.MINUTES);
-                      ohc1.connectTimeout(1, TimeUnit.MINUTES);
-                      Retrofit retrofit = new Retrofit
-                          .Builder()
-                          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
-                          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-                          .client(ohc1.build())
-                          .build();
-                      v2API.medications medicationService = retrofit.create(v2API.medications.class);
-                      Call<Medication> medicationCall1 = medicationService.getMedication("1", mv2.getMedicationId());
-                      medicationCall1.enqueue(new Callback<Medication>() {
-                        @Override
-                        public void onResponse(Call<Medication> call, Response<Medication> response) {
-                          if (response != null) {
-                            if (response.body() != null) {
-                              if (response.body().getMedication() != null) {
-                                medicationNames.put(mv2.getMedicationId(), response.body().getMedication());
-                              } else {
-                                onFailure(null, new Throwable("Medication have no name -_-"));
-                              }
+                  Iterator<String> iterator = medicationIdHashSet.iterator();
+                  while (iterator.hasNext()) {
+                    final String thisOne = iterator.next();
+                    OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+                    ohc1.readTimeout(1, TimeUnit.MINUTES);
+                    ohc1.connectTimeout(1, TimeUnit.MINUTES);
+                    Retrofit retrofit = new Retrofit
+                        .Builder()
+                        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+                        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                        .client(ohc1.build())
+                        .build();
+                    v2API.medications medicationService = retrofit.create(v2API.medications.class);
+                    Call<Medication> medicationCall1 = medicationService.getMedication("1", thisOne);
+                    medicationCall1.enqueue(new Callback<Medication>() {
+                      @Override
+                      public void onResponse(Call<Medication> call, Response<Medication> response) {
+                        if (response != null) {
+                          if (response.body() != null) {
+                            if (response.body().getMedication() != null) {
+                              medicationNames.put(thisOne, response.body().getMedication());
+                              counter++;
+                              Log.d(TAG, "counter: " + counter + "; mhs: " + medicationIdHashSet.size());
+                              if (counter >= medicationIdHashSet.size())
+                                showUI();
                             } else {
-                              onFailure(null, new Throwable("Empty body"));
+                              onFailure(null, new Throwable("Medication have no name -_-"));
                             }
                           } else {
-                            onFailure(null, new Throwable("No response"));
+                            onFailure(null, new Throwable("Empty body"));
                           }
+                        } else {
+                          onFailure(null, new Throwable("No response"));
                         }
+                      }
 
-                        @Override
-                        public void onFailure(Call<Medication> call, Throwable t) {
-                          medicationNames.put(mv2.getMedicationId(), "ID: " +mv2.getMedicationId());
-                        }
-                      });
-                    }
+                      @Override
+                      public void onFailure(Call<Medication> call, Throwable t) {
+                        medicationNames.put(thisOne, "ID: " + thisOne);
+                        counter++;
+                        Log.d(TAG, "counter: " + counter + "; mhs: " + medicationIdHashSet.size());
+                        if (counter >= medicationIdHashSet.size())
+                          showUI();
+                      }
+                    });
                   }
-                  showUI();
                 } else {
                   //TODO show no item ui (not failure, just nothing)
                   showEmptyUI();
@@ -195,6 +199,12 @@ public class MedicationVariantListFragment extends Fragment {
     }
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    refresh(getView());
+  }
+
   private void showError() {
     //TODO
   }
@@ -204,11 +214,10 @@ public class MedicationVariantListFragment extends Fragment {
   }
 
   private void showUI() {
-    if (recyclerView != null) {
+    if (recyclerView != null && swipeRefreshLayout != null) {
       recyclerView.setAdapter(new medicationVariantRecyclerViewAdapter());
       recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
       progressBar.setVisibility(View.GONE);
-      swipeRefreshLayout.setVisibility(View.VISIBLE);
       swipeRefreshLayout.setRefreshing(false);
       swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
         @Override
@@ -221,6 +230,7 @@ public class MedicationVariantListFragment extends Fragment {
         dragScrollBar = new DragScrollBar(context, recyclerView, true);
         dragScrollBar.addIndicator(new AlphabetIndicator(getContext()), true);
       }
+      swipeRefreshLayout.setVisibility(View.VISIBLE);
     }
   }
 
