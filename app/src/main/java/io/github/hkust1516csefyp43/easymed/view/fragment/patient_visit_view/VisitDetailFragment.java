@@ -102,7 +102,10 @@ public class VisitDetailFragment extends Fragment {
       floatingActionButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+          //enter from post triage >> isTriage = true
+          //enter from post consultation >> isTriage = false
+          //enter from post pharmacy >>
+          //enter from not yet
         }
       });
     }

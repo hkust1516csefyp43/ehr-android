@@ -25,6 +25,8 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -80,7 +82,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       uEmail.setText(currentUser.getEmail());
       ImageView uProPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
       Log.d(TAG, "qqq" + currentUser.toString());
-//      uProPic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), ColorGenerator.MATERIAL.getColor(aPatient.getLastNameSpaceFirstName())));
+      uProPic.setImageDrawable(TextDrawable.builder().buildRound("LT", ColorGenerator.MATERIAL.getColor("Louis Tsai")));
       navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
