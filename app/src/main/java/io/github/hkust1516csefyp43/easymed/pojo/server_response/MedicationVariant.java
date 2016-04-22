@@ -17,6 +17,7 @@ public class MedicationVariant implements Serializable {
   @SerializedName("strength")                 String strength;
   @SerializedName("suitcase_id")              String suitcaseId;
   @SerializedName("user_id")                  String userId;
+  String medicationName;
 
   public MedicationVariant() {
   }
@@ -93,6 +94,14 @@ public class MedicationVariant implements Serializable {
     this.userId = userId;
   }
 
+  public String getMedicationName() {
+    return medicationName;
+  }
+
+  public void setMedicationName(String medicationName) {
+    this.medicationName = medicationName;
+  }
+
   @Override
   public String toString() {
     return "MedicationVariant{" +
@@ -105,6 +114,7 @@ public class MedicationVariant implements Serializable {
         ", strength='" + strength + '\'' +
         ", suitcaseId='" + suitcaseId + '\'' +
         ", userId='" + userId + '\'' +
+        ", medicationName='" + medicationName + '\'' +
         '}';
   }
 }

@@ -2,11 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+    android:layout_margin="8dp">
 
     <TextView
+        android:id="@+id/biggest_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="testing"/>
+        android:textSize="22dp"
+        android:text="Name"/>
+
+    <TextView
+        android:id="@+id/bigger_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_marginTop="4dp"
+        android:text="strength and form (if exist)"/>
+
+    <TextView
+        android:id="@+id/big_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_margin="4dp"
+        android:text="remark (if exist)"/>
 
 </LinearLayout>

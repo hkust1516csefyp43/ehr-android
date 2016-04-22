@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,19 +12,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.turingtechnologies.materialscrollbar.AlphabetIndicator;
 import com.turingtechnologies.materialscrollbar.DragScrollBar;
 import com.turingtechnologies.materialscrollbar.INameableAdapter;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.MedicationVariant;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
+import io.github.hkust1516csefyp43.easymed.view.DividerItemDecoration;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -46,6 +52,8 @@ public class MedicationVariantListFragment extends Fragment {
   private int whichPage;
 
   private List<MedicationVariant> medicationVariants;
+  private HashSet<String> medicationIdHashSet = new HashSet<>();
+  private HashMap<String, String> medicationNames = new HashMap();
 
   public static MedicationVariantListFragment newInstance(int whichPage) {
     MedicationVariantListFragment fragment = new MedicationVariantListFragment();
@@ -78,57 +86,113 @@ public class MedicationVariantListFragment extends Fragment {
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
     progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
     progressBar.setVisibility(View.VISIBLE);
+    return view;
+  }
 
-    if (recyclerView != null) {
-      HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-        @Override public void log(String message) {
-          Log.d(TAG, "mvlf: " + message);
-        }
-      });
-      logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-      ohc1.readTimeout(1, TimeUnit.MINUTES);
-      ohc1.connectTimeout(1, TimeUnit.MINUTES);
-      ohc1.addInterceptor(logging);
-      Retrofit retrofit = new Retrofit
-          .Builder()
-          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
-          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-          .client(ohc1.build())
-          .build();
-      v2API.medication_variants medicationVariantService = retrofit.create(v2API.medication_variants.class);
-      Call<List<MedicationVariant>> medicationCall = medicationVariantService.getMedicationVariants("1", whichPage, null);
-      medicationCall.enqueue(new Callback<List<MedicationVariant>>() {
-        @Override
-        public void onResponse(Call<List<MedicationVariant>> call, Response<List<MedicationVariant>> response) {
-          if (response != null) {
-            if (response.body() != null) {
-              if (response.body().size() > 0) {
-                Log.d(TAG, response.body().toString());
-                medicationVariants = response.body();
-                showUI();
+  @Override
+  public void onResume() {
+    super.onResume();
+    View view = getView();
+    if (view != null) {
+      if (recyclerView != null) {
+        Context context = getContext();
+        if (context != null)
+          recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+          @Override public void log(String message) {
+            Log.d(TAG, "mvlf: " + message);
+          }
+        });
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+        ohc1.readTimeout(1, TimeUnit.MINUTES);
+        ohc1.connectTimeout(1, TimeUnit.MINUTES);
+        ohc1.addInterceptor(logging);
+        Retrofit retrofit = new Retrofit
+            .Builder()
+            .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+            .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+            .client(ohc1.build())
+            .build();
+        v2API.medication_variants medicationVariantService = retrofit.create(v2API.medication_variants.class);
+        Call<List<MedicationVariant>> medicationCall = medicationVariantService.getMedicationVariants("1", whichPage, null);
+        medicationCall.enqueue(new Callback<List<MedicationVariant>>() {
+          @Override
+          public void onResponse(Call<List<MedicationVariant>> call, Response<List<MedicationVariant>> response) {
+            if (response != null) {
+              if (response.body() != null) {
+                if (response.body().size() > 0) {
+                  Log.d(TAG, response.body().toString());
+                  medicationVariants = response.body();
+                  Log.d(TAG, "before: " + medicationVariants.size());
+                  for (MedicationVariant mv:medicationVariants) {
+                    medicationIdHashSet.add(mv.getMedicationId());
+                  }
+                  Log.d(TAG, "after: " + medicationIdHashSet.size());
+                  for (int i = 0; i < medicationIdHashSet.size(); i++) {
+
+                    Object o = medicationIdHashSet.toArray()[i];
+                    if (o instanceof MedicationVariant) {
+                      final MedicationVariant mv2 = (MedicationVariant) o;
+                      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+                      ohc1.readTimeout(1, TimeUnit.MINUTES);
+                      ohc1.connectTimeout(1, TimeUnit.MINUTES);
+                      Retrofit retrofit = new Retrofit
+                          .Builder()
+                          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+                          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                          .client(ohc1.build())
+                          .build();
+                      v2API.medications medicationService = retrofit.create(v2API.medications.class);
+                      Call<Medication> medicationCall1 = medicationService.getMedication("1", mv2.getMedicationId());
+                      medicationCall1.enqueue(new Callback<Medication>() {
+                        @Override
+                        public void onResponse(Call<Medication> call, Response<Medication> response) {
+                          if (response != null) {
+                            if (response.body() != null) {
+                              if (response.body().getMedication() != null) {
+                                medicationNames.put(mv2.getMedicationId(), response.body().getMedication());
+                              } else {
+                                onFailure(null, new Throwable("Medication have no name -_-"));
+                              }
+                            } else {
+                              onFailure(null, new Throwable("Empty body"));
+                            }
+                          } else {
+                            onFailure(null, new Throwable("No response"));
+                          }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Medication> call, Throwable t) {
+                          medicationNames.put(mv2.getMedicationId(), "ID: " +mv2.getMedicationId());
+                        }
+                      });
+                    }
+                  }
+                  showUI();
+                } else {
+                  //TODO show no item ui (not failure, just nothing)
+                  showEmptyUI();
+                }
               } else {
-                //TODO show no item ui (not failure, just nothing)
-                showEmptyUI();
+                onFailure(call, new Throwable("empty response body"));
               }
             } else {
-              onFailure(call, new Throwable("empty response body"));
+              onFailure(call, new Throwable("Empty response"));
             }
-          } else {
-            onFailure(call, new Throwable("Empty response"));
           }
-        }
 
-        @Override
-        public void onFailure(Call<List<MedicationVariant>> call, Throwable t) {
-          t.printStackTrace();
-          showError();
-        }
-      });
+          @Override
+          public void onFailure(Call<List<MedicationVariant>> call, Throwable t) {
+            t.printStackTrace();
+            showError();
+          }
+        });
 
+      }
     }
-
-    return view;
   }
 
   private void showError() {
@@ -145,6 +209,13 @@ public class MedicationVariantListFragment extends Fragment {
       recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
       progressBar.setVisibility(View.GONE);
       swipeRefreshLayout.setVisibility(View.VISIBLE);
+      swipeRefreshLayout.setRefreshing(false);
+      swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+          onResume();
+        }
+      });
       Context context = getContext();
       if (context != null) {  //if context is null just skip the drag scroll bar /shrug
         dragScrollBar = new DragScrollBar(context, recyclerView, true);
@@ -170,10 +241,14 @@ public class MedicationVariantListFragment extends Fragment {
   }
 
   public class medicationVariantItemViewHolder extends RecyclerView.ViewHolder {
+    TextView biggest, bigger, big;
 
     public medicationVariantItemViewHolder(View itemView) {
       super(itemView);
       //TODO fill me up
+      biggest = (TextView) itemView.findViewById(R.id.biggest_tv);
+      bigger = (TextView) itemView.findViewById(R.id.bigger_tv);
+      big = (TextView) itemView.findViewById(R.id.big_tv);
     }
 
   }
@@ -190,9 +265,22 @@ public class MedicationVariantListFragment extends Fragment {
     }
 
     @Override
-    public void onBindViewHolder(medicationVariantItemViewHolder holder, int position) {
-      //TODO fill me up
+    public void onBindViewHolder(final medicationVariantItemViewHolder holder, int position) {
       Log.d(TAG, "position: " + position);
+      if (medicationVariants != null) {
+        if (position < medicationVariants.size()) {
+          final MedicationVariant medicationVariant = medicationVariants.get(holder.getAdapterPosition());
+          if (medicationVariant != null) {
+            holder.biggest.setText(medicationNames.get(medicationVariant.getMedicationId()));
+            holder.bigger.setText("name + strength + form");
+            if (medicationVariant.getRemark() == null || medicationVariant.getRemark().length() == 0) {
+              holder.big.setVisibility(View.GONE);
+            } else {
+              holder.big.setText(medicationVariant.getRemark());
+            }
+          }
+        }
+      }
     }
 
     @Override
@@ -205,7 +293,14 @@ public class MedicationVariantListFragment extends Fragment {
 
     @Override
     public Character getCharacterForElement(int element) {
-      return 'y';
+      if (medicationVariants != null) {
+        if (medicationVariants.get(element) != null) {
+          if (medicationVariants.get(element).getMedicationId() != null) {
+            return medicationVariants.get(element).getMedicationId().charAt(0);
+          }
+        }
+      }
+      return '?';
     }
   }
 

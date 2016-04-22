@@ -116,7 +116,6 @@ public class PharmacyActivity extends AppCompatActivity {
           @Override
           public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
 
-            //TODO get name for each one
             if (response != null) {
               if (response.body() != null) {
                 if (response.body().size() >= 1 ) {
