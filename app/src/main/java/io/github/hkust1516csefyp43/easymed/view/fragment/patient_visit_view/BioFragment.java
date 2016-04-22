@@ -1,8 +1,11 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_view;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,9 +58,60 @@ public class BioFragment extends Fragment {
       if (patient != null) {
         Context context = getContext();
         if (context != null) {
-          TextView tv1 = new TextView(context);
-          tv1.setText(patient.toString());
-          llPatientInfo.addView(tv1);
+          TextView tvBioTitle = new TextView(context);
+          tvBioTitle.setText("Basic Information");
+          tvBioTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+          tvBioTitle.setTextColor(Color.BLACK);
+          tvBioTitle.setTypeface(null, Typeface.BOLD);
+          llPatientInfo.addView(tvBioTitle);
+
+          if (patient.getPatientId() != null){
+            TextView tvBioPatientId = new TextView(context);
+            tvBioPatientId.setText("Patient ID: " + patient.getPatientId());
+            llPatientInfo.addView(tvBioPatientId);
+          }
+
+          if (patient.getGenderId() != null){
+            TextView tvBioGender = new TextView(context);
+            tvBioGender.setText("Gender: " + patient.getGenderId());
+            llPatientInfo.addView(tvBioGender);
+          }
+
+          if (patient.getBirthDate() != null) {
+            TextView tvBioBirthDate = new TextView(context);
+            tvBioBirthDate.setText("Birthday: " + patient.getBirthYear() + "/" + patient.getBirthMonth() + "/" + patient.getBirthDate());
+            llPatientInfo.addView(tvBioBirthDate);
+          }
+
+          if (patient.getBloodTypeId() != null) {
+            TextView tvBioBloodType = new TextView(context);
+            tvBioBloodType.setText("Blood type: " + patient.getBloodTypeId());
+            llPatientInfo.addView(tvBioBloodType);
+          }
+
+          if (patient.getPhoneNumberCountryCode() != null) {
+            TextView tvBioPhoneNumberCountryCode = new TextView(context);
+            tvBioPhoneNumberCountryCode.setText("Phone number country code: " + patient.getPhoneNumberCountryCode());
+            llPatientInfo.addView(tvBioPhoneNumberCountryCode);
+          }
+
+          if (patient.getPhoneNumber() != null) {
+            TextView tvPhoneNumber = new TextView(context);
+            tvPhoneNumber.setText("Phone number: " + patient.getPhoneNumber());
+            llPatientInfo.addView(tvPhoneNumber);
+          }
+
+          if (patient.getAddress() != null) {
+            TextView tvBioAddress = new TextView(context);
+            tvBioAddress.setText("Address: " + patient.getAddress());
+            llPatientInfo.addView(tvBioAddress);
+          }
+
+          if (patient.getEmail() != null) {
+            TextView tvBioEmail = new TextView(context);
+            tvBioEmail.setText("Email: " + patient.getEmail());
+            llPatientInfo.addView(tvBioEmail);
+          }
 
 //  /**
 //   * Inflate the blank section of the page with content
