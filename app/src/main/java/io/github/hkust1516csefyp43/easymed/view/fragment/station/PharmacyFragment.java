@@ -15,10 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.github.hkust1516csefyp43.easymed.utility.Const;
-import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
 
 public class PharmacyFragment extends Fragment {
 
@@ -39,7 +39,7 @@ public class PharmacyFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
+    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     toolbar.setTitle("Pharmacy");
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);

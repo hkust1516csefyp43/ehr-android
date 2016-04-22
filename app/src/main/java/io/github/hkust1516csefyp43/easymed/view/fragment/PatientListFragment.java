@@ -263,14 +263,8 @@ public class PatientListFragment extends Fragment{
   }
 
   private class PatientRecyclerViewAdapter extends RecyclerView.Adapter<PatientRecyclerViewViewHolder> {
-    View.OnClickListener onClickListener;
-
     public PatientRecyclerViewAdapter() {
 
-    }
-
-    public PatientRecyclerViewAdapter(View.OnClickListener click) {
-      onClickListener = click;
     }
 
     @Override
