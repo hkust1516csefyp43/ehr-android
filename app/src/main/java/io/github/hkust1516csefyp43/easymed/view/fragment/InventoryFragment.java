@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,9 @@ import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 
 public class InventoryFragment extends Fragment {
-  private OnFragmentInteractionListener mListener;
+  private String TAG = InventoryFragment.class.getSimpleName();
 
+  private OnFragmentInteractionListener mListener;
   private FloatingActionButton floatingActionButton;
   private TabLayout tabLayout;
   private ViewPager viewPager;
@@ -57,6 +59,7 @@ public class InventoryFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     toolbar.setTitle("Inventory");
+    toolbar.setSubtitle("In this suitcase");
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -71,15 +74,30 @@ public class InventoryFragment extends Fragment {
     tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
     viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-    viewPager.setAdapter(new medicationVariantsPagesAdapter(getFragmentManager()));
-    tabLayout.setupWithViewPager(viewPager);
-    tabLayout.removeAllTabs();        //because for some stupid reason setupwithviewpager will add 2 tabs automagically
+    if (viewPager != null && tabLayout != null) {
+      tabLayout.addTab(tabLayout.newTab().setText("Out of stock"));
+      tabLayout.addTab(tabLayout.newTab().setText("Inadequate"));
+      tabLayout.addTab(tabLayout.newTab().setText("Enough"));
+      tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+          viewPager.setCurrentItem(tab.getPosition());
+        }
 
-    tabLayout.addTab(tabLayout.newTab().setText("Out of stock"));
-    tabLayout.addTab(tabLayout.newTab().setText("Inadequate"));
-    tabLayout.addTab(tabLayout.newTab().setText("Enough"));
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
 
-    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+          viewPager.setCurrentItem(tab.getPosition());
+        }
+      });
+
+      viewPager.setAdapter(new medicationVariantsPagesAdapter(getFragmentManager()));
+      viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    }
 
     floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
     floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
@@ -117,6 +135,7 @@ public class InventoryFragment extends Fragment {
 
     @Override
     public Fragment getItem(int position) {
+      Log.d(TAG, "starting mvll page " + position);
       return MedicationVariantListFragment.newInstance(position);
     }
 

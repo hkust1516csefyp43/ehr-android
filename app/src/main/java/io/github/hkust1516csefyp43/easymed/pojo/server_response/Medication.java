@@ -53,7 +53,7 @@ public class Medication implements Serializable {
   public String toString() {
     return "Medication{" +
         "createTimestamp=" + createTimestamp +
-        ", medication='" + medication + '\'' +
+        ", medications='" + medication + '\'' +
         ", medicationId='" + medicationId + '\'' +
         ", userId='" + userId + '\'' +
         '}';

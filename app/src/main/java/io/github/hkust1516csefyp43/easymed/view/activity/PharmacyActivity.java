@@ -124,7 +124,7 @@ public class PharmacyActivity extends AppCompatActivity {
                   Log.d(TAG, prescriptions.toString());
                   for (int i = 0; i < prescriptions.size(); i++) {
                     Prescription p = prescriptions.get(i);
-                    v2API.medication medicationService = retrofit.create(v2API.medication.class);
+                    v2API.medications medicationService = retrofit.create(v2API.medications.class);
                     Call<Medication> medicationCall = medicationService.getMedication("1", p.getMedicationId());
                     final int j = i;
                     medicationCall.enqueue(new Callback<Medication>() {

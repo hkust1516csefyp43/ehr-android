@@ -12,6 +12,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Keyword;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.MedicationVariant;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
@@ -495,7 +496,7 @@ public interface v2API {
     );
   }
 
-  interface medication {
+  interface medications {
     @GET("medications")
     Call<List<Medication>> getMedications(
         @Header("token") String token,
@@ -512,5 +513,23 @@ public interface v2API {
       @Header("token")  String token,
       @Path("id")       String id
     );
+
+    //PUT :id
+    //POST
+    //DELETE :id
+  }
+
+  interface medication_variants {
+    @GET("medication_variants")
+    Call<List<MedicationVariant>> getMedicationVariants(
+        @Header("token") String token,
+        @Query("stock") Integer stock,
+        @Query("suitcase_id") String suitcaseId
+    );
+
+    //GET :id
+    //PUT :id
+    //POST
+    //DELETE :id
   }
 }
