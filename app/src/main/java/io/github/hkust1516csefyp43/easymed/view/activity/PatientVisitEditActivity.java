@@ -164,6 +164,8 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     //set toolbar title (last name first name)
     if (thisPatient != null && supportActionBar != null) {
       supportActionBar.setTitle(thisPatient.getLastNameSpaceFirstName());
+    }else{
+      supportActionBar.setTitle("New Patient");
     }
     //set toolbar subtitle (clinic name)
     //cc button (only in consultation)
@@ -217,12 +219,12 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return vitalSignFragment;
         case 2:
           if (chiefComplaintFragment == null){
-            chiefComplaintFragment = ChiefComplaintFragment.newInstance("","");
+            chiefComplaintFragment = ChiefComplaintFragment.newInstance();
           }
           return chiefComplaintFragment;
         case 3:
           if (remarkFragment == null){
-            remarkFragment = remarkFragment.newInstance("","");
+            remarkFragment = remarkFragment.newInstance();
           }
           return remarkFragment;
         case 4:
