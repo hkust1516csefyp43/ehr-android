@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +14,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.BloodType;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.v2API;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BioFragment extends Fragment {
+  public static final String TAG = BioFragment.class.getSimpleName();
   private Patient patient;
   private static String key = Const.BundleKey.READ_ONLY_PATIENT;
 
@@ -48,6 +60,7 @@ public class BioFragment extends Fragment {
         patient = (Patient) o;
       }
     }
+
   }
 
   @Override
@@ -56,7 +69,7 @@ public class BioFragment extends Fragment {
     llPatientInfo = (LinearLayout) view.findViewById(R.id.llPatientInfo);
     if (llPatientInfo != null) {
       if (patient != null) {
-        Context context = getContext();
+        final Context context = getContext();
         if (context != null) {
           TextView tvBioTitle = new TextView(context);
           tvBioTitle.setText("Basic Information");
@@ -72,9 +85,34 @@ public class BioFragment extends Fragment {
           }
 
           if (patient.getGenderId() != null){
-            TextView tvBioGender = new TextView(context);
-            tvBioGender.setText("Gender: " + patient.getGenderId());
-            llPatientInfo.addView(tvBioGender);
+            Log.d(TAG, patient.getGenderId());
+            OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+            ohc1.readTimeout(1, TimeUnit.MINUTES);
+            ohc1.connectTimeout(1, TimeUnit.MINUTES);
+            Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                .client(ohc1.build())
+                .build();
+
+            v2API.genders gendersService = retrofit.create(v2API.genders.class);
+            Call<Gender> genderCall = gendersService.getGender("1", patient.getGenderId());
+            genderCall.enqueue(new Callback<Gender>() {
+              @Override
+              public void onResponse(Call<Gender> call, Response<Gender> response) {
+                if (response.body() != null){
+                  TextView tvBioGender = new TextView(context);
+                  tvBioGender.setText("Gender: " + response.body().getGender());
+                  llPatientInfo.addView(tvBioGender);
+                }
+              }
+
+              @Override
+              public void onFailure(Call<Gender> call, Throwable t) {
+
+              }
+            });
           }
 
           if (patient.getBirthDate() != null) {
@@ -84,9 +122,34 @@ public class BioFragment extends Fragment {
           }
 
           if (patient.getBloodTypeId() != null) {
-            TextView tvBioBloodType = new TextView(context);
-            tvBioBloodType.setText("Blood type: " + patient.getBloodTypeId());
-            llPatientInfo.addView(tvBioBloodType);
+
+            OkHttpClient.Builder ohc2 = new OkHttpClient.Builder();
+            ohc2.readTimeout(1, TimeUnit.MINUTES);
+            ohc2.connectTimeout(1, TimeUnit.MINUTES);
+            Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                .client(ohc2.build())
+                .build();
+
+            v2API.bloodTypes bloodTypesService = retrofit.create(v2API.bloodTypes.class);
+            Call<BloodType> bloodTypeCall = bloodTypesService.getBloodType("1", patient.getBloodTypeId());
+            bloodTypeCall.enqueue(new Callback<BloodType>() {
+              @Override
+              public void onResponse(Call<BloodType> call, Response<BloodType> response) {
+                if (response.body() != null){
+                  TextView tvBioBloodType = new TextView(context);
+                  tvBioBloodType.setText("Blood type: " + response.body().getType());
+                  llPatientInfo.addView(tvBioBloodType);
+                }
+              }
+
+              @Override
+              public void onFailure(Call<BloodType> call, Throwable t) {
+
+              }
+            });
           }
 
           if (patient.getPhoneNumberCountryCode() != null) {
@@ -113,56 +176,11 @@ public class BioFragment extends Fragment {
             llPatientInfo.addView(tvBioEmail);
           }
 
-//  /**
-//   * Inflate the blank section of the page with content
-//   * TODO make it good looking (material design stuff: spacing, sizes of everything, animation, etc)
-//   */
-////  private void fillTheWholePage() {
-////    LinearLayout llPatientInfo = (LinearLayout) findViewById(R.id.llPatientInfo);
-////    fillPersonalData(llPatientInfo);
-////  }
-//
-//  private void fillPersonalData(LinearLayout l) {
-//    if (l != null) {
-//      TextView tv = new TextView(this);
-//      StringBuilder sb = new StringBuilder();
-//      if (thisPatient.getHonorific() != null) {
-//        sb.append(thisPatient.getHonorific()).append(" ");
-//      }
-//      if (thisPatient.getLastName() != null) {
-//        sb.append(thisPatient.getLastName()).append(" ");
-//      }
-//      if (thisPatient.getMiddleName() != null) {
-//        sb.append(thisPatient.getMiddleName()).append(" ");
-//      }
-//      sb.append(thisPatient.getFirstName());
-//      tv.setText(sb.toString());
-//
-//      TextInputLayout textInputLayout = new TextInputLayout(this);
-//      textInputLayout.addView(tv);
-//
-//      l.addView(textInputLayout);
-//      if (thisPatient.getNativeName() != null) {
-//        TextView tv2 = new TextView(this);
-//        tv2.setText(thisPatient.getNativeName());
-//        TextInputLayout textInputLayout2 = new TextInputLayout(this);
-//        textInputLayout2.addView(tv2);
-//        l.addView(textInputLayout2);
-//      }
-//    }
-//    if (thisPatient.getBirthYear() != null && thisPatient.getBirthMonth() != null && thisPatient.getBirthDate() != null) {
-//      //TODO user can customize display format (order and symbol)
-//      String birthday = "" + thisPatient.getBirthYear() + "/" + thisPatient.getBirthMonth() + "/" + thisPatient.getBirthDate() + " (" + Util.birthdayToAgeString(thisPatient.getBirthYear(), thisPatient.getBirthMonth(), thisPatient.getBirthDate()) + ")";
-//      TextView tv1 = new TextView(this);
-//      tv1.setText(birthday);
-//      l.addView(tv1);
-//    }
-//    //phone
-//    //address
-//    //email address
-//    //gender
-//    //blood type
-//  }
+          if (patient.getCreateTimeStamp() != null) {
+            TextView tvBioCreateTimeStamp = new TextView(context);
+            tvBioCreateTimeStamp.setText("First created: " + patient.getCreateTimeStamp());
+            llPatientInfo.addView(tvBioCreateTimeStamp);
+          }
         }
       } else {
         //TODO some error message?

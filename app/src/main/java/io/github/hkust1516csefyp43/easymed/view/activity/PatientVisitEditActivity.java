@@ -2,8 +2,12 @@ package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,13 +23,26 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ChiefComplaintFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.PersonalDataFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.PregnancyFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.RemarkFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.VitalSignFragment;
 
-public class PatientVisitEditActivity extends AppCompatActivity {
+public class PatientVisitEditActivity extends AppCompatActivity implements OnFragmentInteractionListener{
+
+  private PersonalDataFragment personalDataFragment;
+  private VitalSignFragment vitalSignFragment;
+  private ChiefComplaintFragment chiefComplaintFragment;
+  private RemarkFragment remarkFragment;
+  private PregnancyFragment pregnancyFragment;
+
   private Patient thisPatient;
   private Visit thisVisit;
   private Triage thisTriage;
@@ -45,19 +62,6 @@ public class PatientVisitEditActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     viewPager = (ViewPager) findViewById(R.id.viewPager);
-    if (tabLayout != null && viewPager != null) {
-      viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-      //viewpager need to set page adapter first
-//    tabLayout.setupWithViewPager(viewPager);
-    }
-
-    setSupportActionBar(toolbar);
-    supportActionBar = getSupportActionBar();
-    if (supportActionBar != null) {
-      //Set patient name as title
-      supportActionBar.setDisplayHomeAsUpEnabled(true);
-      supportActionBar.setDisplayShowHomeEnabled(true);
-    }
 
     //get extra
     Intent intent = getIntent();
@@ -87,36 +91,72 @@ public class PatientVisitEditActivity extends AppCompatActivity {
       }
     }
 
-    //set tablayout pages
-    //triage: personal data, vital signs, chief complain, triage remark
-    tabs.add("Personal Data");
-    tabs.add("Vital Signs");
-    tabs.add("Chief Complaints");
-    tabs.add("Triage Remark");
-    if (!isTriage) {  //consultation: (triage pages), hpi, pmh, fs, ss, drug history, screening, allergy, preg, sr, rf, pe, diagnosis, invest, prescriptin, advice, fu, consul remark
-      tabs.add("HPI");
-      tabs.add("Previous Medical History");
-      tabs.add("Family History");
-      tabs.add("Social History");
-      tabs.add("Drug History");
-      tabs.add("Screening");
-      tabs.add("Allergy");
-      tabs.add("Pregnancy");
-      tabs.add("Review of System");
-      tabs.add("Red Flags");
-      tabs.add("Physical Examination");
-      tabs.add("Clinical Diagnosis");
-      tabs.add("Investigation");
-      tabs.add("Medication");
-      tabs.add("Advice");
-      tabs.add("Follow-up");
-      tabs.add("Consultation Remark");
-    }
-    if (tabLayout != null) {
+    if (tabLayout != null && viewPager != null) {
+
+      //set tablayout pages
+      //triage: personal data, vital signs, chief complain, triage remark
+      tabs.add("Personal Data");
+      tabs.add("Vital Signs");
+      tabs.add("Chief Complaints");
+      tabs.add("Triage Remark");
+      if (!isTriage) {  //consultation: (triage pages), hpi, pmh, fs, ss, drug history, screening, allergy, preg, sr, rf, pe, diagnosis, invest, prescriptin, advice, fu, consul remark
+        tabs.add("HPI");
+        tabs.add("Previous Medical History");
+        tabs.add("Family History");
+        tabs.add("Social History");
+        tabs.add("Drug History");
+        tabs.add("Screening");
+        tabs.add("Allergy");
+        tabs.add("Pregnancy");
+        tabs.add("Review of System");
+        tabs.add("Red Flags");
+        tabs.add("Physical Examination");
+        tabs.add("Clinical Diagnosis");
+        tabs.add("Investigation");
+        tabs.add("Medication");
+        tabs.add("Advice");
+        tabs.add("Follow-up");
+        tabs.add("Consultation Remark");
+      }
       for (String s: tabs) {
         tabLayout.addTab(tabLayout.newTab().setText(s));
       }
+
+
+      viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager()));
+      viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+      //viewpager need to set page adapter first
+//    tabLayout.setupWithViewPager(viewPager);
+      tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+          viewPager.setCurrentItem(tab.getPosition());
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+          viewPager.setCurrentItem((tab.getPosition()));
+
+        }
+      });
     }
+
+    setSupportActionBar(toolbar);
+    supportActionBar = getSupportActionBar();
+    if (supportActionBar != null) {
+      //Set patient name as title
+      supportActionBar.setDisplayHomeAsUpEnabled(true);
+      supportActionBar.setDisplayShowHomeEnabled(true);
+    }
+
+
+
+
 
     //if patient comes with visit_id >> get triage or both triage and consultation if exist
 
@@ -151,4 +191,83 @@ public class PatientVisitEditActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
   }
+
+  @Override
+  public void onFragmentInteraction(Uri uri) {
+
+  }
+
+  public class viewPagerAdapter extends FragmentStatePagerAdapter{
+    public viewPagerAdapter(FragmentManager fm) {
+      super(fm);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+      switch (position){
+        case 0:
+          if (personalDataFragment == null){
+            personalDataFragment = PersonalDataFragment.newInstance("", "");
+          }
+          return personalDataFragment;
+        case 1:
+          if (vitalSignFragment == null){
+            vitalSignFragment = VitalSignFragment.newInstance("","");
+          }
+          return vitalSignFragment;
+        case 2:
+          if (chiefComplaintFragment == null){
+            chiefComplaintFragment = ChiefComplaintFragment.newInstance("","");
+          }
+          return chiefComplaintFragment;
+        case 3:
+          if (remarkFragment == null){
+            remarkFragment = remarkFragment.newInstance("","");
+          }
+          return remarkFragment;
+        case 4:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 5:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 6:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 7:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 8:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 9:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 10:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 11:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 12:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 13:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 14:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 15:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 16:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 17:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 18:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 19:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        case 20:
+          return pregnancyFragment = PregnancyFragment.newInstance("","");
+        default:
+          return personalDataFragment.newInstance("","");
+      }
+    }
+
+    @Override
+    public int getCount() {
+      return tabs.size();
+    }
+  }
+
 }
