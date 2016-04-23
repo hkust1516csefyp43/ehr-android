@@ -23,6 +23,7 @@ import java.io.Serializable;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
+import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.PersonalData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 
 public class PersonalDataFragment extends Fragment implements OnSendData{
@@ -233,6 +234,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
   @Override
   public Serializable onSendData() {
+    PersonalData personalData = new PersonalData();
     return null;
   }
 }
