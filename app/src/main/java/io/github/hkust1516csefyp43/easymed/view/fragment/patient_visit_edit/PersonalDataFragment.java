@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
-import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
@@ -34,6 +29,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   public final static String TAG = PersonalDataFragment.class.getSimpleName();
 
   private static Patient patient;
+  private EditText etTag;
   private EditText etFirstName;
   private EditText etMiddleName;
   private EditText etLastName;
@@ -43,7 +39,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   private EditText etPhoneNumber;
   private ImageView ivProfilePic;
   private TextView tvBirthday;
-  private TextView tvTagNumber;
+//  private TextView tvTagNumber;
   private Spinner sGender;
   private Spinner sStatus;
   private String[] genderArray;
@@ -68,14 +64,19 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
-//      mParam1 = getArguments().getString(ARG_PARAM1);
-//      mParam2 = getArguments().getString(ARG_PARAM2);
     }
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_personal_data, container, false);
+
+    etTag = (EditText) view.findViewById(R.id.etTag);
+    if (patient != null && etTag != null) {
+      if (patient.getTag() != null) {
+        etTag.setText(patient.getTag().toString());
+      }
+    }
     etFirstName = (EditText) view.findViewById(R.id.first_name);
     if (patient != null && patient.getFirstName() != null)
       etFirstName.setText(patient.getFirstName());
@@ -137,37 +138,6 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       preFillBirthday[2] = patient.getBirthDate();
       String date = "" + preFillBirthday[0] + "/" + (preFillBirthday[1] + 1) + "/" + preFillBirthday[2];
       tvBirthday.setText(date);
-    }
-
-    tvTagNumber = (TextView) view.findViewById(R.id.tvTagNumber);
-    if (patient != null && tvTagNumber != null){
-      if (patient.getTag() != null)
-        tvTagNumber.setText(patient.getTag().toString());
-
-      tvTagNumber.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          //TODO better dialog (number)
-          NumberPickerBuilder numberPickerBuilder = new NumberPickerBuilder()
-              .setFragmentManager(getFragmentManager())
-              .setStyleResId(R.style.BetterPickersDialogFragment)
-              .setMinNumber(new BigDecimal(1))
-              .setMaxNumber(new BigDecimal(32767))                                                  //Max of smallint in Postgres
-              .setPlusMinusVisibility(View.GONE)
-              .setDecimalVisibility(View.GONE)
-              .addNumberPickerDialogHandler(new NumberPickerDialogFragment.NumberPickerDialogHandlerV2() {
-                @Override
-                public void onDialogNumberSet(int reference, BigInteger number, double decimal, boolean isNegative, BigDecimal fullNumber) {
-                  Log.d(TAG, number.toString() + " / " + decimal + " / " + isNegative + " / " + fullNumber.toString());
-                  if (tvTagNumber != null) {
-                    error = false;
-                    tvTagNumber.setText(number.toString());
-                  }
-                }
-              });
-          numberPickerBuilder.show();
-        }
-      });
     }
 
     sGender = (Spinner) view.findViewById(R.id.sGender);

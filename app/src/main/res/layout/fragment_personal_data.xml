@@ -31,19 +31,20 @@
                 android:paddingBottom="4dp"
                 android:layout_marginLeft="4dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="Tag number"
-                    android:textSize="18sp"/>
+                    android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/tvTagNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Click here"/>
+                    <EditText
+                        android:id="@+id/etTag"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Tag Number"
+                        android:inputType="number"
+                        android:maxLines="1"/>
+
+                </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
 
