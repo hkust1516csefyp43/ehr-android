@@ -19,8 +19,6 @@ public class AdminFragment extends Fragment {
   public static AdminFragment newInstance(String param1, String param2) {
     AdminFragment fragment = new AdminFragment();
     Bundle args = new Bundle();
-//    args.putString(ARG_PARAM1, param1);
-//    args.putString(ARG_PARAM2, param2);
     fragment.setArguments(args);
     return fragment;
   }
@@ -33,8 +31,6 @@ public class AdminFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
-//      mParam1 = getArguments().getString(ARG_PARAM1);
-//      mParam2 = getArguments().getString(ARG_PARAM2);
     }
   }
 

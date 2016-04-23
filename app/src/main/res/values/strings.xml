@@ -126,4 +126,5 @@
     <string name="title_activity_sync">SyncActivity</string>
 
     <string name="com.optimizely.api_key" translatable="false">AANPOUgBRLzZHR0NAOotgOtwlOPmwjgP</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
 </resources>

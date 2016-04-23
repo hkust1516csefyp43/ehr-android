@@ -370,6 +370,7 @@ public class PharmacyActivity extends AppCompatActivity {
     TextView tvMedication;
     TextView tvPrescriptionDetail;
     LinearLayout llTheWholeThing;
+    View vStockCircle;
 
     public prescriptionsRVViewHolder(View itemView) {
       super(itemView);
@@ -377,6 +378,7 @@ public class PharmacyActivity extends AppCompatActivity {
       tvMedication = (TextView) itemView.findViewById(R.id.tvMedication);
       tvPrescriptionDetail = (TextView) itemView.findViewById(R.id.tvPrescriptionDetail);
       llTheWholeThing = (LinearLayout) itemView.findViewById(R.id.rlPrescription);
+      vStockCircle = itemView.findViewById(R.id.vStockCircle);
       llTheWholeThing.setLongClickable(true);
     }
 
@@ -398,6 +400,13 @@ public class PharmacyActivity extends AppCompatActivity {
       if (holder != null && prescriptions != null) {
         if (position < prescriptions.size()) {
           if (prescriptions.get(holder.getAdapterPosition()).getMedicationName() != Const.EMPTY_STRING) {
+            /**
+             * TODO API call medication stock
+             * Logic:
+             * I got medication id, ask for all medication variants with that medication id;
+             * scroll through the list, if any medication is insufficient/out of stock, change icon to yellow;
+             * if at least 1 medication is out of stock, change icon to red
+             */
             holder.tvMedication.setText(prescriptions.get(holder.getAdapterPosition()).getMedicationName());
             holder.tvPrescriptionDetail.setText(prescriptions.get(holder.getAdapterPosition()).getDetail());
             holder.appCompatCheckBox.setChecked(prescriptions.get(holder.getAdapterPosition()).getPrescribed());
@@ -410,14 +419,12 @@ public class PharmacyActivity extends AppCompatActivity {
                 prescriptions.set(holder.getAdapterPosition(), tempP);
               }
             });
-            holder.llTheWholeThing.setOnLongClickListener(new View.OnLongClickListener() {
+            holder.llTheWholeThing.setOnClickListener(new View.OnClickListener() {
               @Override
-              public boolean onLongClick(View v) {
-                //TODO long click >> flag quantity (dialog maybe)
-                return false;
+              public void onClick(View v) {
+                //TODO Show dialog on all variants and their stock
               }
             });
-
           }
         }
       }

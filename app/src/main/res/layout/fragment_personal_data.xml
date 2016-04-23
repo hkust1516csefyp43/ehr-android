@@ -23,30 +23,20 @@
             android:layout_margin="8dp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:layout_marginLeft="4dp">
+                android:layout_weight="1">
 
-                <android.support.design.widget.TextInputLayout
+                <EditText
+                    android:id="@+id/etTag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:hint="Tag Number"
+                    android:inputType="number"
+                    android:maxLines="1"/>
 
-                    <EditText
-                        android:id="@+id/etTag"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Tag Number"
-                        android:inputType="number"
-                        android:maxLines="1"/>
-
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -144,7 +134,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_columnSpan="8"
+                    android:layout_columnSpan="6"
+                    android:layout_gravity="center_vertical"
+                    android:text="Blood Type"/>
+
+                <Spinner
+                    android:id="@+id/sBloodType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_columnSpan="12"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnSpan="6"
                     android:layout_gravity="center_vertical"
                     android:text="Birthday"/>
 
@@ -152,7 +156,9 @@
                     android:id="@+id/tvBirthday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_columnSpan="8"
+                    android:layout_columnSpan="10"
+                    android:paddingLeft="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_gravity="center_vertical|fill_horizontal"
                     android:text="Click to select date"/>
 
@@ -163,7 +169,44 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"/>
 
+                <TextView
+                    android:id="@+id/tvPhoneCode"
+                    android:layout_columnSpan="6"
+                    android:text="Phone\nCountry code"
+                    android:lines="2"
+                    android:layout_gravity="center_vertical"/>
+
+                <Spinner
+                    android:id="@+id/sPhoneCode"
+                    android:layout_columnSpan="12"
+                    android:layout_gravity="fill|center_vertical"/>
+
+                <TextView
+                    android:id="@+id/tvPhoneNumber"
+                    android:layout_columnSpan="6"
+                    android:text="Phone Number"
+                    android:layout_gravity="center_vertical"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_columnSpan="12"
+                    android:layout_gravity="center_vertical|fill">
+
+                    <EditText
+                        android:id="@+id/etPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:lines="1"
+                        android:maxLines="1"/>
+
+                </android.support.design.widget.TextInputLayout>
+
             </GridLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address:"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -173,31 +216,15 @@
                     android:id="@+id/etAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Add logo to left: Address"
-                    android:inputType="textCapSentences"
-                    android:lines="2"
-                    android:maxLines="5"/>
+                    android:inputType="textImeMultiLine"
+                    android:lines="3"
+                    android:maxLines="6"/>
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etPhoneNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Add logo to left: Phone number"
-                    android:inputType="phone"
-                    android:lines="1"
-                    android:maxLines="1"/>
-
-            </android.support.design.widget.TextInputLayout>
 
 
         </LinearLayout>
-
 
     </LinearLayout>
 

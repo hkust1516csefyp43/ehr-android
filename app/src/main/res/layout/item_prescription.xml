@@ -9,7 +9,7 @@
     android:gravity="center_vertical">
 
     <View
-        android:id="@+id/vUnreadCircle"
+        android:id="@+id/vStockCircle"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_gravity="center_vertical"
