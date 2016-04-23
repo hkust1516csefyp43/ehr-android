@@ -81,8 +81,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView);
       uEmail.setText(currentUser.getEmail());
       ImageView uProPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
-      Log.d(TAG, "qqq" + currentUser.toString());
-      uProPic.setImageDrawable(TextDrawable.builder().buildRound("LT", ColorGenerator.MATERIAL.getColor("Louis Tsai")));
+      uProPic.setImageDrawable(TextDrawable.builder().buildRound("LT", ColorGenerator.MATERIAL.getColor("Louis Tsai")));    //TODO real data needed
       navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {

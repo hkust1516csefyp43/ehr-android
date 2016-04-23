@@ -272,6 +272,7 @@ public class PatientListFragment extends Fragment{
         });
         break;
       case Const.PatientListPageId.TRIAGE_SEARCH:
+        Log.d(TAG, "name: " + nameSearchName);
         if (nameSearchName != null) {
           Call<List<Patient>> patientCall = patientService.getPatients("1", null, null, null, null, null, null, null, null, nameSearchName, null);
           patientCall.enqueue(new Callback<List<Patient>>() {
@@ -280,7 +281,10 @@ public class PatientListFragment extends Fragment{
               if (response != null) {
                 Log.d(TAG, response.body().toString());
                 patients = response.body();
+                //TODO display sth when length = 0
                 recyclerView.setAdapter(new PatientRecyclerViewAdapter());
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
               } else {
@@ -307,6 +311,7 @@ public class PatientListFragment extends Fragment{
                 Log.d(TAG, response.body().toString());
                 patients = response.body();
                 recyclerView.setAdapter(new PatientRecyclerViewAdapter());
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
               } else {
@@ -371,7 +376,6 @@ public class PatientListFragment extends Fragment{
 
   private class PatientRecyclerViewAdapter extends RecyclerView.Adapter<PatientRecyclerViewViewHolder> {
     public PatientRecyclerViewAdapter() {
-
     }
 
     @Override
@@ -383,6 +387,7 @@ public class PatientListFragment extends Fragment{
     public void onBindViewHolder(PatientRecyclerViewViewHolder holder, int position) {
       if (position < patients.size()) {
         final Patient aPatient = patients.get(position);
+        Log.d(TAG, "displaying: " + aPatient.toString());
         StringBuilder name = new StringBuilder();
         if (aPatient.getTag() != null) {
           name.append(aPatient.getTag().toString());
