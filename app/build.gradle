@@ -36,6 +36,7 @@ repositories {
     maven {
         url 'http://dl.bintray.com/amulyakhare/maven'
     }
+    maven { url 'http://dl.bintray.com/optimizely/optimizely' }
 }
 
 dependencies {
@@ -73,4 +74,7 @@ dependencies {
     compile 'com.code-troopers.betterpickers:library:2.5.2'
     compile 'com.wdullaer:materialdatetimepicker:2.2.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    compile('com.optimizely:optimizely:+@aar') {
+        transitive = true
+    }
 }

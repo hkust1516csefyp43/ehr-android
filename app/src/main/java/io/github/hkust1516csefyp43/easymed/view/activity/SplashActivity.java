@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
+import com.optimizely.Optimizely;
 
 import io.fabric.sdk.android.Fabric;
 import io.github.hkust1516csefyp43.easymed.R;
@@ -27,6 +28,7 @@ public class SplashActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     Fabric.with(this, new Crashlytics());
+    Optimizely.startOptimizelyWithAPIToken(getString(R.string.com_optimizely_api_key), getApplication());
     setContentView(R.layout.activity_splash);
     SplashLogicAsyncTask task = new SplashLogicAsyncTask(this);
     task.execute();

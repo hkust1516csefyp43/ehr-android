@@ -47,7 +47,8 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
   private ViewPager viewPager;
   private TabLayout tabLayout;
 
-  private Boolean fabOn = false;
+  private Boolean fabOn = false;      //should each visitdetailfragment display edit button on the corner
+  private Boolean isTriage = true;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
 
     thisPatient = (Patient) this.getIntent().getSerializableExtra(Const.BundleKey.READ_ONLY_PATIENT);
     fabOn = getIntent().getBooleanExtra(Const.BundleKey.ON_OR_OFF, false);                          //TODO What should the default be?
+    isTriage = getIntent().getBooleanExtra(Const.BundleKey.IS_TRIAGE, true);
     //TODO get extra triage
     //TODO get extra consultation
 
@@ -183,8 +185,10 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
         return BioFragment.newInstance(thisPatient);
       } else {
         if (visits != null) {
-          if (position-1 < visits.size()) {                                         //-1 because of the Bio page
-            return VisitDetailFragment.newInstance(visits.get(position-1), fabOn);
+          if (position-1 < visits.size()) {               //-1 because of the Bio page
+            if (thisPatient != null) {
+              return VisitDetailFragment.newInstance(thisPatient, visits.get(position-1), fabOn, isTriage);
+            }
           }
         }
       }

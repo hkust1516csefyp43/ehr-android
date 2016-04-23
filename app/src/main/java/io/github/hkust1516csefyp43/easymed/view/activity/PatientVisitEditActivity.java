@@ -50,6 +50,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   private Triage thisTriage;
   private Consultation thisConsultation;
   private boolean isTriage = true;
+  private boolean showHistoryButton = true;
 
   private ArrayList<String> tabs = new ArrayList<>();
 

@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -26,10 +27,13 @@ import java.util.concurrent.TimeUnit;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
+import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,9 +43,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VisitDetailFragment extends Fragment {
   public final static String TAG = VisitDetailFragment.class.getSimpleName();
-
   private static String key1 = Const.BundleKey.VISIT_ID;
   private static String key2 = Const.BundleKey.ON_OR_OFF;
+  private static String key3 = Const.BundleKey.EDIT_PATIENT;
+  private static String key4 = Const.BundleKey.IS_TRIAGE;
+
+  private int fromWhichPage;
+
   private OnFragmentInteractionListener mListener;
 
   private FloatingActionButton floatingActionButton;
@@ -57,19 +65,25 @@ public class VisitDetailFragment extends Fragment {
    * TODO what should the default be?
    */
   private Boolean fabOn = false;
+  private Boolean isTriage = true;
 
   private Visit visit;
   private Triage triage;
   private Consultation consultation;
+  private Patient patient;
+  private List<Prescription> prescriptions;
+//  private
   //TODO prescriptions, documents, related data, etc
   private LinearLayout linearLayout;
 
 
-  public static VisitDetailFragment newInstance(Visit visit, Boolean fabOn) {
+  public static VisitDetailFragment newInstance(Patient patient, Visit visit, Boolean fabOn, Boolean isTriage) {
     VisitDetailFragment fragment = new VisitDetailFragment();
     Bundle args = new Bundle();
     args.putSerializable(key1, visit);
     args.putBoolean(key2, fabOn);
+    args.putSerializable(key3, patient);
+    args.putBoolean(key4, isTriage);
     fragment.setArguments(args);
     return fragment;
   }
@@ -86,7 +100,13 @@ public class VisitDetailFragment extends Fragment {
       if (serializable instanceof Visit) {
         visit = (Visit) serializable;
       }
-      fabOn = getArguments().getBoolean(key2);
+      fabOn = getArguments().getBoolean(key2, false);
+      //key3
+      serializable = getArguments().getSerializable(key3);
+      if (serializable instanceof Patient) {
+        patient = (Patient) serializable;
+      }
+      isTriage = getArguments().getBoolean(key4, true);
     }
   }
 
@@ -102,10 +122,26 @@ public class VisitDetailFragment extends Fragment {
       floatingActionButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+          Intent intent = new Intent(getContext(), PatientVisitEditActivity.class);
+          intent.putExtra(Const.BundleKey.IS_TRIAGE, isTriage);
+          if (patient != null) {                                //pass patient
+            intent.putExtra(Const.BundleKey.EDIT_PATIENT, patient);
+          }
+          if (visit != null) {                                  //pass visit
+            intent.putExtra(Const.BundleKey.WHOLE_VISIT, visit);
+          }
+          if (triage != null) {                                 //pass triage
+            intent.putExtra(Const.BundleKey.WHOLE_TRIAGE, triage);
+          }
+
+          //TODO need to make sure
           //enter from post triage >> isTriage = true
           //enter from post consultation >> isTriage = false
-          //enter from post pharmacy >>
-          //enter from not yet
+
+          //pass consultation if exist
+          //enter from post pharmacy >> never (fabOn should be false)
+          //enter from not yet >> ?
+          startActivity(intent);
         }
       });
     }

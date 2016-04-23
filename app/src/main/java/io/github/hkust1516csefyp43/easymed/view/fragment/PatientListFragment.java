@@ -32,7 +32,6 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
-import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitViewActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.PharmacyActivity;
 import okhttp3.OkHttpClient;
@@ -124,8 +123,8 @@ public class PatientListFragment extends Fragment{
             if (response.body().size() > 0) {
               for (Gender g: response.body()) {
                 gendersHashMap.put(g.getId(), g.getGender());
-                proceed();
               }
+              proceed();
             } else {
               //size is 0
               onFailure(null, new Throwable("size is 0"));
@@ -430,8 +429,8 @@ public class PatientListFragment extends Fragment{
                 startActivity(intent5);
                 break;
               case Const.PatientListPageId.PRE_CONSULTATION:
-                Intent intent1 = new Intent(getContext(), PatientVisitEditActivity.class);
-                intent1.putExtra(Const.BundleKey.EDIT_PATIENT, aPatient);
+                Intent intent1 = new Intent(getContext(), PatientVisitViewActivity.class);
+                intent1.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
                 intent1.putExtra(Const.BundleKey.ON_OR_OFF, true);
                 intent1.putExtra(Const.BundleKey.IS_TRIAGE, false);
                 startActivity(intent1);
