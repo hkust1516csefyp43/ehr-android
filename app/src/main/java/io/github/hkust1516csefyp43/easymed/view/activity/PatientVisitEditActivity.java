@@ -163,8 +163,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     //set toolbar title (last name first name)
     if (thisPatient != null && supportActionBar != null) {
       supportActionBar.setTitle(thisPatient.getLastNameSpaceFirstName());
-    }else{
-      supportActionBar.setTitle("New Patient");
     }
     if (thisPatient == null && supportActionBar != null) {
       supportActionBar.setTitle("New Patient");

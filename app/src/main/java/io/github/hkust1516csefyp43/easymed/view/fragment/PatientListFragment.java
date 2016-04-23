@@ -49,6 +49,7 @@ public class PatientListFragment extends Fragment{
 
   private int whichPage;
   private boolean displayGender = true;
+  private String nameSearchName;
   private HashMap<String, String> gendersHashMap = new HashMap<>();
 
   private OnFragmentInteractionListener mListener;
@@ -58,10 +59,11 @@ public class PatientListFragment extends Fragment{
   private ProgressBar progressBar;
   private SwipeRefreshLayout swipeRefreshLayout;
 
-  public static PatientListFragment newInstance(int whichPage) {
+  public static PatientListFragment newInstance(int whichPage, String nameSearchString) {
     PatientListFragment fragment = new PatientListFragment();
     Bundle extra = new Bundle();
     extra.putInt(Const.BundleKey.WHICH_PATIENT_LIST_ID, whichPage);
+    extra.putString(Const.BundleKey.NAME_SEARCH_NAME, nameSearchString);
     fragment.setArguments(extra);
     return fragment;
   }
@@ -76,6 +78,7 @@ public class PatientListFragment extends Fragment{
     Bundle bundle = this.getArguments();
     if (bundle != null) {
       whichPage = bundle.getInt(Const.BundleKey.WHICH_PATIENT_LIST_ID);
+      nameSearchName = bundle.getString(Const.BundleKey.NAME_SEARCH_NAME);
     }
   }
 
@@ -268,6 +271,58 @@ public class PatientListFragment extends Fragment{
 
           }
         });
+        break;
+      case Const.PatientListPageId.TRIAGE_SEARCH:
+        if (nameSearchName != null) {
+          Call<List<Patient>> patientCall = patientService.getPatients("1", null, null, null, null, null, null, null, null, nameSearchName, null);
+          patientCall.enqueue(new Callback<List<Patient>>() {
+            @Override
+            public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
+              if (response != null) {
+                Log.d(TAG, response.body().toString());
+                patients = response.body();
+                recyclerView.setAdapter(new PatientRecyclerViewAdapter());
+                recyclerView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+              } else {
+                onFailure(call, new Throwable("empty response wtf"));
+              }
+            }
+
+            @Override
+            public void onFailure(Call<List<Patient>> call, Throwable t) {
+              t.printStackTrace();
+            }
+          });
+        } else {
+          //TODO display nothing
+        }
+        break;
+      case Const.PatientListPageId.CONSULTATION_SEARCH:
+        if (nameSearchName != null) {
+          Call<List<Patient>> patientCall = patientService.getPatients("1", null, null, null, null, null, null, null, null, nameSearchName, null);
+          patientCall.enqueue(new Callback<List<Patient>>() {
+            @Override
+            public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
+              if (response != null) {
+                Log.d(TAG, response.body().toString());
+                patients = response.body();
+                recyclerView.setAdapter(new PatientRecyclerViewAdapter());
+                recyclerView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+              } else {
+                onFailure(call, new Throwable("empty response wtf"));
+              }
+            }
+
+            @Override
+            public void onFailure(Call<List<Patient>> call, Throwable t) {
+              t.printStackTrace();
+            }
+          });
+        } else {
+          //TODO display nothing
+        }
         break;
     }
   }

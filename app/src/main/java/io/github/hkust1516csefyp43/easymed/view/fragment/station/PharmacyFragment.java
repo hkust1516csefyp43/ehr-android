@@ -106,11 +106,11 @@ public class PharmacyFragment extends Fragment {
     public Fragment getItem(int position) {
       switch (position) {
         case 0:
-          return PatientListFragment.newInstance(Const.PatientListPageId.PRE_PHARMACY);
+          return PatientListFragment.newInstance(Const.PatientListPageId.PRE_PHARMACY, null);
         case 1:
-          return PatientListFragment.newInstance(Const.PatientListPageId.POST_PHARMACY);
+          return PatientListFragment.newInstance(Const.PatientListPageId.POST_PHARMACY, null);
         default:
-          return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET);    //TODO idk?
+          return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET, null);    //TODO idk?
 
       }
     }

@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.turingtechnologies.materialscrollbar.INameableAdapter;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -261,7 +259,7 @@ public class MedicationVariantListFragment extends Fragment {
 
   }
 
-  public class medicationVariantRecyclerViewAdapter extends RecyclerView.Adapter<medicationVariantItemViewHolder> implements INameableAdapter{
+  public class medicationVariantRecyclerViewAdapter extends RecyclerView.Adapter<medicationVariantItemViewHolder>{
 
     public medicationVariantRecyclerViewAdapter() {
       Log.d(TAG, "creating adapter");
@@ -297,18 +295,6 @@ public class MedicationVariantListFragment extends Fragment {
         return medicationVariants.size();
       else
         return 0;
-    }
-
-    @Override
-    public Character getCharacterForElement(int element) {
-      if (medicationVariants != null) {
-        if (medicationVariants.get(element) != null) {
-          if (medicationVariants.get(element).getMedicationId() != null) {
-            return medicationNames.get(medicationVariants.get(element).getMedicationId()).charAt(0);
-          }
-        }
-      }
-      return '?';
     }
   }
 

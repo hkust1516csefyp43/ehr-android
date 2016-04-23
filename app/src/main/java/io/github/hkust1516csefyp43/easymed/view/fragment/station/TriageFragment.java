@@ -128,10 +128,10 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), SearchActivity.class);
+        intent.putExtra(Const.BundleKey.IS_TRIAGE, true);
         startActivity(intent);
       }
     });
-
 
     LinearLayout llNotSure = (LinearLayout) dialog.findViewById(R.id.llNotSure);
     llNotSure.setOnClickListener(new View.OnClickListener() {
@@ -210,11 +210,11 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
     public Fragment getItem(int position) {
       switch (position) {
         case 0:
-          return PatientListFragment.newInstance(Const.PatientListPageId.POST_TRIAGE);
+          return PatientListFragment.newInstance(Const.PatientListPageId.POST_TRIAGE, null);
         case 1:
-          return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET);
+          return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET, null);
         default:
-          return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET);    //TODO idk?
+          return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET, null);    //TODO idk?
 
       }
     }

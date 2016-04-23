@@ -23,6 +23,8 @@ public class Const {
     public static final int POST_CONSULTATION = 4;
     public static final int PRE_PHARMACY = 5;
     public static final int POST_PHARMACY = 6;
+    public static final int TRIAGE_SEARCH = 7;
+    public static final int CONSULTATION_SEARCH = 8;
   }
 
   public class BundleKey {
@@ -36,6 +38,7 @@ public class Const {
     public static final String WHOLE_VISIT = "c8p1Zm57ZbMm6kv1";
     public static final String WHOLE_CONSULTATION = "EmtnSNvzMU1FRqxp";
     public static final String WHICH_MV_PAGE = "6mx1eqGFCdmjCVua";
+    public static final String NAME_SEARCH_NAME = "62FhsX47PSFGMrh5";
   }
 
   public class CacheKey {

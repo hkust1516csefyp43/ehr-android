@@ -128,10 +128,10 @@ public class ConsultationFragment extends Fragment {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), SearchActivity.class);
+        intent.putExtra(Const.BundleKey.IS_TRIAGE, false);
         startActivity(intent);
       }
     });
-
 
     LinearLayout llNotSure = (LinearLayout) dialog.findViewById(R.id.llNotSure);
     llNotSure.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +148,7 @@ public class ConsultationFragment extends Fragment {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), PatientVisitEditActivity.class);
+        intent.putExtra(Const.BundleKey.IS_TRIAGE, false);
         //extra: isTriage=false
         startActivity(intent);
       }
@@ -190,11 +191,11 @@ public class ConsultationFragment extends Fragment {
     public Fragment getItem(int position) {
       switch (position) {
         case 0:
-          return PatientListFragment.newInstance(Const.PatientListPageId.PRE_CONSULTATION);
+          return PatientListFragment.newInstance(Const.PatientListPageId.PRE_CONSULTATION, null);
         case 1:
-          return PatientListFragment.newInstance(Const.PatientListPageId.POST_CONSULTATION);
+          return PatientListFragment.newInstance(Const.PatientListPageId.POST_CONSULTATION, null);
         default:
-          return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET);    //TODO idk?
+          return PatientListFragment.newInstance(Const.PatientListPageId.NOT_YET, null);    //TODO idk?
 
       }
     }
