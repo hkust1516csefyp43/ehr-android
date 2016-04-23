@@ -30,9 +30,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tap to select date"/>
+                android:text="Click to select date"/>
 
             <Button
+                android:id="@+id/removeButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Remove"/>
@@ -45,7 +46,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:text="Is Pregnant?"
                 android:layout_gravity="center"/>
@@ -68,7 +69,7 @@
                 android:text="Gestation"/>
 
             <EditText
-                android:layout_width="70dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:id="@+id/gestation"/>
