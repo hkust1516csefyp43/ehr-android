@@ -19,13 +19,13 @@ import com.mikepenz.iconics.IconicsDrawable;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 
-public class StatisticsFragment extends Fragment {
+public class ReportsFragment extends Fragment {
   private OnFragmentInteractionListener mListener;
 
   private FloatingActionButton floatingActionButton;
 
-  public static StatisticsFragment newInstance(String param1, String param2) {
-    StatisticsFragment fragment = new StatisticsFragment();
+  public static ReportsFragment newInstance(String param1, String param2) {
+    ReportsFragment fragment = new ReportsFragment();
     Bundle args = new Bundle();
 //    args.putString(ARG_PARAM1, param1);
 //    args.putString(ARG_PARAM2, param2);
@@ -33,7 +33,7 @@ public class StatisticsFragment extends Fragment {
     return fragment;
   }
 
-  public StatisticsFragment() {
+  public ReportsFragment() {
     // Required empty public constructor
   }
 
@@ -48,9 +48,9 @@ public class StatisticsFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_statistics, container, false);
+    View view = inflater.inflate(R.layout.fragment_reports, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-    toolbar.setTitle("Statistics");
+    toolbar.setTitle("Reports");
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 

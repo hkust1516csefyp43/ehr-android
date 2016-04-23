@@ -48,7 +48,7 @@ import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.AdminFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.InventoryFragment;
-import io.github.hkust1516csefyp43.easymed.view.fragment.StatisticsFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.ReportsFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.ConsultationFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.PharmacyFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.TriageFragment;
@@ -111,7 +111,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (menuItem != null) {
       menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_medkit).color(Color.GRAY).actionBar().paddingDp(2));
     }
-    menuItem = menu.findItem(R.id.nav_statistics);
+    menuItem = menu.findItem(R.id.nav_reports);
     if (menuItem != null) {
       menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_file_chart).color(Color.GRAY).actionBar().paddingDp(2));
     }
@@ -203,10 +203,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       InventoryFragment inventoryFragment = new InventoryFragment();
       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
       fragmentTransaction.replace(R.id.fragment_container, inventoryFragment).commit();
-    } else if (id == R.id.nav_statistics) {
-      StatisticsFragment statisticsFragment = new StatisticsFragment();
+    } else if (id == R.id.nav_reports) {
+      ReportsFragment reportsFragment = new ReportsFragment();
       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.fragment_container, statisticsFragment).commit();
+      fragmentTransaction.replace(R.id.fragment_container, reportsFragment).commit();
     } else if (id == R.id.nav_admin) {
       AdminFragment adminFragment = new AdminFragment();
       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

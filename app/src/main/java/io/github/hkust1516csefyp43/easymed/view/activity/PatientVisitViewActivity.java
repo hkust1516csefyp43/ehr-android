@@ -57,7 +57,7 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
     dialog.setContentView(R.layout.dialog_loading);
     dialog.show();
 
-    setContentView(R.layout.activity_patient_visit_read_only);
+    setContentView(R.layout.activity_patient_visit_view);
 
     viewPager = (ViewPager) findViewById(R.id.viewpager);
     tabLayout = (TabLayout) findViewById(R.id.tabLayout);
