@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -369,15 +369,15 @@ public class PharmacyActivity extends AppCompatActivity {
     AppCompatCheckBox appCompatCheckBox;
     TextView tvMedication;
     TextView tvPrescriptionDetail;
-    RelativeLayout rlTheWholeThing;
+    LinearLayout llTheWholeThing;
 
     public prescriptionsRVViewHolder(View itemView) {
       super(itemView);
       appCompatCheckBox = (AppCompatCheckBox) itemView.findViewById(R.id.accbPrescription);
       tvMedication = (TextView) itemView.findViewById(R.id.tvMedication);
       tvPrescriptionDetail = (TextView) itemView.findViewById(R.id.tvPrescriptionDetail);
-      rlTheWholeThing = (RelativeLayout) itemView.findViewById(R.id.rlPrescription);
-      rlTheWholeThing.setLongClickable(true);
+      llTheWholeThing = (LinearLayout) itemView.findViewById(R.id.rlPrescription);
+      llTheWholeThing.setLongClickable(true);
     }
 
   }
@@ -410,7 +410,7 @@ public class PharmacyActivity extends AppCompatActivity {
                 prescriptions.set(holder.getAdapterPosition(), tempP);
               }
             });
-            holder.rlTheWholeThing.setOnLongClickListener(new View.OnLongClickListener() {
+            holder.llTheWholeThing.setOnLongClickListener(new View.OnLongClickListener() {
               @Override
               public boolean onLongClick(View v) {
                 //TODO long click >> flag quantity (dialog maybe)
