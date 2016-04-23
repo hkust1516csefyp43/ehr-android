@@ -454,14 +454,15 @@ public interface v2API {
      * TODO fill me up
      *
      * @param token
+     * @param sort_by
      * @return
      */
     @GET("visits")
     Call<List<Visit>> getVisits(
         @Header("token") String token,
         @Query("next_station") Integer nextStation,
-        @Query("patient_id") String patientId
-    );
+        @Query("patient_id") String patientId,
+        @Query("sort_by") String sort_by);
 
     @POST("visits")
     Call<Visit> addVisit(

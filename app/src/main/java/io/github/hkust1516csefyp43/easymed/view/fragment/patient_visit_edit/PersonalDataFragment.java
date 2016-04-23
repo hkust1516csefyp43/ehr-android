@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -10,18 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.Serializable;
 
 import io.github.hkust1516csefyp43.easymed.R;
-import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.PersonalData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
@@ -40,16 +41,14 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   private EditText etPhoneNumber;
   private ImageView ivProfilePic;
   private TextView tvBirthday;
-//  private TextView tvTagNumber;
   private Spinner sGender;
   private Spinner sStatus;
   private String[] genderArray;
   private String[] statusArray;
   private int[] birthday = new int[3];
   private int[] preFillBirthday = new int[3];
-  private boolean error = false;
 
-  private OnFragmentInteractionListener mListener;
+  private boolean anyError = false;
 
   public static PersonalDataFragment newInstance(Patient p) {
     PersonalDataFragment fragment = new PersonalDataFragment();
@@ -64,23 +63,50 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-    }
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_personal_data, container, false);
+    inflateEveryBoxes(view);
 
+    ImageView ivBirthdayRemove = (ImageView) view.findViewById(R.id.ivRemoveBirthday);
+    ivBirthdayRemove.setImageDrawable(new IconicsDrawable(getContext()).actionBar().color(Color.BLACK).icon(FontAwesome.Icon.faw_trash_o));
+//    Button removeButton = (Button) view.findViewById(R.id.removeButton);
+//    removeButton.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View v) {
+//        birthday[0] = 0;
+//        birthday[1] = 0;
+//        birthday[2] = 0;
+//        tvBirthday.setText("Click to select date");
+//      }
+//    });
+    return view;
+  }
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+  }
+
+  @Override
+  public void onDetach() {
+    super.onDetach();
+  }
+
+  public void inflateEveryBoxes(View view) {
     etTag = (EditText) view.findViewById(R.id.etTag);
     if (patient != null && etTag != null) {
       if (patient.getTag() != null) {
         etTag.setText(patient.getTag().toString());
       }
     }
+
     etFirstName = (EditText) view.findViewById(R.id.first_name);
-    if (patient != null && patient.getFirstName() != null)
+    if (patient != null && patient.getFirstName() != null) {
       etFirstName.setText(patient.getFirstName());
+    }
     etFirstName.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -95,10 +121,10 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       @Override
       public void afterTextChanged(Editable s) {
         if (s.toString().length() < 1) {
-          error = true;
+          anyError = true;
           etFirstName.setError("Patient must have a first name");
         } else {
-          error = false;
+          anyError = false;
         }
       }
     });
@@ -120,27 +146,17 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       etAddress.setText(patient.getAddress());
 
     //TODO phone country code
+
     etPhoneNumber = (EditText) view.findViewById(R.id.etPhoneNumber);
-    if (patient != null && patient.getPhoneNumber() != null)
+    if (patient != null && patient.getPhoneNumber() != null){
       etPhoneNumber.setText(patient.getPhoneNumber());
-
-    ivProfilePic = (ImageView) view.findViewById(R.id.iv_profile_pic);
-
-    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
-    birthday[0] = 0;
-    birthday[1] = 0;
-    birthday[2] = 0;
-    preFillBirthday[0] = 1992;
-    preFillBirthday[1] = 8;
-    preFillBirthday[2] = 14;
-    if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null &&patient.getBirthDate() != null) {
-      preFillBirthday[0] = patient.getBirthYear();
-      preFillBirthday[1] = patient.getBirthMonth();
-      preFillBirthday[2] = patient.getBirthDate();
-      String date = "" + preFillBirthday[0] + "/" + (preFillBirthday[1] + 1) + "/" + preFillBirthday[2];
-      tvBirthday.setText(date);
     }
 
+    ivProfilePic = (ImageView) view.findViewById(R.id.iv_profile_pic);
+    //TODO get attachment by id
+
+
+    //TODO from DB
     sGender = (Spinner) view.findViewById(R.id.sGender);
     genderArray = new String[]{
         "Male", "Female", "Disclosed", "Custom"
@@ -162,6 +178,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       }
     });
 
+    //TODO from keywords
     sStatus = (Spinner) view.findViewById(R.id.sStatus);
     statusArray = new String[]{
         "Single", "Married", "Divorced", "Widowed", "Custom"
@@ -184,7 +201,6 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       tvBirthday.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//          GregorianCalendar gc = new GregorianCalendar();
           DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -203,38 +219,37 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       });
     }
 
-    Button removeButton = (Button) view.findViewById(R.id.removeButton);
-    removeButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        birthday[0] = 0;
-        birthday[1] = 0;
-        birthday[2] = 0;
-        tvBirthday.setText("Click to select date");
-      }
-    });
-    return view;
-  }
-
-  @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-    if (context instanceof OnFragmentInteractionListener) {
-      mListener = (OnFragmentInteractionListener) context;
-    } else {
-      throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
+    birthday[0] = 0;
+    birthday[1] = 0;
+    birthday[2] = 0;
+    preFillBirthday[0] = 1992;
+    preFillBirthday[1] = 8;
+    preFillBirthday[2] = 14;
+    if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null &&patient.getBirthDate() != null) {
+      preFillBirthday[0] = patient.getBirthYear();
+      preFillBirthday[1] = patient.getBirthMonth();
+      preFillBirthday[2] = patient.getBirthDate();
+      String date = "" + preFillBirthday[0] + "/" + (preFillBirthday[1] + 1) + "/" + preFillBirthday[2];
+      tvBirthday.setText(date);
     }
-  }
 
-  @Override
-  public void onDetach() {
-    super.onDetach();
-    mListener = null;
   }
 
   @Override
   public Serializable onSendData() {
     PersonalData personalData = new PersonalData();
+    if (etTag != null) {
+      if (etTag.getText() != null) {
+        personalData.setTagNumber(Integer.parseInt(etTag.getText().toString()));
+      }
+    }
+    if (etFirstName != null) {
+      if (etFirstName.getText() != null) {
+        personalData.setFirstName(etFirstName.getText().toString());
+      }
+    }
+
     return null;
   }
 }

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -109,14 +110,15 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
           .client(ohc1.build())
           .build();
       v2API.visits visitService = retrofit.create(v2API.visits.class);
-      Call<List<Visit>> visitsCall = visitService.getVisits("1", null, thisPatient.getPatientId());
+      Call<List<Visit>> visitsCall = visitService.getVisits("1", null, thisPatient.getPatientId(), "create_timestamp");
       visitsCall.enqueue(new Callback<List<Visit>>() {
         @Override
         public void onResponse(Call<List<Visit>> call, Response<List<Visit>> response) {
-
           visits = response.body();
+          Collections.reverse(visits);
           if (tabLayout != null && viewPager != null) {
             for (Visit v: visits) {
+              Log.d(TAG, "visit: " + v.toString());
               tabLayout.addTab(tabLayout.newTab().setText(Util.dateInStringOrToday(v.getCreateTimestamp())));
             }
             viewPager.setAdapter(new patientHistory(getSupportFragmentManager()));
