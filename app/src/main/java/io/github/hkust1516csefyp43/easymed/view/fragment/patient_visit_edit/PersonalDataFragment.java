@@ -21,14 +21,16 @@ import com.codetroopers.betterpickers.numberpicker.NumberPickerBuilder;
 import com.codetroopers.betterpickers.numberpicker.NumberPickerDialogFragment;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 
-public class PersonalDataFragment extends Fragment {
+public class PersonalDataFragment extends Fragment implements OnSendData{
   public final static String TAG = PersonalDataFragment.class.getSimpleName();
 
   private static Patient patient;
@@ -259,4 +261,8 @@ public class PersonalDataFragment extends Fragment {
     mListener = null;
   }
 
+  @Override
+  public Serializable onSendData() {
+    return null;
+  }
 }

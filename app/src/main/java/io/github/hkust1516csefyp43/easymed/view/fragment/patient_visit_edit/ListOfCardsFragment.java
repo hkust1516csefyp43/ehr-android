@@ -24,16 +24,17 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Card;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.view.TwoEditTextDialogCustomView;
 
-
-public class ListOfCardsFragment extends Fragment implements OnFragmentInteractionListener{
+public class ListOfCardsFragment extends Fragment implements OnFragmentInteractionListener, OnSendData {
   // TODO: Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
   private static final String TAG = ListOfCardsFragment.class.getSimpleName();
@@ -180,6 +181,11 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
   @Override
   public void onFragmentInteraction(Uri uri) {
 
+  }
+
+  @Override
+  public Serializable onSendData() {
+    return null;
   }
 
   /**

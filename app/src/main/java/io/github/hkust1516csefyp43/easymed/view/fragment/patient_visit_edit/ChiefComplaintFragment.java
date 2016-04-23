@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.Serializable;
+
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 
-public class ChiefComplaintFragment extends Fragment {
+public class ChiefComplaintFragment extends Fragment implements OnSendData{
   private OnFragmentInteractionListener mListener;
   private AppCompatMultiAutoCompleteTextView acmactv;
 
@@ -45,8 +48,7 @@ public class ChiefComplaintFragment extends Fragment {
     if (context instanceof OnFragmentInteractionListener) {
       mListener = (OnFragmentInteractionListener) context;
     } else {
-      throw new RuntimeException(context.toString()
-          + " must implement OnFragmentInteractionListener");
+      throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
     }
   }
 
@@ -54,5 +56,10 @@ public class ChiefComplaintFragment extends Fragment {
   public void onDetach() {
     super.onDetach();
     mListener = null;
+  }
+
+  @Override
+  public Serializable onSendData() {
+    return null;
   }
 }

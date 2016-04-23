@@ -11,10 +11,13 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.io.Serializable;
+
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 
-public class RemarkFragment extends Fragment {
+public class RemarkFragment extends Fragment implements OnSendData{
   private OnFragmentInteractionListener mListener;
   private SwitchCompat scRemark;
   private EditText etRemark;
@@ -79,4 +82,8 @@ public class RemarkFragment extends Fragment {
   }
 
 
+  @Override
+  public Serializable onSendData() {
+    return null;
+  }
 }
