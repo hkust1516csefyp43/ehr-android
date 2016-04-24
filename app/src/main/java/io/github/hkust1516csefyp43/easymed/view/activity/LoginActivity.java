@@ -369,6 +369,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
       if (success) {
         openEverything();
+        //TODO get the actual user json
         User user = new User();
         user.setEmail(mEmail);
         Answers.getInstance().logLogin(new LoginEvent().putSuccess(true));

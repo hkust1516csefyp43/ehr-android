@@ -28,6 +28,8 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
@@ -60,6 +62,10 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
     View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     toolbar.setTitle("Triage");
+    Clinic thisClinic = Cache.CurrentUser.getClinic(getContext());
+    if (thisClinic != null) {
+      toolbar.setSubtitle(thisClinic.getEnglishName());
+    }
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
