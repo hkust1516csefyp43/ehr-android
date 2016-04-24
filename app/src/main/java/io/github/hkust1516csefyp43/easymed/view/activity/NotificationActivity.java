@@ -2,11 +2,13 @@ package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,13 +16,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.v2API;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
   public final static String TAG = NotificationActivity.class.getSimpleName();
+
+  private SwipeRefreshLayout swipeRefreshLayout;
+  private RecyclerView recyclerView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +53,23 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     //TODO pull to refresh
+    swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+    if (swipeRefreshLayout != null) {
+      swipeRefreshLayout.setOnRefreshListener(this);
+    }
 
-    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    if (recyclerView != null) {
+      recyclerView.setAdapter(new NotificationRecyclerViewAdapter(getBaseContext()));
+      recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+    }
+  }
+
+  private void refreshUI() {
+    if (swipeRefreshLayout != null) {
+      swipeRefreshLayout.setRefreshing(false);
+    }
+    recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     if (recyclerView != null) {
       recyclerView.setAdapter(new NotificationRecyclerViewAdapter(getBaseContext()));
       recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
@@ -57,6 +86,36 @@ public class NotificationActivity extends AppCompatActivity {
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  @Override
+  public void onRefresh() {
+    swipeRefreshLayout.setRefreshing(true);
+    OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+    ohc1.readTimeout(1, TimeUnit.MINUTES);
+    ohc1.connectTimeout(1, TimeUnit.MINUTES);
+
+    Retrofit retrofit = new Retrofit
+        .Builder()
+        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+        .client(ohc1.build())
+        .build();
+    v2API.notifications notificationService = retrofit.create(v2API.notifications.class);
+    Call<List<Notification>> notificationList = notificationService.getMyNotifications("1");
+    notificationList.enqueue(new Callback<List<Notification>>() {
+      @Override
+      public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
+        Log.d(TAG, response.body().toString());
+        Cache.CurrentUser.setNotifications(getBaseContext(), response.body());
+        refreshUI();
+      }
+
+      @Override
+      public void onFailure(Call<List<Notification>> call, Throwable t) {
+
+      }
+    });
   }
 
   private class NotificationRecyclerViewViewHolder extends RecyclerView.ViewHolder {

@@ -66,6 +66,11 @@ public class ProfileActivity extends AppCompatActivity {
     });
   }
 
+  private void openEditProfie(){
+    Intent intent = new Intent(this, EditProfileActivity.class);
+    startActivity(intent);
+  }
+
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
