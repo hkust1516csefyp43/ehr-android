@@ -40,6 +40,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ChiefComplaintFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.DocumentFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ListOfCardsFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.PersonalDataFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.PregnancyFragment;
@@ -316,13 +317,13 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           }
           return remarkFragment;
         case 4:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("HPI");
+          return DocumentFragment.newInstance(null);
         case 5:
           return listOfCardsFragment = ListOfCardsFragment.newInstance("Previous Medical History");
         case 6:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Family History");
+          return DocumentFragment.newInstance(null);
         case 7:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Social History");
+          return DocumentFragment.newInstance(null);
         case 8:
           return listOfCardsFragment = ListOfCardsFragment.newInstance("Drug History");
         case 9:
