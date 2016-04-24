@@ -14,12 +14,15 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.IIcon;
 
+import java.io.Serializable;
+
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Document;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import jp.wasabeef.richeditor.RichEditor;
 
-public class DocumentFragment extends Fragment {
+public class DocumentFragment extends Fragment implements OnSendData{
   public static final String TAG = DocumentFragment.class.getSimpleName();
   private static final String key1 = Const.BundleKey.EDIT_PATIENT;
   private static final String key2 = Const.BundleKey.WHICH_DOCUMENT;
@@ -188,4 +191,10 @@ public class DocumentFragment extends Fragment {
     super.onAttach(context);
   }
 
+  @Override
+  public Serializable onSendData() {
+    io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document newDocument = new io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document();
+    //TODO get html and return
+    return null;
+  }
 }

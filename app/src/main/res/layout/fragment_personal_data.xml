@@ -160,6 +160,8 @@
                     android:paddingLeft="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_gravity="center_vertical|fill_horizontal"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:text="Click to select date"/>
 
                 <ImageView
