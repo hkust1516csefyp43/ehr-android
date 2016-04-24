@@ -164,7 +164,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
 
       viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager()));
-      viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+      viewPager.addOnPageChangeListener(new customViewPagerOnPageChangeListener(tabLayout, navigationView));
       //viewpager need to set page adapter first
 //    tabLayout.setupWithViewPager(viewPager);
       tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -434,6 +434,97 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     @Override
     public int getCount() {
       return tabs.size();
+    }
+  }
+
+  private class customViewPagerOnPageChangeListener extends TabLayout.TabLayoutOnPageChangeListener {
+    private NavigationView navigationView;
+
+    public customViewPagerOnPageChangeListener(TabLayout tabLayout, NavigationView navigationView) {
+      super(tabLayout);
+      this.navigationView = navigationView;
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+      super.onPageSelected(position);
+      if (navigationView != null) {
+        switch (position) {
+          case 0:
+            navigationView.setCheckedItem(R.id.nav_personal_data);
+            break;
+          case 1:
+            navigationView.setCheckedItem(R.id.nav_vital_signs);
+            break;
+          case 2:
+            navigationView.setCheckedItem(R.id.nav_cc);
+            break;
+          case 3:
+            navigationView.setCheckedItem(R.id.nav_triage_remark);
+            break;
+          case 4:
+            navigationView.setCheckedItem(R.id.nav_hpi);
+            break;
+          case 5:
+            navigationView.setCheckedItem(R.id.nav_pmh);
+            break;
+          case 6:
+            navigationView.setCheckedItem(R.id.nav_fh);
+            break;
+          case 7:
+            navigationView.setCheckedItem(R.id.nav_sh);
+            break;
+          case 8:
+            navigationView.setCheckedItem(R.id.nav_dh);
+            break;
+          case 9:
+            navigationView.setCheckedItem(R.id.nav_screening);
+            break;
+          case 10:
+            navigationView.setCheckedItem(R.id.nav_allergy);
+            break;
+          case 11:
+            navigationView.setCheckedItem(R.id.nav_pregnancy);
+            break;
+          case 12:
+            navigationView.setCheckedItem(R.id.nav_ros);
+            break;
+          case 13:
+            navigationView.setCheckedItem(R.id.nav_rf);
+            break;
+          case 14:
+            navigationView.setCheckedItem(R.id.nav_pe);
+            break;
+          case 15:
+            navigationView.setCheckedItem(R.id.nav_cd);
+            break;
+          case 16:
+            navigationView.setCheckedItem(R.id.nav_investigation);
+            break;
+          case 17:
+            navigationView.setCheckedItem(R.id.nav_medication);
+            break;
+          case 18:
+            navigationView.setCheckedItem(R.id.nav_advice);
+            break;
+          case 19:
+            navigationView.setCheckedItem(R.id.nav_fu);
+            break;
+          case 20:
+            navigationView.setCheckedItem(R.id.nav_consultation_remark);
+            break;
+        }
+      }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+      super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+      super.onPageScrollStateChanged(state);
     }
   }
 
