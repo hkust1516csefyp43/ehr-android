@@ -4,19 +4,26 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -38,6 +45,7 @@ import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.Rema
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.VitalSignFragment;
 
 public class PatientVisitEditActivity extends AppCompatActivity implements OnFragmentInteractionListener{
+  private static final String TAG = PatientVisitEditActivity.class.getSimpleName();
 
   private PersonalDataFragment personalDataFragment;
   private VitalSignFragment vitalSignFragment;
@@ -50,6 +58,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   private Visit thisVisit;
   private Triage thisTriage;
   private Consultation thisConsultation;
+
   private boolean isTriage = true;
   private boolean showHistoryButton = true;
 
@@ -58,6 +67,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   private TabLayout tabLayout;
   private ViewPager viewPager;
   private ActionBar supportActionBar;
+  private DrawerLayout drawerLayout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +76,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     viewPager = (ViewPager) findViewById(R.id.viewPager);
-    DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
     //get extra
     Intent intent = getIntent();
@@ -98,6 +108,9 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
     if (isTriage && drawerLayout != null) {
       drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    } else {
+      //TODO change back button to hamburger button
+      //TODO onclick listeners?
     }
 
     if (tabLayout != null && viewPager != null) {
@@ -177,6 +190,43 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     //set toolbar subtitle (clinic name)
     //cc button (only in consultation)
     //confirm button >> dialog, progressbar, (some dialog if successful)
+  }
+
+  @Override
+  public void onBackPressed() {
+    if (drawerLayout != null) {
+      if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        drawerLayout.closeDrawer(Gravity.LEFT);
+        Log.d(TAG, "byeeeeeeeeeeee");
+        return;
+      }
+    }
+    //TODO display dialog
+    MaterialDialog.SingleButtonCallback yes = new MaterialDialog.SingleButtonCallback() {
+      @Override
+      public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+        dialog.dismiss();
+        //TODO destroy current patient cache
+        PatientVisitEditActivity.this.finish();
+      }
+    };
+    //TODO save data button
+    MaterialDialog.SingleButtonCallback no = new MaterialDialog.SingleButtonCallback() {
+      @Override
+      public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+        dialog.dismiss();
+      }
+    };
+    new MaterialDialog.Builder(this)
+        .title("Are you sure")
+        .content("Please don't leave")
+        .positiveText("Fuck off")
+        .negativeText("okey dokey")
+        .onPositive(yes)
+        .onNegative(no)
+        .autoDismiss(false)
+        .theme(Theme.LIGHT)
+        .show();
   }
 
   @Override
