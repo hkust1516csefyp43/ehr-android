@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -47,7 +49,7 @@ import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.Preg
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.RemarkFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.VitalSignFragment;
 
-public class PatientVisitEditActivity extends AppCompatActivity implements OnFragmentInteractionListener{
+public class PatientVisitEditActivity extends AppCompatActivity implements OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener{
   private static final String TAG = PatientVisitEditActivity.class.getSimpleName();
 
   private PersonalDataFragment personalDataFragment;
@@ -80,6 +82,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     viewPager = (ViewPager) findViewById(R.id.viewPager);
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+    if (navigationView != null) {
+      navigationView.setNavigationItemSelectedListener(this);
+    }
 
     //get extra
     Intent intent = getIntent();
@@ -109,6 +115,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       }
     }
 
+    //TODO get clinic from API (by the clinic_id in patient), not from cache (because Global clinics)
     Clinic clinic = Cache.CurrentUser.getClinic(this);
     if (isTriage && clinic != null && toolbar != null) {
       if (clinic.getEnglishName() != null) {
@@ -181,10 +188,11 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
     setSupportActionBar(toolbar);
     supportActionBar = getSupportActionBar();
-    if (supportActionBar != null) {
-      //Set patient name as title
-      supportActionBar.setDisplayHomeAsUpEnabled(true);
-      supportActionBar.setDisplayShowHomeEnabled(true);
+
+    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    if (drawerLayout != null) {
+      drawerLayout.setDrawerListener(toggle);
+      toggle.syncState();
     }
 
 
@@ -250,6 +258,85 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   }
 
   @Override
+  public boolean onNavigationItemSelected(MenuItem item) {
+    // Handle navigation view item clicks here.
+    if (viewPager != null) {
+      int id = item.getItemId();
+      switch (id) {
+        case R.id.nav_personal_data:
+          viewPager.setCurrentItem(0);
+          break;
+        case R.id.nav_vital_signs:
+          viewPager.setCurrentItem(1);
+          break;
+        case R.id.nav_cc:
+          viewPager.setCurrentItem(2);
+          break;
+        case R.id.nav_triage_remark:
+          viewPager.setCurrentItem(3);
+          break;
+        case R.id.nav_hpi:
+          viewPager.setCurrentItem(4);
+          break;
+        case R.id.nav_pmh:
+          viewPager.setCurrentItem(5);
+          break;
+        case R.id.nav_fh:
+          viewPager.setCurrentItem(6);
+          break;
+        case R.id.nav_sh:
+          viewPager.setCurrentItem(7);
+          break;
+        case R.id.nav_dh:
+          viewPager.setCurrentItem(8);
+          break;
+        case R.id.nav_screening:
+          viewPager.setCurrentItem(9);
+          break;
+        case R.id.nav_allergy:
+          viewPager.setCurrentItem(10);
+          break;
+        case R.id.nav_pregnancy:
+          viewPager.setCurrentItem(11);
+          break;
+        case R.id.nav_ros:
+          viewPager.setCurrentItem(12);
+          break;
+        case R.id.nav_rf:
+          viewPager.setCurrentItem(13);
+          break;
+        case R.id.nav_pe:
+          viewPager.setCurrentItem(14);
+          break;
+        case R.id.nav_cd:
+          viewPager.setCurrentItem(15);
+          break;
+        case R.id.nav_investigation:
+          viewPager.setCurrentItem(16);
+          break;
+        case R.id.nav_medication:
+          viewPager.setCurrentItem(17);
+          break;
+        case R.id.nav_advice:
+          viewPager.setCurrentItem(18);
+          break;
+        case R.id.nav_fu:
+          viewPager.setCurrentItem(19);
+          break;
+        case R.id.nav_consultation_remark:
+          viewPager.setCurrentItem(20);
+          break;
+      }
+    }
+
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    if (drawer != null) {
+      drawer.closeDrawer(GravityCompat.START);
+    }
+    return true;
+  }
+
+  @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater menuInflater = getMenuInflater();
     menuInflater.inflate(R.menu.menu_patient_edit, menu);
@@ -270,17 +357,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       }
     });
     return true;
-  }
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        // app icon in action bar clicked; goto parent activity.
-        this.finish();
-        return true;
-      default:
-        return super.onOptionsItemSelected(item);
-    }
   }
 
   @Override

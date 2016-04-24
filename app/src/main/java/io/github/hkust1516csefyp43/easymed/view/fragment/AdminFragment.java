@@ -49,8 +49,9 @@ public class AdminFragment extends Fragment {
       toggle.syncState();
     }
 
-    //TODO synchronize
-    //TODO data management
+    //TODO synchronize (sync)
+    //TODO data management (table edit)
+    //TODO other setting (setting)
 
     return view;
   }

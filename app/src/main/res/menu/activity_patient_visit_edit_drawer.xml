@@ -7,11 +7,13 @@
         <item
             android:id="@+id/nav_personal_data"
             android:title="Personal Data"/>
+
         <item
             android:id="@+id/nav_vital_signs"
             android:title="Vital Signs"/>
+
         <item
-            android:id="@+id/nav_pharmacy"
+            android:id="@+id/nav_cc"
             android:title="Chief Complaints"/>
 
         <item
