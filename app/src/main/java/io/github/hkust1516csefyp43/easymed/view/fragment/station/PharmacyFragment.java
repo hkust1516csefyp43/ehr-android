@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
 
@@ -42,6 +44,11 @@ public class PharmacyFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     toolbar.setTitle("Pharmacy");
+    Clinic thisClinic = Cache.CurrentUser.getClinic(getContext());
+    if (thisClinic != null) {
+      toolbar.setSubtitle(thisClinic.getEnglishName());
+    }
+
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 

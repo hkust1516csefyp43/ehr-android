@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -65,6 +66,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     viewPager = (ViewPager) findViewById(R.id.viewPager);
+    DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
     //get extra
     Intent intent = getIntent();
@@ -92,6 +94,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       if (serializable instanceof Consultation) {
         thisConsultation = (Consultation) serializable;
       }
+    }
+
+    if (isTriage && drawerLayout != null) {
+      drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     if (tabLayout != null && viewPager != null) {
