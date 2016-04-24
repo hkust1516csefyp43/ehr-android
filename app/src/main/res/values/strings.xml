@@ -127,4 +127,6 @@
 
     <string name="com.optimizely.api_key" translatable="false">AANPOUgBRLzZHR0NAOotgOtwlOPmwjgP</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_visit_report_export">VisitReportExportActivity</string>
+    <string name="title_activity_clinic_report_export">ClinicReportExportActivity</string>
 </resources>
