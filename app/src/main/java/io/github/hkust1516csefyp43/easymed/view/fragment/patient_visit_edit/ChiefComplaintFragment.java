@@ -38,7 +38,7 @@ public class ChiefComplaintFragment extends Fragment implements OnSendData{
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_chief_complaint, container, false);
-    acmactv = (AppCompatMultiAutoCompleteTextView) view.findViewById(R.id.chief_complain);
+    acmactv = (AppCompatMultiAutoCompleteTextView) view.findViewById(R.id.chief_complaint);
     return view;
   }
 

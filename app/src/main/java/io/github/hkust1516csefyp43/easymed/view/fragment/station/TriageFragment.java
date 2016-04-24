@@ -136,6 +136,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
         Intent intent = new Intent(getContext(), SearchActivity.class);
         intent.putExtra(Const.BundleKey.IS_TRIAGE, true);
         startActivity(intent);
+        dialog.dismiss();
       }
     });
 
@@ -146,6 +147,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
         Intent intent = new Intent(getContext(), SearchActivity.class);
         //Also search, but maybe a extra + button for easier add new patient? (extra)
         startActivity(intent);
+        dialog.dismiss();
       }
     });
 
@@ -154,8 +156,8 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), PatientVisitEditActivity.class);
-
         startActivity(intent);
+        dialog.dismiss();
       }
     });
 
@@ -164,6 +166,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
       @Override
       public void onClick(View v) {
         //dialog shows list of saved stuff (can you show dialog on top of dialog? No >> dismiss this first)
+        dialog.dismiss();
       }
     });
 

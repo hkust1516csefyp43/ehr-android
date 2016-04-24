@@ -83,9 +83,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     viewPager = (ViewPager) findViewById(R.id.viewPager);
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    if (navigationView != null) {
-      navigationView.setNavigationItemSelectedListener(this);
-    }
+
 
     //get extra
     Intent intent = getIntent();
@@ -122,7 +120,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         toolbar.setSubtitle(clinic.getEnglishName());
       }
     }
-
 
     if (isTriage && drawerLayout != null) {
       drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -188,11 +185,18 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
     setSupportActionBar(toolbar);
     supportActionBar = getSupportActionBar();
-
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    if (drawerLayout != null) {
-      drawerLayout.setDrawerListener(toggle);
-      toggle.syncState();
+    if (isTriage) {
+      supportActionBar.setDisplayHomeAsUpEnabled(true);
+      supportActionBar.setDisplayShowHomeEnabled(true);
+    } else {
+      if (navigationView != null) {
+        navigationView.setNavigationItemSelectedListener(this);
+      }
+      ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+      if (drawerLayout != null) {
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+      }
     }
 
 
@@ -255,6 +259,18 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       menuItem3.setVisible(false);
     }
     return super.onPrepareOptionsMenu(menu);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        // app icon in action bar clicked; goto parent activity.
+        this.finish();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   @Override
@@ -341,8 +357,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     MenuInflater menuInflater = getMenuInflater();
     menuInflater.inflate(R.menu.menu_patient_edit, menu);
     MenuItem menuItem1 = menu.findItem(R.id.confirm);
-    menuItem1.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
     MenuItem menuItem2 = menu.findItem(R.id.history);
+    MenuItem menuItem3 = menu.findItem(R.id.chief_complaint);
+
+    menuItem1.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
     menuItem2.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_history).color(Color.WHITE).actionBar());
     menuItem2.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
       @Override

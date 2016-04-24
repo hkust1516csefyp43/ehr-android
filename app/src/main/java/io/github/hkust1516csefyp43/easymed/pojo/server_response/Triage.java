@@ -12,7 +12,7 @@ public class Triage implements Serializable{
   @SerializedName("triage_id")                String id;
   @SerializedName("user_id")                  String userId;
   @SerializedName("visit_id")                 String visitId;
-  @SerializedName("chief_complains")          String chiefComplains;
+  @SerializedName("chief_complains")          String chiefComplaints;
   @SerializedName("diastolic")                Integer diastolic;
   @SerializedName("systolic")                 Integer systolic;
   @SerializedName("start_timestamp")          Date startTime;
@@ -32,11 +32,11 @@ public class Triage implements Serializable{
     //empty constructor
   }
 
-  public Triage(String id, String userId, String visitId, String chiefComplains, Integer diastolic, Integer systolic, Date startTime, Date endTime, Boolean editedInConsultation, Double headCircumference, Integer heartRate, Double height, Double weight, Date lastDewormingTabletDate, String remark, Integer respiratoryRate, Integer spo2, Double temperature) {
+  public Triage(String id, String userId, String visitId, String chiefComplaints, Integer diastolic, Integer systolic, Date startTime, Date endTime, Boolean editedInConsultation, Double headCircumference, Integer heartRate, Double height, Double weight, Date lastDewormingTabletDate, String remark, Integer respiratoryRate, Integer spo2, Double temperature) {
     this.id = id;
     this.userId = userId;
     this.visitId = visitId;
-    this.chiefComplains = chiefComplains;
+    this.chiefComplaints = chiefComplaints;
     this.diastolic = diastolic;
     this.systolic = systolic;
     this.startTime = startTime;
@@ -77,12 +77,12 @@ public class Triage implements Serializable{
     this.visitId = visitId;
   }
 
-  public String getChiefComplains() {
-    return chiefComplains;
+  public String getChiefComplaints() {
+    return chiefComplaints;
   }
 
-  public void setChiefComplains(String chiefComplains) {
-    this.chiefComplains = chiefComplains;
+  public void setChiefComplaints(String chiefComplaints) {
+    this.chiefComplaints = chiefComplaints;
   }
 
   public Integer getDiastolic() {
@@ -203,7 +203,7 @@ public class Triage implements Serializable{
         "id='" + id + '\'' +
         ", userId='" + userId + '\'' +
         ", visitId='" + visitId + '\'' +
-        ", chiefComplains='" + chiefComplains + '\'' +
+        ", chiefComplaints='" + chiefComplaints + '\'' +
         ", diastolic=" + diastolic +
         ", systolic=" + systolic +
         ", startTime=" + startTime +

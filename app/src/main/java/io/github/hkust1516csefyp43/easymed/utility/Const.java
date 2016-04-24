@@ -48,6 +48,8 @@ public class Const {
     public static final String CURRENT_CLINIC = "j77RR5CGZQtYvnx1";
     public static final String MY_NOTIFICATIONS = "17PvcUhpCGA8GF1q";
     public static final String CURRENT_USER_INFO = "vYTGy6Mhz3QkMMwy";
+    public static final String CURRENT_ACCESS_TOKEN = "E46dv8atAN9W8C6Z";
+    public static final String CURRENT_REFRESH_TOKEN = "31FdTekBXpMyXJp2";
   }
 
   public class Database {

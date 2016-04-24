@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,11 +14,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.Collections;
 import java.util.List;
@@ -168,6 +173,17 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater menuInflater = getMenuInflater();
+    menuInflater.inflate(R.menu.menu_patient_visit_view, menu);
+    MenuItem menuItem = menu.findItem(R.id.report);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_file_excel));
+    }
+    return true;
   }
 
   @Override

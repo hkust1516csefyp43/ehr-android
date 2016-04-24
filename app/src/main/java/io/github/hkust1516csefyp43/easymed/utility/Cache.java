@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
@@ -55,7 +56,31 @@ public class Cache {
     public static void removeUser(Context context) {
       deleteSomething(context, Const.CacheKey.CURRENT_USER_INFO);
     }
-    //tokens (CURRENT_ACCESS_TOKEN)
+
+    //tokens
+    public static void setAccessToken(Context context, String accessToken) {
+      setString(context, accessToken, Const.CacheKey.CURRENT_ACCESS_TOKEN);
+    }
+
+    public static String getAccessToken(Context context) {
+      return getString(context, Const.CacheKey.CURRENT_ACCESS_TOKEN, null);
+    }
+
+    public static void deleteAccessToken(Context context) {
+      deleteSomething(context, Const.CacheKey.CURRENT_ACCESS_TOKEN);
+    }
+
+    public static void setRefreshToken(Context context, String refreshToken) {
+      setString(context, refreshToken, Const.CacheKey.CURRENT_REFRESH_TOKEN);
+    }
+
+    public static String getRefreshToekn(Context context) {
+      return getString(context, Const.CacheKey.CURRENT_REFRESH_TOKEN, null);
+    }
+
+    public static void deleteRefreshToken(Context context) {
+      deleteSomething(context, Const.CacheKey.CURRENT_REFRESH_TOKEN);
+    }
 
     //clinic
     public static void setClinic(Context context, Clinic clinic) {
@@ -113,7 +138,41 @@ public class Cache {
 
   public static class Synchronisation {
     //last push
+    public static void setLastPushToCloud(Context context, GregorianCalendar gregorianCalendar) {
+
+    }
+
+    public static GregorianCalendar getLastPushToCloud(Context context) {
+      return null;
+    }
+
     //last pull
-    //
+    public static void setLastPullToCloud(Context context, GregorianCalendar gregorianCalendar) {
+
+    }
+
+    public static GregorianCalendar getLastPullToCloud(Context context) {
+      return null;
+    }
+
+
+    //last push
+    public static void setLastPushToLocal(Context context, GregorianCalendar gregorianCalendar) {
+
+    }
+
+    public static GregorianCalendar getLastPushToLocal(Context context) {
+      return null;
+    }
+
+    //last pull
+    public static void setLastPullToLocal(Context context, GregorianCalendar gregorianCalendar) {
+
+    }
+
+    public static GregorianCalendar getLastPullToLocal(Context context) {
+      return null;
+    }
+
   }
 }

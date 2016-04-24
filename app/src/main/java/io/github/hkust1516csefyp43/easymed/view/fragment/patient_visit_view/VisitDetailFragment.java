@@ -202,9 +202,9 @@ public class VisitDetailFragment extends Fragment {
                   tvTriageVisitId.setText("Visit ID: " + triage.getVisitId());
                   linearLayout.addView(tvTriageVisitId);
                 }
-                if (triage.getChiefComplains() != null){
+                if (triage.getChiefComplaints() != null){
                   TextView tvTriageCC = new TextView(context);
-                  tvTriageCC.setText("Chief complaint: " + triage.getChiefComplains());
+                  tvTriageCC.setText("Chief complaint: " + triage.getChiefComplaints());
                   linearLayout.addView(tvTriageCC);
                 }
                 if (triage.getHeartRate() != null){
@@ -300,9 +300,9 @@ public class VisitDetailFragment extends Fragment {
 //                textView5.setText(triage.getRemark());
 //                linearLayout.addView(textView5);
 //              }
-//              if (triage.getChiefComplains() != null){
+//              if (triage.getChiefComplaints() != null){
 //                TextView textView7 = new TextView(context);
-//                textView7.setText(triage.getChiefComplains());
+//                textView7.setText(triage.getChiefComplaints());
 //                linearLayout.addView(textView7);
 //              }
               }
