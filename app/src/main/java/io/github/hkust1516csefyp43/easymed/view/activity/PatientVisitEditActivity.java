@@ -317,13 +317,13 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           }
           return remarkFragment;
         case 4:
-          return DocumentFragment.newInstance(null);
+          return DocumentFragment.newInstance(null, 0);
         case 5:
           return listOfCardsFragment = ListOfCardsFragment.newInstance("Previous Medical History");
         case 6:
-          return DocumentFragment.newInstance(null);
+          return DocumentFragment.newInstance(null, 1);
         case 7:
-          return DocumentFragment.newInstance(null);
+          return DocumentFragment.newInstance(null, 2);
         case 8:
           return listOfCardsFragment = ListOfCardsFragment.newInstance("Drug History");
         case 9:
