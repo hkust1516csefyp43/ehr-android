@@ -32,10 +32,12 @@ import java.util.ArrayList;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ChiefComplaintFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ListOfCardsFragment;
@@ -105,6 +107,14 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         thisConsultation = (Consultation) serializable;
       }
     }
+
+    Clinic clinic = Cache.CurrentUser.getClinic(this);
+    if (isTriage && clinic != null && toolbar != null) {
+      if (clinic.getEnglishName() != null) {
+        toolbar.setSubtitle(clinic.getEnglishName());
+      }
+    }
+
 
     if (isTriage && drawerLayout != null) {
       drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
