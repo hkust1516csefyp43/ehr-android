@@ -40,6 +40,9 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   //TODO phone country code spinner
   private EditText etPhoneNumber;
   private ImageView ivProfilePic;
+  private TextView etAgeYear;
+  private TextView etAgeMonth;
+  private TextView etAgeWeek;
   private TextView tvBirthday;
   private Spinner sGender;
   private Spinner sStatus;
@@ -196,6 +199,65 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       }
     });
 
+    etAgeYear = (EditText) view.findViewById(R.id.etYear);
+    etAgeMonth = (EditText) view.findViewById(R.id.etMonth);
+    etAgeWeek = (EditText) view.findViewById(R.id.etWeek);
+    if (etAgeYear != null) {
+      etAgeYear.addTextChangedListener(new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+          //TODO calculate birthday
+        }
+      });
+      if (etAgeMonth != null) {
+        etAgeYear.addTextChangedListener(new TextWatcher() {
+          @Override
+          public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+          }
+
+          @Override
+          public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+          }
+
+          @Override
+          public void afterTextChanged(Editable s) {
+            //TODO calculate birthday
+          }
+        });
+        if (etAgeWeek != null) {
+          etAgeYear.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+              //TODO calculate birthday
+            }
+          });
+        }
+      }
+    }
+
+    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
     if (tvBirthday != null) {
       tvBirthday.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -218,7 +280,6 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       });
     }
 
-    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
     birthday[0] = 0;
     birthday[1] = 0;
     birthday[2] = 0;

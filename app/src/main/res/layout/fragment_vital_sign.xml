@@ -19,7 +19,7 @@
 
             <TextView
                 android:id="@+id/tvBloodPressure"
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:text="Blood Pressure"/>
 
@@ -60,6 +60,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_bp_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="mmHg"/>
@@ -73,7 +74,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:text="Pulse rate"/>
 
@@ -91,6 +92,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_pr_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -104,7 +106,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:text="Respiratory Rate"/>
 
@@ -122,6 +124,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_rr_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -135,7 +138,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:text="Temperature"/>
 
@@ -153,6 +156,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_temperature_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -166,7 +170,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:text="Blood sugar"/>
 
@@ -184,7 +188,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
-                android:id="@+id/tvBloodSugarUnit"
+                android:id="@+id/tv_blood_sugar_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -198,7 +202,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:text="SpO2"/>
 
@@ -216,6 +220,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_spo2_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -229,7 +234,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:text="Head Circumference"/>
 
@@ -247,6 +252,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_head_circumference_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -260,7 +266,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:text="Weight"/>
 
@@ -278,6 +284,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_weight_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -291,7 +298,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:text="Height"/>
 
@@ -309,6 +316,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
+                android:id="@+id/tv_height_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -323,7 +331,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:marqueeRepeatLimit="marquee_forever"
@@ -355,7 +363,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="128dp"
+                android:layout_width="132dp"
                 android:layout_height="wrap_content"
                 android:lines="1"
                 android:marqueeRepeatLimit="marquee_forever"
