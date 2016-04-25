@@ -128,7 +128,10 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
             }
             viewPager.setAdapter(new patientHistory(getSupportFragmentManager()));
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-            viewPager.setOffscreenPageLimit(2);
+            if (visits.size() <= 20)
+              viewPager.setOffscreenPageLimit(visits.size());
+            else
+              viewPager.setOffscreenPageLimit(20);
             tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
               @Override
               public void onTabSelected(TabLayout.Tab tab) {
