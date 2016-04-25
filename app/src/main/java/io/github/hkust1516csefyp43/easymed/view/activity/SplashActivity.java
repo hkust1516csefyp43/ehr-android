@@ -7,10 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
 import com.optimizely.Optimizely;
 
@@ -28,6 +27,7 @@ public class SplashActivity extends AppCompatActivity {
   private static final String TAG = SplashActivity.class.getSimpleName();
   private String error;
   private User user;
+  private TextView tvWhichServer;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class SplashActivity extends AppCompatActivity {
     JodaTimeAndroid.init(this);
 
     setContentView(R.layout.activity_splash);
+    tvWhichServer = (TextView) findViewById(R.id.tv_which_server);
 
     /**
      * TODO find the right server
@@ -47,14 +48,14 @@ public class SplashActivity extends AppCompatActivity {
      * 5. else check if heroku is accessible
      * 6. if not, set error >> true (on post execute will display sth)
      */
-    final CheckIfServerIsAvailable task2 = new CheckIfServerIsAvailable(this, "ehr-api.herokuapp.com", 443, new SplashActivity.AsyncResponse() {
+    final CheckIfServerIsAvailable task2 = new CheckIfServerIsAvailable(this, "Internet", "ehr-api.herokuapp.com", 443, new SplashActivity.AsyncResponse() {
       @Override
       public void processFinish(String output) {
         //TODO there is nothing else you can do
         error = "Even heroku is not available";
       }
     });
-    CheckIfServerIsAvailable task1 = new CheckIfServerIsAvailable(this, "192.168.0.194", 3000, new SplashActivity.AsyncResponse() {
+    CheckIfServerIsAvailable task1 = new CheckIfServerIsAvailable(this, "Local", "192.168.0.194", 3000, new SplashActivity.AsyncResponse() {
       @Override
       public void processFinish(String output) {
         task2.execute();
@@ -71,31 +72,19 @@ public class SplashActivity extends AppCompatActivity {
     }
   }
 
-  public void showLogo(){
-    ImageView iv = (ImageView) findViewById(R.id.logo);
-    if (iv != null) {
-      int logo = R.drawable.easymed;
-      Glide.with(this).load(logo).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv);
-    }
-  }
-
   private class CheckIfServerIsAvailable extends AsyncTask<Void, Boolean, Boolean> {
     Context context;
     String host;
     int port;
     AsyncResponse delegate;
+    String message;
 
-    public CheckIfServerIsAvailable(Context context, String host, int port, AsyncResponse delegate) {
+    public CheckIfServerIsAvailable(Context context, String message, String host, int port, AsyncResponse delegate) {
       this.context = context;
       this.host = host;
       this.port = port;
       this.delegate = delegate;
-    }
-
-    @Override
-    protected void onPreExecute() {
-      super.onPreExecute();
-      showLogo();
+      this.message = message;
     }
 
     @Override
@@ -108,7 +97,11 @@ public class SplashActivity extends AppCompatActivity {
       super.onPostExecute(aBoolean);
       if (aBoolean) {
         Log.d(TAG, "successful: " + host);
-        //TODO display some dialog to tell user which server they are connected to
+        //TODO tell user which server they are connected to
+        if (tvWhichServer != null) {
+          tvWhichServer.setVisibility(View.VISIBLE);
+          tvWhichServer.setText("You are now connected to the '" + message + "' server");
+        }
         final Class target;
         User user = Cache.CurrentUser.getUser(context);
         if (user == null){
