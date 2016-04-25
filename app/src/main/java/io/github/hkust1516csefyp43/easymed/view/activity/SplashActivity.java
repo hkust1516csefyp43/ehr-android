@@ -26,7 +26,6 @@ public class SplashActivity extends AppCompatActivity {
 
   private static final String TAG = SplashActivity.class.getSimpleName();
   private String error;
-  private User user;
   private TextView tvWhichServer;
 
   @Override
@@ -39,23 +38,19 @@ public class SplashActivity extends AppCompatActivity {
     setContentView(R.layout.activity_splash);
     tvWhichServer = (TextView) findViewById(R.id.tv_which_server);
 
-    /**
-     * TODO find the right server
-     * 1. see if any internet exists
-     * 2. see if wifi exists
-     * 3. if wifi, check if rpi server exists
-     * 4. if exists, done
-     * 5. else check if heroku is accessible
-     * 6. if not, set error >> true (on post execute will display sth)
-     */
+    //TODO extract urls from cache/const
     final CheckIfServerIsAvailable task2 = new CheckIfServerIsAvailable(this, "Internet", "ehr-api.herokuapp.com", 443, new SplashActivity.AsyncResponse() {
       @Override
       public void processFinish(String output) {
         //TODO there is nothing else you can do
         error = "Even heroku is not available";
+        if (tvWhichServer != null) {
+          tvWhichServer.setText(error);
+        }
+        //TODO try again button for both server >> execute task1/task2
       }
     });
-    CheckIfServerIsAvailable task1 = new CheckIfServerIsAvailable(this, "Local", "192.168.0.194", 3000, new SplashActivity.AsyncResponse() {
+    CheckIfServerIsAvailable task1 = new CheckIfServerIsAvailable(this, "Local", "192.168.0.194", 3000, 3000, new SplashActivity.AsyncResponse() {
       @Override
       public void processFinish(String output) {
         task2.execute();
@@ -77,19 +72,29 @@ public class SplashActivity extends AppCompatActivity {
     String host;
     int port;
     AsyncResponse delegate;
-    String message;
+    String serverName;
+    int timeout = 10000;
 
-    public CheckIfServerIsAvailable(Context context, String message, String host, int port, AsyncResponse delegate) {
+    public CheckIfServerIsAvailable(Context context, String serverName, String host, int port, AsyncResponse delegate) {
       this.context = context;
       this.host = host;
       this.port = port;
       this.delegate = delegate;
-      this.message = message;
+      this.serverName = serverName;
+    }
+
+    public CheckIfServerIsAvailable(Context context, String serverName, String host, int port, int timeout, AsyncResponse delegate) {
+      this.context = context;
+      this.host = host;
+      this.port = port;
+      this.delegate = delegate;
+      this.serverName = serverName;
+      this.timeout = timeout;
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-      return Connectivity.isReachableByTcp(host, port, 10000);
+      return Connectivity.isReachableByTcp(host, port, timeout);
     }
 
     @Override
@@ -97,10 +102,10 @@ public class SplashActivity extends AppCompatActivity {
       super.onPostExecute(aBoolean);
       if (aBoolean) {
         Log.d(TAG, "successful: " + host);
-        //TODO tell user which server they are connected to
         if (tvWhichServer != null) {
           tvWhichServer.setVisibility(View.VISIBLE);
-          tvWhichServer.setText("You are now connected to the '" + message + "' server");
+          tvWhichServer.setText("You are now connected to the '" + serverName + "' server");
+          //TODO set url for all connections
         }
         final Class target;
         User user = Cache.CurrentUser.getUser(context);

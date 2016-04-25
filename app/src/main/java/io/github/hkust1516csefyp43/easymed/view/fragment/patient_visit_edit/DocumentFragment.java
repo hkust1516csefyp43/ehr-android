@@ -1,9 +1,16 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +21,7 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.typeface.IIcon;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 
 import io.github.hkust1516csefyp43.easymed.R;
@@ -33,6 +41,7 @@ public class DocumentFragment extends Fragment implements OnSendData{
   private Document document;
   private int whichDocument;
 
+  private Uri uri;
   /**
    *
    * @param patientId
@@ -151,11 +160,10 @@ public class DocumentFragment extends Fragment implements OnSendData{
         mEditor.setSuperscript();
       }
     });
-    addButton(context, CommunityMaterial.Icon.cmd_file_image_box, new View.OnClickListener() {
+    addButton(context, CommunityMaterial.Icon.cmd_camera, new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //TODO how?
-        //http://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
+        openCamera();
       }
     });
     addButton(context, CommunityMaterial.Icon.cmd_format_align_left, new View.OnClickListener() {
@@ -176,6 +184,45 @@ public class DocumentFragment extends Fragment implements OnSendData{
         mEditor.setAlignRight();
       }
     });
+  }
+
+  private void openCamera() {
+    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+      startActivityForResult(takePictureIntent, 12345);
+    }
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == 12345) {
+      if (resultCode == Activity.RESULT_OK) {
+        Log.d(TAG, "step 1: " + data.toString());
+        Bundle extras = data.getExtras();
+        Bitmap imageBitmap = (Bitmap) extras.get("data");
+        if (imageBitmap != null) {
+          Log.d(TAG, "got bitmap");
+          ByteArrayOutputStream bao = new ByteArrayOutputStream();
+          imageBitmap.compress(Bitmap.CompressFormat.JPEG, 5, bao);
+          byte [] ba = bao.toByteArray();
+          String ba1 = Base64.encodeToString(ba,Base64.NO_WRAP);
+          if (mEditor != null) {
+            Log.d(TAG, "inserting image: " + ba1);
+            String output = mEditor.getHtml();
+            if (output == null) {
+              output = "";
+            } else if (output.compareTo("null") == 0){
+              output = "";
+            } else {
+              output = output + "<br>";
+            }
+            mEditor.setHtml(output + "<img src=\"data:image/png;base64," + ba1 + "\"/>");
+            Log.d(TAG, "mEditor: " + mEditor.getHtml());
+          }
+        }
+      }
+    }
   }
 
   private void addButton(Context context, IIcon icon, View.OnClickListener onClickListener) {

@@ -301,7 +301,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
     PersonalData pd = new PersonalData();
     if (etFirstName != null) {
-      //TODO
+      //TODO cannot submit if empty
     }
     if (etMiddleName != null) {
       pd.setMiddleName(etMiddleName.getText().toString());
@@ -313,7 +313,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       pd.setNativeName(etNativeName.getText().toString());
     }
     if (etTag != null) {
-      //TODO
+      //TODO cannot submit if empty
     }
     if (tvBirthday != null) {
       pd.setBirthYear(birthday[0]);

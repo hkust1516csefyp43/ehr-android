@@ -1,6 +1,5 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -277,11 +276,55 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:
-        // app icon in action bar clicked; goto parent activity.
         this.finish();
         return true;
+      case R.id.chief_complaint:
+        if (thisTriage != null && thisTriage.getChiefComplaints() != null) {
+          new MaterialDialog.Builder(this)
+              .title("Chief Complain")
+              .content(thisTriage.getChiefComplaints())
+              .autoDismiss(true)
+              .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                  dialog.dismiss();
+                }
+              })
+              .theme(Theme.LIGHT)
+              .positiveText("Dismiss")
+              .show();
+        } else {
+          if (viewPager != null) {
+            Snackbar.make(viewPager, "No Chief Complain", Snackbar.LENGTH_LONG).show();
+          } else {
+            new MaterialDialog.Builder(this)
+                .content("No Chief Complain")
+                .autoDismiss(true)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                  @Override
+                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                  }
+                })
+                .theme(Theme.LIGHT)
+                .positiveText("Dismiss")
+                .show();
+          }
+        }
+        return false;
+      case R.id.history:
+        Intent intent = new Intent(getBaseContext(), PatientVisitViewActivity.class);
+        intent.putExtra(Const.BundleKey.ON_OR_OFF, false);
+        if (thisPatient != null) {
+          intent.putExtra(Const.BundleKey.READ_ONLY_PATIENT, thisPatient);
+        }
+        startActivity(intent);
+        return false;
+      case R.id.confirm:
+        //TODO call onSendData from every page, process them, and POST/PUT accordingly
+        return false;
       default:
-        return super.onOptionsItemSelected(item);
+        return false;
     }
   }
 
@@ -372,69 +415,8 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     MenuItem menuItem2 = menu.findItem(R.id.history);
     MenuItem menuItem3 = menu.findItem(R.id.chief_complaint);
 
-    final Context context = this;
-
     menuItem1.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
     menuItem2.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_history).color(Color.WHITE).actionBar());
-
-    menuItem1.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-      @Override
-      public boolean onMenuItemClick(MenuItem item) {
-        //TODO confirm
-        return false;
-      }
-    });
-    menuItem2.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-      @Override
-      public boolean onMenuItemClick(MenuItem item) {
-        Intent intent = new Intent(getBaseContext(), PatientVisitViewActivity.class);
-        intent.putExtra(Const.BundleKey.ON_OR_OFF, false);
-        if (thisPatient != null) {
-          intent.putExtra(Const.BundleKey.READ_ONLY_PATIENT, thisPatient);
-        }
-        startActivity(intent);
-        return false;
-      }
-    });
-    menuItem3.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-      @Override
-      public boolean onMenuItemClick(MenuItem item) {
-        //TODO show cc
-        if (thisTriage != null && thisTriage.getChiefComplaints() != null) {
-          new MaterialDialog.Builder(context)
-              .title("Chief Complain")
-              .content(thisTriage.getChiefComplaints())
-              .autoDismiss(true)
-              .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                  dialog.dismiss();
-                }
-              })
-              .theme(Theme.LIGHT)
-              .positiveText("Dismiss")
-              .show();
-        } else {
-          if (viewPager != null) {
-            Snackbar.make(viewPager, "No Chief Complain", Snackbar.LENGTH_LONG).show();
-          } else {
-            new MaterialDialog.Builder(context)
-                .content("No Chief Complain")
-                .autoDismiss(true)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                  @Override
-                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.dismiss();
-                  }
-                })
-                .theme(Theme.LIGHT)
-                .positiveText("Dismiss")
-                .show();
-          }
-        }
-        return false;
-      }
-    });
     return true;
   }
 
