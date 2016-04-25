@@ -84,6 +84,11 @@ public class RemarkFragment extends Fragment implements OnSendData{
 
   @Override
   public Serializable onSendData() {
+    if (scRemark != null && etRemark != null) {
+      if (scRemark.isChecked()) {
+        return etRemark.getText().toString();
+      }
+    }
     return null;
   }
 }

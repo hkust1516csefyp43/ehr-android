@@ -13,6 +13,10 @@ public class ListOfCards implements Serializable {
     //empty constructor
   }
 
+  public ListOfCards(ArrayList<Card> cardArrayList) {
+    this.cardArrayList = cardArrayList;
+  }
+
   public ArrayList<Card> getCardArrayList() {
     return cardArrayList;
   }

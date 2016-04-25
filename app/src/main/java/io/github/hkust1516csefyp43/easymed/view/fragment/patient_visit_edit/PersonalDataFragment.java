@@ -1,9 +1,9 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -71,17 +71,16 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     inflateEveryBoxes(view);
 
     ImageView ivBirthdayRemove = (ImageView) view.findViewById(R.id.ivRemoveBirthday);
-    ivBirthdayRemove.setImageDrawable(new IconicsDrawable(getContext()).actionBar().color(Color.BLACK).icon(FontAwesome.Icon.faw_trash_o));
-//    Button removeButton = (Button) view.findViewById(R.id.removeButton);
-//    removeButton.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View v) {
-//        birthday[0] = 0;
-//        birthday[1] = 0;
-//        birthday[2] = 0;
-//        tvBirthday.setText("Click to select date");
-//      }
-//    });
+    ivBirthdayRemove.setImageDrawable(new IconicsDrawable(getContext()).actionBar().color(ResourcesCompat.getColor(getResources(), R.color.secondary_text_color, null)).icon(FontAwesome.Icon.faw_trash_o));
+    ivBirthdayRemove.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        birthday[0] = 0;
+        birthday[1] = 0;
+        birthday[2] = 0;
+        tvBirthday.setText("Click to select date");
+      }
+    });
     return view;
   }
 
@@ -249,7 +248,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
         personalData.setFirstName(etFirstName.getText().toString());
       }
     }
-
-    return null;
+    //TODO
+    return personalData;
   }
 }

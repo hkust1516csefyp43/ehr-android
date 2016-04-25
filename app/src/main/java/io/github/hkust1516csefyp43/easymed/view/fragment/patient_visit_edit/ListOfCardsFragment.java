@@ -31,23 +31,23 @@ import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Card;
+import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.ListOfCards;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.view.TwoEditTextDialogCustomView;
 
 public class ListOfCardsFragment extends Fragment implements OnFragmentInteractionListener, OnSendData {
-  // TODO: Rename parameter arguments, choose names that match
-  // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
   private static final String TAG = ListOfCardsFragment.class.getSimpleName();
 
   private OnFragmentInteractionListener mListener;
+
   private RecyclerView recyclerView;
-  private FragRecyclerViewAdapter adapter;
   private FloatingActionButton fab;
+  private TextView tvAssistance;
+
+  private FragRecyclerViewAdapter adapter;
+
   private String title;
   private ArrayList<String> preFillItems;
-  // TODO: Rename and change types of parameters
-  private String mParam1;
-  private String mParam2;
 
   public static ListOfCardsFragment newInstance(String title) {
     ListOfCardsFragment fragment = new ListOfCardsFragment();
@@ -89,17 +89,21 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_list_of_cards, container, false);
+    fab = (FloatingActionButton) view.findViewById(R.id.fab_patient_edit);
     recyclerView = (RecyclerView) view.findViewById(R.id.rv_patient_edit);
+    tvAssistance = (TextView) view.findViewById(R.id.tv_assistance);
+
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
     adapter = new FragRecyclerViewAdapter(null, getContext(), false);
 
-    fab = (FloatingActionButton) view.findViewById(R.id.fab_patient_edit);
     fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+
+    if (tvAssistance != null && title != null && title.length() > 0) {
+      tvAssistance.setText("Add " + title + " ->");
+    }
 
 //    List<Keyword> keywords = Cache.getString(getContext(), Const.KEY_KEYWORDS);
 //    ArrayList<String> a = new ArrayList<>();
@@ -131,6 +135,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
             .onPositive(new MaterialDialog.SingleButtonCallback() {
               @Override
               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                if (tvAssistance != null) {
+                  tvAssistance.setVisibility(View.GONE);
+                }
                 ArrayList<String> data = tetdcv.getData();
                 tetdcv.clearData();
                 Log.d(TAG, data.toString());
@@ -142,6 +149,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
             .onNegative(new MaterialDialog.SingleButtonCallback() {
               @Override
               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                if (adapter != null && adapter.getData().size() <= 0 && tvAssistance != null) {
+                  tvAssistance.setVisibility(View.VISIBLE);
+                }
                 tetdcv.clearData();
                 dialog.dismiss();
               }
@@ -152,13 +162,6 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     recyclerView.setAdapter(adapter);
 
     return view;
-  }
-
-  // TODO: Rename method, update argument and hook method into UI event
-  public void onButtonPressed(Uri uri) {
-    if (mListener != null) {
-      mListener.onFragmentInteraction(uri);
-    }
   }
 
   @Override
@@ -185,21 +188,11 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
 
   @Override
   public Serializable onSendData() {
+    if (adapter != null) {
+      return new ListOfCards(adapter.getData());
+    }
     return null;
   }
-
-  /**
-   * This interface must be implemented by activities that contain this
-   * fragment to allow an interaction in this fragment to be communicated
-   * to the activity and potentially other fragments contained in that
-   * activity.
-   * <p/>
-   * See the Android Training lesson <a href=
-   * "http://developer.android.com/training/basics/fragments/communicating.html"
-   * >Communicating with Other Fragments</a> for more information.
-   */
-
-
 
   private class FragRecyclerViewAdapter extends RecyclerView.Adapter<FragRecyclerViewHolder> {
     Context context;

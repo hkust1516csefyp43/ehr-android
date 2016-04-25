@@ -28,6 +28,7 @@ import java.util.GregorianCalendar;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
+import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.VitalSigns;
 
 public class VitalSignFragment extends Fragment implements OnSendData{
   // TODO: Rename parameter arguments, choose names that match
@@ -278,6 +279,8 @@ public class VitalSignFragment extends Fragment implements OnSendData{
 
   @Override
   public Serializable onSendData() {
-    return null;
+    VitalSigns vitalSigns = new VitalSigns();
+    //TODO fill me up
+    return vitalSigns;
   }
 }

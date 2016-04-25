@@ -154,7 +154,8 @@ public class DocumentFragment extends Fragment implements OnSendData{
     addButton(context, CommunityMaterial.Icon.cmd_file_image_box, new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-
+        //TODO how?
+        //http://stackoverflow.com/questions/4830711/how-to-convert-a-image-into-base64-string
       }
     });
     addButton(context, CommunityMaterial.Icon.cmd_format_align_left, new View.OnClickListener() {
@@ -175,8 +176,6 @@ public class DocumentFragment extends Fragment implements OnSendData{
         mEditor.setAlignRight();
       }
     });
-    //TODO bulleten
-    //TODO number list
   }
 
   private void addButton(Context context, IIcon icon, View.OnClickListener onClickListener) {
@@ -193,8 +192,10 @@ public class DocumentFragment extends Fragment implements OnSendData{
 
   @Override
   public Serializable onSendData() {
-    io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document newDocument = new io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document();
-    //TODO get html and return
-    return null;
+    if (mEditor != null){
+      return mEditor.getHtml();
+    } else {
+      return null;
+    }
   }
 }

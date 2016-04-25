@@ -60,6 +60,10 @@ public class ChiefComplaintFragment extends Fragment implements OnSendData{
 
   @Override
   public Serializable onSendData() {
-    return null;
+    String chiefComplaint = "";
+    if (acmactv != null) {
+      chiefComplaint = acmactv.getText().toString();
+    }
+    return chiefComplaint;
   }
 }
