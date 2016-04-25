@@ -13,6 +13,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
 import com.optimizely.Optimizely;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import io.fabric.sdk.android.Fabric;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
@@ -29,6 +31,7 @@ public class SplashActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     Fabric.with(this, new Crashlytics());
     Optimizely.startOptimizelyWithAPIToken(getString(R.string.com_optimizely_api_key), getApplication());
+    JodaTimeAndroid.init(this);
     setContentView(R.layout.activity_splash);
     SplashLogicAsyncTask task = new SplashLogicAsyncTask(this);
     task.execute();

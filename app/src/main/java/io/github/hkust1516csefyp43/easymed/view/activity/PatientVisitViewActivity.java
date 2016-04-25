@@ -152,7 +152,7 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
               dialog.dismiss();
               //TODO dismiss animation
             }
-          }, 1000);
+          }, 400);
         }
 
         @Override

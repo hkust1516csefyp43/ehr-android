@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,6 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   private String[] genderArray;
   private String[] statusArray;
   private int[] birthday = new int[3];      //0: year; 1: month(0-11); 2: date
-  private int[] preFillBirthday = new int[3];
 
   private boolean anyError = false;
 
@@ -237,7 +237,6 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
           } catch (NumberFormatException e) {
             e.printStackTrace();
           }
-//          Log.d(TAG, Util.ageToBirthday(Integer.parseInt(etAgeYear.getText().toString()), Integer.parseInt(etAgeMonth.getText().toString()), Integer.parseInt(etAgeWeek.getText().toString())).toString());
         }
       };
       etAgeYear.addTextChangedListener(textWatcher);
@@ -245,6 +244,9 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       etAgeWeek.addTextChangedListener(textWatcher);
     }
 
+    birthday[0] = 1992;
+    birthday[1] = 8;    //September
+    birthday[2] = 14;
 
     if (tvBirthday != null) {
       tvBirthday.setOnClickListener(new View.OnClickListener() {
@@ -260,26 +262,36 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
                 birthday[2] = dayOfMonth;
                 tvBirthday.setText(date);
               }
+              if (etAgeYear != null && etAgeMonth != null && etAgeWeek != null) {
+                int[] ageArray = Util.birthdayToAgeYMW(birthday[0], birthday[1], birthday[2]);
+                etAgeYear.setText(String.valueOf(ageArray[0]));
+                etAgeMonth.setText(String.valueOf(ageArray[1]));
+                etAgeWeek.setText(String.valueOf(ageArray[2]));
+              }
             }
-          }, preFillBirthday[0], preFillBirthday[1], preFillBirthday[2]);
+          }, birthday[0], birthday[1], birthday[2]);
           dpd.showYearPickerFirst(true);
           dpd.show(getActivity().getFragmentManager(), TAG);
         }
       });
     }
 
-    birthday[0] = 0;
-    birthday[1] = 0;
-    birthday[2] = 0;
-    preFillBirthday[0] = 1992;
-    preFillBirthday[1] = 8;
-    preFillBirthday[2] = 14;
-    if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null &&patient.getBirthDate() != null) {
-      preFillBirthday[0] = patient.getBirthYear();
-      preFillBirthday[1] = patient.getBirthMonth();
-      preFillBirthday[2] = patient.getBirthDate();
-      String date = "" + preFillBirthday[0] + "/" + (preFillBirthday[1] + 1) + "/" + preFillBirthday[2];
+    if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null && patient.getBirthDate() != null) {
+      //set tvAge
+      int[] ageArray = Util.birthdayToAgeYMW(birthday[0], birthday[1], birthday[2]);
+      etAgeYear.setText(String.valueOf(ageArray[0]));
+      etAgeMonth.setText(String.valueOf(ageArray[1]));
+      etAgeWeek.setText(String.valueOf(ageArray[2]));
+      //set tvBirthday
+      birthday[0] = patient.getBirthYear();
+      birthday[1] = patient.getBirthMonth();
+      birthday[2] = patient.getBirthDate();
+      String date = "" + birthday[0] + "/" + (birthday[1] + 1) + "/" + birthday[2];
+      Log.d(TAG, date);
       tvBirthday.setText(date);
+    } else {
+      if (tvBirthday != null)
+        tvBirthday.setText("Click to select date");
     }
 
   }

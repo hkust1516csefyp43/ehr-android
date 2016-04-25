@@ -5,6 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -82,6 +86,25 @@ public class Util {
     else if (dateMsDiff < 2 * YEAR)
       return "A year ago";
     else return (dateMsDiff / YEAR + " years ago");
+  }
+
+  /**
+   * calculate age for PersonalDataFragment
+   * @param year
+   * @param month
+   * @param day
+   * @return int array of 3: year, month and week
+   */
+  public static int[] birthdayToAgeYMW(int year, int month, int day) {
+    int[] ageArray = new int[3];  //Year Month Week
+    LocalDate birthday = new LocalDate(year, month, day);
+    LocalDate now = new LocalDate();
+    PeriodType periodType = PeriodType.yearMonthDayTime();
+    Period difference = new Period(birthday, now, periodType);
+    ageArray[0] = difference.getYears();
+    ageArray[1] = difference.getMonths();
+    ageArray[2] = difference.getDays()/7;
+    return ageArray;
   }
 
   /**

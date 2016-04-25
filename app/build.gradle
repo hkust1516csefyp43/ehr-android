@@ -68,4 +68,5 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.wdullaer:materialdatetimepicker:2.2.0'
     compile 'jp.wasabeef:richeditor-android:1.2.0'
+    compile 'net.danlew:android.joda:2.9.3'
 }
