@@ -237,18 +237,34 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
   @Override
   public Serializable onSendData() {
-    PersonalData personalData = new PersonalData();
-    if (etTag != null) {
-      if (etTag.getText() != null) {
-        personalData.setTagNumber(Integer.parseInt(etTag.getText().toString()));
-      }
-    }
+
+    PersonalData pd = new PersonalData();
     if (etFirstName != null) {
-      if (etFirstName.getText() != null) {
-        personalData.setFirstName(etFirstName.getText().toString());
-      }
+      //TODO
     }
-    //TODO
-    return personalData;
+    if (etMiddleName != null) {
+      pd.setMiddleName(etMiddleName.getText().toString());
+    }
+    if (etLastName != null) {
+      pd.setLastName(etLastName.getText().toString());
+    }
+    if (etNativeName != null) {
+      pd.setNativeName(etNativeName.getText().toString());
+    }
+    if (etTag != null) {
+      //TODO
+    }
+    if (tvBirthday != null) {
+      pd.setBirthYear(birthday[0]);
+      pd.setBirthMonth(birthday[1]);
+      pd.setBirthDate(birthday[2]);
+    }
+    if (etAddress != null) {
+      pd.setAddress(etAddress.getText().toString());
+    }
+    if (etPhoneNumber != null) {
+      pd.setPhoneNumber(etPhoneNumber.getText().toString());
+    }
+    return pd;
   }
 }
