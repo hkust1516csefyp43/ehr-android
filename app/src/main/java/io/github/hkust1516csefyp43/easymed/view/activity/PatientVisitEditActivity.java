@@ -211,7 +211,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       supportActionBar.setTitle("New Patient");
     }
     //set toolbar subtitle (clinic name)
-    //cc button (only in consultation)
+    //cc button (only in consultation w/ triage)
     //confirm button >> dialog, progressbar, (some dialog if successful)
   }
 
@@ -254,9 +254,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
   @Override
   public boolean onPrepareOptionsMenu(Menu menu) {
+    MenuItem menuItem;
     if (thisPatient == null){
-      MenuItem menuItem3 = menu.findItem(R.id.history);
-      menuItem3.setVisible(false);
+      menuItem = menu.findItem(R.id.history);
+      menuItem.setVisible(false);
+      menuItem = menu.findItem(R.id.chief_complaint);
+      menuItem.setVisible(false);
+    }
+    if (thisTriage == null) {
+      menuItem = menu.findItem(R.id.chief_complaint);
+      menuItem.setVisible(false);
     }
     return super.onPrepareOptionsMenu(menu);
   }
