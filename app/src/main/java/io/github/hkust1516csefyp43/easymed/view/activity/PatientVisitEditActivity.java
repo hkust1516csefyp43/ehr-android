@@ -1,11 +1,13 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -367,8 +369,18 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     MenuItem menuItem2 = menu.findItem(R.id.history);
     MenuItem menuItem3 = menu.findItem(R.id.chief_complaint);
 
+    final Context context = this;
+
     menuItem1.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
     menuItem2.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_history).color(Color.WHITE).actionBar());
+
+    menuItem1.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+      @Override
+      public boolean onMenuItemClick(MenuItem item) {
+        //TODO confirm
+        return false;
+      }
+    });
     menuItem2.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
       @Override
       public boolean onMenuItemClick(MenuItem item) {
@@ -378,6 +390,45 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           intent.putExtra(Const.BundleKey.READ_ONLY_PATIENT, thisPatient);
         }
         startActivity(intent);
+        return false;
+      }
+    });
+    menuItem3.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+      @Override
+      public boolean onMenuItemClick(MenuItem item) {
+        //TODO show cc
+        if (thisTriage != null && thisTriage.getChiefComplaints() != null) {
+          new MaterialDialog.Builder(context)
+              .title("Chief Complain")
+              .content(thisTriage.getChiefComplaints())
+              .autoDismiss(true)
+              .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                  dialog.dismiss();
+                }
+              })
+              .theme(Theme.LIGHT)
+              .positiveText("Dismiss")
+              .show();
+        } else {
+          if (viewPager != null) {
+            Snackbar.make(viewPager, "No Chief Complain", Snackbar.LENGTH_LONG).show();
+          } else {
+            new MaterialDialog.Builder(context)
+                .content("No Chief Complain")
+                .autoDismiss(true)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                  @Override
+                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                  }
+                })
+                .theme(Theme.LIGHT)
+                .positiveText("Dismiss")
+                .show();
+          }
+        }
         return false;
       }
     });
