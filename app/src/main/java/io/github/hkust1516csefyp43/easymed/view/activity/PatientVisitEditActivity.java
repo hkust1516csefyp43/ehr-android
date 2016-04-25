@@ -166,6 +166,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
       viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager()));
       viewPager.addOnPageChangeListener(new customViewPagerOnPageChangeListener(tabLayout, navigationView));
+      viewPager.setOffscreenPageLimit(20);
       //viewpager need to set page adapter first
 //    tabLayout.setupWithViewPager(viewPager);
       tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

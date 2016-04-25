@@ -97,6 +97,7 @@ public class InventoryFragment extends Fragment {
 
       viewPager.setAdapter(new medicationVariantsPagesAdapter(getFragmentManager()));
       viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+      viewPager.setOffscreenPageLimit(3);
     }
 
     floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);

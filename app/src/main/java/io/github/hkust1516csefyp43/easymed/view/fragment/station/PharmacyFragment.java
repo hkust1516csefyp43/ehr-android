@@ -83,6 +83,7 @@ public class PharmacyFragment extends Fragment {
 
     viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
     viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    viewPager.setOffscreenPageLimit(2);
 
     return view;
   }

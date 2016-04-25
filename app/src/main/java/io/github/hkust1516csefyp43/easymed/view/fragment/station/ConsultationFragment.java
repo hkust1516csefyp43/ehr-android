@@ -101,6 +101,7 @@ public class ConsultationFragment extends Fragment {
 
     viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
     viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    viewPager.setOffscreenPageLimit(2);
 
     floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
     floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
