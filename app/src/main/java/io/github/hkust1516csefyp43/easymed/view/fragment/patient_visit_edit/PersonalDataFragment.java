@@ -21,11 +21,14 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.PersonalData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.easymed.utility.Util;
 
 public class PersonalDataFragment extends Fragment implements OnSendData{
   public final static String TAG = PersonalDataFragment.class.getSimpleName();
@@ -48,7 +51,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   private Spinner sStatus;
   private String[] genderArray;
   private String[] statusArray;
-  private int[] birthday = new int[3];
+  private int[] birthday = new int[3];      //0: year; 1: month(0-11); 2: date
   private int[] preFillBirthday = new int[3];
 
   private boolean anyError = false;
@@ -99,13 +102,23 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
   public void inflateEveryBoxes(View view) {
     etTag = (EditText) view.findViewById(R.id.etTag);
+    etFirstName = (EditText) view.findViewById(R.id.first_name);
+    etAgeYear = (EditText) view.findViewById(R.id.etYear);
+    etAgeMonth = (EditText) view.findViewById(R.id.etMonth);
+    etAgeWeek = (EditText) view.findViewById(R.id.etWeek);
+    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
+    etMiddleName = (EditText) view.findViewById(R.id.middle_name);
+    etLastName = (EditText) view.findViewById(R.id.last_name);
+    etNativeName = (EditText) view.findViewById(R.id.native_name);
+    etAddress = (EditText) view.findViewById(R.id.etAddress);
+    etPhoneNumber = (EditText) view.findViewById(R.id.etPhoneNumber);
+
     if (patient != null && etTag != null) {
       if (patient.getTag() != null) {
         etTag.setText(patient.getTag().toString());
       }
     }
 
-    etFirstName = (EditText) view.findViewById(R.id.first_name);
     if (patient != null && patient.getFirstName() != null) {
       etFirstName.setText(patient.getFirstName());
     }
@@ -131,25 +144,25 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       }
     });
 
-    etMiddleName = (EditText) view.findViewById(R.id.middle_name);
-    if (patient != null && patient.getMiddleName() != null)
+
+    if (patient != null && patient.getMiddleName() != null) {
       etMiddleName.setText(patient.getMiddleName());
+    }
 
-    etLastName = (EditText) view.findViewById(R.id.last_name);
-    if (patient != null && patient.getLastName() != null)
+    if (patient != null && patient.getLastName() != null) {
       etLastName.setText(patient.getLastName());
+    }
 
-    etNativeName = (EditText) view.findViewById(R.id.native_name);
-    if (patient != null && patient.getNativeName() != null)
+    if (patient != null && patient.getNativeName() != null) {
       etNativeName.setText(patient.getNativeName());
+    }
 
-    etAddress = (EditText) view.findViewById(R.id.etAddress);
-    if (patient != null && patient.getAddress() != null)
+    if (patient != null && patient.getAddress() != null) {
       etAddress.setText(patient.getAddress());
+    }
 
     //TODO phone country code
 
-    etPhoneNumber = (EditText) view.findViewById(R.id.etPhoneNumber);
     if (patient != null && patient.getPhoneNumber() != null){
       etPhoneNumber.setText(patient.getPhoneNumber());
     }
@@ -199,11 +212,9 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       }
     });
 
-    etAgeYear = (EditText) view.findViewById(R.id.etYear);
-    etAgeMonth = (EditText) view.findViewById(R.id.etMonth);
-    etAgeWeek = (EditText) view.findViewById(R.id.etWeek);
-    if (etAgeYear != null) {
-      etAgeYear.addTextChangedListener(new TextWatcher() {
+
+    if (etAgeYear != null && etAgeMonth != null && etAgeWeek != null && tvBirthday != null) {
+      TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -216,48 +227,25 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
         @Override
         public void afterTextChanged(Editable s) {
-          //TODO calculate birthday
+          try {
+            GregorianCalendar birthdayGC = Util.ageToBirthday(Integer.parseInt(etAgeYear.getText().toString()), Integer.parseInt(etAgeMonth.getText().toString()), Integer.parseInt(etAgeWeek.getText().toString()));
+            birthday[0] = birthdayGC.get(Calendar.YEAR);
+            birthday[1] = birthdayGC.get(Calendar.MONTH);
+            birthday[2] = birthdayGC.get(Calendar.DAY_OF_MONTH);
+            String date = "" + birthday[0] + "/" + (birthday[1] + 1) + "/" + birthday[2];
+            tvBirthday.setText(date);
+          } catch (NumberFormatException e) {
+            e.printStackTrace();
+          }
+//          Log.d(TAG, Util.ageToBirthday(Integer.parseInt(etAgeYear.getText().toString()), Integer.parseInt(etAgeMonth.getText().toString()), Integer.parseInt(etAgeWeek.getText().toString())).toString());
         }
-      });
-      if (etAgeMonth != null) {
-        etAgeYear.addTextChangedListener(new TextWatcher() {
-          @Override
-          public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-          }
-
-          @Override
-          public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-          }
-
-          @Override
-          public void afterTextChanged(Editable s) {
-            //TODO calculate birthday
-          }
-        });
-        if (etAgeWeek != null) {
-          etAgeYear.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-              //TODO calculate birthday
-            }
-          });
-        }
-      }
+      };
+      etAgeYear.addTextChangedListener(textWatcher);
+      etAgeMonth.addTextChangedListener(textWatcher);
+      etAgeWeek.addTextChangedListener(textWatcher);
     }
 
-    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
+
     if (tvBirthday != null) {
       tvBirthday.setOnClickListener(new View.OnClickListener() {
         @Override

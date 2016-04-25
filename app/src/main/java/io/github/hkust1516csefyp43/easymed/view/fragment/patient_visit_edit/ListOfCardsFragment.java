@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -111,17 +110,20 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
 //    for (Keyword k : keywords) {
 //      a.add(k.getKeyword());
 //    }
-//
-//    if (preFillItems != null) {
-//      fab.setVisibility(View.GONE);
-//      ArrayList<Card> preFillCards = new ArrayList<>();
-//      for (String s : preFillItems) {
-//        preFillCards.add(new Card(s, "Fill this or flip the switch"));
-//      }
+
+    if (preFillItems != null) {
+      fab.setVisibility(View.GONE);
+      ArrayList<Card> preFillCards = new ArrayList<>();
+      for (String s : preFillItems) {
+        preFillCards.add(new Card(s, "Fill this or flip the switch"));
+      }
+      adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true);
+      tvAssistance.setVisibility(View.GONE);
 //      adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true, a, title);
-//    } else {
+    } else {
+      adapter = new FragRecyclerViewAdapter(null, getContext(), false);
 //      adapter = new FragRecyclerViewAdapter(null, getContext(), false, a, title);
-//    }
+    }
 
     final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), null, title);
     fab.setOnClickListener(new View.OnClickListener() {
@@ -238,6 +240,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
           if (displaySwitch) {
             viewHolder.setEditableTitle(false);
             viewHolder.cardSwitch.setVisibility(View.VISIBLE);
+            viewHolder.tvEmptyIndicator.setVisibility(View.VISIBLE);
             viewHolder.cardSwitch.setChecked(data.get(position).isChecked());
             viewHolder.cardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
               @Override
@@ -302,10 +305,10 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
   }
 
   private class FragRecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-    public CardView theWholeCard;
     public TextView cardTitle;
     public TextView cardDescription;
     public SwitchCompat cardSwitch;
+    public TextView tvEmptyIndicator;
     public boolean editableTitle = true;
 
 
@@ -314,6 +317,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       cardTitle = (TextView) itemView.findViewById(R.id.item_name);
       cardDescription = (TextView) itemView.findViewById(R.id.item_description);
       cardSwitch = (SwitchCompat) itemView.findViewById(R.id.scNull);
+      tvEmptyIndicator = (TextView) itemView.findViewById(R.id.tv_empty_indicator);
     }
 
     @Override

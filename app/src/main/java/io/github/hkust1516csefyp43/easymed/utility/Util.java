@@ -1,6 +1,8 @@
 package io.github.hkust1516csefyp43.easymed.utility;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.math.RoundingMode;
@@ -107,6 +109,16 @@ public class Util {
       else
         return (millDiff / YEAR + " years old");
     }
+  }
+
+  public static GregorianCalendar ageToBirthday(@NonNull int year, @Nullable Integer month, @Nullable Integer week) {
+    GregorianCalendar gregorianCalendar = new GregorianCalendar();
+    gregorianCalendar.add(Calendar.YEAR, -year);
+    if (month != null)
+      gregorianCalendar.add(Calendar.MONTH, -month);
+    if (week != null)
+      gregorianCalendar.add(Calendar.WEEK_OF_YEAR, -week);
+    return gregorianCalendar;
   }
 
   /**

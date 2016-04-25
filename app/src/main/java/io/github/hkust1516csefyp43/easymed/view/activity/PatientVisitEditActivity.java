@@ -53,6 +53,8 @@ import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.Vita
 
 public class PatientVisitEditActivity extends AppCompatActivity implements OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener{
   private static final String TAG = PatientVisitEditActivity.class.getSimpleName();
+  public static final String[] DEFAULT_PHYSICAL_EXAMINATION = {"General Appearance", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Other"};
+  public static final String[] DEFAULT_REVICE_OF_SYSTEM = {"EENT", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Locomotor", "Neurology"};
 
   private PersonalDataFragment personalDataFragment;
   private VitalSignFragment vitalSignFragment;
@@ -485,11 +487,11 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         case 11:
           return pregnancyFragment = PregnancyFragment.newInstance("","");
         case 12:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Review of System");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM);
         case 13:
           return listOfCardsFragment = ListOfCardsFragment.newInstance("Red Flags");
         case 14:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Physical Examination");
+          return listOfCardsFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION);
         case 15:
           return listOfCardsFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis");
         case 16:

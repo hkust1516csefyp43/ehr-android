@@ -34,6 +34,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Tag Number"
                     android:inputType="number"
+                    android:imeOptions="actionNext"
                     android:maxLines="1"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -48,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Last name"
                     android:inputType="textCapWords"
+                    android:imeOptions="actionNext"
                     android:maxLines="1"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -62,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Middle name"
                     android:inputType="textCapWords"
+                    android:imeOptions="actionNext"
                     android:maxLines="1"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -90,6 +93,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Native name"
                     android:inputType="text"
+                    android:imeOptions="actionNext"
                     android:maxLines="1"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -170,6 +174,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="number"
                             android:hint="Years"
+                            android:selectAllOnFocus="true"
+                            android:imeOptions="actionNext"
                             android:maxLines="1"/>
 
                     </android.support.design.widget.TextInputLayout>
@@ -185,6 +191,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="number"
                             android:hint="Months"
+                            android:selectAllOnFocus="true"
+                            android:imeOptions="actionNext"
                             android:text="0"
                             android:maxLines="1"/>
 
@@ -201,6 +209,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="number"
                             android:hint="Weeks"
+                            android:selectAllOnFocus="true"
+                            android:imeOptions="actionNext"
                             android:text="0"
                             android:maxLines="1"/>
 
@@ -262,6 +272,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="phone"
                         android:lines="1"
+                        android:imeOptions="actionNext"
                         android:maxLines="1"/>
 
                 </android.support.design.widget.TextInputLayout>
@@ -283,6 +294,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textImeMultiLine"
                     android:lines="3"
+                    android:imeOptions="actionNext"
                     android:maxLines="6"/>
 
             </android.support.design.widget.TextInputLayout>
