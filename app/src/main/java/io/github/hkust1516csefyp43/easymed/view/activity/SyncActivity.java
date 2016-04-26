@@ -1,5 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -99,10 +101,12 @@ public class SyncActivity extends AppCompatActivity {
     }
 
     //TODO onclick >> call api
+    final Context c = this;
     bPullFromCloud.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         //TODO show loading screen
+        final ProgressDialog progressDialog = ProgressDialog.show(c, "Loading", "Please wait");
         CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("ehr-api.herokuapp.com", 443, 10000, new AsyncResponse() {
           @Override
           public void processFinish(String output, Boolean successful) {
@@ -125,6 +129,7 @@ public class SyncActivity extends AppCompatActivity {
                     Log.d(TAG, response.body().toString());
                     Cache.Synchronisation.setPullFromCloudData(getBaseContext(), response.body());
                     Cache.Synchronisation.setLastPullFromCloud(getBaseContext(), new GregorianCalendar());
+                    progressDialog.dismiss();
                     tvPullFromCloud.setText("Last pull: " + Util.GCInStringForSync(Cache.Synchronisation.getLastPullFromCloud(getBaseContext())));
                   }
                 }
@@ -133,9 +138,13 @@ public class SyncActivity extends AppCompatActivity {
                 public void onFailure(Call<List<Query>> call, Throwable t) {
                   t.printStackTrace();
                   Log.d(TAG, "failed: " + t.toString());
+                  if (progressDialog != null) {
+                    progressDialog.dismiss();
+                  }
                 }
               });
             } else {
+              progressDialog.dismiss();
               //TODO cannot access local server
             }
           }
@@ -159,7 +168,7 @@ public class SyncActivity extends AppCompatActivity {
     bPullFromLocal.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //check if it is accessible first
+        final ProgressDialog progressDialog = ProgressDialog.show(c, "Loading", "Please wait");
         CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("192.168.0.194", 3000, 10000, new AsyncResponse() {
           @Override
           public void processFinish(String output, Boolean successful) {
@@ -182,6 +191,7 @@ public class SyncActivity extends AppCompatActivity {
                     Log.d(TAG, response.body().toString());
                     Cache.Synchronisation.setPullFromLocalData(getBaseContext(), response.body());
                     Cache.Synchronisation.setLastPullFromLocal(getBaseContext(), new GregorianCalendar());
+                    progressDialog.dismiss();
                     tvPullFromLocal.setText("Last pull: " + Util.GCInStringForSync(Cache.Synchronisation.getLastPullFromLocal(getBaseContext())));
                   } else {
                     Log.d(TAG, "failed");
@@ -192,10 +202,12 @@ public class SyncActivity extends AppCompatActivity {
                 public void onFailure(Call<List<Query>> call, Throwable t) {
                   t.printStackTrace();
                   Log.d(TAG, "failed: " + t.toString());
+                  progressDialog.dismiss();
                 }
               });
             } else {
               //TODO cannot access local server
+              progressDialog.dismiss();
             }
           }
         });
