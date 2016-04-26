@@ -1,5 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -30,8 +32,10 @@ import com.afollestad.materialdialogs.Theme;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
@@ -45,6 +49,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ChiefComplaintFragment;
@@ -368,11 +373,13 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         startActivity(intent);
         return false;
       case R.id.confirm:
+        final Context context = this;
+        final ProgressDialog progressDialog = ProgressDialog.show(context, "Loading", "please wait...");
         Serializable serializable;
-        PersonalData personalData;
-        VitalSigns vitalSigns;
-        String chiefComplaints;
-        String triageRemark;
+        PersonalData personalData = null;
+        VitalSigns vitalSigns = null;
+        String chiefComplaints = null;
+        String triageRemark = null;
         if (personalDataFragment != null) {
           serializable = personalDataFragment.onSendData();
           if (serializable instanceof PersonalData) {
@@ -398,23 +405,24 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           }
         }
         if (!isTriage) {
-          String hpi;
-          ListOfCards pmh;
-          String fh;
-          String sh;
-          ListOfCards dh;
-          ListOfCards screening;
-          ListOfCards allergy;
-          Pregnancy pregnancy;
-          ListOfCards ros;
-          ListOfCards rf;
-          ListOfCards pe;
-          ListOfCards diagnosis;
-          ListOfCards investigation;
-          ListOfCards medication;
-          ListOfCards advice;
-          ListOfCards followup;
-          String consultationRemark;
+          String hpi = null;
+          ListOfCards pmh = null;
+          String fh = null;
+          String sh = null;
+          ListOfCards dh = null;
+          ListOfCards screening = null;
+          ListOfCards allergy = null;
+          Pregnancy pregnancy = null;
+          ListOfCards ros = null;
+          ListOfCards rf = null;
+          ListOfCards pe = null;
+          ListOfCards diagnosis = null;
+          ListOfCards investigation = null;
+          ListOfCards medication = null;
+          ListOfCards advice = null;
+          ListOfCards followup = null;
+          String consultationRemark = null;
+
           if (hpiFragment != null) {
             serializable = hpiFragment.onSendData();
             if (serializable instanceof String) {
@@ -531,17 +539,17 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             .client(ohc1.build())
             .build();
 
-
-        
+        v2API.patients patientService = retrofit.create(v2API.patients.class);
+        final v2API.triages triageService = retrofit.create(v2API.triages.class);
+        v2API.consultations consultationService = retrofit.create(v2API.consultations.class);
+        final v2API.visits visitService = retrofit.create(v2API.visits.class);
 
         if (thisPatient != null) {
           if (isTriage) {
             if (thisTriage != null) {                                                               //existing patient edit triage
               //PUT patient
-              v2API.patients patientService = retrofit.create(v2API.patients.class);
               //PUT visit (iff tag number have been modified?)
               //PUT triage
-              v2API.triages triageService = retrofit.create(v2API.triages.class);
             } else {                                                                                //existing patient new triage
               //PUT patient
               //POST triage
@@ -581,6 +589,80 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             //POST visit
             //POST triage
           } else {                                                                                  //new patient new consultation (and triage)
+            Patient patient = generatePatient(personalData);
+            if (patient!= null){
+              final VitalSigns vs = vitalSigns;
+              final String cc = chiefComplaints;
+              final String tr =triageRemark;
+              Call<Patient> patientCall = patientService.addPatient("1", patient);
+              patientCall.enqueue(new Callback<Patient>() {
+                @Override
+                public void onResponse(Call<Patient> call, Response<Patient> response) {
+                  Log.d(TAG, "code: " + response.code());
+                  if (response.code() < 500 && response.code() >= 400) {
+                    try {
+                      Log.d(TAG, response.errorBody().string());
+                    } catch (IOException e) {
+                      e.printStackTrace();
+                    }
+                  }
+                  if (response.body() == null || response.code() > 299 || response.code() < 200){
+                    onFailure(call, new Throwable("No response"));
+                  }else{
+                    Visit visit = generateVisit(response.body(), 2);
+                    if (visit != null) {
+                      Call<Visit> visitCall = visitService.addVisit("1", visit);
+                      visitCall.enqueue(new Callback<Visit>() {
+                        @Override
+                        public void onResponse(Call<Visit> call, Response<Visit> response) {
+                          Log.d(TAG, response.body().toString());
+                          if (response.body() == null || response.code() > 299 || response.code() < 200) {
+                            onFailure(call, new Throwable("No response"));
+                          }else {
+                            Triage triage = generateTriage(response.body(), vs, cc, tr);
+                            if (triage != null) {
+                              Call<Triage> triageCall = triageService.addTriage("1", triage);
+                              triageCall.enqueue(new Callback<Triage>() {
+                                @Override
+                                public void onResponse(Call<Triage> call, Response<Triage> response) {
+                                  Log.d(TAG, response.body().toString());
+                                  progressDialog.dismiss();
+                                  finish();
+                                }
+
+                                @Override
+                                public void onFailure(Call<Triage> call, Throwable t) {
+
+                                }
+                              });
+                            }
+                          }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Visit> call, Throwable t) {
+
+                        }
+                      });
+                    }
+                    //POST triage
+                  }
+
+                }
+
+                @Override
+                public void onFailure(Call<Patient> call, Throwable t) {
+
+                }
+              });
+
+
+            }else{
+              //TODO
+            }
+
+          } else {
+            //new patient new consultation (and triage)
             //POST patient
             //POST visit
             //POST triage
@@ -600,12 +682,56 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   private Patient generatePatient(PersonalData personalData) {
     Patient patient = new Patient();
     //TODO
+    patient.setAddress(personalData.getAddress());
+    patient.setBirthDate(personalData.getBirthDate());
+    patient.setBirthMonth(personalData.getBirthMonth());
+    patient.setBirthYear(personalData.getBirthYear());
+    patient.setFirstName(personalData.getFirstName());
+    patient.setMiddleName(personalData.getMiddleName());
+    patient.setLastName(personalData.getLastName());
+    patient.setNativeName(personalData.getNativeName());
+    patient.setPhoneNumber(personalData.getPhoneNumber());
+    patient.setClinicId(Cache.CurrentUser.getClinic(getBaseContext()).getClinicId());
+    Log.d(TAG, "output" + patient.toString());
     return patient;
   }
 
-  private Triage generateTriage(VitalSigns vitalSigns, String chiefComplaint, String remark) {
+  private Visit generateVisit(Patient patient, int nextStation){
+    Visit visit = new Visit();
+    try {
+      visit.setTag(Integer.valueOf(personalDataFragment.getTag()));
+    }catch (NumberFormatException e){
+      e.printStackTrace();
+      visit.setTag((int) (Math.random() * 100));
+    }
+    visit.setPatientId(patient.getPatientId());
+    visit.setNextStation(nextStation);
+    return visit;
+  }
+
+  private Triage generateTriage(Visit visit, VitalSigns vitalSigns, String chiefComplaint, String remark) {
     Triage triage = new Triage();
     //TODO
+    Date date = new Date();
+    triage.setStartTime(date);
+    triage.setEndTime(date);
+    if (vitalSigns != null) {
+      triage.setSystolic(vitalSigns.getSystolic());
+      triage.setDiastolic(vitalSigns.getDiastolic());
+      triage.setHeartRate(vitalSigns.getPulseRate());
+      triage.setRespiratoryRate(vitalSigns.getRespiratoryRate());
+      triage.setWeight(vitalSigns.getWeight());
+      triage.setHeight(vitalSigns.getHeight());
+      triage.setTemperature(vitalSigns.getTemperature());
+      triage.setSpo2(vitalSigns.getSpo2());
+    }
+    if (chiefComplaint != null) {
+      triage.setChiefComplaints(chiefComplaint);
+    }
+    if (remark != null) {
+      triage.setRemark(remark);
+    }
+    triage.setVisitId(visit.getId());
     return triage;
   }
 
