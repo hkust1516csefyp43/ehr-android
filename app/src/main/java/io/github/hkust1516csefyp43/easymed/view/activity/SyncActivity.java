@@ -1,11 +1,10 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.view.MenuItem;
 
 import io.github.hkust1516csefyp43.easymed.R;
 
@@ -16,16 +15,24 @@ public class SyncActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sync);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar.setTitle("Synchronization");
     setSupportActionBar(toolbar);
-
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
-      }
-    });
+    ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+      actionBar.setDisplayHomeAsUpEnabled(true);
+      actionBar.setDisplayShowHomeEnabled(true);
+    }
   }
 
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        // app icon in action bar clicked; goto parent activity.
+        this.finish();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
 }

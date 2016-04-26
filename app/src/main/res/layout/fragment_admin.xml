@@ -30,20 +30,49 @@
             android:id="@+id/synchronisation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_weight="1"
-            android:background="@color/accent_color">
+            android:background="@color/primary_color"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivSync"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sync"
+                android:textColor="@color/text_color"
+                android:textSize="32sp"/>
 
         </LinearLayout>
 
-
         <LinearLayout
-            android:id="@+id/keywords"
+            android:id="@+id/statics"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_weight="1"
-            android:background="@color/mdtp_white">
+            android:background="@color/primary_light_color"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivStatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Static"
+                android:textColor="@color/text_color"
+                android:textSize="32sp"/>
 
         </LinearLayout>
 
@@ -51,12 +80,29 @@
             android:id="@+id/other"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_weight="1"
-            android:background="@color/black_overlay">
+            android:background="@color/primary_lighter_color"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other"
+                android:textColor="@color/text_color"
+                android:textSize="32sp"/>
 
         </LinearLayout>
 
     </LinearLayout>
+
+
 
 </RelativeLayout>

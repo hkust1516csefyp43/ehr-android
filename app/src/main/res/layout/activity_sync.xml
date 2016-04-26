@@ -22,14 +22,64 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_sync"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:gravity="center">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email"/>
+        <Button
+            android:id="@+id/bPullFromCloud"
+            android:layout_width="196dp"
+            android:text="Pull from cloud"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvPullFromCloud"
+            android:layout_width="wrap_content"
+            android:text="timestamp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/bPushToLocal"
+            android:layout_width="196dp"
+            android:text="Push To Local"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvPushToLocal"
+            android:layout_width="wrap_content"
+            android:text="timestamp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/bPullFromLocal"
+            android:layout_width="196dp"
+            android:text="Pull From Local"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvPullFromLocal"
+            android:layout_width="wrap_content"
+            android:text="timestamp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/bPushToCloud"
+            android:layout_width="196dp"
+            android:text="Push to Cloud"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvPushToCloud"
+            android:layout_width="wrap_content"
+            android:text="timestamp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
