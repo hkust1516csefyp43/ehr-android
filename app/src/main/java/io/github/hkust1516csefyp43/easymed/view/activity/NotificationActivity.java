@@ -52,7 +52,6 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
       }
     }
 
-    //TODO pull to refresh
     swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
     if (swipeRefreshLayout != null) {
       swipeRefreshLayout.setOnRefreshListener(this);

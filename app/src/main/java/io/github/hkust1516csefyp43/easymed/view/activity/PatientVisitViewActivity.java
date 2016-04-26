@@ -74,7 +74,7 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
     ImageView ivProfilePic = (ImageView) findViewById(R.id.profile_pic);
 
     thisPatient = (Patient) this.getIntent().getSerializableExtra(Const.BundleKey.READ_ONLY_PATIENT);
-    fabOn = getIntent().getBooleanExtra(Const.BundleKey.ON_OR_OFF, false);                          //TODO What should the default be?
+    fabOn = getIntent().getBooleanExtra(Const.BundleKey.ON_OR_OFF, false);
     isTriage = getIntent().getBooleanExtra(Const.BundleKey.IS_TRIAGE, true);
     //TODO get extra triage
     //TODO get extra consultation
@@ -153,8 +153,7 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
           new Handler().postDelayed(new Runnable() {      //Dismiss dialog 1s later (avoid the dialog flashing >> weird)
             @Override
             public void run() {
-              dialog.dismiss();
-              //TODO dismiss animation
+              dialog.dismiss();               //TODO add animation?
             }
           }, 400);
         }

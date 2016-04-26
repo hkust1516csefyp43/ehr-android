@@ -45,7 +45,6 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
-import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ChiefComplaintFragment;
@@ -56,6 +55,9 @@ import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.Preg
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.RemarkFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.VitalSignFragment;
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -105,7 +107,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_patient_visit_edit);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     viewPager = (ViewPager) findViewById(R.id.viewPager);
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -117,7 +119,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     if (intent != null) {
       Serializable serializable;
       //isTriage
-      isTriage = intent.getBooleanExtra(Const.BundleKey.IS_TRIAGE, true);       //TODO what should the default be?
+      isTriage = intent.getBooleanExtra(Const.BundleKey.IS_TRIAGE, true);
       //patient
       serializable = intent.getSerializableExtra(Const.BundleKey.EDIT_PATIENT);
       if (serializable instanceof Patient) {
@@ -140,23 +142,47 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       }
     }
 
-    //TODO get clinic from API (by the clinic_id in patient), not from cache (because Global clinics)
-    Clinic clinic = Cache.CurrentUser.getClinic(this);
-    if (isTriage && clinic != null && toolbar != null) {
-      if (clinic.getEnglishName() != null) {
-        toolbar.setSubtitle(clinic.getEnglishName());
-      }
+    if (thisPatient != null && thisPatient.getClinicId() != null) {
+      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+      ohc1.readTimeout(1, TimeUnit.MINUTES);
+      ohc1.connectTimeout(1, TimeUnit.MINUTES);
+      Retrofit retrofit = new Retrofit
+          .Builder()
+          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+          .client(ohc1.build())
+          .build();
+      v2API.clinics clinicService = retrofit.create(v2API.clinics.class);
+      Call<Clinic> clinicCall = clinicService.getClinic("1", thisPatient.getClinicId());
+      clinicCall.enqueue(new Callback<Clinic>() {
+        @Override
+        public void onResponse(Call<Clinic> call, Response<Clinic> response) {
+          if (response != null && response.body() != null && response.body().getEnglishName() != null) {
+            if (toolbar != null) {
+              toolbar.setSubtitle(response.body().getEnglishName());
+            }
+          }
+        }
+
+        @Override
+        public void onFailure(Call<Clinic> call, Throwable t) {
+
+        }
+      });
     }
+//
+//    Clinic clinic = Cache.CurrentUser.getClinic(this);
+//    if (isTriage && clinic != null && toolbar != null) {
+//      if (clinic.getEnglishName() != null) {
+//        toolbar.setSubtitle(clinic.getEnglishName());
+//      }
+//    }
 
     if (isTriage && drawerLayout != null) {
       drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    } else {
-      //TODO change back button to hamburger button
-      //TODO onclick listeners?
     }
 
     if (tabLayout != null && viewPager != null) {
-
       //set tablayout pages
       //triage: personal data, vital signs, chief complain, triage remark
       tabs.add("Personal Data");
@@ -252,16 +278,13 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         return;
       }
     }
-    //TODO display dialog
     MaterialDialog.SingleButtonCallback yes = new MaterialDialog.SingleButtonCallback() {
       @Override
       public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
         dialog.dismiss();
-        //TODO destroy current patient cache
         PatientVisitEditActivity.this.finish();
       }
     };
-    //TODO save data button
     MaterialDialog.SingleButtonCallback no = new MaterialDialog.SingleButtonCallback() {
       @Override
       public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -300,7 +323,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:
-        this.finish();
+        onBackPressed();
         return true;
       case R.id.chief_complaint:
         if (thisTriage != null && thisTriage.getChiefComplaints() != null) {

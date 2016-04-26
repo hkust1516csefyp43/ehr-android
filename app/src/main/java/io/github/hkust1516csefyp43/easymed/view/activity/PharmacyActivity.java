@@ -3,7 +3,6 @@ package io.github.hkust1516csefyp43.easymed.view.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -17,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +36,7 @@ import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
@@ -102,8 +103,6 @@ public class PharmacyActivity extends AppCompatActivity {
         OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
         ohc1.readTimeout(1, TimeUnit.MINUTES);
         ohc1.connectTimeout(1, TimeUnit.MINUTES);
-
-
         final Retrofit retrofit = new Retrofit
             .Builder()
             .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
@@ -165,11 +164,9 @@ public class PharmacyActivity extends AppCompatActivity {
                   }
                 } else {    //the list id empty
                   onFailure(null, new Throwable("No prescriptions"));
-                  //TODO set next station back to 1 + some dialog explain what happened.
                 }
               } else {  //the list is null
                 onFailure(null, new Throwable("No prescriptions"));
-                //TODO set next station back to 1 + some dialog explain what happened.
               }
             } else {
               onFailure(null, new Throwable("No response"));
@@ -201,6 +198,9 @@ public class PharmacyActivity extends AppCompatActivity {
         public void onClick(View view) {
           //TODO click to confirm >> retrofit
           if (prescriptions.size() > 0) {
+            if (box != null) {
+              box.showLoadingLayout();
+            }
             updateQueue = prescriptions.size();
             for (final Prescription p: prescriptions) {
               OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
@@ -263,12 +263,30 @@ public class PharmacyActivity extends AppCompatActivity {
   private void ifFinishLeave() {
     if (updateQueue <= 0) {
       if (!updateError) {
-        new Handler().postDelayed(new Runnable() {
+        OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+        ohc1.readTimeout(1, TimeUnit.MINUTES);
+        ohc1.connectTimeout(1, TimeUnit.MINUTES);
+        final Retrofit retrofit = new Retrofit
+            .Builder()
+            .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+            .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+            .client(ohc1.build())
+            .build();
+        v2API.visits visitService = retrofit.create(v2API.visits.class);
+        Visit visit = new Visit();
+        visit.setNextStation(1);
+        Call<Visit> visitCall = visitService.editVisit("1", visit, patient.getVisitId());
+        visitCall.enqueue(new Callback<Visit>() {
           @Override
-          public void run() {
+          public void onResponse(Call<Visit> call, Response<Visit> response) {
             imDone();
           }
-        }, 2000);
+
+          @Override
+          public void onFailure(Call<Visit> call, Throwable t) {
+            imDone();
+          }
+        });
       } else {
         //TODO notify user, ask them to try again
 
@@ -319,16 +337,43 @@ public class PharmacyActivity extends AppCompatActivity {
 
   private void showNoPrescriptions() {
     if (box != null) {
-//      box.setClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//          //TODO PUT next_station to 1
-//          Log.d(TAG, "PUT next_station to 1");
-//        }
-//      });
-      box.addCustomView(getLayoutInflater().inflate(R.layout.exception_failure_report, null, false), "report");
-      //TODO user view to findviewbyid >> button onclick
+      View view = getLayoutInflater().inflate(R.layout.exception_failure_report, null, false);
+      Button button = (Button) view.findViewById(R.id.exception_button);
+      button.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          box.showLoadingLayout();
+          //TODO PUT next_station to 1
+          Log.d(TAG, "PUT next_station to 1");
+          OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+          ohc1.readTimeout(1, TimeUnit.MINUTES);
+          ohc1.connectTimeout(1, TimeUnit.MINUTES);
+          Retrofit retrofit = new Retrofit
+              .Builder()
+              .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+              .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+              .client(ohc1.build())
+              .build();
+          v2API.visits visitService = retrofit.create(v2API.visits.class);
+          Visit visit = new Visit();
+          visit.setNextStation(1);
+          Call<Visit> visitCall = visitService.editVisit("1", visit, patient.getVisitId());
+          visitCall.enqueue(new Callback<Visit>() {
+            @Override
+            public void onResponse(Call<Visit> call, Response<Visit> response) {
+              finish();
+            }
+
+            @Override
+            public void onFailure(Call<Visit> call, Throwable t) {
+              finish();
+            }
+          });
+        }
+      });
+      box.addCustomView(view, "report");
       box.showCustomView("report");
+      //TODO user view to findviewbyid >> button onclick
       if (floatingActionButton != null) {
         floatingActionButton.setVisibility(View.GONE);
       }
