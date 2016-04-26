@@ -42,7 +42,6 @@ public class SplashActivity extends AppCompatActivity {
     final CheckIfServerIsAvailable task2 = new CheckIfServerIsAvailable(this, "Internet", "ehr-api.herokuapp.com", 443, new SplashActivity.AsyncResponse() {
       @Override
       public void processFinish(String output) {
-        //TODO there is nothing else you can do
         error = "Even heroku is not available";
         if (tvWhichServer != null) {
           tvWhichServer.setText(error);

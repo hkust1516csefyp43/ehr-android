@@ -101,7 +101,6 @@ public class SearchActivity extends AppCompatActivity implements OnFragmentInter
 
   @Override
   public boolean onQueryTextSubmit(String query) {
-    //TODO PatientListFragment handles it
     PatientListFragment patientListFragment;
     if (isTriage) {
       patientListFragment = PatientListFragment.newInstance(Const.PatientListPageId.TRIAGE_SEARCH, query);

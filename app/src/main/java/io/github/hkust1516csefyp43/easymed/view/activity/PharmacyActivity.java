@@ -196,7 +196,6 @@ public class PharmacyActivity extends AppCompatActivity {
       floatingActionButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          //TODO click to confirm >> retrofit
           if (prescriptions.size() > 0) {
             if (box != null) {
               box.showLoadingLayout();
@@ -319,7 +318,6 @@ public class PharmacyActivity extends AppCompatActivity {
             floatingActionButton.setVisibility(View.VISIBLE);
           }
           if (box != null) {
-            //TODO set adapters and stuff
             if (rv != null) {
               rv.setAdapter(new prescriptionRVAdapter());
               rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
@@ -343,7 +341,6 @@ public class PharmacyActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
           box.showLoadingLayout();
-          //TODO PUT next_station to 1
           Log.d(TAG, "PUT next_station to 1");
           OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
           ohc1.readTimeout(1, TimeUnit.MINUTES);
@@ -373,7 +370,6 @@ public class PharmacyActivity extends AppCompatActivity {
       });
       box.addCustomView(view, "report");
       box.showCustomView("report");
-      //TODO user view to findviewbyid >> button onclick
       if (floatingActionButton != null) {
         floatingActionButton.setVisibility(View.GONE);
       }

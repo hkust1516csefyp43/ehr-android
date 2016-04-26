@@ -90,11 +90,11 @@ public class DocumentFragment extends Fragment implements OnSendData{
         mEditor.setEditorFontColor(Color.BLACK);
         mEditor.setPadding(8, 8, 8, 8);
         mEditor.setPlaceholder("Tap here and start typing");
+        if (document != null && document.getDocumentInHtml() != null) {
+          mEditor.setHtml(document.getDocumentInHtml());
+        }
         mEditor.scrollTo(0, mEditor.getContentHeight());
         mEditor.pageDown(true);
-        if (document != null) {
-          //TODO .setHtml
-        }
         addButtons(getContext());
       }
     }

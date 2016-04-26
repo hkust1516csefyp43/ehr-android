@@ -73,7 +73,7 @@ public class VisitDetailFragment extends Fragment {
   private Patient patient;
   private List<Prescription> prescriptions;
 //  private
-  //TODO prescriptions, documents, related data, etc
+  //TODO related data, etc
   private LinearLayout linearLayout;
 
 
@@ -155,7 +155,7 @@ public class VisitDetailFragment extends Fragment {
       progressBar.setLayoutParams(params);
       linearLayout.addView(progressBar);
 
-      //TODO fix sometimes triage first, sometimes consultation first
+      //TODO fix sometimes triage first, sometimes consultation first (race condition)
 
       //Triage
       OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
