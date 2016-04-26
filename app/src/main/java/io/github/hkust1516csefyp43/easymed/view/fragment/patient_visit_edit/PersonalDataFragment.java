@@ -55,6 +55,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   private int[] birthday = new int[3];      //0: year; 1: month(0-11); 2: date
 
   private boolean anyError = false;
+  private int[] preFillBirthday = new int[3];
 
   public static PersonalDataFragment newInstance(Patient p) {
     PersonalDataFragment fragment = new PersonalDataFragment();
@@ -211,6 +212,20 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
       }
     });
+    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
+    birthday[0] = 0;
+    birthday[1] = 0;
+    birthday[2] = 0;
+    preFillBirthday[0] = 1992;
+    preFillBirthday[1] = 8;
+    preFillBirthday[2] = 14;
+    if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null &&patient.getBirthDate() != null) {
+      preFillBirthday[0] = patient.getBirthYear();
+      preFillBirthday[1] = patient.getBirthMonth();
+      preFillBirthday[2] = patient.getBirthDate();
+      String date = "" + preFillBirthday[0] + "/" + (preFillBirthday[1] + 1) + "/" + preFillBirthday[2];
+      tvBirthday.setText(date);
+    }
 
 
     if (etAgeYear != null && etAgeMonth != null && etAgeWeek != null && tvBirthday != null) {
@@ -302,6 +317,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     PersonalData pd = new PersonalData();
     if (etFirstName != null) {
       //TODO cannot submit if empty
+      pd.setFirstName(etFirstName.getText().toString());
     }
     if (etMiddleName != null) {
       pd.setMiddleName(etMiddleName.getText().toString());
@@ -314,6 +330,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     }
     if (etTag != null) {
       //TODO cannot submit if empty
+      pd.setTagNumber(Integer.valueOf(etTag.getText().toString()));
     }
     if (tvBirthday != null) {
       pd.setBirthYear(birthday[0]);
