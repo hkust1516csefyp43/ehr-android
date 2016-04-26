@@ -293,6 +293,10 @@ public class Util {
     return "" + gc.get(Calendar.YEAR) + "-" + (gc.get(Calendar.MONTH) + 1) + "-" + gc.get(Calendar.DAY_OF_MONTH);
   }
 
+  public static String GCInStringForSync(GregorianCalendar gregorianCalendar) {
+    return dateInString(gregorianCalendar) + " " + gregorianCalendar.get(Calendar.HOUR_OF_DAY) + ":" + gregorianCalendar.get(Calendar.MINUTE) + ":" + gregorianCalendar.get(Calendar.SECOND);
+  }
+
   public static String dateInString(Date date) {
     GregorianCalendar gc = new GregorianCalendar();
     gc.setTime(date);

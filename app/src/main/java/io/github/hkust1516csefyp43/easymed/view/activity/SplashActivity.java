@@ -17,6 +17,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import io.fabric.sdk.android.Fabric;
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.listener.AsyncResponse;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Connectivity;
@@ -39,20 +40,23 @@ public class SplashActivity extends AppCompatActivity {
     tvWhichServer = (TextView) findViewById(R.id.tv_which_server);
 
     //TODO extract urls from cache/const
-    final CheckIfServerIsAvailable task2 = new CheckIfServerIsAvailable(this, "Internet", "ehr-api.herokuapp.com", 443, new SplashActivity.AsyncResponse() {
+    final CheckIfServerIsAvailable task2 = new CheckIfServerIsAvailable(this, "Internet", "ehr-api.herokuapp.com", 443, new AsyncResponse() {
       @Override
-      public void processFinish(String output) {
-        error = "Even heroku is not available";
-        if (tvWhichServer != null) {
-          tvWhichServer.setText(error);
+      public void processFinish(String output, Boolean successful) {
+        if (!successful) {
+          error = "Even heroku is not available";
+          if (tvWhichServer != null) {
+            tvWhichServer.setText(error);
+          }
+          //TODO try again button for both server >> execute task1/task2
         }
-        //TODO try again button for both server >> execute task1/task2
       }
     });
-    CheckIfServerIsAvailable task1 = new CheckIfServerIsAvailable(this, "Local", "192.168.0.194", 3000, 3000, new SplashActivity.AsyncResponse() {
+    CheckIfServerIsAvailable task1 = new CheckIfServerIsAvailable(this, "Local", "192.168.0.194", 3000, 3000, new AsyncResponse() {
       @Override
-      public void processFinish(String output) {
-        task2.execute();
+      public void processFinish(String output, Boolean successful) {
+        if (!successful)
+          task2.execute();
       }
     });
     if (Connectivity.isConnected(getApplicationContext())) {
@@ -123,13 +127,9 @@ public class SplashActivity extends AppCompatActivity {
         }, Const.SPLASH_DISPLAY_LENGTH);
       } else {
         Log.d(TAG, host + " is not accessible");
-        delegate.processFinish("failed");
+        delegate.processFinish("failed", false);
       }
     }
-  }
-
-  public interface AsyncResponse {
-    void processFinish(String output);
   }
 
 }

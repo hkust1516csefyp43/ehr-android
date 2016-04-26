@@ -541,4 +541,17 @@ public interface v2API {
     //POST
     //DELETE :id
   }
+
+  interface queries {
+    @GET("queries")
+    Call<List<io.github.hkust1516csefyp43.easymed.pojo.server_response.Query>> getQueries (
+        @Header("token") String token
+    );
+
+    @POST("queries")
+    Call<io.github.hkust1516csefyp43.easymed.pojo.server_response.Query> pushQuery (
+        @Header("token") String token,
+        @Body io.github.hkust1516csefyp43.easymed.pojo.server_response.Query query
+    );
+  }
 }
