@@ -22,6 +22,9 @@ public class SyncActivity extends AppCompatActivity {
       actionBar.setDisplayHomeAsUpEnabled(true);
       actionBar.setDisplayShowHomeEnabled(true);
     }
+
+    //TODO find all buttons and text
+    //TODO onclick >> call api
   }
 
   @Override

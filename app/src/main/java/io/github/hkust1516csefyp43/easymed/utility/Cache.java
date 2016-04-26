@@ -15,6 +15,7 @@ import java.util.List;
 
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Query;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 
 /**
@@ -29,6 +30,16 @@ public class Cache {
   public static String getString(Context context, String key, @Nullable String ifNull) {
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
     return prefs.getString(key, ifNull);
+  }
+
+  public static void setLong(Context context, long number, String key) {
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    prefs.edit().putLong(key, number).apply();
+  }
+
+  public static long getLong(Context context, String key, @Nullable long ifNull) {
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    return prefs.getLong(key, ifNull);
   }
 
   public static void deleteSomething(Context context, String key) {
@@ -139,38 +150,104 @@ public class Cache {
   public static class Synchronisation {
     //last push
     public static void setLastPushToCloud(Context context, GregorianCalendar gregorianCalendar) {
-
+      setLong(context, gregorianCalendar.getTimeInMillis(), Const.CacheKey.SYNC_LAST_PUSH_TO_CLOUD);
     }
 
     public static GregorianCalendar getLastPushToCloud(Context context) {
+      GregorianCalendar gregorianCalendar = new GregorianCalendar();
+      long mills = getLong(context, Const.CacheKey.SYNC_LAST_PUSH_TO_CLOUD, -1);
+      if (mills > 0) {
+        gregorianCalendar.setTimeInMillis(mills);
+        return gregorianCalendar;
+      }
       return null;
     }
 
     //last pull
-    public static void setLastPullToCloud(Context context, GregorianCalendar gregorianCalendar) {
-
+    public static void setLastPullFromCloud(Context context, GregorianCalendar gregorianCalendar) {
+      setLong(context, gregorianCalendar.getTimeInMillis(), Const.CacheKey.SYNC_LAST_PULL_FROM_CLOUD);
     }
 
-    public static GregorianCalendar getLastPullToCloud(Context context) {
+    public static GregorianCalendar getLastPullFromCloud(Context context) {
+      GregorianCalendar gregorianCalendar = new GregorianCalendar();
+      long mills = getLong(context, Const.CacheKey.SYNC_LAST_PULL_FROM_CLOUD, -1);
+      if (mills > 0) {
+        gregorianCalendar.setTimeInMillis(mills);
+        return gregorianCalendar;
+      }
       return null;
     }
 
 
     //last push
     public static void setLastPushToLocal(Context context, GregorianCalendar gregorianCalendar) {
-
+      setLong(context, gregorianCalendar.getTimeInMillis(), Const.CacheKey.SYNC_LAST_PUSH_TO_LOCAL);
     }
 
     public static GregorianCalendar getLastPushToLocal(Context context) {
+      GregorianCalendar gregorianCalendar = new GregorianCalendar();
+      long mills = getLong(context, Const.CacheKey.SYNC_LAST_PUSH_TO_LOCAL, -1);
+      if (mills > 0) {
+        gregorianCalendar.setTimeInMillis(mills);
+        return gregorianCalendar;
+      }
       return null;
     }
 
     //last pull
-    public static void setLastPullToLocal(Context context, GregorianCalendar gregorianCalendar) {
-
+    public static void setLastPullFromLocal(Context context, GregorianCalendar gregorianCalendar) {
+      setLong(context, gregorianCalendar.getTimeInMillis(), Const.CacheKey.SYNC_LAST_PULL_FROM_LOCAL);
     }
 
-    public static GregorianCalendar getLastPullToLocal(Context context) {
+    public static GregorianCalendar getLastPullFromLocal(Context context) {
+      GregorianCalendar gregorianCalendar = new GregorianCalendar();
+      long mills = getLong(context, Const.CacheKey.SYNC_LAST_PULL_FROM_LOCAL, -1);
+      if (mills > 0) {
+        gregorianCalendar.setTimeInMillis(mills);
+        return gregorianCalendar;
+      }
+      return null;
+    }
+
+    public static void setPullFromCloudData(Context context, List<Query> queries) {
+      Gson gson = new GsonBuilder().create();
+      String jsonstring = gson.toJson(queries);
+      setString(context, jsonstring, Const.CacheKey.QUERIES_FROM_CLOUD);
+    }
+
+    public static List<Query> getPullFromCloudData(Context context) {
+      String value = getString(context, Const.CacheKey.QUERIES_FROM_CLOUD, null);
+      if (value != null) {
+        try {
+          List<Query> lp = new Gson().fromJson(value, new TypeToken<List<Query>>() {
+          }.getType());
+          return lp;
+        } catch (JsonSyntaxException e) {
+          e.printStackTrace();
+          //TODO for some reason it occasionally got incorrect syntax stuff -_-
+        }
+      }
+      return null;
+    }
+
+    public static void setPullFromLocalData(Context context, List<Query> queries) {
+      Gson gson = new GsonBuilder().create();
+      String jsonstring = gson.toJson(queries);
+      setString(context, jsonstring, Const.CacheKey.QUERIES_FROM_LOCAL);
+    }
+
+    public static List<Query> getPullFromLocalData(Context context) {
+      String value = getString(context, Const.CacheKey.QUERIES_FROM_LOCAL, null);
+      if (value != null) {
+        try {
+          List<Query> lp = new Gson().fromJson(value, new TypeToken<List<Query>>() {
+          }.getType());
+          return lp;
+        } catch (JsonSyntaxException e) {
+          e.printStackTrace();
+          //TODO for some reason it occasionally got incorrect syntax stuff -_-
+        }
+      }
       return null;
     }
 

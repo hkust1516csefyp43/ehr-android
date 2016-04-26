@@ -50,6 +50,12 @@ public class Const {
     public static final String CURRENT_USER_INFO = "vYTGy6Mhz3QkMMwy";
     public static final String CURRENT_ACCESS_TOKEN = "E46dv8atAN9W8C6Z";
     public static final String CURRENT_REFRESH_TOKEN = "31FdTekBXpMyXJp2";
+    public static final String SYNC_LAST_PULL_FROM_CLOUD = "Dd9fmzhQ2KySfhEK";
+    public static final String SYNC_LAST_PUSH_TO_CLOUD = "7eCxzzds6SFxvn8T";
+    public static final String SYNC_LAST_PULL_FROM_LOCAL = "7ygbdwupRRYfKSak";
+    public static final String SYNC_LAST_PUSH_TO_LOCAL = "dSaVS4UZWDjA8fCs";
+    public static final String QUERIES_FROM_CLOUD = "QUWHrSrNzzr3ke2c";
+    public static final String QUERIES_FROM_LOCAL = "4VRKhNFW8KnJTaSs";
   }
 
   public class Database {
