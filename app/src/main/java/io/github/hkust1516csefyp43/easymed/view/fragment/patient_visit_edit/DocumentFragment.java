@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -41,9 +40,8 @@ public class DocumentFragment extends Fragment implements OnSendData{
   private Document document;
   private int whichDocument;
 
-  private Uri uri;
   /**
-   *
+   * TODO pqtient_id (to call API)
    * @param patientId
    * @param whichDocument = 0 for HPI, 1 for Family History, 2 for social history
    * @return
@@ -52,7 +50,7 @@ public class DocumentFragment extends Fragment implements OnSendData{
     DocumentFragment fragment = new DocumentFragment();
     Bundle args = new Bundle();
     args.putString(key1, patientId);
-    args.putInt(key2, 0);
+    args.putInt(key2, whichDocument);
     fragment.setArguments(args);
     return fragment;
   }
@@ -68,6 +66,14 @@ public class DocumentFragment extends Fragment implements OnSendData{
       String patientId = getArguments().getString(key1);
       whichDocument = getArguments().getInt(key2, -1);
       //TODO get document iff whichDocument >= 0
+      switch (whichDocument) {
+        case 0:
+          break;
+        case 1:
+          break;
+        case 2:
+          break;
+      }
     }
   }
 

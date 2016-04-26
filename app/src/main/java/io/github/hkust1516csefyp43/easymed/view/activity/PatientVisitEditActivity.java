@@ -32,9 +32,14 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.ListOfCards;
+import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.PersonalData;
+import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Pregnancy;
+import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.VitalSigns;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
@@ -42,6 +47,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ChiefComplaintFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.DocumentFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ListOfCardsFragment;
@@ -49,6 +55,9 @@ import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.Pers
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.PregnancyFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.RemarkFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.VitalSignFragment;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PatientVisitEditActivity extends AppCompatActivity implements OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener{
   private static final String TAG = PatientVisitEditActivity.class.getSimpleName();
@@ -58,9 +67,24 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   private PersonalDataFragment personalDataFragment;
   private VitalSignFragment vitalSignFragment;
   private ChiefComplaintFragment chiefComplaintFragment;
-  private RemarkFragment remarkFragment;
+  private RemarkFragment triageRemarkFragment;
+  private DocumentFragment hpiFragment;
+  private ListOfCardsFragment pmhFragment;
+  private DocumentFragment fhFragment;
+  private DocumentFragment shFragment;
+  private ListOfCardsFragment dhFragment;
+  private ListOfCardsFragment screeningFragment;
+  private ListOfCardsFragment allergyFragment;
   private PregnancyFragment pregnancyFragment;
-  private ListOfCardsFragment listOfCardsFragment;
+  private ListOfCardsFragment rosFragment;
+  private ListOfCardsFragment rfFragment;
+  private ListOfCardsFragment peFragment;
+  private ListOfCardsFragment diagnosisFragment;
+  private ListOfCardsFragment investigationFragment;
+  private ListOfCardsFragment medicationFragment;
+  private ListOfCardsFragment adviceFragment;
+  private ListOfCardsFragment followupFragment;
+  private RemarkFragment consultationRemarkFragment;
 
   private Patient thisPatient;
   private Visit thisVisit;
@@ -321,11 +345,243 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         startActivity(intent);
         return false;
       case R.id.confirm:
-        //TODO call onSendData from every page, process them, and POST/PUT accordingly
+        Serializable serializable;
+        PersonalData personalData;
+        VitalSigns vitalSigns;
+        String chiefComplaints;
+        String triageRemark;
+        if (personalDataFragment != null) {
+          serializable = personalDataFragment.onSendData();
+          if (serializable instanceof PersonalData) {
+            personalData = (PersonalData) serializable;
+          }
+        }
+        if (vitalSignFragment != null) {
+          serializable = vitalSignFragment.onSendData();
+          if (serializable instanceof VitalSigns) {
+            vitalSigns = (VitalSigns) serializable;
+          }
+        }
+        if (chiefComplaintFragment != null) {
+          serializable = chiefComplaintFragment.onSendData();
+          if (serializable instanceof String) {
+            chiefComplaints = (String) serializable;
+          }
+        }
+        if (triageRemarkFragment != null) {
+          serializable = triageRemarkFragment.onSendData();
+          if (serializable instanceof String) {
+            triageRemark = (String) serializable;
+          }
+        }
+        if (!isTriage) {
+          String hpi;
+          ListOfCards pmh;
+          String fh;
+          String sh;
+          ListOfCards dh;
+          ListOfCards screening;
+          ListOfCards allergy;
+          Pregnancy pregnancy;
+          ListOfCards ros;
+          ListOfCards rf;
+          ListOfCards pe;
+          ListOfCards diagnosis;
+          ListOfCards investigation;
+          ListOfCards medication;
+          ListOfCards advice;
+          ListOfCards followup;
+          String consultationRemark;
+          if (hpiFragment != null) {
+            serializable = hpiFragment.onSendData();
+            if (serializable instanceof String) {
+              hpi = (String) serializable;
+            }
+          }
+          if (pmhFragment != null) {
+            serializable = pmhFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              pmh = (ListOfCards) serializable;
+            }
+          }
+          if (fhFragment != null) {
+            serializable = fhFragment.onSendData();
+            if (serializable instanceof String) {
+              fh = (String) serializable;
+            }
+          }
+          if (shFragment != null) {
+            serializable = shFragment.onSendData();
+            if (serializable instanceof String) {
+              sh = (String) serializable;
+            }
+          }
+          if (dhFragment != null) {
+            serializable = dhFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              dh = (ListOfCards) serializable;
+            }
+          }
+          if (screeningFragment != null) {
+            serializable = screeningFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              screening = (ListOfCards) serializable;
+            }
+          }
+          if (allergyFragment != null) {
+            serializable = allergyFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              allergy = (ListOfCards) serializable;
+            }
+          }
+          if (pregnancyFragment != null) {
+            serializable = pregnancyFragment.onSendData();
+            if (serializable instanceof Pregnancy) {
+              pregnancy = (Pregnancy) serializable;
+            }
+          }
+          if (rosFragment != null) {
+            serializable = rosFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              ros = (ListOfCards) serializable;
+            }
+          }
+          if (rfFragment != null) {
+            serializable = rfFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              rf = (ListOfCards) serializable;
+            }
+          }
+          if (peFragment != null) {
+            serializable = peFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              pe = (ListOfCards) serializable;
+            }
+          }
+          if (diagnosisFragment != null) {
+            serializable = diagnosisFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              diagnosis = (ListOfCards) serializable;
+            }
+          }
+          if (investigationFragment != null) {
+            serializable = investigationFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              investigation = (ListOfCards) serializable;
+            }
+          }
+          if (medicationFragment != null) {
+            serializable = medicationFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              medication = (ListOfCards) serializable;
+            }
+          }
+          if (adviceFragment != null) {
+            serializable = adviceFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              advice = (ListOfCards) serializable;
+            }
+          }
+          if (followupFragment != null) {
+            serializable = followupFragment.onSendData();
+            if (serializable instanceof ListOfCards) {
+              followup = (ListOfCards) serializable;
+            }
+          }
+          if (consultationRemarkFragment != null) {
+            serializable = consultationRemarkFragment.onSendData();
+            if (serializable instanceof String) {
+              consultationRemark = (String) serializable;
+            }
+          }
+        }
+
+        OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+        ohc1.readTimeout(1, TimeUnit.MINUTES);
+        ohc1.connectTimeout(1, TimeUnit.MINUTES);
+        Retrofit retrofit = new Retrofit
+            .Builder()
+            .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+            .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+            .client(ohc1.build())
+            .build();
+        if (thisPatient != null) {
+          if (isTriage) {
+            if (thisTriage != null) {                                                               //existing patient edit triage
+              //PUT patient
+
+              v2API.patients patientService = retrofit.create(v2API.patients.class);
+              //PUT triage
+              v2API.triages triageService = retrofit.create(v2API.triages.class);
+            } else {                                                                                //existing patient new triage
+              //PUT patient
+              //POST triage
+            }
+          } else {
+            if (thisConsultation != null) {                                                         //existing patient edit consultation (and triage)
+              //PUT patient
+              //PUT triage
+              //PUT consultation
+              //PUT document
+              //PUT investigations (how?)
+              //Update related_data (how?)
+            } else {
+              if (thisTriage != null) {                                                             //existing patient new consultation edit triage
+                //PUT patient
+                //PUT triage
+                //POST consultation
+                //POST related_data
+                //POST investigation
+                //POST prescription
+              } else {
+                //existing patient new consultation new triage
+                //PUT patient
+                //POST triage
+                //POST consultation
+                //POST related_data
+                //POST investigation
+                //POST prescription
+              }
+            }
+          }
+        } else {
+          if (isTriage) {
+            //new patient new triage
+            //POST patient
+            //POST triage
+          } else {
+            //new patient new consultation (and triage)
+            //POST patient
+            //POST triage
+            //POST document
+            //POST consultation
+            //POST related_data
+            //POST investigation
+            //POST prescription
+          }
+        }
         return false;
       default:
         return false;
     }
+  }
+
+  private Patient generatePatient(PersonalData personalData) {
+    Patient patient = new Patient();
+    //TODO
+    return patient;
+  }
+
+  private Triage generateTriage(VitalSigns vitalSigns, String chiefComplaint, String remark) {
+    Triage triage = new Triage();
+    //TODO
+    return triage;
+  }
+
+  private Consultation generateConsultation() {
+    Consultation consultation = new Consultation();
+    //TODO
+    return consultation;
   }
 
   @Override
@@ -413,8 +669,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     menuInflater.inflate(R.menu.menu_patient_edit, menu);
     MenuItem menuItem1 = menu.findItem(R.id.confirm);
     MenuItem menuItem2 = menu.findItem(R.id.history);
-    MenuItem menuItem3 = menu.findItem(R.id.chief_complaint);
-
     menuItem1.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_check).color(Color.WHITE).actionBar());
     menuItem2.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_history).color(Color.WHITE).actionBar());
     return true;
@@ -449,46 +703,97 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           }
           return chiefComplaintFragment;
         case 3:
-          if (remarkFragment == null){
-            remarkFragment = remarkFragment.newInstance();
+          if (triageRemarkFragment == null){
+            triageRemarkFragment = RemarkFragment.newInstance();
           }
-          return remarkFragment;
+          return triageRemarkFragment;
         case 4:
-          return DocumentFragment.newInstance(null, 0);
+          if (hpiFragment == null){
+            hpiFragment = DocumentFragment.newInstance(null, 0);
+          }
+          return hpiFragment;
         case 5:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Previous Medical History");
+          if (pmhFragment == null) {
+            pmhFragment = ListOfCardsFragment.newInstance("Previous Medical History");
+          }
+          return pmhFragment;
         case 6:
-          return DocumentFragment.newInstance(null, 1);
+          if (fhFragment == null) {
+            fhFragment = DocumentFragment.newInstance(null, 1);
+          }
+          return fhFragment;
         case 7:
-          return DocumentFragment.newInstance(null, 2);
+          if (shFragment == null) {
+            shFragment = DocumentFragment.newInstance(null, 2);
+          }
+          return shFragment;
         case 8:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Drug History");
+          if (dhFragment == null) {
+            dhFragment = ListOfCardsFragment.newInstance("Drug History");
+          }
+          return dhFragment;
         case 9:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Screening");
+          if (screeningFragment == null) {
+            screeningFragment = ListOfCardsFragment.newInstance("Screening");
+          }
+          return screeningFragment;
         case 10:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Allergy");
+          if (allergyFragment == null) {
+            allergyFragment = ListOfCardsFragment.newInstance("Allergy");
+          }
+          return allergyFragment;
         case 11:
-          return pregnancyFragment = PregnancyFragment.newInstance("","");
+          if (pregnancyFragment == null) {
+            pregnancyFragment = PregnancyFragment.newInstance("","");
+          }
+          return pregnancyFragment;
         case 12:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM);
+          if (rosFragment == null) {
+            rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM);
+          }
+          return rosFragment;
         case 13:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Red Flags");
+          if (rfFragment == null) {
+            rfFragment = ListOfCardsFragment.newInstance("Red Flags");
+          }
+          return rfFragment;
         case 14:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION);
+          if (peFragment == null) {
+            peFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION);
+          }
+          return peFragment;
         case 15:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis");
+          if (diagnosisFragment == null) {
+            diagnosisFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis");
+          }
+          return diagnosisFragment;
         case 16:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Investigation");
+          if (investigationFragment == null) {
+            investigationFragment = ListOfCardsFragment.newInstance("Investigation");
+          }
+          return investigationFragment;
         case 17:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Medication");
+          if (medicationFragment == null) {
+            medicationFragment = ListOfCardsFragment.newInstance("Medication");
+          }
+          return medicationFragment;
         case 18:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Advice");
+          if (adviceFragment == null) {
+            adviceFragment = ListOfCardsFragment.newInstance("Advice");
+          }
+          return adviceFragment;
         case 19:
-          return listOfCardsFragment = ListOfCardsFragment.newInstance("Follow-up");
+          if (followupFragment == null) {
+            followupFragment = ListOfCardsFragment.newInstance("Follow-up");
+          }
+          return followupFragment;
         case 20:
-          return remarkFragment = RemarkFragment.newInstance();
+          if (consultationRemarkFragment == null) {
+            consultationRemarkFragment = RemarkFragment.newInstance();
+          }
+          return consultationRemarkFragment;
         default:
-          return personalDataFragment.newInstance(thisPatient);
+          return PersonalDataFragment.newInstance(thisPatient);
       }
     }
 
