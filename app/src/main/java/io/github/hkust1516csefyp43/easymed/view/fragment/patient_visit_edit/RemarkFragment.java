@@ -16,12 +16,15 @@ import java.io.Serializable;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
+import io.github.hkust1516csefyp43.easymed.listener.scrollToError;
 
-public class RemarkFragment extends Fragment implements OnSendData{
+public class RemarkFragment extends Fragment implements OnSendData, scrollToError {
   private OnFragmentInteractionListener mListener;
   private SwitchCompat scRemark;
   private EditText etRemark;
   private TextInputLayout tilRemark;
+
+  private View errorView = null;    //null >> no error
 
   public RemarkFragment() {
     // Required empty public constructor
@@ -86,9 +89,21 @@ public class RemarkFragment extends Fragment implements OnSendData{
   public Serializable onSendData() {
     if (scRemark != null && etRemark != null) {
       if (scRemark.isChecked()) {
-        return etRemark.getText().toString();
-      }
+        if (etRemark.getText().length() <= 0) {
+          etRemark.setError("Either turn me off or fill me up");
+          return new Throwable("Switch checked but empty content");
+        } else
+         return etRemark.getText().toString();
+      } else
+        return null;
     }
     return null;
+  }
+
+  @Override
+  public void scrollToError() {
+    if (errorView != null) {
+      etRemark.requestFocus();
+    }
   }
 }

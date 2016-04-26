@@ -515,6 +515,8 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             serializable = consultationRemarkFragment.onSendData();
             if (serializable instanceof String) {
               consultationRemark = (String) serializable;
+            } else if (serializable instanceof Throwable) {
+
             }
           }
         }
@@ -528,12 +530,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
             .client(ohc1.build())
             .build();
+
+
+        
+
         if (thisPatient != null) {
           if (isTriage) {
             if (thisTriage != null) {                                                               //existing patient edit triage
               //PUT patient
-
               v2API.patients patientService = retrofit.create(v2API.patients.class);
+              //PUT visit (iff tag number have been modified?)
               //PUT triage
               v2API.triages triageService = retrofit.create(v2API.triages.class);
             } else {                                                                                //existing patient new triage
@@ -543,6 +549,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           } else {
             if (thisConsultation != null) {                                                         //existing patient edit consultation (and triage)
               //PUT patient
+              //PUT visit (iff tag number have been modified?)
               //PUT triage
               //PUT consultation
               //PUT document
@@ -551,14 +558,15 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             } else {
               if (thisTriage != null) {                                                             //existing patient new consultation edit triage
                 //PUT patient
+                //PUT visit (iff tag number have been modified?)
                 //PUT triage
                 //POST consultation
                 //POST related_data
                 //POST investigation
                 //POST prescription
-              } else {
-                //existing patient new consultation new triage
+              } else {                                                                              //existing patient new consultation new triage
                 //PUT patient
+                //POST visit
                 //POST triage
                 //POST consultation
                 //POST related_data
@@ -568,13 +576,13 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             }
           }
         } else {
-          if (isTriage) {
-            //new patient new triage
+          if (isTriage) {                                                                           //new patient new triage
             //POST patient
+            //POST visit
             //POST triage
-          } else {
-            //new patient new consultation (and triage)
+          } else {                                                                                  //new patient new consultation (and triage)
             //POST patient
+            //POST visit
             //POST triage
             //POST document
             //POST consultation
