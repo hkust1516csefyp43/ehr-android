@@ -588,7 +588,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             //POST patient
             //POST visit
             //POST triage
-          } else {                                                                                  //new patient new consultation (and triage)
             Patient patient = generatePatient(personalData);
             if (patient!= null){
               final VitalSigns vs = vitalSigns;
