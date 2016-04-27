@@ -544,6 +544,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         v2API.consultations consultationService = retrofit.create(v2API.consultations.class);
         final v2API.visits visitService = retrofit.create(v2API.visits.class);
 
+        final PersonalData pd = personalData;
         final VitalSigns vs = vitalSigns;
         final String cc = chiefComplaints;
         final String tr =triageRemark;
@@ -572,7 +573,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                       onFailure(call, new Throwable("No response"));
                     }else {
                       //PUT visit (iff tag number have been modified?)
-                      Visit visit = generateVisit(response.body(), 2);
+                      Visit visit = generateVisit(response.body(), pd, 2);
                       Log.d(TAG, "Editing Visit: " + visit);
                       if (visit.getTag() != thisVisit.getTag()) {
                         if (visit != null) {
@@ -660,7 +661,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                       onFailure(call, new Throwable("No response"));
                     }else {
                       //POST visit
-                      Visit visit = generateVisit(response.body(), 2);
+                      Visit visit = generateVisit(response.body(), pd, 2);
                       if (visit != null) {
                         Call<Visit> visitCall = visitService.addVisit("1", visit);
                         visitCall.enqueue(new Callback<Visit>() {
@@ -775,7 +776,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                     onFailure(call, new Throwable("No response"));
                   } else {
                     //POST visit
-                    Visit visit = generateVisit(response.body(), 2);
+                    Visit visit = generateVisit(response.body(), pd, 2);
                     if (visit != null) {
                       Call<Visit> visitCall = visitService.addVisit("1", visit);
                       visitCall.enqueue(new Callback<Visit>() {
@@ -878,10 +879,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     return patient;
   }
 
-  private Visit generateVisit(Patient patient, int nextStation){
+  private Visit generateVisit(Patient patient, PersonalData personalData, int nextStation){
     Visit visit = new Visit();
     try {
-      visit.setTag(Integer.valueOf(personalDataFragment.getTag()));
+      visit.setTag(personalData.getTagNumber());
     }catch (Exception e){
       e.printStackTrace();
       visit.setTag((int) (Math.random() * 100));
