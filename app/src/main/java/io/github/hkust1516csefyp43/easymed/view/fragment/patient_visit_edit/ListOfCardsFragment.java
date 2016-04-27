@@ -120,6 +120,17 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     recyclerView = (RecyclerView) view.findViewById(R.id.rv_patient_edit);
     tvAssistance = (TextView) view.findViewById(R.id.tv_assistance);
 
+    Log.d(TAG, "existing data no default cards");
+    OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+    ohc1.readTimeout(1, TimeUnit.MINUTES);
+    ohc1.connectTimeout(1, TimeUnit.MINUTES);
+    final Retrofit retrofit = new Retrofit
+        .Builder()
+        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+        .client(ohc1.build())
+        .build();
+
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
     recyclerView.setHasFixedSize(true);
     fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
@@ -171,17 +182,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       tvAssistance.setVisibility(View.GONE);
 
 
-    } else if (category > 0 && consultationId != null) {                                            //TODO fill with existing data (from API call)
-      Log.d(TAG, "existing data no default cards");
-      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-      ohc1.readTimeout(1, TimeUnit.MINUTES);
-      ohc1.connectTimeout(1, TimeUnit.MINUTES);
-      final Retrofit retrofit = new Retrofit
-          .Builder()
-          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
-          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-          .client(ohc1.build())
-          .build();
+    } else if (category > 0 && consultationId != null) {                                            //fill with existing data (from API call)
       if (category == 6) {
         v2API.medications medicationService = retrofit.create(v2API.medications.class);
         Call<List<Medication>> medicationsCall = medicationService.getMedications("1", null, null, null, null, null, null);
@@ -331,7 +332,13 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 @Override
                 public void onResponse(Call<List<RelatedData>> call, Response<List<RelatedData>> response) {
                   if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null) {
-                    //TODO
+                    //TODO no keywords to fill, just the related data then
+                    ArrayList<Card> cards = new ArrayList<>();
+                    for (RelatedData rd: response.body()) {
+                      cards.add(new Card(rd.getData(), rd.getRemark()));
+                    }
+                    adapter = new FragRecyclerViewAdapter(cards, getContext(), false, null, title);
+                    recyclerView.setAdapter(adapter);
                   } else {
                     onFailure(call, new Throwable("sth wrong"));
                   }
@@ -345,12 +352,10 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
               });
             }
           });
-        } else {    //TODO keywordcall is empty
+        } else {    //TODO keywordcall is empty, which should never happen (because switch + default)
+
         }
-//    List<Keyword> keywords = Cache.getString(getContext(), Const.KEY_KEYWORDS);
-
       }
-
 
     } else if (preFillItems != null && preFillItems.length > 0) {                                   //TODO create empty default cards
       fab.setVisibility(View.GONE);
@@ -360,13 +365,59 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       }
       adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true);
       tvAssistance.setVisibility(View.GONE);
-//      adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true, a, title);
-    } else {                                                                                        //TODO create a blank page
-      adapter = new FragRecyclerViewAdapter(null, getContext(), false);
-//      adapter = new FragRecyclerViewAdapter(null, getContext(), false, a, title);
-    }
-    recyclerView.setAdapter(adapter);
+      adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true, null, title);
+      recyclerView.setAdapter(adapter);
+    } else if (category > 0) {                                                                      //TODO create a blank page w/ keywords
 
+      v2API.keywords keywordService = retrofit.create(v2API.keywords.class);
+      Call<List<Keyword>> keywordsCall = null;
+      switch (category) {
+        case 1:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null);
+          break;
+        case 2:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, true, null, null, null, null, null, null, null, null, null, null);
+          break;
+        case 3:
+          keywordsCall = keywordService.getKeywords("1", null, null, true, null, null, null, null, null, null, null, null, null, null, null, null);
+          break;
+        case 4:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, true, null, null, null, null, null, null, null, null);
+          break;
+        case 5:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, true, null, null, null, null, null, null, null, null, null);
+          break;
+        case 7:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, true, null, null, null, null, null, null, null);
+          break;
+        default:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+      }
+      if (keywordsCall != null) {
+        keywordsCall.enqueue(new Callback<List<Keyword>>() {
+          @Override
+          public void onResponse(Call<List<Keyword>> call, Response<List<Keyword>> response) {
+            if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
+              ArrayList<String> keywordArrayList = new ArrayList<>();
+              for (Keyword k : response.body()) {
+                keywordArrayList.add(k.getKeyword());
+              }
+              adapter = new FragRecyclerViewAdapter(null, getContext(), false, keywordArrayList, title);
+            } else {
+              onFailure(call, new Throwable("sth wrong when fetching keywords"));
+            }
+          }
+
+          @Override
+          public void onFailure(Call<List<Keyword>> call, Throwable t) {
+            t.printStackTrace();
+            adapter = new FragRecyclerViewAdapter(null, getContext(), false, null, title);
+          }
+        });
+      } else {    //TODO keywordcall is empty, which should never happen (because switch + default)
+
+      }
+    }
     return view;
   }
 
@@ -470,21 +521,6 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
         data = new ArrayList<>();
       data.add(c);
       this.notifyItemInserted(data.size() - 1);
-    }
-
-    public void addCards(ArrayList<Card> c) {
-      if (c != null) {
-        if (data == null)
-          data = new ArrayList<>();
-        for (Card card : c) {
-          data.add(card);
-        }
-        this.notifyDataSetChanged();
-      }
-    }
-
-    public int getCardCount() {
-      return data.size();
     }
 
     public void deleteCard(int position) {
