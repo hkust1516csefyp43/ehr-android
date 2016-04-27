@@ -264,7 +264,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       etAgeMonth.addTextChangedListener(textWatcher);
       etAgeWeek.addTextChangedListener(textWatcher);
     }
-
+//
     birthday[0] = 1992;
     birthday[1] = 8;    //September
     birthday[2] = 14;
