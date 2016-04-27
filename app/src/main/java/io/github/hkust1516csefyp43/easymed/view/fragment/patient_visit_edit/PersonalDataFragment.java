@@ -2,6 +2,7 @@ package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -35,6 +37,8 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   public final static String TAG = PersonalDataFragment.class.getSimpleName();
 
   private static Patient patient;
+
+  private ScrollView scrollView;
   private EditText etTag;
   private EditText etFirstName;
   private EditText etMiddleName;
@@ -77,6 +81,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     View view = inflater.inflate(R.layout.fragment_personal_data, container, false);
     inflateEveryBoxes(view);
 
+    scrollView = (ScrollView) view.findViewById(R.id.scrollView);
     ImageView ivBirthdayRemove = (ImageView) view.findViewById(R.id.ivRemoveBirthday);
     ivBirthdayRemove.setImageDrawable(new IconicsDrawable(getContext()).actionBar().color(ResourcesCompat.getColor(getResources(), R.color.secondary_text_color, null)).icon(FontAwesome.Icon.faw_trash_o));
     ivBirthdayRemove.setOnClickListener(new View.OnClickListener() {
@@ -308,16 +313,26 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       if (tvBirthday != null)
         tvBirthday.setText("Click to select date");
     }
+  }
 
+  private final void focusOnView(final View view){
+    if (scrollView != null) {
+      new Handler().post(new Runnable() {
+        @Override
+        public void run() {
+          scrollView.scrollTo(0, view.getBottom());
+        }
+      });
+    }
   }
 
   @Override
   public Serializable onSendData() {
     PersonalData pd = new PersonalData();
     if (etFirstName != null) {
-      //TODO cannot submit if empty
       if (etFirstName.getText() == null || etFirstName.getText().length() <= 0) {
         etFirstName.setError("First name must not be empty");
+        focusOnView(etFirstName);
         return new Throwable("Null first name");
       } else
        pd.setFirstName(etFirstName.getText().toString());
@@ -340,6 +355,8 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
           pd.setTagNumber(Integer.valueOf(etTag.getText().toString()));
         } catch (NumberFormatException e) {
           e.printStackTrace();
+          etTag.setError("This is not a number");
+          focusOnView(etTag);
           return new Throwable("Tag is not an integer");
         }
       }

@@ -249,7 +249,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
   public Serializable onSendData() {
 
     VitalSigns vs = new VitalSigns();
-    if (etSystolic != null) {
+    if (etSystolic != null && etSystolic.getText() != null && etSystolic.getText().length() != 0) {
       try {
         vs.setSystolic(Integer.parseInt(etSystolic.getText().toString()));
       } catch (NumberFormatException e) {
@@ -257,7 +257,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
         return new Throwable("Systolic is not a number");
       }
     }
-    if (etDiastolic != null) {
+    if (etDiastolic != null && etDiastolic.getText() != null && etDiastolic.getText().length() != 0) {
       try {
         vs.setDiastolic(Integer.parseInt(etDiastolic.getText().toString()));
       } catch (NumberFormatException e) {
@@ -265,7 +265,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
         return new Throwable("Diastolic is not a number");
       }
     }
-    if (etPulseRate != null) {
+    if (etPulseRate != null && etPulseRate.getText() != null && etPulseRate.getText().length() != 0) {
       try {
         vs.setPulseRate(Integer.parseInt(etPulseRate.getText().toString()));
       } catch (NumberFormatException e) {
@@ -273,7 +273,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
         return new Throwable("Pulse Rate is not a number");
       }
     }
-    if (etRespiratoryRate != null) {
+    if (etRespiratoryRate != null && etRespiratoryRate.getText() != null && etRespiratoryRate.getText().length() != 0) {
       try {
         vs.setRespiratoryRate(Integer.parseInt(etRespiratoryRate.getText().toString()));
       } catch (NumberFormatException e) {
@@ -281,7 +281,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
         return new Throwable("Respiratory Rate is not a number");
       }
     }
-    if (etSpo2 != null) {
+    if (etSpo2 != null && etSpo2.getText() != null && etSpo2.getText().length() != 0) {
       try {
         vs.setSpo2(Integer.parseInt(etSpo2.getText().toString()));
       } catch (NumberFormatException e) {
@@ -289,7 +289,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
         return new Throwable("SpO2 is not a number");
       }
     }
-    if (etTemperature != null) {
+    if (etTemperature != null && etTemperature.getText() != null && etTemperature.getText().length() != 0) {
       try {
         //TODO if in F, change back to C first (Utils.fahrenheitToCelsius)
         vs.setTemperature(Double.parseDouble(etTemperature.getText().toString()));
@@ -298,7 +298,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
         return new Throwable("Temperature is not a number");
       }
     }
-    if (etWeight != null) {
+    if (etWeight != null && etWeight.getText() != null && etWeight.getText().length() != 0) {
       try {
         vs.setWeight(Double.parseDouble(etWeight.getText().toString()));
       } catch (NumberFormatException e) {
@@ -306,7 +306,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
         return new Throwable("Weight is not a number");
       }
     }
-    if (etHeight != null) {
+    if (etHeight != null && etHeight.getText() != null && etHeight.getText().length() != 0) {
       try {
         vs.setHeight(Double.parseDouble(etHeight.getText().toString()));
       } catch (NumberFormatException e) {
