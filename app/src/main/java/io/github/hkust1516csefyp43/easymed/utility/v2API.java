@@ -16,6 +16,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.MedicationVarian
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import retrofit2.Call;
@@ -552,6 +553,45 @@ public interface v2API {
     Call<io.github.hkust1516csefyp43.easymed.pojo.server_response.Query> pushQuery (
         @Header("token") String token,
         @Body io.github.hkust1516csefyp43.easymed.pojo.server_response.Query query
+    );
+  }
+
+  interface related_data {
+    @GET("related_data")
+    Call<List<RelatedData>> getRelatedDataPlural (
+      @Header("token")              String token,
+      @Query("consultation_id")     String consultationId,
+      @Query("category")            String category,
+      @Query("data")                String data,
+      @Query("remark")              String remark,
+      @Query("sort_by") String sortBy,
+      @Query("limit") Integer limit,
+      @Query("offset") Integer offset
+    );
+
+    @GET("related_data/{id}")
+    Call<RelatedData> getRelatedData (
+        @Header("token")      String token,
+        @Path("id")           String id
+    );
+
+    @PUT("related_data/{id}")
+    Call<RelatedData> editRelatedData (
+        @Header("token")      String token,
+        @Path("id")           String id,
+        @Body                 RelatedData relatedData
+    );
+
+    @POST("related_data")
+    Call<RelatedData> addRelatedData (
+        @Header("token")      String token,
+        @Body                 RelatedData relatedData
+    );
+
+    @DELETE("related_data/{id}")
+    Call<RelatedData> deleteRelatedData (
+        @Header("token")    String token,
+        @Path("id")         String id
     );
   }
 }

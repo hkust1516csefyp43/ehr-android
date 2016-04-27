@@ -29,6 +29,7 @@ import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListene
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
@@ -47,8 +48,6 @@ public class VisitDetailFragment extends Fragment {
   private static String key2 = Const.BundleKey.ON_OR_OFF;
   private static String key3 = Const.BundleKey.EDIT_PATIENT;
   private static String key4 = Const.BundleKey.IS_TRIAGE;
-
-  private int fromWhichPage;
 
   private OnFragmentInteractionListener mListener;
 
@@ -72,7 +71,18 @@ public class VisitDetailFragment extends Fragment {
   private Consultation consultation;
   private Patient patient;
   private List<Prescription> prescriptions;
-//  private
+  private List<RelatedData> physicalExaminations;
+  private List<RelatedData> screenings;
+  private List<RelatedData> allergies;
+  private List<RelatedData> pmhs;
+  private List<RelatedData> drugHistories;
+  private List<RelatedData> ross;
+  private List<RelatedData> redFlags;
+  private List<RelatedData> investigations;
+  private List<RelatedData> advices;
+  private List<RelatedData> diagnosiss;
+  private List<RelatedData> followups;
+
   //TODO related data, etc
   private LinearLayout linearLayout;
 

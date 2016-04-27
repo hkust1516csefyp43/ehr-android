@@ -9,22 +9,22 @@ import java.util.Date;
  * Created by Louis on 20/4/16.
  */
 public class Consultation implements Serializable{
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
 
-  @SerializedName("consultation_id")                String id;
+  @SerializedName("consultation_id")          String id;
   @SerializedName("user_id")                  String userId;
   @SerializedName("visit_id")                 String visitId;
   @SerializedName("triage_id")                String triageId;
   @SerializedName("start_timestamp")          Date startTime;
   @SerializedName("end_timestamp")            Date endTime;
-  @SerializedName("pe_cardio")                Boolean peCardio;
-  @SerializedName("pe_ent")                   Boolean peEnt;
-  @SerializedName("pe_gastro")                Boolean peGastro;
-  @SerializedName("pe_general")               Boolean peGeneral;
-  @SerializedName("pe_genital")               Boolean peGenital;
-  @SerializedName("pe_other")                 Boolean peOther;
-  @SerializedName("pe_respiratory")           Boolean peRespiratory;
-  @SerializedName("pe_skin")                  Boolean peSkin;
+  @SerializedName("pe_cardio")                String peCardio;
+  @SerializedName("pe_ent")                   String peEnt;
+  @SerializedName("pe_gastro")                String peGastro;
+  @SerializedName("pe_general")               String peGeneral;
+  @SerializedName("pe_genital")               String peGenital;
+  @SerializedName("pe_other")                 String peOther;
+  @SerializedName("pe_respiratory")           String peRespiratory;
+  @SerializedName("pe_skin")                  String peSkin;
   @SerializedName("preg_breast_feeding")      Boolean pregBreastFeeding;
   @SerializedName("preg_contraceptive")       Boolean pregContraceptive;
   @SerializedName("preg_curr_preg")           Boolean pregCurrPreg;
@@ -37,19 +37,20 @@ public class Consultation implements Serializable{
   @SerializedName("preg_num_still_birth")     Integer pregNumStillBirth;
   @SerializedName("preg_remark")              String pregRemark;
   @SerializedName("remark")                   String remark;
-  @SerializedName("rf_alertness")             Boolean rfAlertness;
-  @SerializedName("rf_breathing")             Boolean rfBreathing;
-  @SerializedName("rf_circulation")           Boolean rfCirculation;
-  @SerializedName("rf_defg")                  Boolean rfDefg;
-  @SerializedName("rf_dehydration")           Boolean rfDehydration;
-  @SerializedName("ros_cardio")               Boolean rosCardio;
-  @SerializedName("ros_ent")                  Boolean rosEnt;
-  @SerializedName("ros_ga")                   Boolean rosGa;
-  @SerializedName("ros_gastro")               Boolean rosGastro;
-  @SerializedName("ros_genital")              Boolean rosGenital;
-  @SerializedName("ros_other")                Boolean rosOther;
-  @SerializedName("ros_respi")                Boolean rosRespi;
-  @SerializedName("ros_skin")                 Boolean rosSkin;
+  @SerializedName("rf_alertness")             String rfAlertness;
+  @SerializedName("rf_breathing")             String rfBreathing;
+  @SerializedName("rf_circulation")           String rfCirculation;
+  @SerializedName("rf_defg")                  String rfDefg;
+  @SerializedName("rf_dehydration")           String rfDehydration;
+  @SerializedName("ros_eent")                 String rosEent;
+  @SerializedName("ros_respi")                String rosRespi;
+  @SerializedName("ros_cardio")               String rosCardio;
+  @SerializedName("ros_gastro")               String rosGastro;
+  @SerializedName("ros_genital")              String rosGenital;
+  @SerializedName("ros_ent")                  String rosEnt;
+  @SerializedName("ros_skin")                 String rosSkin;
+  @SerializedName("ros_locomotor")            String rosLocomotor;
+  @SerializedName("ros_neurology")            String rosNeruology;
 
   public Consultation() {
   }
@@ -102,67 +103,67 @@ public class Consultation implements Serializable{
     this.endTime = endTime;
   }
 
-  public Boolean getPeCardio() {
+  public String getPeCardio() {
     return peCardio;
   }
 
-  public void setPeCardio(Boolean peCardio) {
+  public void setPeCardio(String peCardio) {
     this.peCardio = peCardio;
   }
 
-  public Boolean getPeEnt() {
+  public String getPeEnt() {
     return peEnt;
   }
 
-  public void setPeEnt(Boolean peEnt) {
+  public void setPeEnt(String peEnt) {
     this.peEnt = peEnt;
   }
 
-  public Boolean getPeGastro() {
+  public String getPeGastro() {
     return peGastro;
   }
 
-  public void setPeGastro(Boolean peGastro) {
+  public void setPeGastro(String peGastro) {
     this.peGastro = peGastro;
   }
 
-  public Boolean getPeGeneral() {
+  public String getPeGeneral() {
     return peGeneral;
   }
 
-  public void setPeGeneral(Boolean peGeneral) {
+  public void setPeGeneral(String peGeneral) {
     this.peGeneral = peGeneral;
   }
 
-  public Boolean getPeGenital() {
+  public String getPeGenital() {
     return peGenital;
   }
 
-  public void setPeGenital(Boolean peGenital) {
+  public void setPeGenital(String peGenital) {
     this.peGenital = peGenital;
   }
 
-  public Boolean getPeOther() {
+  public String getPeOther() {
     return peOther;
   }
 
-  public void setPeOther(Boolean peOther) {
+  public void setPeOther(String peOther) {
     this.peOther = peOther;
   }
 
-  public Boolean getPeRespiratory() {
+  public String getPeRespiratory() {
     return peRespiratory;
   }
 
-  public void setPeRespiratory(Boolean peRespiratory) {
+  public void setPeRespiratory(String peRespiratory) {
     this.peRespiratory = peRespiratory;
   }
 
-  public Boolean getPeSkin() {
+  public String getPeSkin() {
     return peSkin;
   }
 
-  public void setPeSkin(Boolean peSkin) {
+  public void setPeSkin(String peSkin) {
     this.peSkin = peSkin;
   }
 
@@ -262,108 +263,116 @@ public class Consultation implements Serializable{
     this.remark = remark;
   }
 
-  public Boolean getRfAlertness() {
+  public String getRfAlertness() {
     return rfAlertness;
   }
 
-  public void setRfAlertness(Boolean rfAlertness) {
+  public void setRfAlertness(String rfAlertness) {
     this.rfAlertness = rfAlertness;
   }
 
-  public Boolean getRfBreathing() {
+  public String getRfBreathing() {
     return rfBreathing;
   }
 
-  public void setRfBreathing(Boolean rfBreathing) {
+  public void setRfBreathing(String rfBreathing) {
     this.rfBreathing = rfBreathing;
   }
 
-  public Boolean getRfCirculation() {
+  public String getRfCirculation() {
     return rfCirculation;
   }
 
-  public void setRfCirculation(Boolean rfCirculation) {
+  public void setRfCirculation(String rfCirculation) {
     this.rfCirculation = rfCirculation;
   }
 
-  public Boolean getRfDefg() {
+  public String getRfDefg() {
     return rfDefg;
   }
 
-  public void setRfDefg(Boolean rfDefg) {
+  public void setRfDefg(String rfDefg) {
     this.rfDefg = rfDefg;
   }
 
-  public Boolean getRfDehydration() {
+  public String getRfDehydration() {
     return rfDehydration;
   }
 
-  public void setRfDehydration(Boolean rfDehydration) {
+  public void setRfDehydration(String rfDehydration) {
     this.rfDehydration = rfDehydration;
   }
 
-  public Boolean getRosCardio() {
-    return rosCardio;
+  public String getRosEent() {
+    return rosEent;
   }
 
-  public void setRosCardio(Boolean rosCardio) {
-    this.rosCardio = rosCardio;
+  public void setRosEent(String rosEent) {
+    this.rosEent = rosEent;
   }
 
-  public Boolean getRosEnt() {
-    return rosEnt;
-  }
-
-  public void setRosEnt(Boolean rosEnt) {
-    this.rosEnt = rosEnt;
-  }
-
-  public Boolean getRosGa() {
-    return rosGa;
-  }
-
-  public void setRosGa(Boolean rosGa) {
-    this.rosGa = rosGa;
-  }
-
-  public Boolean getRosGastro() {
-    return rosGastro;
-  }
-
-  public void setRosGastro(Boolean rosGastro) {
-    this.rosGastro = rosGastro;
-  }
-
-  public Boolean getRosGenital() {
-    return rosGenital;
-  }
-
-  public void setRosGenital(Boolean rosGenital) {
-    this.rosGenital = rosGenital;
-  }
-
-  public Boolean getRosOther() {
-    return rosOther;
-  }
-
-  public void setRosOther(Boolean rosOther) {
-    this.rosOther = rosOther;
-  }
-
-  public Boolean getRosRespi() {
+  public String getRosRespi() {
     return rosRespi;
   }
 
-  public void setRosRespi(Boolean rosRespi) {
+  public void setRosRespi(String rosRespi) {
     this.rosRespi = rosRespi;
   }
 
-  public Boolean getRosSkin() {
+  public String getRosCardio() {
+    return rosCardio;
+  }
+
+  public void setRosCardio(String rosCardio) {
+    this.rosCardio = rosCardio;
+  }
+
+  public String getRosGastro() {
+    return rosGastro;
+  }
+
+  public void setRosGastro(String rosGastro) {
+    this.rosGastro = rosGastro;
+  }
+
+  public String getRosGenital() {
+    return rosGenital;
+  }
+
+  public void setRosGenital(String rosGenital) {
+    this.rosGenital = rosGenital;
+  }
+
+  public String getRosEnt() {
+    return rosEnt;
+  }
+
+  public void setRosEnt(String rosEnt) {
+    this.rosEnt = rosEnt;
+  }
+
+  public String getRosSkin() {
     return rosSkin;
   }
 
-  public void setRosSkin(Boolean rosSkin) {
+  public void setRosSkin(String rosSkin) {
     this.rosSkin = rosSkin;
+  }
+
+  public String getRosLocomotor() {
+    return rosLocomotor;
+  }
+
+  public void setRosLocomotor(String rosLocomotor) {
+    this.rosLocomotor = rosLocomotor;
+  }
+
+  public String getRosNeruology() {
+    return rosNeruology;
+  }
+
+  public void setRosNeruology(String rosNeruology) {
+    this.rosNeruology = rosNeruology;
   }
 
   @Override
@@ -375,14 +384,14 @@ public class Consultation implements Serializable{
         ", triageId='" + triageId + '\'' +
         ", startTime=" + startTime +
         ", endTime=" + endTime +
-        ", peCardio=" + peCardio +
-        ", peEnt=" + peEnt +
-        ", peGastro=" + peGastro +
-        ", peGeneral=" + peGeneral +
-        ", peGenital=" + peGenital +
-        ", peOther=" + peOther +
-        ", peRespiratory=" + peRespiratory +
-        ", peSkin=" + peSkin +
+        ", peCardio='" + peCardio + '\'' +
+        ", peEnt='" + peEnt + '\'' +
+        ", peGastro='" + peGastro + '\'' +
+        ", peGeneral='" + peGeneral + '\'' +
+        ", peGenital='" + peGenital + '\'' +
+        ", peOther='" + peOther + '\'' +
+        ", peRespiratory='" + peRespiratory + '\'' +
+        ", peSkin='" + peSkin + '\'' +
         ", pregBreastFeeding=" + pregBreastFeeding +
         ", pregContraceptive=" + pregContraceptive +
         ", pregCurrPreg=" + pregCurrPreg +
@@ -395,19 +404,20 @@ public class Consultation implements Serializable{
         ", pregNumStillBirth=" + pregNumStillBirth +
         ", pregRemark='" + pregRemark + '\'' +
         ", remark='" + remark + '\'' +
-        ", rfAlertness=" + rfAlertness +
-        ", rfBreathing=" + rfBreathing +
-        ", rfCirculation=" + rfCirculation +
-        ", rfDefg=" + rfDefg +
-        ", rfDehydration=" + rfDehydration +
-        ", rosCardio=" + rosCardio +
-        ", rosEnt=" + rosEnt +
-        ", rosGa=" + rosGa +
-        ", rosGastro=" + rosGastro +
-        ", rosGenital=" + rosGenital +
-        ", rosOther=" + rosOther +
-        ", rosRespi=" + rosRespi +
-        ", rosSkin=" + rosSkin +
+        ", rfAlertness='" + rfAlertness + '\'' +
+        ", rfBreathing='" + rfBreathing + '\'' +
+        ", rfCirculation='" + rfCirculation + '\'' +
+        ", rfDefg='" + rfDefg + '\'' +
+        ", rfDehydration='" + rfDehydration + '\'' +
+        ", rosEent='" + rosEent + '\'' +
+        ", rosRespi='" + rosRespi + '\'' +
+        ", rosCardio='" + rosCardio + '\'' +
+        ", rosGastro='" + rosGastro + '\'' +
+        ", rosGenital='" + rosGenital + '\'' +
+        ", rosEnt='" + rosEnt + '\'' +
+        ", rosSkin='" + rosSkin + '\'' +
+        ", rosLocomotor='" + rosLocomotor + '\'' +
+        ", rosNeurology='" + rosNeruology + '\'' +
         '}';
   }
 }
