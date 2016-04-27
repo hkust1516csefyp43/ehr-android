@@ -441,7 +441,7 @@ public interface v2API {
         @Body Triage triage
     );
 
-    @PUT("triages")
+    @PUT("triages/{id}")
     Call<Triage> editTriage(
         @Header("token") String token,
         @Body Triage triage,

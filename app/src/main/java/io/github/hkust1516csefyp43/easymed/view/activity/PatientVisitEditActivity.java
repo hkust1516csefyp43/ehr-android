@@ -544,12 +544,83 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         v2API.consultations consultationService = retrofit.create(v2API.consultations.class);
         final v2API.visits visitService = retrofit.create(v2API.visits.class);
 
+        final VitalSigns vs = vitalSigns;
+        final String cc = chiefComplaints;
+        final String tr =triageRemark;
+
         if (thisPatient != null) {
           if (isTriage) {
             if (thisTriage != null) {                                                               //existing patient edit triage
               //PUT patient
-              //PUT visit (iff tag number have been modified?)
-              //PUT triage
+              Patient patient = generatePatient(personalData);
+              Log.d(TAG, "Existing patient edit triage" + patient);
+              if (patient != null) {
+                Call<Patient> patientCall = patientService.editPatient("1", thisPatient.getPatientId(), patient);
+                patientCall.enqueue(new Callback<Patient>() {
+                  @Override
+                  public void onResponse(Call<Patient> call, Response<Patient> response) {
+                    Log.d(TAG, "code: " + response.code());
+                    if (response.code() < 500 && response.code() >= 400) {
+                      try {
+                        Log.d(TAG, response.errorBody().string());
+                      } catch (IOException e) {
+                        e.printStackTrace();
+                      }
+                    }
+                    if (response.body() == null || response.code() > 299 || response.code() < 200){
+                      onFailure(call, new Throwable("No response"));
+                    }else {
+                      //PUT visit (iff tag number have been modified?)
+                      Log.d(TAG, "Editing Visit: " + thisVisit);
+                      Visit visit = generateVisit(response.body(), 2);
+                      if (visit.getTag() != thisVisit.getTag()) {
+                        if (visit != null) {
+                          Call<Visit> visitCall = visitService.editVisit("1", visit, thisVisit.getId());
+                          visitCall.enqueue(new Callback<Visit>() {
+                            @Override
+                            public void onResponse(Call<Visit> call, Response<Visit> response) {
+                              Log.d(TAG, response.body().toString());
+                              if (response.body() == null || response.code() > 299 || response.code() < 200) {
+                                onFailure(call, new Throwable("No response"));
+                              }else {
+                                //PUT triage
+                                Log.d(TAG, "Editing triage: " + thisTriage);
+                                Triage triage = generateTriage(response.body(), vs, cc, tr);
+                                Call<Triage> triageCall = triageService.editTriage("1", triage, thisTriage.getId());
+                                triageCall.enqueue(new Callback<Triage>() {
+                                  @Override
+                                  public void onResponse(Call<Triage> call, Response<Triage> response) {
+                                    Log.d(TAG, response.body().toString());
+                                    progressDialog.dismiss();
+                                    finish();
+                                  }
+
+                                  @Override
+                                  public void onFailure(Call<Triage> call, Throwable t) {
+
+                                  }
+                                });
+                              }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Visit> call, Throwable t) {
+
+                            }
+                          });
+                        }
+                      }
+
+
+                    }
+                  }
+
+                  @Override
+                  public void onFailure(Call<Patient> call, Throwable t) {
+
+                  }
+                });
+              }
             } else {                                                                                //existing patient new triage
               //PUT patient
               //POST triage
@@ -590,9 +661,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             //POST triage
             Patient patient = generatePatient(personalData);
             if (patient!= null){
-              final VitalSigns vs = vitalSigns;
-              final String cc = chiefComplaints;
-              final String tr =triageRemark;
+
               Call<Patient> patientCall = patientService.addPatient("1", patient);
               patientCall.enqueue(new Callback<Patient>() {
                 @Override
@@ -690,6 +759,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     patient.setLastName(personalData.getLastName());
     patient.setNativeName(personalData.getNativeName());
     patient.setPhoneNumber(personalData.getPhoneNumber());
+    patient.setTag(personalData.getTagNumber());
     patient.setClinicId(Cache.CurrentUser.getClinic(getBaseContext()).getClinicId());
     Log.d(TAG, "output" + patient.toString());
     return patient;
@@ -698,7 +768,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   private Visit generateVisit(Patient patient, int nextStation){
     Visit visit = new Visit();
     try {
-      visit.setTag(Integer.valueOf(personalDataFragment.getTag()));
+      visit.setTag(patient.getTag());
     }catch (NumberFormatException e){
       e.printStackTrace();
       visit.setTag((int) (Math.random() * 100));
