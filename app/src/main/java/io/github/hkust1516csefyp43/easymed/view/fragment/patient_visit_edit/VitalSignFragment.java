@@ -28,9 +28,12 @@ import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.VitalSigns;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 
 public class VitalSignFragment extends Fragment implements OnSendData{
   private static final String TAG = VitalSignFragment.class.getSimpleName();
+
   private TextView tvLDD;
   private TextView tvBMI;
   private EditText etSystolic;
@@ -41,19 +44,23 @@ public class VitalSignFragment extends Fragment implements OnSendData{
   private EditText etSpo2;
   private EditText etWeight;
   private EditText etHeight;
+
   private double dWeight;
   private double dHeight;
   private int[] lddDate = new int[3];
 
   private OnFragmentInteractionListener mListener;
 
+  private Triage thisTriage = null;
+
   public VitalSignFragment() {
     // Required empty public constructor
   }
 
-  public static VitalSignFragment newInstance(String param1, String param2) {
+  public static VitalSignFragment newInstance(Triage triage) {
     VitalSignFragment fragment = new VitalSignFragment();
     Bundle args = new Bundle();
+    args.putSerializable(Const.BundleKey.WHOLE_TRIAGE, triage);
     fragment.setArguments(args);
     return fragment;
   }
@@ -66,13 +73,15 @@ public class VitalSignFragment extends Fragment implements OnSendData{
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
+      Serializable serializable = getArguments().getSerializable(Const.BundleKey.WHOLE_TRIAGE);
+      if (serializable instanceof Triage) {
+        thisTriage = (Triage) serializable;
+      }
     }
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_vital_sign, container, false);
     tvLDD = (TextView) view.findViewById(R.id.ldd);
     etSystolic = (EditText) view.findViewById(R.id.etSystolic);

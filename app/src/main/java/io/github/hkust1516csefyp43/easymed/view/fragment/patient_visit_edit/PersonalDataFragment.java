@@ -60,6 +60,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
   private boolean anyError = false;
   private int[] preFillBirthday = new int[3];
+  private int cantTouchThis = 0;
 
   public static PersonalDataFragment newInstance(Patient p) {
     PersonalDataFragment fragment = new PersonalDataFragment();
@@ -224,7 +225,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     preFillBirthday[0] = 1992;
     preFillBirthday[1] = 8;
     preFillBirthday[2] = 14;
-    if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null &&patient.getBirthDate() != null) {
+    if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null && patient.getBirthDate() != null) {
       preFillBirthday[0] = patient.getBirthYear();
       preFillBirthday[1] = patient.getBirthMonth();
       preFillBirthday[2] = patient.getBirthDate();
@@ -248,12 +249,15 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
         @Override
         public void afterTextChanged(Editable s) {
           try {
-            GregorianCalendar birthdayGC = Util.ageToBirthday(Integer.parseInt(etAgeYear.getText().toString()), Integer.parseInt(etAgeMonth.getText().toString()), Integer.parseInt(etAgeWeek.getText().toString()));
-            birthday[0] = birthdayGC.get(Calendar.YEAR);
-            birthday[1] = birthdayGC.get(Calendar.MONTH);
-            birthday[2] = birthdayGC.get(Calendar.DAY_OF_MONTH);
-            String date = "" + birthday[0] + "/" + (birthday[1] + 1) + "/" + birthday[2];
-            tvBirthday.setText(date);
+            if (cantTouchThis <= 0) {
+              GregorianCalendar birthdayGC = Util.ageToBirthday(Integer.parseInt(etAgeYear.getText().toString()), Integer.parseInt(etAgeMonth.getText().toString()), Integer.parseInt(etAgeWeek.getText().toString()));
+              birthday[0] = birthdayGC.get(Calendar.YEAR);
+              birthday[1] = birthdayGC.get(Calendar.MONTH);
+              birthday[2] = birthdayGC.get(Calendar.DAY_OF_MONTH);
+              String date = "" + birthday[0] + "/" + (birthday[1] + 1) + "/" + birthday[2];
+              tvBirthday.setText(date);
+            } else
+              cantTouchThis--;
           } catch (NumberFormatException e) {
             e.printStackTrace();
           }
@@ -281,6 +285,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
                 birthday[1] = monthOfYear;
                 birthday[2] = dayOfMonth;
                 tvBirthday.setText(date);
+                cantTouchThis = 3;
               }
               if (etAgeYear != null && etAgeMonth != null && etAgeWeek != null) {
                 int[] ageArray = Util.birthdayToAgeYMW(birthday[0], birthday[1], birthday[2]);
