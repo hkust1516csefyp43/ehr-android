@@ -220,8 +220,8 @@ public class PatientListFragment extends Fragment{
         break;
       case Const.PatientListPageId.POST_CONSULTATION:
       case Const.PatientListPageId.PRE_PHARMACY:
-//        Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, Util.todayString());          //set to today == nothing to see -_-
-        Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, null);
+        Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, Util.todayString());          //set to today == nothing to see -_-
+//        Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, null);
         patientList3.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -446,6 +446,7 @@ public class PatientListFragment extends Fragment{
                 Intent intent4 = new Intent(getContext(), PatientVisitViewActivity.class);
                 intent4.putExtra(Const.BundleKey.READ_ONLY_PATIENT, aPatient);
                 intent4.putExtra(Const.BundleKey.ON_OR_OFF, true);
+                intent4.putExtra(Const.BundleKey.IS_TRIAGE, false);
                 startActivity(intent4);
                 break;
               case Const.PatientListPageId.PRE_PHARMACY:

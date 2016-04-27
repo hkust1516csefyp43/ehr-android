@@ -1,8 +1,8 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,6 +41,8 @@ import java.util.concurrent.TimeUnit;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
@@ -140,8 +142,52 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     }
   }
 
-  private void setIcon(int id, Drawable drawable) {
+  private void cacheData(final Context context) {
+    OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+    ohc1.readTimeout(1, TimeUnit.MINUTES);
+    ohc1.connectTimeout(1, TimeUnit.MINUTES);
+    final Retrofit retrofit = new Retrofit
+        .Builder()
+        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+        .client(ohc1.build())
+        .build();
 
+    //1. Cache Document Types
+    v2API.documentTypes documentTypeService = retrofit.create(v2API.documentTypes.class);
+    Call<List<DocumentType>> documentTypesCall = documentTypeService.getDocumentTypes("1", null, null, null, null);
+    documentTypesCall.enqueue(new Callback<List<DocumentType>>() {
+      @Override
+      public void onResponse(Call<List<DocumentType>> call, Response<List<DocumentType>> response) {
+        if (response.code() >= 200 && response.code() < 300) {
+          Cache.DatabaseData.setDocumentTypes(context, response.body());
+        } else {
+          onFailure(call, new Throwable("Something wrong when getting document types"));
+        }
+      }
+
+      @Override
+      public void onFailure(Call<List<DocumentType>> call, Throwable t) {
+        t.printStackTrace();
+      }
+    });
+
+    //2. Cache Genders
+    v2API.genders genderService = retrofit.create(v2API.genders.class);
+    Call<List<Gender>> gendersCall = genderService.getGenders("1");
+    gendersCall.enqueue(new Callback<List<Gender>>() {
+      @Override
+      public void onResponse(Call<List<Gender>> call, Response<List<Gender>> response) {
+
+      }
+
+      @Override
+      public void onFailure(Call<List<Gender>> call, Throwable t) {
+
+      }
+    });
+
+    //3. Cache Blood Types
   }
 
   @Override
@@ -232,7 +278,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
           .content("Are you sure you want to logout?")
           .positiveText("Logout")
           //TODO icon?
-          //TODO different color for +ve and -ve text
+          .negativeColor(getResources().getColor(R.color.colorAccent))
           .onPositive(this)
           .negativeText("Dismiss")
           .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -284,7 +330,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
       ohc1.readTimeout(1, TimeUnit.MINUTES);
       ohc1.connectTimeout(1, TimeUnit.MINUTES);
-
       Retrofit retrofit = new Retrofit
           .Builder()
           .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
@@ -305,6 +350,9 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
         }
       });
+
+      cacheData(getBaseContext());
+
       return null;
     }
 

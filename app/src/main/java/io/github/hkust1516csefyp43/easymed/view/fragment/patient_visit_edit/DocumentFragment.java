@@ -22,12 +22,23 @@ import com.mikepenz.iconics.typeface.IIcon;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Document;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import jp.wasabeef.richeditor.RichEditor;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DocumentFragment extends Fragment implements OnSendData{
   public static final String TAG = DocumentFragment.class.getSimpleName();
@@ -39,9 +50,9 @@ public class DocumentFragment extends Fragment implements OnSendData{
 
   private Document document;
   private int whichDocument;
+  private String patientId;
 
   /**
-   * TODO pqtient_id (to call API)
    * @param patientId
    * @param whichDocument = 0 for HPI, 1 for Family History, 2 for social history
    * @return
@@ -63,17 +74,8 @@ public class DocumentFragment extends Fragment implements OnSendData{
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
-      String patientId = getArguments().getString(key1);
+      patientId = getArguments().getString(key1);
       whichDocument = getArguments().getInt(key2, -1);
-      //TODO get document iff whichDocument >= 0
-      switch (whichDocument) {
-        case 0:
-          break;
-        case 1:
-          break;
-        case 2:
-          break;
-      }
     }
   }
 
@@ -96,6 +98,68 @@ public class DocumentFragment extends Fragment implements OnSendData{
         mEditor.scrollTo(0, mEditor.getContentHeight());
         mEditor.pageDown(true);
         addButtons(getContext());
+
+        OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+        ohc1.readTimeout(1, TimeUnit.MINUTES);
+        ohc1.connectTimeout(1, TimeUnit.MINUTES);
+        final Retrofit retrofit = new Retrofit
+            .Builder()
+            .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+            .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+            .client(ohc1.build())
+            .build();
+        v2API.documents documentService = retrofit.create(v2API.documents.class);
+        //TODO get document types first
+
+        List<DocumentType> documentTypes = Cache.DatabaseData.getDocumentTypes(getContext());
+        if (documentTypes != null) {
+          String hpiId = null;
+          String fhId = null;
+          String shId = null;
+          for (DocumentType dt: documentTypes) {
+            if (dt.getType().equals("hpi")) {
+              hpiId = dt.getId();
+            } else if (dt.getType().equals("fh")) {
+              fhId = dt.getId();
+            } else if (dt.getType().equals("sh")) {
+              shId = dt.getId();
+            }
+          }
+          Call<List<Document>> call = null;
+          switch (whichDocument) {
+            case 0:
+              if (hpiId != null)
+                call = documentService.getDocuments("1", hpiId, patientId, null, null, null);
+              break;
+            case 1:
+              if (fhId != null)
+                call = documentService.getDocuments("1", fhId, patientId, null, null, null);
+              break;
+            case 2:
+              if (shId != null)
+                call = documentService.getDocuments("1", shId, patientId, null, null, null);
+              break;
+          }
+
+          if (call != null) {
+            call.enqueue(new Callback<List<Document>>() {
+              @Override
+              public void onResponse(Call<List<Document>> call, Response<List<Document>> response) {
+                if (response != null && response.code() < 300 && response.code() >= 200 && response.body() != null && response.body().size() == 1) {
+                  document = response.body().get(0);
+                  mEditor.setHtml(document.getDocumentInHtml());
+                } else {
+                  onFailure(call, new Throwable("something's wrong"));
+                }
+              }
+
+              @Override
+              public void onFailure(Call<List<Document>> call, Throwable t) {
+                t.printStackTrace();
+              }
+            });
+          }
+        }
       }
     }
     return view;

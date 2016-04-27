@@ -356,13 +356,6 @@ public class VisitDetailFragment extends Fragment {
       Call<List<RelatedData>> followupCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 5, null, null, null, null, null);
       Call<List<RelatedData>> drughistoryCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 6, null, null, null, null, null);
       Call<List<RelatedData>> educationCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 7, null, null, null, null, null);
-
-      //TODO get documents
-      v2API.documents documentService = retrofit.create(v2API.documents.class);
-      //TODO get document types first
-      Call<List<Document>> hpiCall = documentService.getDocuments("1", "1", patient.getPatientId(), null, null, null);
-      Call<List<Document>> fhCall = documentService.getDocuments("1", "2", patient.getPatientId(), null, null, null);
-      Call<List<Document>> shCall = documentService.getDocuments("1", "3", patient.getPatientId(), null, null, null);
     }
   }
 
