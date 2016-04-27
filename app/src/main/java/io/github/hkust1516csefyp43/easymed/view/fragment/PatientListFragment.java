@@ -33,8 +33,8 @@ import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Attachment;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
-import io.github.hkust1516csefyp43.easymed.utility.CircleTransform;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.ImageTransformer;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
@@ -425,8 +425,11 @@ public class PatientListFragment extends Fragment{
             public void onResponse(Call<Attachment> call, Response<Attachment> response) {
               if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().getFileInBase64() != null) {
                 byte[] decodedString = Base64.decode(response.body().getFileInBase64(), Base64.DEFAULT);
-                Bitmap decodedByte = CircleTransform.transform(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
-                holder.proPic.setImageBitmap(decodedByte);
+                if (decodedString != null) {
+                  Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                  decodedByte = ImageTransformer.circleCrop(ImageTransformer.centerCrop(decodedByte));
+                  holder.proPic.setImageBitmap(decodedByte);
+                }
               }
             }
 
@@ -440,7 +443,8 @@ public class PatientListFragment extends Fragment{
           });
         } else if (aPatient.getProfilePicBase64() != null && !aPatient.getProfilePicBase64().equals(Const.EMPTY_STRING)) {
           byte[] decodedString = Base64.decode(aPatient.getProfilePicBase64(), Base64.DEFAULT);
-          Bitmap decodedByte = CircleTransform.transform(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+          Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+          decodedByte = ImageTransformer.circleCrop(ImageTransformer.centerCrop(decodedByte));
           holder.proPic.setImageBitmap(decodedByte);
         }
 

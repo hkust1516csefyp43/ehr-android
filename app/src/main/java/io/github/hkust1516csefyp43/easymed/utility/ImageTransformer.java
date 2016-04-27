@@ -10,9 +10,9 @@ import android.graphics.Rect;
 /**
  * Created by julian on 13/6/21.
  */
-public class CircleTransform {
+public class ImageTransformer {
 
-  public static Bitmap transform(Bitmap bitmap) {
+  public static Bitmap circleCrop(Bitmap bitmap) {
     Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
     Canvas canvas = new Canvas(output);
 
@@ -30,5 +30,15 @@ public class CircleTransform {
     //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
     //return _bmp;
     return output;
+  }
+
+  public static Bitmap centerCrop(Bitmap bitmap) {
+    Bitmap dstBmp = null;
+    if (bitmap.getWidth() >= bitmap.getHeight()){
+      dstBmp = Bitmap.createBitmap(bitmap, bitmap.getWidth()/2 - bitmap.getHeight()/2, 0, bitmap.getHeight(), bitmap.getHeight());
+    } else {
+      dstBmp = Bitmap.createBitmap(bitmap, 0, bitmap.getHeight()/2 - bitmap.getWidth()/2, bitmap.getWidth(), bitmap.getWidth());
+    }
+    return dstBmp;
   }
 }
