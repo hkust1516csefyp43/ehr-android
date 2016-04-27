@@ -253,35 +253,40 @@ public class VitalSignFragment extends Fragment implements OnSendData{
       try {
         vs.setSystolic(Integer.parseInt(etSystolic.getText().toString()));
       } catch (NumberFormatException e) {
-        //TODO systolic is not a number
+        etSystolic.setError("This is not a number");
+        return new Throwable("Systolic is not a number");
       }
     }
     if (etDiastolic != null) {
       try {
         vs.setDiastolic(Integer.parseInt(etDiastolic.getText().toString()));
       } catch (NumberFormatException e) {
-        //TODO diastolic is not a number
+        etDiastolic.setError("This is not a number");
+        return new Throwable("Diastolic is not a number");
       }
     }
     if (etPulseRate != null) {
       try {
         vs.setPulseRate(Integer.parseInt(etPulseRate.getText().toString()));
       } catch (NumberFormatException e) {
-        //TODO pulse rate is not a number
+        etPulseRate.setError("This is not a number");
+        return new Throwable("Pulse Rate is not a number");
       }
     }
     if (etRespiratoryRate != null) {
       try {
         vs.setRespiratoryRate(Integer.parseInt(etRespiratoryRate.getText().toString()));
       } catch (NumberFormatException e) {
-        //TODO respiratory rate is not a number
+        etRespiratoryRate.setError("This is not a number");
+        return new Throwable("Respiratory Rate is not a number");
       }
     }
     if (etSpo2 != null) {
       try {
         vs.setSpo2(Integer.parseInt(etSpo2.getText().toString()));
       } catch (NumberFormatException e) {
-        //TODO spo2 is not a number
+        etSpo2.setError("This is not a number");
+        return new Throwable("SpO2 is not a number");
       }
     }
     if (etTemperature != null) {
@@ -289,21 +294,24 @@ public class VitalSignFragment extends Fragment implements OnSendData{
         //TODO if in F, change back to C first (Utils.fahrenheitToCelsius)
         vs.setTemperature(Double.parseDouble(etTemperature.getText().toString()));
       } catch (NumberFormatException e) {
-        //TODO temperature is not a number
+        etTemperature.setError("This is not a number");
+        return new Throwable("Temperature is not a number");
       }
     }
     if (etWeight != null) {
       try {
         vs.setWeight(Double.parseDouble(etWeight.getText().toString()));
       } catch (NumberFormatException e) {
-        //TODO weight is not a number
+        etWeight.setError("This is not a number");
+        return new Throwable("Weight is not a number");
       }
     }
     if (etHeight != null) {
       try {
         vs.setHeight(Double.parseDouble(etHeight.getText().toString()));
       } catch (NumberFormatException e) {
-        //TODO height is not a number
+        etHeight.setError("This is not a number");
+        return new Throwable("Height is not a number");
       }
     }
     return vs;

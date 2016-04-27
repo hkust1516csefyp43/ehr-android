@@ -313,11 +313,14 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
   @Override
   public Serializable onSendData() {
-
     PersonalData pd = new PersonalData();
     if (etFirstName != null) {
       //TODO cannot submit if empty
-      pd.setFirstName(etFirstName.getText().toString());
+      if (etFirstName.getText() == null || etFirstName.getText().length() <= 0) {
+        etFirstName.setError("First name must not be empty");
+        return new Throwable("Null first name");
+      } else
+       pd.setFirstName(etFirstName.getText().toString());
     }
     if (etMiddleName != null) {
       pd.setMiddleName(etMiddleName.getText().toString());
@@ -329,8 +332,17 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       pd.setNativeName(etNativeName.getText().toString());
     }
     if (etTag != null) {
-      //TODO cannot submit if empty
-      pd.setTagNumber(Integer.valueOf(etTag.getText().toString()));
+      if (etTag.getText() == null || etTag.getText().length() <= 0) {
+        etTag.setError("Tag must not be empty");
+        return new Throwable("Empty tag");
+      } else {
+        try {
+          pd.setTagNumber(Integer.valueOf(etTag.getText().toString()));
+        } catch (NumberFormatException e) {
+          e.printStackTrace();
+          return new Throwable("Tag is not an integer");
+        }
+      }
     }
     if (tvBirthday != null) {
       pd.setBirthYear(birthday[0]);

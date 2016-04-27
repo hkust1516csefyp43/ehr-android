@@ -99,6 +99,8 @@ public class PregnancyFragment extends Fragment implements OnSendData{
         p.setNoOfPregnancy(Integer.parseInt(noPregnancy.getText().toString()));
       } catch (NumberFormatException e) {
         e.printStackTrace();
+        noPregnancy.setError("This is not a number");
+        return new Throwable("No. of Pregnancy is not a number");
       }
     }
     if (noLiveBirth != null) {
@@ -106,6 +108,8 @@ public class PregnancyFragment extends Fragment implements OnSendData{
         p.setNoOfLiveBirth(Integer.parseInt(noLiveBirth.getText().toString()));
       } catch (NumberFormatException e) {
         e.printStackTrace();
+        noLiveBirth.setError("This is not a number");
+        return new Throwable("No. of Live Birth is not a number");
       }
     }
     if (noMiscarriage != null) {
@@ -113,6 +117,8 @@ public class PregnancyFragment extends Fragment implements OnSendData{
         p.setNoOfMiscarriage(Integer.parseInt(noMiscarriage.getText().toString()));
       } catch (NumberFormatException e) {
         e.printStackTrace();
+        noMiscarriage.setError("This is not a number");
+        return new Throwable("No. of Miscarriage is not a number");
       }
     }
     if (noAbortion != null) {
@@ -120,6 +126,8 @@ public class PregnancyFragment extends Fragment implements OnSendData{
         p.setNoOfAbortion(Integer.parseInt(noAbortion.getText().toString()));
       } catch (NumberFormatException e) {
         e.printStackTrace();
+        noAbortion.setError("This is not a number");
+        return new Throwable("No. of Abortion is not a number");
       }
     }
     if (noStillBirth != null) {
@@ -127,6 +135,8 @@ public class PregnancyFragment extends Fragment implements OnSendData{
         p.setNoOfStillBirth(Integer.parseInt(noStillBirth.getText().toString()));
       } catch (NumberFormatException e) {
         e.printStackTrace();
+        noStillBirth.setError("This is not a number");
+        return new Throwable("No. of Still Birth is not a number");
       }
     }
     if (otherInfo != null) {
