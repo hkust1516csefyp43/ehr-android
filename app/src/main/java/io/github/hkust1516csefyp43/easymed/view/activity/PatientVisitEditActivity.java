@@ -76,7 +76,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   private ChiefComplaintFragment chiefComplaintFragment;
   private RemarkFragment triageRemarkFragment;
   private DocumentFragment hpiFragment;
-  private ListOfCardsFragment pmhFragment;
+  private DocumentFragment pmhFragment;
   private DocumentFragment fhFragment;
   private DocumentFragment shFragment;
   private ListOfCardsFragment dhFragment;
@@ -1086,7 +1086,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return hpiFragment;
         case 5:
           if (pmhFragment == null) {
-            pmhFragment = ListOfCardsFragment.newInstance("Previous Medical History");
+            if (thisPatient != null)
+              pmhFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 3);
+            else
+              pmhFragment = DocumentFragment.newInstance(null, 1);
           }
           return pmhFragment;
         case 6:

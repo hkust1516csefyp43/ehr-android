@@ -22,6 +22,8 @@ import com.mikepenz.iconics.typeface.IIcon;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -115,6 +117,7 @@ public class DocumentFragment extends Fragment implements OnSendData{
             String hpiId = null;
             String fhId = null;
             String shId = null;
+            String pmhId = null;
             for (DocumentType dt: documentTypes) {
               if (dt.getType().equals("hpi")) {
                 hpiId = dt.getId();
@@ -122,6 +125,8 @@ public class DocumentFragment extends Fragment implements OnSendData{
                 fhId = dt.getId();
               } else if (dt.getType().equals("sh")) {
                 shId = dt.getId();
+              } else if (dt.getType().equals("pmh")) {
+                pmhId = dt.getId();
               }
             }
             Call<List<Document>> call = null;
@@ -138,6 +143,9 @@ public class DocumentFragment extends Fragment implements OnSendData{
                 if (shId != null)
                   call = documentService.getDocuments("1", shId, patientId, null, null, null);
                 break;
+              case 3:
+                if (pmhId != null)
+                  call = documentService.getDocuments("1", pmhId, patientId, null, null, null);
             }
 
             if (call != null) {
@@ -277,6 +285,11 @@ public class DocumentFragment extends Fragment implements OnSendData{
           imageBitmap.compress(Bitmap.CompressFormat.JPEG, 5, bao);
           byte [] ba = bao.toByteArray();
           String ba1 = Base64.encodeToString(ba,Base64.NO_WRAP);
+          try {
+            ba1 = URLEncoder.encode(ba1, "utf-8");
+          } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+          }
           if (mEditor != null) {
             Log.d(TAG, "inserting image: " + ba1);
             String output = mEditor.getHtml();
