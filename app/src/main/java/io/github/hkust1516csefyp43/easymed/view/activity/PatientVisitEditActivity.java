@@ -1043,6 +1043,9 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
   }
 
+  /**
+   * TODO education page?
+   */
   public class viewPagerAdapter extends FragmentStatePagerAdapter{
     public viewPagerAdapter(FragmentManager fm) {
       super(fm);
@@ -1093,17 +1096,17 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return shFragment;
         case 8:
           if (dhFragment == null) {
-            dhFragment = ListOfCardsFragment.newInstance("Drug History");
+            dhFragment = ListOfCardsFragment.newInstance("Drug History", 6, thisConsultation.getId());
           }
           return dhFragment;
         case 9:
           if (screeningFragment == null) {
-            screeningFragment = ListOfCardsFragment.newInstance("Screening");
+            screeningFragment = ListOfCardsFragment.newInstance("Screening", 1, thisConsultation.getId());
           }
           return screeningFragment;
         case 10:
           if (allergyFragment == null) {
-            allergyFragment = ListOfCardsFragment.newInstance("Allergy");
+            allergyFragment = ListOfCardsFragment.newInstance("Allergy", 2, thisConsultation.getId());
           }
           return allergyFragment;
         case 11:
@@ -1113,7 +1116,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return pregnancyFragment;
         case 12:
           if (rosFragment == null) {
-            rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM);
+            rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM, thisConsultation);
           }
           return rosFragment;
         case 13:
@@ -1123,12 +1126,12 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return rfFragment;
         case 14:
           if (peFragment == null) {
-            peFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION);
+            peFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION, thisConsultation);
           }
           return peFragment;
         case 15:
           if (diagnosisFragment == null) {
-            diagnosisFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis");
+            diagnosisFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis", 3, thisConsultation.getId());
           }
           return diagnosisFragment;
         case 16:
@@ -1138,17 +1141,17 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return investigationFragment;
         case 17:
           if (medicationFragment == null) {
-            medicationFragment = ListOfCardsFragment.newInstance("Medication");
+            medicationFragment = ListOfCardsFragment.newInstance("Medication", 6, thisConsultation.getId());
           }
           return medicationFragment;
         case 18:
           if (adviceFragment == null) {
-            adviceFragment = ListOfCardsFragment.newInstance("Advice");
+            adviceFragment = ListOfCardsFragment.newInstance("Advice", 4, thisConsultation.getId());
           }
           return adviceFragment;
         case 19:
           if (followupFragment == null) {
-            followupFragment = ListOfCardsFragment.newInstance("Follow-up");
+            followupFragment = ListOfCardsFragment.newInstance("Follow-up", 5, thisConsultation.getId());
           }
           return followupFragment;
         case 20:

@@ -20,6 +20,7 @@ public class Prescription implements Serializable {
   String detail;
   @SerializedName("prescribed")
   Boolean prescribed;
+  //Name of medication from medication_id, for easy access
   String medicationName;
 
 

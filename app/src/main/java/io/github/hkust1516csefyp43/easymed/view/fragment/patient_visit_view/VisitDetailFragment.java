@@ -145,12 +145,9 @@ public class VisitDetailFragment extends Fragment {
           if (triage != null) {                                 //pass triage
             intent.putExtra(Const.BundleKey.WHOLE_TRIAGE, triage);
           }
-
-          //TODO need to make sure
-          //enter from post triage >> isTriage = true
-          //enter from post consultation >> isTriage = false
-
-          //pass consultation if exist
+          if (consultation != null) {
+            intent.putExtra(Const.BundleKey.WHOLE_CONSULTATION, consultation);
+          }
           //enter from post pharmacy >> never (fabOn should be false)
           //enter from not yet >> ?
           startActivity(intent);
@@ -349,12 +346,6 @@ public class VisitDetailFragment extends Fragment {
 
       //TODO get related data
       v2API.related_data relatedDataService = retrofit.create(v2API.related_data.class);
-      Call<List<RelatedData>> screeningCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 1, null, null, null, null, null);
-      Call<List<RelatedData>> allergyCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 2, null, null, null, null, null);
-      Call<List<RelatedData>> diagnosisCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 3, null, null, null, null, null);
-      Call<List<RelatedData>> adviceCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 4, null, null, null, null, null);
-      Call<List<RelatedData>> followupCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 5, null, null, null, null, null);
-      Call<List<RelatedData>> drughistoryCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 6, null, null, null, null, null);
       Call<List<RelatedData>> educationCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 7, null, null, null, null, null);
     }
   }
