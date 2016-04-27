@@ -2,12 +2,15 @@ package io.github.hkust1516csefyp43.easymed.view.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +30,10 @@ import java.util.concurrent.TimeUnit;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Attachment;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.easymed.utility.CircleTransform;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
@@ -386,7 +391,7 @@ public class PatientListFragment extends Fragment{
     }
 
     @Override
-    public void onBindViewHolder(PatientRecyclerViewViewHolder holder, int position) {
+    public void onBindViewHolder(final PatientRecyclerViewViewHolder holder, final int position) {
       if (position < patients.size()) {
         final Patient aPatient = patients.get(position);
         Log.d(TAG, "displaying: " + aPatient.toString());
@@ -402,7 +407,42 @@ public class PatientListFragment extends Fragment{
         name.append(aPatient.getFirstName());
         holder.patientName.setText(name.toString());
         holder.nativeName.setText(aPatient.getNativeName());
-        holder.proPic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), ColorGenerator.MATERIAL.getColor(aPatient.getLastNameSpaceFirstName())));
+        holder.proPic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), ColorGenerator.MATERIAL.getColor(aPatient.getLastNameSpaceFirstName())));  //act as placeholder + fallback
+        if (aPatient.getImageId() != null && aPatient.getProfilePicBase64() == null) {
+          OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+          ohc1.readTimeout(1, TimeUnit.MINUTES);
+          ohc1.connectTimeout(1, TimeUnit.MINUTES);
+          Retrofit retrofit = new Retrofit
+              .Builder()
+              .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+              .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+              .client(ohc1.build())
+              .build();
+          v2API.attachments attachmentService = retrofit.create(v2API.attachments.class);
+          Call<Attachment> attachmentCall = attachmentService.getAttachment("1", aPatient.getImageId());
+          attachmentCall.enqueue(new Callback<Attachment>() {
+            @Override
+            public void onResponse(Call<Attachment> call, Response<Attachment> response) {
+              if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().getFileInBase64() != null) {
+                byte[] decodedString = Base64.decode(response.body().getFileInBase64(), Base64.DEFAULT);
+                Bitmap decodedByte = CircleTransform.transform(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+                holder.proPic.setImageBitmap(decodedByte);
+              }
+            }
+
+            @Override
+            public void onFailure(Call<Attachment> call, Throwable t) {
+              t.printStackTrace();
+              holder.proPic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), ColorGenerator.MATERIAL.getColor(aPatient.getLastNameSpaceFirstName())));
+              aPatient.setProfilePicBase64(Const.EMPTY_STRING);
+              patients.set(position, aPatient);
+            }
+          });
+        } else if (aPatient.getProfilePicBase64() != null && !aPatient.getProfilePicBase64().equals(Const.EMPTY_STRING)) {
+          byte[] decodedString = Base64.decode(aPatient.getProfilePicBase64(), Base64.DEFAULT);
+          Bitmap decodedByte = CircleTransform.transform(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+          holder.proPic.setImageBitmap(decodedByte);
+        }
 
         StringBuilder subtitle = new StringBuilder();
         if (aPatient.getGenderId() != null) {

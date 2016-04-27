@@ -12,9 +12,6 @@ public class Const {
   public final static int TOKEN_LENGTH = 16;                  //TODO make it programmable >> easier to scale up/down
   public final static Gson GsonParserThatWorksWithPGTimestamp = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
   public final static String EMPTY_STRING = "wqpU5NYWMEw57bjRWZgxCwdSe8YC1FNTqE5GhKHmc6qnyzHZkR2ehkfvWuNdBZCd";    //if I find this in a string, it means it is empty (the possibility of sth having this name is super small)
-  public static final String KEY_TITLE = "Title";
-  public static final String KEY_PRE_FILL_ITEMS = "pre_fill_items";
-  public static final String KEY_KEYWORDS = "keywords";
 
   public class PatientListPageId {
     public static final int POST_TRIAGE = 1;
@@ -42,6 +39,10 @@ public class Const {
     public static final String CURRENT_USER = "dw1adDAKNTtZ36v4";
     public static final String DOCUMENT = "5dkAHg5NM16rCENZ";
     public static final String WHICH_DOCUMENT = "XWp2AGef4PjdAWp1";
+    public static final String RELATED_DATA_CATEGORY = "89dVUqPq8gfntqjw";
+    public static final String CONSULTATION_ID = "F9pQgwt4Nhym13AK";
+    public static final String KEY_TITLE = "hwZc5d5c5TjqBnzK";
+    public static final String KEY_PRE_FILL_ITEMS = "rKEBY8SPSuFeu89m";
   }
 
   public class CacheKey {

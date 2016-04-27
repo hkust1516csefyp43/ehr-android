@@ -55,29 +55,11 @@ public class Patient implements Serializable, Comparable<Patient> {
   @SerializedName("next_station")
   Integer nextStation;
 
+  //for easy access
+  String profilePicBase64;
+
   public Patient() {
     //empty constructor
-  }
-
-  public Patient(String address, Integer birthDate, Integer birthMonth, Integer birthYear, String bloodTypeId, String clinicId, Date createTimeStamp, String email, String firstName, String genderId, String honorific, String imageId, String lastName, String middleName, String nativeName, String patientId, String phoneNumber, String phoneNumberCountryCode) {
-    this.address = address;
-    this.birthDate = birthDate;
-    this.birthMonth = birthMonth;
-    this.birthYear = birthYear;
-    this.bloodTypeId = bloodTypeId;
-    this.clinicId = clinicId;
-    this.createTimeStamp = createTimeStamp;
-    this.email = email;
-    this.firstName = firstName;
-    this.genderId = genderId;
-    this.honorific = honorific;
-    this.imageId = imageId;
-    this.lastName = lastName;
-    this.middleName = middleName;
-    this.nativeName = nativeName;
-    this.patientId = patientId;
-    this.phoneNumber = phoneNumber;
-    this.phoneNumberCountryCode = phoneNumberCountryCode;
   }
 
   public String getAddress() {
@@ -252,6 +234,14 @@ public class Patient implements Serializable, Comparable<Patient> {
     return getLastName() + " " + getFirstName();
   }
 
+  public String getProfilePicBase64() {
+    return profilePicBase64;
+  }
+
+  public void setProfilePicBase64(String profilePicBase64) {
+    this.profilePicBase64 = profilePicBase64;
+  }
+
   @Override
   public String toString() {
     return "Patient{" +
@@ -276,6 +266,7 @@ public class Patient implements Serializable, Comparable<Patient> {
         ", visitId='" + visitId + '\'' +
         ", tag=" + tag +
         ", nextStation=" + nextStation +
+        ", profilePicBase64='" + profilePicBase64 + '\'' +
         '}';
   }
 

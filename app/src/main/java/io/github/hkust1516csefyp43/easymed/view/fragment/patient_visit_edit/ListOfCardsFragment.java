@@ -25,14 +25,29 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Card;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.ListOfCards;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Keyword;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.TwoEditTextDialogCustomView;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListOfCardsFragment extends Fragment implements OnFragmentInteractionListener, OnSendData {
   private static final String TAG = ListOfCardsFragment.class.getSimpleName();
@@ -46,31 +61,37 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
   private FragRecyclerViewAdapter adapter;
 
   private String title;
-  private ArrayList<String> preFillItems;
+  private String[] preFillItems;
+  private int category;
+  private String consultationId = null;
+  private Consultation consultation = null;
 
   public static ListOfCardsFragment newInstance(String title) {
     ListOfCardsFragment fragment = new ListOfCardsFragment();
     Bundle args = new Bundle();
-    args.putString(Const.KEY_TITLE, title);
+    args.putString(Const.BundleKey.KEY_TITLE, title);
     fragment.setArguments(args);
     return fragment;
   }
 
-  public static ListOfCardsFragment newInstance(String title, ArrayList<String> preFillItems) {
+  public static ListOfCardsFragment newInstance(String title, int category, @Nullable String consultationId) {
     ListOfCardsFragment fragment = new ListOfCardsFragment();
     Bundle args = new Bundle();
-    args.putString(Const.KEY_TITLE, title);
-    args.putStringArrayList(Const.KEY_PRE_FILL_ITEMS, preFillItems);
+    args.putString(Const.BundleKey.KEY_TITLE, title);
+    args.putInt(Const.BundleKey.RELATED_DATA_CATEGORY, category);
+    args.putString(Const.BundleKey.CONSULTATION_ID, consultationId);
     fragment.setArguments(args);
     return fragment;
   }
 
-  public static ListOfCardsFragment newInstance(String title, String[] preFillItems) {
-    ArrayList<String> sList = new ArrayList<>();
-    for (String s : preFillItems) {
-      sList.add(s);
-    }
-    return newInstance(title, sList);
+  public static ListOfCardsFragment newInstance(String title, String[] preFillItems, @Nullable Consultation consultation) {
+    ListOfCardsFragment fragment = new ListOfCardsFragment();
+    Bundle args = new Bundle();
+    args.putString(Const.BundleKey.KEY_TITLE, title);
+    args.putStringArray(Const.BundleKey.KEY_PRE_FILL_ITEMS, preFillItems);
+    args.putSerializable(Const.BundleKey.WHOLE_CONSULTATION, consultation);
+    fragment.setArguments(args);
+    return fragment;
   }
 
   public ListOfCardsFragment() {
@@ -82,8 +103,13 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     super.onCreate(savedInstanceState);
     Bundle bundle = getArguments();
     if (bundle != null) {
-      title = bundle.getString(Const.KEY_TITLE);
-      preFillItems = bundle.getStringArrayList(Const.KEY_PRE_FILL_ITEMS);
+      title = bundle.getString(Const.BundleKey.KEY_TITLE);
+      preFillItems = bundle.getStringArray(Const.BundleKey.KEY_PRE_FILL_ITEMS);
+      category = bundle.getInt(Const.BundleKey.RELATED_DATA_CATEGORY, -1);
+      consultationId = bundle.getString(Const.BundleKey.CONSULTATION_ID);
+      Serializable serializable = bundle.getSerializable(Const.BundleKey.WHOLE_CONSULTATION);
+      if (serializable instanceof Consultation)
+        consultation = (Consultation) serializable;
     }
   }
 
@@ -94,36 +120,20 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     recyclerView = (RecyclerView) view.findViewById(R.id.rv_patient_edit);
     tvAssistance = (TextView) view.findViewById(R.id.tv_assistance);
 
-    recyclerView.setHasFixedSize(true);
+    Log.d(TAG, "existing data no default cards");
+    OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+    ohc1.readTimeout(1, TimeUnit.MINUTES);
+    ohc1.connectTimeout(1, TimeUnit.MINUTES);
+    final Retrofit retrofit = new Retrofit
+        .Builder()
+        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+        .client(ohc1.build())
+        .build();
+
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-    adapter = new FragRecyclerViewAdapter(null, getContext(), false);
-
+    recyclerView.setHasFixedSize(true);
     fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
-
-    if (tvAssistance != null && title != null && title.length() > 0) {
-      tvAssistance.setText("Add " + title + " ->");
-    }
-
-//    List<Keyword> keywords = Cache.getString(getContext(), Const.KEY_KEYWORDS);
-//    ArrayList<String> a = new ArrayList<>();
-//    //TODO call api and get list of keywords (& cache them)
-//    for (Keyword k : keywords) {
-//      a.add(k.getKeyword());
-//    }
-
-    if (preFillItems != null) {
-      fab.setVisibility(View.GONE);
-      ArrayList<Card> preFillCards = new ArrayList<>();
-      for (String s : preFillItems) {
-        preFillCards.add(new Card(s, "Fill this or flip the switch"));
-      }
-      adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true);
-      tvAssistance.setVisibility(View.GONE);
-//      adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true, a, title);
-    } else {
-      adapter = new FragRecyclerViewAdapter(null, getContext(), false);
-//      adapter = new FragRecyclerViewAdapter(null, getContext(), false, a, title);
-    }
 
     final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), null, title);
     fab.setOnClickListener(new View.OnClickListener() {
@@ -161,8 +171,253 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
             .show();
       }
     });
-    recyclerView.setAdapter(adapter);
 
+    if (tvAssistance != null && title != null && title.length() > 0) {
+      tvAssistance.setText("Add " + title + " ->");
+    }
+
+    if (consultation != null) {                                                                     //TODO fill default cards with existing data
+      Log.d(TAG, "existing data w/ default cards");
+      fab.setVisibility(View.GONE);
+      tvAssistance.setVisibility(View.GONE);
+
+
+    } else if (category > 0 && consultationId != null) {                                            //fill with existing data (from API call)
+      if (category == 6) {
+        v2API.medications medicationService = retrofit.create(v2API.medications.class);
+        Call<List<Medication>> medicationsCall = medicationService.getMedications("1", null, null, null, null, null, null);
+        medicationsCall.enqueue(new Callback<List<Medication>>() {
+          @Override
+          public void onResponse(Call<List<Medication>> call, Response<List<Medication>> response) {
+            if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0 && response.body().size() > 0) {
+              ArrayList<String> keywordArrayList = new ArrayList<>();
+              final HashMap<String, String> medicationHM = new HashMap<>();
+              for (Medication k : response.body()) {
+                keywordArrayList.add(k.getMedication());
+                medicationHM.put(k.getMedicationId(), k.getMedication());
+              }
+              v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
+              Call<List<Prescription>> prescriptionCall = prescriptionService.getPrescriptions("1", null, null, consultationId, null, null, null, null);
+              final ArrayList<String> finalKeywordArrayList = keywordArrayList;
+              prescriptionCall.enqueue(new Callback<List<Prescription>>() {
+                @Override
+                public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
+                  if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
+                    List<Prescription> prescriptions = response.body();
+                    ArrayList<Card> cards = new ArrayList<>();
+                    for (Prescription p: prescriptions) {
+                      p.setMedicationName(medicationHM.get(p.getMedicationId()));
+                      Card card = new Card(p.getMedicationName(), p.getDetail());
+                      cards.add(card);
+                    }
+                    adapter = new FragRecyclerViewAdapter(cards, getContext(), false, finalKeywordArrayList, title);
+                    recyclerView.setAdapter(adapter);
+                  } else {
+                    onFailure(call, new Throwable("sth wrong"));
+                  }
+                }
+
+                @Override
+                public void onFailure(Call<List<Prescription>> call, Throwable t) {
+                  t.printStackTrace();
+                  adapter = new FragRecyclerViewAdapter(null, getContext(), false, finalKeywordArrayList, title);
+                }
+              });
+            } else {
+              onFailure(call, new Throwable("sth wrong when fetching medication as keywords"));
+            }
+          }
+
+          @Override
+          public void onFailure(Call<List<Medication>> call, Throwable t) {
+            t.printStackTrace();
+            v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
+            Call<List<Prescription>> prescriptionCall = prescriptionService.getPrescriptions("1", null, null, consultationId, null, null, null, null);
+            prescriptionCall.enqueue(new Callback<List<Prescription>>() {
+              @Override
+              public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
+                if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
+                  List<Prescription> prescriptions = response.body();
+                  ArrayList<Card> cards = new ArrayList<>();
+                  for (Prescription p: prescriptions) {
+                    Card card = new Card("ID: " + p.getConsultationId(), p.getDetail());
+                    cards.add(card);
+                  }
+                  adapter = new FragRecyclerViewAdapter(cards, getContext(), false, null, title);
+                  recyclerView.setAdapter(adapter);
+                } else {
+                  onFailure(call, new Throwable("sth wrong"));
+                }
+              }
+
+              @Override
+              public void onFailure(Call<List<Prescription>> call, Throwable t) {
+                t.printStackTrace();
+                adapter = new FragRecyclerViewAdapter(null, getContext(), false, null, title);
+              }
+            });
+          }
+        });
+      } else {
+        v2API.keywords keywordService = retrofit.create(v2API.keywords.class);
+        Call<List<Keyword>> keywordsCall = null;
+        switch (category) {
+          case 1:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null);
+            break;
+          case 2:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, true, null, null, null, null, null, null, null, null, null, null);
+            break;
+          case 3:
+            keywordsCall = keywordService.getKeywords("1", null, null, true, null, null, null, null, null, null, null, null, null, null, null, null);
+            break;
+          case 4:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, true, null, null, null, null, null, null, null, null);
+            break;
+          case 5:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, true, null, null, null, null, null, null, null, null, null);
+            break;
+          case 7:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, true, null, null, null, null, null, null, null);
+            break;
+          default:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        }
+        if (keywordsCall != null) {
+          keywordsCall.enqueue(new Callback<List<Keyword>>() {
+            @Override
+            public void onResponse(Call<List<Keyword>> call, Response<List<Keyword>> response) {
+              if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
+                ArrayList<String> keywordArrayList = new ArrayList<>();
+                for (Keyword k : response.body()) {
+                  keywordArrayList.add(k.getKeyword());
+                }
+                v2API.related_data relatedDataService = retrofit.create(v2API.related_data.class);
+                Call<List<RelatedData>> relatedDataCall = null;
+                relatedDataCall = relatedDataService.getRelatedDataPlural("1", consultationId, category, null, null, null, null, null);
+                final ArrayList<String> finalKeywordArrayList = keywordArrayList;
+                relatedDataCall.enqueue(new Callback<List<RelatedData>>() {
+                  @Override
+                  public void onResponse(Call<List<RelatedData>> call, Response<List<RelatedData>> response) {
+                    if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
+                      ArrayList<Card> cards = new ArrayList<>();
+                      for (RelatedData rd: response.body()) {
+                        cards.add(new Card(rd.getData(), rd.getRemark()));
+                      }
+                      adapter = new FragRecyclerViewAdapter(cards, getContext(), false, finalKeywordArrayList, title);
+                      recyclerView.setAdapter(adapter);
+                    } else {
+                      onFailure(call, new Throwable("sth wrong"));
+                    }
+                  }
+
+                  @Override
+                  public void onFailure(Call<List<RelatedData>> call, Throwable t) {
+                    t.printStackTrace();
+                    adapter = new FragRecyclerViewAdapter(null, getContext(), false, finalKeywordArrayList, title);
+                  }
+                });
+              } else {
+                onFailure(call, new Throwable("sth wrong when fetching keywords"));
+              }
+            }
+
+            @Override
+            public void onFailure(Call<List<Keyword>> call, Throwable t) {
+              t.printStackTrace();
+              v2API.related_data relatedDataService = retrofit.create(v2API.related_data.class);
+              Call<List<RelatedData>> relatedDataCall = null;
+              relatedDataCall = relatedDataService.getRelatedDataPlural("1", consultationId, category, null, null, null, null, null);
+              relatedDataCall.enqueue(new Callback<List<RelatedData>>() {
+                @Override
+                public void onResponse(Call<List<RelatedData>> call, Response<List<RelatedData>> response) {
+                  if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null) {
+                    //TODO no keywords to fill, just the related data then
+                    ArrayList<Card> cards = new ArrayList<>();
+                    for (RelatedData rd: response.body()) {
+                      cards.add(new Card(rd.getData(), rd.getRemark()));
+                    }
+                    adapter = new FragRecyclerViewAdapter(cards, getContext(), false, null, title);
+                    recyclerView.setAdapter(adapter);
+                  } else {
+                    onFailure(call, new Throwable("sth wrong"));
+                  }
+                }
+
+                @Override
+                public void onFailure(Call<List<RelatedData>> call, Throwable t) {
+                  t.printStackTrace();
+                  adapter = new FragRecyclerViewAdapter(null, getContext(), false, null, title);
+                }
+              });
+            }
+          });
+        } else {    //TODO keywordcall is empty, which should never happen (because switch + default)
+
+        }
+      }
+
+    } else if (preFillItems != null && preFillItems.length > 0) {                                   //TODO create empty default cards
+      fab.setVisibility(View.GONE);
+      ArrayList<Card> preFillCards = new ArrayList<>();
+      for (String s : preFillItems) {
+        preFillCards.add(new Card(s, "Fill this or flip the switch"));
+      }
+      adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true);
+      tvAssistance.setVisibility(View.GONE);
+      adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true, null, title);
+      recyclerView.setAdapter(adapter);
+    } else if (category > 0) {                                                                      //TODO create a blank page w/ keywords
+
+      v2API.keywords keywordService = retrofit.create(v2API.keywords.class);
+      Call<List<Keyword>> keywordsCall = null;
+      switch (category) {
+        case 1:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null);
+          break;
+        case 2:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, true, null, null, null, null, null, null, null, null, null, null);
+          break;
+        case 3:
+          keywordsCall = keywordService.getKeywords("1", null, null, true, null, null, null, null, null, null, null, null, null, null, null, null);
+          break;
+        case 4:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, true, null, null, null, null, null, null, null, null);
+          break;
+        case 5:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, true, null, null, null, null, null, null, null, null, null);
+          break;
+        case 7:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, true, null, null, null, null, null, null, null);
+          break;
+        default:
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+      }
+      if (keywordsCall != null) {
+        keywordsCall.enqueue(new Callback<List<Keyword>>() {
+          @Override
+          public void onResponse(Call<List<Keyword>> call, Response<List<Keyword>> response) {
+            if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
+              ArrayList<String> keywordArrayList = new ArrayList<>();
+              for (Keyword k : response.body()) {
+                keywordArrayList.add(k.getKeyword());
+              }
+              adapter = new FragRecyclerViewAdapter(null, getContext(), false, keywordArrayList, title);
+            } else {
+              onFailure(call, new Throwable("sth wrong when fetching keywords"));
+            }
+          }
+
+          @Override
+          public void onFailure(Call<List<Keyword>> call, Throwable t) {
+            t.printStackTrace();
+            adapter = new FragRecyclerViewAdapter(null, getContext(), false, null, title);
+          }
+        });
+      } else {    //TODO keywordcall is empty, which should never happen (because switch + default)
+
+      }
+    }
     return view;
   }
 
@@ -172,8 +427,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     if (context instanceof OnFragmentInteractionListener) {
       mListener = (OnFragmentInteractionListener) context;
     } else {
-      throw new RuntimeException(context.toString()
-          + " must implement OnFragmentInteractionListener");
+      throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
     }
   }
 
@@ -203,25 +457,24 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     ArrayList<String> suggestions;
     String title;
 
-    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c, boolean d) {
-      data = source;
+    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> listOfDefaultCards, Context c, boolean displaySwitch) {
+      data = listOfDefaultCards;
       this.context = c;
-      displaySwitch = d;
+      this.displaySwitch = displaySwitch;
     }
 
     /**
      * Create a new FragRecyclerViewAdapter
-     *
-     * @param source if there is any default cards
-     * @param c      is the context, nothing special
-     * @param d      is true if you want to display switches on each individual card. It will also A) disable fab and B)disable edit on title
-     * @param sugg   i.e. a list of suggestions for auto complete
-     * @param t      i.e. the title for the dialog
+     * @param listOfDefaultCards  if there is any default cards
+     * @param c                   is the context, nothing special
+     * @param displaySwitch       is true if you want to display switches on each individual card. It will also A) disable fab and B)disable edit on title
+     * @param listOfKeywords      i.e. a list of suggestions for auto complete
+     * @param title               i.e. the title for the dialog
      */
-    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> source, Context c, boolean d, @Nullable ArrayList<String> sugg, @Nullable String t) {
-      this(source, c, d);
-      suggestions = sugg;
-      title = t;
+    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> listOfDefaultCards, Context c, boolean displaySwitch, @Nullable ArrayList<String> listOfKeywords, @Nullable String title) {
+      this(listOfDefaultCards, c, displaySwitch);
+      suggestions = listOfKeywords;
+      this.title = title;
     }
 
 
@@ -268,21 +521,6 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
         data = new ArrayList<>();
       data.add(c);
       this.notifyItemInserted(data.size() - 1);
-    }
-
-    public void addCards(ArrayList<Card> c) {
-      if (c != null) {
-        if (data == null)
-          data = new ArrayList<>();
-        for (Card card : c) {
-          data.add(card);
-        }
-        this.notifyDataSetChanged();
-      }
-    }
-
-    public int getCardCount() {
-      return data.size();
     }
 
     public void deleteCard(int position) {

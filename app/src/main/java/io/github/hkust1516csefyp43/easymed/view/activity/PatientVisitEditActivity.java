@@ -76,7 +76,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   private ChiefComplaintFragment chiefComplaintFragment;
   private RemarkFragment triageRemarkFragment;
   private DocumentFragment hpiFragment;
-  private ListOfCardsFragment pmhFragment;
+  private DocumentFragment pmhFragment;
   private DocumentFragment fhFragment;
   private DocumentFragment shFragment;
   private ListOfCardsFragment dhFragment;
@@ -114,6 +114,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_patient_visit_edit);
+
     final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     tabLayout = (TabLayout) findViewById(R.id.tabLayout);
     viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -221,8 +222,9 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
 
       viewPager.setAdapter(new viewPagerAdapter(getSupportFragmentManager()));
-      viewPager.addOnPageChangeListener(new customViewPagerOnPageChangeListener(tabLayout, navigationView));
-      viewPager.setOffscreenPageLimit(20);
+      if (navigationView != null)
+        viewPager.addOnPageChangeListener(new customViewPagerOnPageChangeListener(tabLayout, navigationView));
+      viewPager.setOffscreenPageLimit(tabs.size());
       //viewpager need to set page adapter first
 //    tabLayout.setupWithViewPager(viewPager);
       tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -1082,6 +1084,9 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
   }
 
+  /**
+   * TODO education page?
+   */
   public class viewPagerAdapter extends FragmentStatePagerAdapter{
     public viewPagerAdapter(FragmentManager fm) {
       super(fm);
@@ -1112,37 +1117,58 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return triageRemarkFragment;
         case 4:
           if (hpiFragment == null){
-            hpiFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 0);
+            if (thisPatient != null)
+              hpiFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 0);
+            else
+              hpiFragment = DocumentFragment.newInstance(null, 0);
           }
           return hpiFragment;
         case 5:
           if (pmhFragment == null) {
-            pmhFragment = ListOfCardsFragment.newInstance("Previous Medical History");
+            if (thisPatient != null)
+              pmhFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 3);
+            else
+              pmhFragment = DocumentFragment.newInstance(null, 1);
           }
           return pmhFragment;
         case 6:
           if (fhFragment == null) {
-            fhFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 1);
+            if (thisPatient != null)
+              fhFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 1);
+            else
+              fhFragment = DocumentFragment.newInstance(null, 1);
           }
           return fhFragment;
         case 7:
           if (shFragment == null) {
-            shFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 2);
+            if (thisPatient != null)
+              shFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 2);
+            else
+              shFragment = DocumentFragment.newInstance(null, 2);
           }
           return shFragment;
         case 8:
           if (dhFragment == null) {
-            dhFragment = ListOfCardsFragment.newInstance("Drug History");
+            if (thisConsultation != null)
+              dhFragment = ListOfCardsFragment.newInstance("Drug History", 6, thisConsultation.getId());
+            else
+              dhFragment = ListOfCardsFragment.newInstance("Drug History", 6, null);
           }
           return dhFragment;
         case 9:
           if (screeningFragment == null) {
-            screeningFragment = ListOfCardsFragment.newInstance("Screening");
+            if (thisConsultation != null)
+              screeningFragment = ListOfCardsFragment.newInstance("Screening", 1, thisConsultation.getId());
+            else
+              screeningFragment = ListOfCardsFragment.newInstance("Screening", 1, null);
           }
           return screeningFragment;
         case 10:
           if (allergyFragment == null) {
-            allergyFragment = ListOfCardsFragment.newInstance("Allergy");
+            if (thisConsultation != null)
+              allergyFragment = ListOfCardsFragment.newInstance("Allergy", 2, thisConsultation.getId());
+            else
+              allergyFragment = ListOfCardsFragment.newInstance("Allergy", 2, null);
           }
           return allergyFragment;
         case 11:
@@ -1152,7 +1178,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return pregnancyFragment;
         case 12:
           if (rosFragment == null) {
-            rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM);
+            if (thisConsultation != null)
+              rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM, thisConsultation);
+            else
+              rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM, null);
           }
           return rosFragment;
         case 13:
@@ -1162,32 +1191,47 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return rfFragment;
         case 14:
           if (peFragment == null) {
-            peFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION);
+            if (thisConsultation != null)
+              peFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION, thisConsultation);
+            else
+              peFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION, null);
           }
           return peFragment;
         case 15:
           if (diagnosisFragment == null) {
-            diagnosisFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis");
+            if (thisConsultation != null)
+              diagnosisFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis", 3, thisConsultation.getId());
+            else
+              diagnosisFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis", 3, null);
           }
           return diagnosisFragment;
         case 16:
           if (investigationFragment == null) {
-            investigationFragment = ListOfCardsFragment.newInstance("Investigation");
+              investigationFragment = ListOfCardsFragment.newInstance("Investigation");
           }
           return investigationFragment;
         case 17:
           if (medicationFragment == null) {
-            medicationFragment = ListOfCardsFragment.newInstance("Medication");
+            if (thisConsultation != null)
+              medicationFragment = ListOfCardsFragment.newInstance("Medication", 6, thisConsultation.getId());
+            else
+              medicationFragment = ListOfCardsFragment.newInstance("Medication", 6, null);
           }
           return medicationFragment;
         case 18:
           if (adviceFragment == null) {
-            adviceFragment = ListOfCardsFragment.newInstance("Advice");
+            if (thisConsultation != null)
+              adviceFragment = ListOfCardsFragment.newInstance("Advice", 4, thisConsultation.getId());
+            else
+              adviceFragment = ListOfCardsFragment.newInstance("Advice", 4, null);
           }
           return adviceFragment;
         case 19:
           if (followupFragment == null) {
-            followupFragment = ListOfCardsFragment.newInstance("Follow-up");
+            if (thisConsultation != null)
+              followupFragment = ListOfCardsFragment.newInstance("Follow-up", 5, thisConsultation.getId());
+            else
+              followupFragment = ListOfCardsFragment.newInstance("Follow-up", 5, null);
           }
           return followupFragment;
         case 20:
