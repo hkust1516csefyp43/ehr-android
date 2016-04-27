@@ -8,6 +8,8 @@ import java.io.Serializable;
  * Created by Louis on 24/4/16.
  */
 public class Document implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   @SerializedName("document_id")      String id;
   @SerializedName("document")         String documentInHtml;
   @SerializedName("document_type")    String document_type;

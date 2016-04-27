@@ -7,6 +7,8 @@ import java.util.ArrayList;
  * Created by Louis on 8/4/16.
  */
 public class ListOfCards implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   private ArrayList<Card> cardArrayList;
 
   public ListOfCards() {

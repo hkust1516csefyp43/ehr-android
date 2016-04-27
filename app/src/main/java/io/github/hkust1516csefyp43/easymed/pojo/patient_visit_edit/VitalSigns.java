@@ -7,6 +7,8 @@ import java.io.Serializable;
  * Created by Louis on 6/4/16.
  */
 public class VitalSigns implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   private Integer systolic;
   private Integer diastolic;
   private Integer pulseRate;

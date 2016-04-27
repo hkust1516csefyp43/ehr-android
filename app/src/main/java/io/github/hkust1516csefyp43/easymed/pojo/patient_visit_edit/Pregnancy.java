@@ -8,6 +8,8 @@ import java.util.Date;
  * Created by Louis on 8/4/16.
  */
 public class Pregnancy implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   private Date lmdDate;
   //TODO Boolean isPregnant >> Integer howMany
   //TODO Integer Gestation

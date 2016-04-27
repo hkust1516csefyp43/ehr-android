@@ -12,6 +12,8 @@ import java.io.Serializable;
  * Created by Louis on 1/2/16.
  */
 public class Card implements Serializable, Parcelable {
+  private static final long serialVersionUID = 1L;
+
   @SuppressWarnings("unused")
   public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {
     @Override

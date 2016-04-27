@@ -9,6 +9,8 @@ import java.util.Date;
  * Created by Louis on 26/4/16.
  */
 public class Query implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   @SerializedName("query_id")           String id;
   @SerializedName("user_id")            String userId;
   @SerializedName("create_timestamp")   Date createTimestamp;

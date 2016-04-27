@@ -8,6 +8,8 @@ import java.io.Serializable;
  * Created by Louis on 8/4/16.
  */
 public class Prescription implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   @SerializedName("prescription_id")
   String id;
   @SerializedName("consultation_id")

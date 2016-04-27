@@ -9,6 +9,8 @@ import java.util.Date;
  * Created by Louis on 2/4/16.
  */
 public class Visit implements Serializable{
+  private static final long serialVersionUID = 1L;
+
   @SerializedName("visit_id")
   String id;
   @SerializedName("tag")

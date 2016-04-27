@@ -9,6 +9,8 @@ import java.util.Date;
  * Created by Louis on 25/3/16.
  */
 public class BlockedDevice implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   @SerializedName("blocked_device_id")
   private String id;
   @SerializedName("reporter_id")

@@ -9,6 +9,8 @@ import java.util.Date;
  * Created by Louis on 20/4/16.
  */
 public class Consultation implements Serializable{
+  private static final long serialVersionUID = 1L;
+
   @SerializedName("consultation_id")                String id;
   @SerializedName("user_id")                  String userId;
   @SerializedName("visit_id")                 String visitId;

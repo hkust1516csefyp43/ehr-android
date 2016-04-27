@@ -9,6 +9,8 @@ import java.util.Date;
  * Created by Louis on 24/3/16.
  */
 public class Triage implements Serializable{
+  private static final long serialVersionUID = 1L;
+
   @SerializedName("triage_id")                String id;
   @SerializedName("user_id")                  String userId;
   @SerializedName("visit_id")                 String visitId;

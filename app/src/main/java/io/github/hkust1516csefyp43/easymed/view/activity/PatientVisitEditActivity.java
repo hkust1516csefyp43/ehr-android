@@ -588,7 +588,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                       Log.d(TAG, response.body().toString());
                       if (response.body() == null || response.code() > 299 || response.code() < 200){
                         onFailure(call, new Throwable("No response"));
-                      }else {
+                      } else {
                         //PUT visit (iff tag number have been modified?)
                         Visit visit = generateVisit(response.body(), pd, 2);
                         Log.d(TAG, "Editing Visit: " + visit);
@@ -632,7 +632,8 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                     @Override
                                     public void onFailure(Call<Triage> call, Throwable t) {
-
+                                      progressDialog.dismiss();
+                                      //TODO error dialog
                                     }
                                   });
                                 }
@@ -640,7 +641,8 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                               @Override
                               public void onFailure(Call<Visit> call, Throwable t) {
-
+                                progressDialog.dismiss();
+                                //TODO error dialog
                               }
                             });
                           }
@@ -652,7 +654,8 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                     @Override
                     public void onFailure(Call<Patient> call, Throwable t) {
-
+                      progressDialog.dismiss();
+                      //TODO error dialog
                     }
                   });
                 }
@@ -883,7 +886,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
   private Patient generatePatient(PersonalData personalData) {
     Patient patient = new Patient();
-    //TODO
     patient.setAddress(personalData.getAddress());
     patient.setBirthDate(personalData.getBirthDate());
     patient.setBirthMonth(personalData.getBirthMonth());
@@ -893,7 +895,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     patient.setLastName(personalData.getLastName());
     patient.setNativeName(personalData.getNativeName());
     patient.setPhoneNumber(personalData.getPhoneNumber());
-//    patient.setTag(personalData.getTagNumber());
     patient.setClinicId(Cache.CurrentUser.getClinic(getBaseContext()).getClinicId());
     Log.d(TAG, "output " + patient.toString());
     return patient;

@@ -8,6 +8,8 @@ import java.io.Serializable;
  * Created by Louis on 22/4/16.
  */
 public class MedicationVariant implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   @SerializedName("form")                     String form;
   @SerializedName("medication_id")            String medicationId;
   @SerializedName("medication_variant_id")    String id;

@@ -9,6 +9,8 @@ import java.util.Date;
  * Created by Louis on 21/4/16.
  */
 public class Medication implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   @SerializedName("create_timestamp")     Date createTimestamp;
   @SerializedName("medication")			      String medication;
   @SerializedName("medication_id")			  String medicationId;

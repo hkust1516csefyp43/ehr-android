@@ -9,6 +9,7 @@ import java.util.Date;
  * Created by Louis on 15/3/16.
  */
 public class Patient implements Serializable, Comparable<Patient> {
+  private static final long serialVersionUID = 1L;
 
   @SerializedName("address")
   String address;
