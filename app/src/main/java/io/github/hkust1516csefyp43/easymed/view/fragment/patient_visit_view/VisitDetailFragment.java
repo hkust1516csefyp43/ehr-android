@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Document;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
@@ -66,10 +67,10 @@ public class VisitDetailFragment extends Fragment {
   private Boolean fabOn = false;
   private Boolean isTriage = true;
 
+  private Patient patient;
   private Visit visit;
   private Triage triage;
   private Consultation consultation;
-  private Patient patient;
   private List<Prescription> prescriptions;
   private List<RelatedData> physicalExaminations;
   private List<RelatedData> screenings;
@@ -82,8 +83,9 @@ public class VisitDetailFragment extends Fragment {
   private List<RelatedData> advices;
   private List<RelatedData> diagnosiss;
   private List<RelatedData> followups;
-
-  //TODO related data, etc
+  private Document hpiDoc;
+  private Document fhDoc;
+  private Document shDoc;
   private LinearLayout linearLayout;
 
 
@@ -171,7 +173,7 @@ public class VisitDetailFragment extends Fragment {
       OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
       ohc1.readTimeout(1, TimeUnit.MINUTES);
       ohc1.connectTimeout(1, TimeUnit.MINUTES);
-      Retrofit retrofit = new Retrofit
+      final Retrofit retrofit = new Retrofit
           .Builder()
           .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
           .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
@@ -256,16 +258,7 @@ public class VisitDetailFragment extends Fragment {
       });
 
       //Consultation
-      OkHttpClient.Builder ohc2 = new OkHttpClient.Builder();
-      ohc1.readTimeout(1, TimeUnit.MINUTES);
-      ohc1.connectTimeout(1, TimeUnit.MINUTES);
-      Retrofit retrofit2 = new Retrofit
-          .Builder()
-          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
-          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-          .client(ohc2.build())
-          .build();
-      final v2API.consultations consultations = retrofit2.create(v2API.consultations.class);
+      final v2API.consultations consultations = retrofit.create(v2API.consultations.class);
       final Call<List<Consultation>> consultationCall = consultations.getConsultations("1", visit.getId());
       consultationCall.enqueue(new Callback<List<Consultation>>() {
         @Override
@@ -276,6 +269,7 @@ public class VisitDetailFragment extends Fragment {
           if (response.body() != null && response.body().size() != 0){
             consultation = response.body().get(0);
             if (consultation != null){
+              getOtherStuff(retrofit);
               Context context = getContext();
               if (context != null) {
                 TextView tvConsultationTitle = new TextView(context);
@@ -333,9 +327,43 @@ public class VisitDetailFragment extends Fragment {
         }
       });
     }
-
-
     return view;
+  }
+
+  private void getOtherStuff(Retrofit retrofit) {
+    if (consultation != null && patient != null) {
+      //TODO get prescriptions
+      v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
+      Call<List<Prescription>> prescriptions = prescriptionService.getPrescriptions("1", null, null, consultation.getId(), null, null, null, null);
+      prescriptions.enqueue(new Callback<List<Prescription>>() {
+        @Override
+        public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
+          //TODO fill the UI
+        }
+
+        @Override
+        public void onFailure(Call<List<Prescription>> call, Throwable t) {
+
+        }
+      });
+
+      //TODO get related data
+      v2API.related_data relatedDataService = retrofit.create(v2API.related_data.class);
+      Call<List<RelatedData>> screeningCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 1, null, null, null, null, null);
+      Call<List<RelatedData>> allergyCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 2, null, null, null, null, null);
+      Call<List<RelatedData>> diagnosisCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 3, null, null, null, null, null);
+      Call<List<RelatedData>> adviceCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 4, null, null, null, null, null);
+      Call<List<RelatedData>> followupCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 5, null, null, null, null, null);
+      Call<List<RelatedData>> drughistoryCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 6, null, null, null, null, null);
+      Call<List<RelatedData>> educationCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 7, null, null, null, null, null);
+
+      //TODO get documents
+      v2API.documents documentService = retrofit.create(v2API.documents.class);
+      //TODO get document types first
+      Call<List<Document>> hpiCall = documentService.getDocuments("1", "1", patient.getPatientId(), null, null, null);
+      Call<List<Document>> fhCall = documentService.getDocuments("1", "2", patient.getPatientId(), null, null, null);
+      Call<List<Document>> shCall = documentService.getDocuments("1", "3", patient.getPatientId(), null, null, null);
+    }
   }
 
   @Override
