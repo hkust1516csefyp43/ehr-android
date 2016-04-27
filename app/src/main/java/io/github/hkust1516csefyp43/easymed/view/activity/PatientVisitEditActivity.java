@@ -1112,7 +1112,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return triageRemarkFragment;
         case 4:
           if (hpiFragment == null){
-            hpiFragment = DocumentFragment.newInstance(null, 0);
+            hpiFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 0);
           }
           return hpiFragment;
         case 5:
@@ -1122,12 +1122,12 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return pmhFragment;
         case 6:
           if (fhFragment == null) {
-            fhFragment = DocumentFragment.newInstance(null, 1);
+            fhFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 1);
           }
           return fhFragment;
         case 7:
           if (shFragment == null) {
-            shFragment = DocumentFragment.newInstance(null, 2);
+            shFragment = DocumentFragment.newInstance(thisPatient.getPatientId(), 2);
           }
           return shFragment;
         case 8:

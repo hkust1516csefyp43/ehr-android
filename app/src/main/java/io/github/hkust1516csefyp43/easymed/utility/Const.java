@@ -56,6 +56,8 @@ public class Const {
     public static final String SYNC_LAST_PUSH_TO_LOCAL = "dSaVS4UZWDjA8fCs";
     public static final String QUERIES_FROM_CLOUD = "QUWHrSrNzzr3ke2c";
     public static final String QUERIES_FROM_LOCAL = "4VRKhNFW8KnJTaSs";
+    public static final String DOCUMENT_TYPES = "cc1wBYa7vmHtGVe3";
+    public static final String GENDERS = "96VrgNXBWHQtJkfc";
   }
 
   public class Database {

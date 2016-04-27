@@ -14,6 +14,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Query;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
@@ -144,6 +146,7 @@ public class Cache {
       removeUser(context);
       removeClinic(context);
       clearNotifications(context);
+      //TODO remove genders, document types, etc
     }
   }
 
@@ -251,5 +254,55 @@ public class Cache {
       return null;
     }
 
+  }
+
+  public static class DatabaseData {
+    public static void setDocumentTypes (Context context, List<DocumentType> documentTypes) {
+      Gson gson = new GsonBuilder().create();
+      String jsonString = gson.toJson(documentTypes);
+      setString(context, jsonString, Const.CacheKey.DOCUMENT_TYPES);
+    }
+
+    public static List<DocumentType> getDocumentTypes (Context context) {
+      String values = getString(context, Const.CacheKey.DOCUMENT_TYPES, null);
+      if (values != null) {
+        try {
+          List<DocumentType> lp = new Gson().fromJson(values, new TypeToken<List<DocumentType>>() {
+          }.getType());
+          return lp;
+        } catch (JsonSyntaxException e) {
+          e.printStackTrace();
+          //TODO for some reason it occasionally got incorrect syntax stuff -_-
+        }
+      }
+      return null;
+    }
+
+    public static void deleteDocumentTypes (Context context) {
+      deleteSomething(context, Const.CacheKey.DOCUMENT_TYPES);
+    }
+
+    public static void setGenders(Context context, List<Gender> genders) {
+      Gson gson = new GsonBuilder().create();
+      String jsonString = gson.toJson(genders);
+      setString(context, jsonString, Const.CacheKey.GENDERS);
+    }
+
+    public static List<Gender> getGenders(Context context) {
+      String values = getString(context, Const.CacheKey.GENDERS, null);
+      if (values != null) {
+        try {
+          List<Gender> lp = new Gson().fromJson(values, new TypeToken<List<Gender>>(){}.getType());
+          return lp;
+        } catch (JsonSyntaxException e) {
+          e.printStackTrace();
+        }
+      }
+      return null;
+    }
+
+    public static void deleteGenders(Context context) {
+      deleteSomething(context, Const.CacheKey.GENDERS);
+    }
   }
 }

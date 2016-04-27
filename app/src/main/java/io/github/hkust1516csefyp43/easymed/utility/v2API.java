@@ -8,6 +8,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.BloodType;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Country;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Document;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Keyword;
@@ -561,7 +562,7 @@ public interface v2API {
     Call<List<RelatedData>> getRelatedDataPlural (
       @Header("token")              String token,
       @Query("consultation_id")     String consultationId,
-      @Query("category")            String category,
+      @Query("category")            Integer category,
       @Query("data")                String data,
       @Query("remark")              String remark,
       @Query("sort_by") String sortBy,
@@ -592,6 +593,43 @@ public interface v2API {
     Call<RelatedData> deleteRelatedData (
         @Header("token")    String token,
         @Path("id")         String id
+    );
+  }
+
+  interface documents {
+    @GET("documents")
+    Call<List<Document>> getDocuments (
+        @Header("token")          String token,
+        @Query("document_type")   String documentTypeId,
+        @Query("patient_id")      String patientId,
+        @Query("sort_by") String sortBy,
+        @Query("limit") Integer limit,
+        @Query("offset") Integer offset
+    );
+
+    @GET("documents/{id}")
+    Call<Document> getDocument(
+        @Header("token")      String token,
+        @Path("id")           String id
+    );
+
+    @PUT("documents/{id}")
+    Call<Document> editDocument(
+        @Header("token")      String token,
+        @Path("id")           String id,
+        @Body                 Document document
+    );
+
+    @POST("documents")
+    Call<Document> addDocument(
+        @Header("token")      String token,
+        @Body                 Document document
+    );
+
+    @DELETE("documents/{id}")
+    Call<Document> deleteDocument(
+        @Header("token")      String token,
+        @Path("id")           String id
     );
   }
 }
