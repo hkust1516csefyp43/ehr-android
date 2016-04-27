@@ -21,13 +21,15 @@ public class Attachment implements Serializable{
   private String userId;
   @SerializedName("create_timestamp")
   private Date createTimestamp;
+  @SerializedName("file_in_base64")   private String fileInBase64;
 
-  public Attachment(String id, String url, String path, String userId, Date createTimestamp) {
+  public Attachment(String id, String url, String path, String userId, Date createTimestamp, String fileInBase64) {
     this.id = id;
     this.url = url;
     this.path = path;
     this.userId = userId;
     this.createTimestamp = createTimestamp;
+    this.fileInBase64 = fileInBase64;
   }
 
   public String getId() {
@@ -70,6 +72,14 @@ public class Attachment implements Serializable{
     this.createTimestamp = createTimestamp;
   }
 
+  public String getFileInBase64() {
+    return fileInBase64;
+  }
+
+  public void setFileInBase64(String fileInBase64) {
+    this.fileInBase64 = fileInBase64;
+  }
+
   @Override
   public String toString() {
     return "Attachment{" +
@@ -78,7 +88,7 @@ public class Attachment implements Serializable{
         ", path='" + path + '\'' +
         ", userId='" + userId + '\'' +
         ", createTimestamp=" + createTimestamp +
+        ", fileInBase64='" + fileInBase64 + '\'' +
         '}';
   }
-
 }
