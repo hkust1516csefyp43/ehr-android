@@ -12,6 +12,9 @@ public class Const {
   public final static int TOKEN_LENGTH = 16;                  //TODO make it programmable >> easier to scale up/down
   public final static Gson GsonParserThatWorksWithPGTimestamp = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
   public final static String EMPTY_STRING = "wqpU5NYWMEw57bjRWZgxCwdSe8YC1FNTqE5GhKHmc6qnyzHZkR2ehkfvWuNdBZCd";    //if I find this in a string, it means it is empty (the possibility of sth having this name is super small)
+  public static final int ACTION_TAKE_PICTURE = 0;
+  public static final int ACTION_SELECT_PICTURE = 1;
+  public static final int ACTION_REMOVE_PICTURE = 2;
 
   public class PatientListPageId {
     public static final int POST_TRIAGE = 1;

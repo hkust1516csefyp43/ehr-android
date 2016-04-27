@@ -1,12 +1,18 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +25,10 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -26,12 +36,23 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.PersonalData;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Attachment;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.ImageTransformer;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
+import io.github.hkust1516csefyp43.easymed.utility.v2API;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PersonalDataFragment extends Fragment implements OnSendData{
   public final static String TAG = PersonalDataFragment.class.getSimpleName();
@@ -39,6 +60,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   private static Patient patient;
 
   private ScrollView scrollView;
+  private ImageView ivProfilePic;
   private EditText etTag;
   private EditText etFirstName;
   private EditText etMiddleName;
@@ -47,7 +69,6 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   private EditText etAddress;
   //TODO phone country code spinner
   private EditText etPhoneNumber;
-  private ImageView ivProfilePic;
   private TextView etAgeYear;
   private TextView etAgeMonth;
   private TextView etAgeWeek;
@@ -108,6 +129,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   }
 
   public void inflateEveryBoxes(View view) {
+    ivProfilePic = (ImageView) view.findViewById(R.id.ivProfilePic);
     etTag = (EditText) view.findViewById(R.id.etTag);
     etFirstName = (EditText) view.findViewById(R.id.first_name);
     etAgeYear = (EditText) view.findViewById(R.id.etYear);
@@ -119,6 +141,75 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     etNativeName = (EditText) view.findViewById(R.id.native_name);
     etAddress = (EditText) view.findViewById(R.id.etAddress);
     etPhoneNumber = (EditText) view.findViewById(R.id.etPhoneNumber);
+
+    if (ivProfilePic != null) {
+      if (patient != null) {
+        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(patient.getLastNameSpaceFirstName())));        //act as placeholder + fallback
+        if (patient.getImageId() != null && patient.getProfilePicBase64() == null) {
+          OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+          ohc1.readTimeout(1, TimeUnit.MINUTES);
+          ohc1.connectTimeout(1, TimeUnit.MINUTES);
+          Retrofit retrofit = new Retrofit
+              .Builder()
+              .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+              .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+              .client(ohc1.build())
+              .build();
+          v2API.attachments attachmentService = retrofit.create(v2API.attachments.class);
+          Call<Attachment> attachmentCall = attachmentService.getAttachment("1", patient.getImageId());
+          attachmentCall.enqueue(new Callback<Attachment>() {
+            @Override
+            public void onResponse(Call<Attachment> call, Response<Attachment> response) {
+              if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().getFileInBase64() != null) {
+                byte[] decodedString = Base64.decode(response.body().getFileInBase64(), Base64.DEFAULT);
+                Bitmap decodedByte = ImageTransformer.centerCrop(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+                ivProfilePic.setImageBitmap(decodedByte);
+              }
+            }
+
+            @Override
+            public void onFailure(Call<Attachment> call, Throwable t) {
+              t.printStackTrace();
+              ivProfilePic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(patient.getLastNameSpaceFirstName())));
+              patient.setProfilePicBase64(Const.EMPTY_STRING);
+            }
+          });
+        } else if (patient.getProfilePicBase64() != null && !patient.getProfilePicBase64().equals(Const.EMPTY_STRING)) {
+          byte[] decodedString = Base64.decode(patient.getProfilePicBase64(), Base64.DEFAULT);
+          Bitmap decodedByte = ImageTransformer.centerCrop(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+          ivProfilePic.setImageBitmap(decodedByte);
+        }
+      } else {
+        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(patient.getLastNameSpaceFirstName())));
+      }
+      ivProfilePic.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          //TODO add new image dialog
+          new MaterialDialog.Builder(getContext())
+              .title("Patient picture")
+              .items(R.array.image_array)
+              .itemsCallback(new MaterialDialog.ListCallback() {
+                @Override
+                public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                  switch (which) {
+                    case Const.ACTION_TAKE_PICTURE:
+                      openCamera();
+                      break;
+                    case Const.ACTION_SELECT_PICTURE:
+                      break;
+                    case Const.ACTION_REMOVE_PICTURE:
+                      //save as default
+                    default:
+                      //TODO remove picture & put a Text Drawable
+                  }
+                }
+              })
+              .theme(Theme.LIGHT)
+              .show();
+        }
+      });
+    }
 
     if (patient != null && etTag != null) {
       if (patient.getTag() != null) {
@@ -174,7 +265,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       etPhoneNumber.setText(patient.getPhoneNumber());
     }
 
-    ivProfilePic = (ImageView) view.findViewById(R.id.iv_profile_pic);
+    ivProfilePic = (ImageView) view.findViewById(R.id.ivProfilePic);
     //TODO get attachment by id
 
 
@@ -317,6 +408,31 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     } else {
       if (tvBirthday != null)
         tvBirthday.setText("Click to select date");
+    }
+  }
+
+  private void openCamera() {
+    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+      startActivityForResult(takePictureIntent, 1024);
+    }
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == 1024) {
+      if (resultCode == Activity.RESULT_OK) {
+        Bundle extras = data.getExtras();
+        Bitmap imageBitmap = (Bitmap) extras.get("data");
+        if (imageBitmap != null && ivProfilePic != null) {
+          //TODO imageBitmap is just a thumbnail >> low resolution >> ugly
+          //http://developer.android.com/training/camera/photobasics.html
+          ivProfilePic.setImageBitmap(ImageTransformer.centerCrop(imageBitmap));
+        } else {
+          Log.d("qqq811", "umm the image is null");
+        }
+      }
     }
   }
 
