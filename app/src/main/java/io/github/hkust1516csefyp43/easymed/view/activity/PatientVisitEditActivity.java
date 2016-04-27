@@ -552,14 +552,14 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           if (isTriage) {
             if (thisTriage != null) {                                                               //existing patient edit triage
               //PUT patient
+              Log.d(TAG, "Existing patient edit visit edit triage");
               Patient patient = generatePatient(personalData);
-              Log.d(TAG, "Existing patient edit triage" + patient);
               if (patient != null) {
                 Call<Patient> patientCall = patientService.editPatient("1", thisPatient.getPatientId(), patient);
                 patientCall.enqueue(new Callback<Patient>() {
                   @Override
                   public void onResponse(Call<Patient> call, Response<Patient> response) {
-                    Log.d(TAG, "code: " + response.code());
+                    Log.d(TAG, "patient call response code: " + response.code());
                     if (response.code() < 500 && response.code() >= 400) {
                       try {
                         Log.d(TAG, response.errorBody().string());
@@ -567,18 +567,27 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                         e.printStackTrace();
                       }
                     }
+                    Log.d(TAG, response.body().toString());
                     if (response.body() == null || response.code() > 299 || response.code() < 200){
                       onFailure(call, new Throwable("No response"));
                     }else {
                       //PUT visit (iff tag number have been modified?)
-                      Log.d(TAG, "Editing Visit: " + thisVisit);
                       Visit visit = generateVisit(response.body(), 2);
+                      Log.d(TAG, "Editing Visit: " + visit);
                       if (visit.getTag() != thisVisit.getTag()) {
                         if (visit != null) {
                           Call<Visit> visitCall = visitService.editVisit("1", visit, thisVisit.getId());
                           visitCall.enqueue(new Callback<Visit>() {
                             @Override
                             public void onResponse(Call<Visit> call, Response<Visit> response) {
+                              Log.d(TAG, "visit call response code: " + response.code());
+                              if (response.code() < 500 && response.code() >= 400) {
+                                try {
+                                  Log.d(TAG, response.errorBody().string());
+                                } catch (IOException e) {
+                                  e.printStackTrace();
+                                }
+                              }
                               Log.d(TAG, response.body().toString());
                               if (response.body() == null || response.code() > 299 || response.code() < 200) {
                                 onFailure(call, new Throwable("No response"));
@@ -590,6 +599,14 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                 triageCall.enqueue(new Callback<Triage>() {
                                   @Override
                                   public void onResponse(Call<Triage> call, Response<Triage> response) {
+                                    Log.d(TAG, "triage call response code: " + response.code());
+                                    if (response.code() < 500 && response.code() >= 400) {
+                                      try {
+                                        Log.d(TAG, response.errorBody().string());
+                                      } catch (IOException e) {
+                                        e.printStackTrace();
+                                      }
+                                    }
                                     Log.d(TAG, response.body().toString());
                                     progressDialog.dismiss();
                                     finish();
@@ -623,7 +640,88 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
               }
             } else {                                                                                //existing patient new triage
               //PUT patient
-              //POST triage
+              Log.d(TAG, "Existing patient new visit new triage");
+              Patient patient = generatePatient(personalData);
+              if (patient != null) {
+                Call<Patient> patientCall = patientService.editPatient("1", thisPatient.getPatientId(), patient);
+                patientCall.enqueue(new Callback<Patient>() {
+                  @Override
+                  public void onResponse(Call<Patient> call, Response<Patient> response) {
+                    Log.d(TAG, "patient call response code: " + response.code());
+                    if (response.code() < 500 && response.code() >= 400) {
+                      try {
+                        Log.d(TAG, response.errorBody().string());
+                      } catch (IOException e) {
+                        e.printStackTrace();
+                      }
+                    }
+                    Log.d(TAG, response.body().toString());
+                    if (response.body() == null || response.code() > 299 || response.code() < 200){
+                      onFailure(call, new Throwable("No response"));
+                    }else {
+                      //POST visit
+                      Visit visit = generateVisit(response.body(), 2);
+                      if (visit != null) {
+                        Call<Visit> visitCall = visitService.addVisit("1", visit);
+                        visitCall.enqueue(new Callback<Visit>() {
+                          @Override
+                          public void onResponse(Call<Visit> call, Response<Visit> response) {
+                            Log.d(TAG, "visit call response code: " + response.code());
+                            if (response.code() < 500 && response.code() >= 400) {
+                              try {
+                                Log.d(TAG, response.errorBody().string());
+                              } catch (IOException e) {
+                                e.printStackTrace();
+                              }
+                            }
+                            Log.d(TAG, response.body().toString());
+                            if (response.body() == null || response.code() > 299 || response.code() < 200) {
+                              onFailure(call, new Throwable("No response"));
+                            } else {
+                              Triage triage = generateTriage(response.body(), vs, cc, tr);
+                              if (triage != null) {
+                                //POST triage
+                                Call<Triage> triageCall = triageService.addTriage("1", triage);
+                                triageCall.enqueue(new Callback<Triage>() {
+                                  @Override
+                                  public void onResponse(Call<Triage> call, Response<Triage> response) {
+                                    Log.d(TAG, "triage call response code: " + response.code());
+                                    if (response.code() < 500 && response.code() >= 400) {
+                                      try {
+                                        Log.d(TAG, response.errorBody().string());
+                                      } catch (IOException e) {
+                                        e.printStackTrace();
+                                      }
+                                    }
+                                    Log.d(TAG, response.body().toString());
+                                    progressDialog.dismiss();
+                                    finish();
+                                  }
+
+                                  @Override
+                                  public void onFailure(Call<Triage> call, Throwable t) {
+
+                                  }
+                                });
+                              }
+                            }
+                          }
+
+                          @Override
+                          public void onFailure(Call<Visit> call, Throwable t) {
+
+                          }
+                        });
+                      }
+                    }
+                  }
+
+                  @Override
+                  public void onFailure(Call<Patient> call, Throwable t) {
+
+                  }
+                });
+              }
             }
           } else {
             if (thisConsultation != null) {                                                         //existing patient edit consultation (and triage)
@@ -657,16 +755,14 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         } else {
           if (isTriage) {                                                                           //new patient new triage
             //POST patient
-            //POST visit
-            //POST triage
+            Log.d(TAG, "New patient new visit new triage");
             Patient patient = generatePatient(personalData);
             if (patient!= null){
-
               Call<Patient> patientCall = patientService.addPatient("1", patient);
               patientCall.enqueue(new Callback<Patient>() {
                 @Override
                 public void onResponse(Call<Patient> call, Response<Patient> response) {
-                  Log.d(TAG, "code: " + response.code());
+                  Log.d(TAG, "patient call response code: " + response.code());
                   if (response.code() < 500 && response.code() >= 400) {
                     try {
                       Log.d(TAG, response.errorBody().string());
@@ -674,25 +770,44 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                       e.printStackTrace();
                     }
                   }
-                  if (response.body() == null || response.code() > 299 || response.code() < 200){
+                  Log.d(TAG, response.body().toString());
+                  if (response.body() == null || response.code() > 299 || response.code() < 200) {
                     onFailure(call, new Throwable("No response"));
-                  }else{
+                  } else {
+                    //POST visit
                     Visit visit = generateVisit(response.body(), 2);
                     if (visit != null) {
                       Call<Visit> visitCall = visitService.addVisit("1", visit);
                       visitCall.enqueue(new Callback<Visit>() {
                         @Override
                         public void onResponse(Call<Visit> call, Response<Visit> response) {
+                          Log.d(TAG, "visit call response code: " + response.code());
+                          if (response.code() < 500 && response.code() >= 400) {
+                            try {
+                              Log.d(TAG, response.errorBody().string());
+                            } catch (IOException e) {
+                              e.printStackTrace();
+                            }
+                          }
                           Log.d(TAG, response.body().toString());
                           if (response.body() == null || response.code() > 299 || response.code() < 200) {
                             onFailure(call, new Throwable("No response"));
-                          }else {
+                          } else {
                             Triage triage = generateTriage(response.body(), vs, cc, tr);
                             if (triage != null) {
+                              //POST triage
                               Call<Triage> triageCall = triageService.addTriage("1", triage);
                               triageCall.enqueue(new Callback<Triage>() {
                                 @Override
                                 public void onResponse(Call<Triage> call, Response<Triage> response) {
+                                  Log.d(TAG, "triage call response code: " + response.code());
+                                  if (response.code() < 500 && response.code() >= 400) {
+                                    try {
+                                      Log.d(TAG, response.errorBody().string());
+                                    } catch (IOException e) {
+                                      e.printStackTrace();
+                                    }
+                                  }
                                   Log.d(TAG, response.body().toString());
                                   progressDialog.dismiss();
                                   finish();
@@ -713,9 +828,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                         }
                       });
                     }
-                    //POST triage
                   }
-
                 }
 
                 @Override
@@ -759,22 +872,23 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     patient.setLastName(personalData.getLastName());
     patient.setNativeName(personalData.getNativeName());
     patient.setPhoneNumber(personalData.getPhoneNumber());
-    patient.setTag(personalData.getTagNumber());
+//    patient.setTag(personalData.getTagNumber());
     patient.setClinicId(Cache.CurrentUser.getClinic(getBaseContext()).getClinicId());
-    Log.d(TAG, "output" + patient.toString());
+    Log.d(TAG, "output " + patient.toString());
     return patient;
   }
 
   private Visit generateVisit(Patient patient, int nextStation){
     Visit visit = new Visit();
     try {
-      visit.setTag(patient.getTag());
-    }catch (NumberFormatException e){
+      visit.setTag(Integer.valueOf(personalDataFragment.getTag()));
+    }catch (Exception e){
       e.printStackTrace();
       visit.setTag((int) (Math.random() * 100));
     }
     visit.setPatientId(patient.getPatientId());
     visit.setNextStation(nextStation);
+    Log.d(TAG, "output " + visit.toString());
     return visit;
   }
 
@@ -801,6 +915,8 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       triage.setRemark(remark);
     }
     triage.setVisitId(visit.getId());
+    Log.d(TAG, "output " + triage.toString());
+
     return triage;
   }
 
