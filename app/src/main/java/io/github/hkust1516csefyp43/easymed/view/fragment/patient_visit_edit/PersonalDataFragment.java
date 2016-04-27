@@ -59,7 +59,6 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   private int[] birthday = new int[3];      //0: year; 1: month(0-11); 2: date
 
   private boolean anyError = false;
-  private int[] preFillBirthday = new int[3];
 
   public static PersonalDataFragment newInstance(Patient p) {
     PersonalDataFragment fragment = new PersonalDataFragment();
@@ -217,20 +216,18 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
       }
     });
-    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
-    birthday[0] = 0;
-    birthday[1] = 0;
-    birthday[2] = 0;
-    preFillBirthday[0] = 1992;
-    preFillBirthday[1] = 8;
-    preFillBirthday[2] = 14;
-    if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null &&patient.getBirthDate() != null) {
-      preFillBirthday[0] = patient.getBirthYear();
-      preFillBirthday[1] = patient.getBirthMonth();
-      preFillBirthday[2] = patient.getBirthDate();
-      String date = "" + preFillBirthday[0] + "/" + (preFillBirthday[1] + 1) + "/" + preFillBirthday[2];
-      tvBirthday.setText(date);
-    }
+//    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
+//    GregorianCalendar gc = new GregorianCalendar();
+//    birthday[0] = gc.get(Calendar.YEAR);
+//    birthday[1] = gc.get(Calendar.MONTH);
+//    birthday[2] = gc.get(Calendar.DAY_OF_MONTH);
+//    if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null &&patient.getBirthDate() != null) {
+//      birthday[0] = patient.getBirthYear();
+//      birthday[1] = patient.getBirthMonth();
+//      birthday[2] = patient.getBirthDate();
+//    }
+//    String date = "" + birthday[0] + "/" + (birthday[1] + 1) + "/" + birthday[2];
+//    tvBirthday.setText(date);
 
 
     if (etAgeYear != null && etAgeMonth != null && etAgeWeek != null && tvBirthday != null) {
@@ -263,7 +260,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       etAgeMonth.addTextChangedListener(textWatcher);
       etAgeWeek.addTextChangedListener(textWatcher);
     }
-
+//
     birthday[0] = 1992;
     birthday[1] = 8;    //September
     birthday[2] = 14;
@@ -283,7 +280,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
                 tvBirthday.setText(date);
               }
               if (etAgeYear != null && etAgeMonth != null && etAgeWeek != null) {
-                int[] ageArray = Util.birthdayToAgeYMW(birthday[0], birthday[1], birthday[2]);
+                int[] ageArray = Util.birthdayToAgeYMW(birthday[0], birthday[1] + 1, birthday[2]);
                 etAgeYear.setText(String.valueOf(ageArray[0]));
                 etAgeMonth.setText(String.valueOf(ageArray[1]));
                 etAgeWeek.setText(String.valueOf(ageArray[2]));
@@ -298,7 +295,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
     if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null && patient.getBirthDate() != null) {
       //set tvAge
-      int[] ageArray = Util.birthdayToAgeYMW(birthday[0], birthday[1], birthday[2]);
+      int[] ageArray = Util.birthdayToAgeYMW(birthday[0], birthday[1] + 1, birthday[2]);
       etAgeYear.setText(String.valueOf(ageArray[0]));
       etAgeMonth.setText(String.valueOf(ageArray[1]));
       etAgeWeek.setText(String.valueOf(ageArray[2]));

@@ -6,11 +6,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import io.github.hkust1516csefyp43.easymed.R;
@@ -20,12 +25,15 @@ import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Pregnancy;
 
 
 public class PregnancyFragment extends Fragment implements OnSendData{
+  private static final String TAG = PregnancyFragment.class.getSimpleName();
   private static final String ARG_PARAM1 = "param1";
   private static final String ARG_PARAM2 = "param2";
 
   private TextView LMPDate;
   private CheckBox isPregnant;
-  private TextView gestation;
+  private EditText gestation;
+  private LinearLayout ifPregnant;
+  private EditText howMany;
   private CheckBox isBreastFeeding;
   private CheckBox isContraceptive;
   private EditText noPregnancy;
@@ -62,7 +70,53 @@ public class PregnancyFragment extends Fragment implements OnSendData{
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_pregnancy, container, false);
+    View view = inflater.inflate(R.layout.fragment_pregnancy, container, false);
+    LMPDate = (TextView) view.findViewById(R.id.tvLmpdate);
+    isPregnant = (CheckBox) view.findViewById(R.id.cbIspregnant);
+    gestation = (EditText) view.findViewById(R.id.etGestation);
+    ifPregnant = (LinearLayout) view.findViewById(R.id.llIfPregnant);
+    howMany = (EditText) view.findViewById(R.id.etHowMany);
+    isBreastFeeding = (CheckBox) view.findViewById(R.id.cbBreastfeeding);
+    isContraceptive = (CheckBox) view.findViewById(R.id.cbContraceptive);
+    noPregnancy = (EditText) view.findViewById(R.id.etNoPreg);
+    noLiveBirth = (EditText) view.findViewById(R.id.etNoLivebirth);
+    noMiscarriage = (EditText) view.findViewById(R.id.etNoMiscarriage);
+    noAbortion = (EditText) view.findViewById(R.id.etNoAbortion);
+    noStillBirth = (EditText) view.findViewById(R.id.etNoStillbirth);
+    otherInfo = (EditText) view.findViewById(R.id.etPregRemark);
+
+    LMPDate.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        GregorianCalendar gc = new GregorianCalendar();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+          @Override
+          public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+            if (LMPDate != null) {
+              //TODO before today check
+              String date = "" + year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+              pregDate[0] = year;
+              pregDate[1] = monthOfYear;
+              pregDate[2] = dayOfMonth;
+              LMPDate.setText(date);
+            }
+          }
+        }, gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH));
+        dpd.show(getActivity().getFragmentManager(), TAG);
+      }
+    });
+
+    Button removeButton = (Button) view.findViewById(R.id.removeButton3);
+    removeButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        pregDate[0] = 0;
+        pregDate[1] = 0;
+        pregDate[2] = 0;
+        LMPDate.setText("Click to select date");
+      }
+    });
+    return view;
   }
 
   @Override

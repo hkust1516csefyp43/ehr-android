@@ -942,8 +942,47 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     return triage;
   }
 
-  private Consultation generateConsultation() {
+  private Consultation generateConsultation(Visit visit,
+                                            String hpi,
+                                            ListOfCards pmh,
+                                            String fh,
+                                            String sh,
+                                            ListOfCards dh,
+                                            ListOfCards screening,
+                                            ListOfCards allergy,
+                                            Pregnancy pregnancy,
+                                            ListOfCards ros,
+                                            ListOfCards rf,
+                                            ListOfCards pe,
+                                            ListOfCards diagnosis,
+                                            ListOfCards investigation,
+                                            ListOfCards medication,
+                                            ListOfCards advice,
+                                            ListOfCards followup,
+                                            String consultationRemark) {
     Consultation consultation = new Consultation();
+    Date date = new Date();
+    consultation.setStartTime(date);
+    consultation.setEndTime(date);
+    if (pregnancy != null) {
+      consultation.setPregBreastFeeding(pregnancy.getBreastFeeding());
+      consultation.setPregContraceptive(pregnancy.getContraceptiveUse());
+      consultation.setPregNumPreg(pregnancy.getNoOfPregnancy());
+      consultation.setPregNumLiveBirth(pregnancy.getNoOfLiveBirth());
+      consultation.setPregNumMiscarriage(pregnancy.getNoOfMiscarriage());
+      consultation.setPregNumAbortion(pregnancy.getNoOfAbortion());
+      consultation.setPregNumStillBirth(pregnancy.getNoOfStillBirth());
+      consultation.setPregRemark(pregnancy.getOtherInformation());
+    }
+//    if (visit != null) {
+//      consultation.setVisitId(visit.getId());
+//    }
+    if (consultationRemark != null) {
+      consultation.setRemark(consultationRemark);
+    }
+    consultation.setVisitId(visit.getId());
+    Log.d(TAG, "output " + consultation.toString());
+
     //TODO
     return consultation;
   }

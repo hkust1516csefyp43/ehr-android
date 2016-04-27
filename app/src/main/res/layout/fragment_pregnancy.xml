@@ -26,7 +26,7 @@
                 android:text="LMP Date"/>
 
             <TextView
-                android:id="@+id/pgdate"
+                android:id="@+id/tvLmpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -61,7 +61,7 @@
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ispregnant" />
+                android:id="@+id/cbIspregnant" />
 
             <TextView
                 android:layout_width="70dp"
@@ -72,7 +72,7 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:id="@+id/gestation"/>
+                android:id="@+id/etGestation"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -144,7 +144,7 @@
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/breastfeeding"/>
+                android:id="@+id/cbBreastfeeding"/>
         </LinearLayout>
 
         <LinearLayout
@@ -159,7 +159,7 @@
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/contraceptive"/>
+                android:id="@+id/cbContraceptive"/>
         </LinearLayout>
 
         <LinearLayout
@@ -174,7 +174,7 @@
             <EditText
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/no_preg"
+                android:id="@+id/etNoPreg"
                 android:inputType="number"/>
         </LinearLayout>
 
@@ -190,7 +190,7 @@
             <EditText
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/no_livebirth"
+                android:id="@+id/etNoLivebirth"
                 android:inputType="number"/>
         </LinearLayout>
 
@@ -207,7 +207,7 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:id="@+id/no_miscarriage"/>
+                android:id="@+id/etNoMiscarriage"/>
         </LinearLayout>
 
         <LinearLayout
@@ -223,7 +223,7 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:id="@+id/no_abortion"/>
+                android:id="@+id/etNoAbortion"/>
         </LinearLayout>
 
         <LinearLayout
@@ -239,7 +239,7 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:id="@+id/no_stillbirth"/>
+                android:id="@+id/etNoStillbirth"/>
         </LinearLayout>
 
         <LinearLayout
@@ -254,7 +254,7 @@
             <EditText
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/other_info"/>
+                android:id="@+id/etPregRemark"/>
         </LinearLayout>
 
     </LinearLayout>

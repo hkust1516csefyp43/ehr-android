@@ -117,7 +117,7 @@ public class BioFragment extends Fragment {
 
           if (patient.getBirthDate() != null) {
             TextView tvBioBirthDate = new TextView(context);
-            tvBioBirthDate.setText("Birthday: " + patient.getBirthYear() + "/" + patient.getBirthMonth() + "/" + patient.getBirthDate());
+            tvBioBirthDate.setText("Birthday: " + patient.getBirthYear() + "/" + (patient.getBirthMonth() + 1) + "/" + patient.getBirthDate());
             llPatientInfo.addView(tvBioBirthDate);
           }
 
