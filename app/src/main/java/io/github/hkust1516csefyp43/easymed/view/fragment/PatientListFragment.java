@@ -545,8 +545,6 @@ public class PatientListFragment extends Fragment{
           }
         });
       }
-
-
     }
 
     @Override

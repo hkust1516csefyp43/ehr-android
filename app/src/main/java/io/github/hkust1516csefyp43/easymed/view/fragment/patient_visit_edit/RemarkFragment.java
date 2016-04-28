@@ -17,6 +17,7 @@ import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.listener.scrollToError;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 
 public class RemarkFragment extends Fragment implements OnSendData, scrollToError {
   private OnFragmentInteractionListener mListener;
@@ -26,12 +27,19 @@ public class RemarkFragment extends Fragment implements OnSendData, scrollToErro
 
   private View errorView = null;    //null >> no error
 
+  private String remarkData;
+  private boolean maybeEmpty;
+
   public RemarkFragment() {
     // Required empty public constructor
   }
 
-  public static RemarkFragment newInstance() {
-    RemarkFragment fragment = new RemarkFragment();
+  public static RemarkFragment newInstance(String data, boolean maybeEmpty) {
+    RemarkFragment fragment= new RemarkFragment();
+    Bundle args = new Bundle();
+    args.putString(Const.BundleKey.REMARK_DATA, data);
+    args.putBoolean(Const.BundleKey.MAYBE_EMPTY, maybeEmpty);
+    fragment.setArguments(args);
     return fragment;
   }
 
@@ -39,6 +47,8 @@ public class RemarkFragment extends Fragment implements OnSendData, scrollToErro
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getArguments() != null) {
+      remarkData = getArguments().getString(Const.BundleKey.REMARK_DATA, null);
+      maybeEmpty = getArguments().getBoolean(Const.BundleKey.MAYBE_EMPTY, false);
     }
   }
 
@@ -48,11 +58,15 @@ public class RemarkFragment extends Fragment implements OnSendData, scrollToErro
     scRemark = (SwitchCompat) view.findViewById(R.id.scRemark);
     etRemark = (EditText) view.findViewById(R.id.etRemark);
     tilRemark = (TextInputLayout) view.findViewById(R.id.tilRemark);
-    scRemark.setChecked(true);
-    if (!scRemark.isChecked())
+
+    if (maybeEmpty && remarkData == null) { //checked as false
+      scRemark.setChecked(false);
       tilRemark.setVisibility(View.GONE);
-    else
+    } else if (remarkData != null) {
+      scRemark.setChecked(true);
       tilRemark.setVisibility(View.VISIBLE);
+      etRemark.setText(remarkData);
+    }
     scRemark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

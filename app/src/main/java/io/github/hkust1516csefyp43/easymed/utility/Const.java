@@ -53,6 +53,9 @@ public class Const {
     public static final String CONSULTATION_ID = "F9pQgwt4Nhym13AK";
     public static final String KEY_TITLE = "hwZc5d5c5TjqBnzK";
     public static final String KEY_PRE_FILL_ITEMS = "rKEBY8SPSuFeu89m";
+    public static final String REMARK_DATA = "7jafPg5F2kxNBYRy";
+    public static final String CHIEF_COMPLAINT_DATA = "h8NQHFfjSJ6MjKNd";
+    public static final String MAYBE_EMPTY = "Wx3DNVZrG5w1FqgX";
   }
 
   public class CacheKey {

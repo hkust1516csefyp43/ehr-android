@@ -117,6 +117,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     menuItem = menu.findItem(R.id.nav_reports);
     if (menuItem != null) {
       menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_file_chart).color(Color.GRAY).actionBar().paddingDp(2));
+      menuItem.setVisible(false);       //TODO hide for presentation
     }
     menuItem = menu.findItem(R.id.nav_admin);
     if (menuItem != null) {

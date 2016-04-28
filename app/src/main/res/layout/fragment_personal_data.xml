@@ -142,14 +142,16 @@
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="6"
                     android:layout_gravity="center_vertical"
-                    android:text="Blood Type"/>
+                    android:text="Blood Type"
+                    android:visibility="gone"/>
 
                 <Spinner
                     android:id="@+id/sBloodType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill_horizontal"
-                    android:layout_columnSpan="12"/>
+                    android:layout_columnSpan="12"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -251,12 +253,14 @@
                     android:layout_columnSpan="6"
                     android:text="Phone\nCountry code"
                     android:lines="2"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone"/>
 
                 <Spinner
                     android:id="@+id/sPhoneCode"
                     android:layout_columnSpan="12"
-                    android:layout_gravity="fill|center_vertical"/>
+                    android:layout_gravity="fill|center_vertical"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tvPhoneNumber"

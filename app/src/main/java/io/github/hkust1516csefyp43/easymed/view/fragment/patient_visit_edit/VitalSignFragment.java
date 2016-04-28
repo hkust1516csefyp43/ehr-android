@@ -65,10 +65,6 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     return fragment;
   }
 
-  public static VitalSignFragment newInstance(){
-    return new VitalSignFragment();
-  }
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -80,6 +76,13 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     }
   }
 
+  /**
+   * TODO if thisTriage != null inflate the UI
+   * @param inflater
+   * @param container
+   * @param savedInstanceState
+   * @return
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_vital_sign, container, false);

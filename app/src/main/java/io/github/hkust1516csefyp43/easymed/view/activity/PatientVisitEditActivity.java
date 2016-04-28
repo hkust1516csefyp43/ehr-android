@@ -302,7 +302,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     };
     new MaterialDialog.Builder(this)
         .title("Are you sure")
-        .content("ALl the unsave data will be losed")
+        .content("All the unsave data will be losed")
         .positiveText("Leave")
         .negativeText("Stay")
         .onPositive(yes)
@@ -1177,17 +1177,23 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return personalDataFragment;
         case 1:
           if (vitalSignFragment == null){
-            vitalSignFragment = VitalSignFragment.newInstance();
+            vitalSignFragment = VitalSignFragment.newInstance(thisTriage);
           }
           return vitalSignFragment;
         case 2:
           if (chiefComplaintFragment == null){
-            chiefComplaintFragment = ChiefComplaintFragment.newInstance();
+            if (thisTriage != null)
+              chiefComplaintFragment = ChiefComplaintFragment.newInstance(thisTriage.getChiefComplaints());
+            else
+              chiefComplaintFragment = ChiefComplaintFragment.newInstance(null);
           }
           return chiefComplaintFragment;
         case 3:
           if (triageRemarkFragment == null){
-            triageRemarkFragment = RemarkFragment.newInstance();
+            if (thisTriage != null)
+              triageRemarkFragment = RemarkFragment.newInstance(thisTriage.getRemark(), true);
+            else
+              triageRemarkFragment = RemarkFragment.newInstance(null, false);
           }
           return triageRemarkFragment;
         case 4:
@@ -1311,7 +1317,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return followupFragment;
         case 20:
           if (consultationRemarkFragment == null) {
-            consultationRemarkFragment = RemarkFragment.newInstance();
+            if (thisConsultation != null)
+              consultationRemarkFragment = RemarkFragment.newInstance(thisConsultation.getRemark(), true);
+            else
+              consultationRemarkFragment = RemarkFragment.newInstance(null, false);
           }
           return consultationRemarkFragment;
         default:
