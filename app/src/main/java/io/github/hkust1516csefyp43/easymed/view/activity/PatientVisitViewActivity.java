@@ -121,8 +121,12 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
             if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().getFileInBase64() != null) {
               byte[] decodedString = Base64.decode(response.body().getFileInBase64(), Base64.DEFAULT);
               Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-              ivProfilePic.setScaleType(ImageView.ScaleType.CENTER_CROP);
-              ivProfilePic.setImageBitmap(decodedByte);
+              if (decodedByte != null) {
+                ivProfilePic.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                ivProfilePic.setImageBitmap(decodedByte);
+              } else {
+                thisPatient.setProfilePicBase64(Const.EMPTY_STRING);
+              }
             }
           }
 
@@ -136,7 +140,12 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
       } else if (thisPatient.getProfilePicBase64() != null && !thisPatient.getProfilePicBase64().equals(Const.EMPTY_STRING)) {
         byte[] decodedString = Base64.decode(thisPatient.getProfilePicBase64(), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        ivProfilePic.setImageBitmap(decodedByte);
+        if (decodedByte != null) {
+          ivProfilePic.setScaleType(ImageView.ScaleType.CENTER_CROP);
+          ivProfilePic.setImageBitmap(decodedByte);
+        } else {
+          thisPatient.setProfilePicBase64(Const.EMPTY_STRING);
+        }
       }
     }
 

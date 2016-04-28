@@ -427,8 +427,13 @@ public class PatientListFragment extends Fragment{
                 byte[] decodedString = Base64.decode(response.body().getFileInBase64(), Base64.DEFAULT);
                 if (decodedString != null) {
                   Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                  decodedByte = ImageTransformer.circleCrop(ImageTransformer.centerCrop(decodedByte));
-                  holder.proPic.setImageBitmap(decodedByte);
+                  if (decodedByte != null) {
+                    decodedByte = ImageTransformer.circleCrop(ImageTransformer.centerCrop(decodedByte));
+                    holder.proPic.setImageBitmap(decodedByte);
+                  }
+                } else {
+                  aPatient.setProfilePicBase64(Const.EMPTY_STRING);
+                  patients.set(position, aPatient);
                 }
               }
             }
@@ -444,8 +449,13 @@ public class PatientListFragment extends Fragment{
         } else if (aPatient.getProfilePicBase64() != null && !aPatient.getProfilePicBase64().equals(Const.EMPTY_STRING)) {
           byte[] decodedString = Base64.decode(aPatient.getProfilePicBase64(), Base64.DEFAULT);
           Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-          decodedByte = ImageTransformer.circleCrop(ImageTransformer.centerCrop(decodedByte));
-          holder.proPic.setImageBitmap(decodedByte);
+          if (decodedByte != null) {
+            decodedByte = ImageTransformer.circleCrop(ImageTransformer.centerCrop(decodedByte));
+            holder.proPic.setImageBitmap(decodedByte);
+          } else {
+            aPatient.setProfilePicBase64(Const.EMPTY_STRING);
+            patients.set(position, aPatient);
+          }
         }
 
         StringBuilder subtitle = new StringBuilder();
