@@ -33,6 +33,7 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -82,6 +83,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   private boolean anyError = false;
   private int[] preFillBirthday = new int[3];
   private int cantTouchThis = 0;
+  private String profilePicBase64 = null;
 
   public static PersonalDataFragment newInstance(Patient p) {
     PersonalDataFragment fragment = new PersonalDataFragment();
@@ -429,6 +431,10 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
           //TODO imageBitmap is just a thumbnail >> low resolution >> ugly
           //http://developer.android.com/training/camera/photobasics.html
           ivProfilePic.setImageBitmap(ImageTransformer.centerCrop(imageBitmap));
+          ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+          imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+          byte[] byteArray = byteArrayOutputStream .toByteArray();
+          profilePicBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
         } else {
           Log.d("qqq811", "umm the image is null");
         }
@@ -450,6 +456,9 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   @Override
   public Serializable onSendData() {
     PersonalData pd = new PersonalData();
+    if (profilePicBase64 != null) {
+      pd.setProfilePicBase64(profilePicBase64);
+    }
     if (etFirstName != null) {
       if (etFirstName.getText() == null || etFirstName.getText().length() <= 0) {
         etFirstName.setError("First name must not be empty");

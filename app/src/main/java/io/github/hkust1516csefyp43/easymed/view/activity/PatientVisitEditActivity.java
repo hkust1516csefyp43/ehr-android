@@ -570,7 +570,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         if (!errorInAnyPage) {
           if (thisPatient != null) {
             if (isTriage) {
-              if (thisTriage != null) {                                                               //existing patient edit triage
+              if (thisTriage != null) {                                                               //existing patient edit triage  TODO update profile pic if personalData.getProfilePicBase64 exists
                 //PUT patient
                 Log.d(TAG, "Existing patient edit visit edit triage");
                 Patient patient = generatePatient(personalData);
@@ -661,7 +661,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                     }
                   });
                 }
-              } else {                                                                                //existing patient new triage
+              } else {                                                                                //existing patient new triage  TODO upload profile pic if personalData.getProfilePicBase64 exists
                 //PUT patient
                 Log.d(TAG, "Existing patient new visit new triage");
                 Patient patient = generatePatient(personalData);
@@ -747,7 +747,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                 }
               }
             } else {
-              if (thisConsultation != null) {                                                         //existing patient edit consultation (and triage)
+              if (thisConsultation != null) {                                                         //existing patient edit consultation (and triage)  TODO update profile pic if personalData.getProfilePicBase64 exists
                 //PUT patient
                 //PUT visit (iff tag number have been modified?)
                 //PUT triage
@@ -756,7 +756,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                 //PUT investigations (how?)
                 //Update related_data (how?)
               } else {
-                if (thisTriage != null) {                                                             //existing patient new consultation edit triage
+                if (thisTriage != null) {                                                             //existing patient new consultation edit triage  TODO update profile pic if personalData.getProfilePicBase64 exists
                   //PUT patient
                   //PUT visit (iff tag number have been modified?)
                   //PUT triage
@@ -764,7 +764,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                   //POST related_data
                   //POST investigation
                   //POST prescription
-                } else {                                                                              //existing patient new consultation new triage
+                } else {                                                                              //existing patient new consultation new triage  TODO update profile pic if personalData.getProfilePicBase64 exists
                   //PUT patient
                   //POST visit
                   //POST triage
@@ -776,7 +776,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
               }
             }
           } else {
-            if (isTriage) {                                                                           //new patient new triage
+            if (isTriage) {                                                                           //new patient new triage  TODO upload profile pic if personalData.getProfilePicBase64 exists
               //POST patient
               Log.d(TAG, "New patient new visit new triage");
               Patient patient = generatePatient(personalData);
