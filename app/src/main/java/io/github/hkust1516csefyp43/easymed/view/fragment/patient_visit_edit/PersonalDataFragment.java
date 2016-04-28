@@ -180,9 +180,10 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
           Bitmap decodedByte = ImageTransformer.centerCrop(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
           ivProfilePic.setImageBitmap(decodedByte);
         }
-      } else {
-        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(patient.getLastNameSpaceFirstName())));
       }
+//      else {
+//        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(patient.getLastNameSpaceFirstName())));
+//      }
       ivProfilePic.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
