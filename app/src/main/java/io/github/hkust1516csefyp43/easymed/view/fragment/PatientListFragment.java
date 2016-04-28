@@ -177,8 +177,8 @@ public class PatientListFragment extends Fragment{
     switch (whichPage) {
       case Const.PatientListPageId.POST_TRIAGE:
       case Const.PatientListPageId.PRE_CONSULTATION:
-        Call<List<Patient>> patientList = patientService.getPatients("1", clincId, "2", null, null, null, null, null, null, null, Util.todayString());         //set to today == nothing to see -_-
-//        Call<List<Patient>> patientList = patientService.getPatients("1", null, "2", null, null, null, null, null, null, null, null);
+        Log.d(TAG, clincId + "/" + Util.todayString());
+        Call<List<Patient>> patientList = patientService.getPatients("1", clincId, "2", null, null, null, null, null, null, null, Util.todayString());
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -233,8 +233,7 @@ public class PatientListFragment extends Fragment{
         break;
       case Const.PatientListPageId.POST_CONSULTATION:
       case Const.PatientListPageId.PRE_PHARMACY:
-        Call<List<Patient>> patientList3 = patientService.getPatients("1", clincId, "3", null, null, null, null, null, null, null, Util.todayString());          //set to today == nothing to see -_-
-//        Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, null);
+        Call<List<Patient>> patientList3 = patientService.getPatients("1", clincId, "3", null, null, null, null, null, null, null, Util.todayString());
         patientList3.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -259,8 +258,7 @@ public class PatientListFragment extends Fragment{
         });
         break;
       case Const.PatientListPageId.POST_PHARMACY:
-        Call<List<Patient>> patientList4 = patientService.getPatients("1", clincId, "1", null, null, null, null, null, null, null, Util.todayString());          //set to today == nothing to see -_-
-//        Call<List<Patient>> patientList4 = patientService.getPatients("1", null, "1", null, null, null, null, null, null, null, null);
+        Call<List<Patient>> patientList4 = patientService.getPatients("1", clincId, "1", null, null, null, null, null, null, null, Util.todayString());
         patientList4.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -471,11 +469,13 @@ public class PatientListFragment extends Fragment{
           subtitle.append(gendersHashMap.get(aPatient.getGenderId()));
         }
         if (aPatient.getBirthYear() != null && aPatient.getBirthYear() != null && aPatient.getBirthYear() != null) {
-//          Log.d(TAG, "here:" + subtitle.toString() + ":end; length: " + subtitle.toString().length());
-          if (subtitle.toString().length() > 0) {
-            subtitle.append(" / ");
+          String bdString = Util.birthdayToAgeString(aPatient.getBirthYear(), aPatient.getBirthMonth(), aPatient.getBirthDate());
+          if (bdString != null) {
+            if (subtitle.toString().length() > 0) {
+              subtitle.append(" / ");
+            }
+            subtitle.append(bdString);
           }
-          subtitle.append(Util.birthdayToAgeString(aPatient.getBirthYear(), aPatient.getBirthMonth(), aPatient.getBirthDate()));
         }
         holder.subtitle.setText(subtitle.toString());
 
