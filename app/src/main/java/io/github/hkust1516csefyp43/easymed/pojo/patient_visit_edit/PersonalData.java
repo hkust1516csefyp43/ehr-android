@@ -7,8 +7,9 @@ import java.io.Serializable;
  * Created by Louis on 6/4/16.
  */
 public class PersonalData implements Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
 
+  private String profilePicBase64;
   private String firstName;
   private String middleName;
   private String lastName;
@@ -114,10 +115,19 @@ public class PersonalData implements Serializable {
     this.phoneNumber = phoneNumber;
   }
 
+  public String getProfilePicBase64() {
+    return profilePicBase64;
+  }
+
+  public void setProfilePicBase64(String profilePicBase64) {
+    this.profilePicBase64 = profilePicBase64;
+  }
+
   @Override
   public String toString() {
     return "PersonalData{" +
-        "firstName='" + firstName + '\'' +
+        "profilePicBase64='" + profilePicBase64 + '\'' +
+        ", firstName='" + firstName + '\'' +
         ", middleName='" + middleName + '\'' +
         ", lastName='" + lastName + '\'' +
         ", nativeName='" + nativeName + '\'' +

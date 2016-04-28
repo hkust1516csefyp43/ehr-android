@@ -570,7 +570,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         if (!errorInAnyPage) {
           if (thisPatient != null) {
             if (isTriage) {
-              if (thisTriage != null) {                                                               //existing patient edit triage
+              if (thisTriage != null) {                                                               //existing patient edit triage  TODO update profile pic if personalData.getProfilePicBase64 exists
                 //PUT patient
                 Log.d(TAG, "Existing patient edit visit edit triage");
                 Patient patient = generatePatient(personalData);
@@ -592,7 +592,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                         onFailure(call, new Throwable("No response"));
                       } else {
                         //PUT visit (iff tag number have been modified?)
-                        Visit visit = generateVisit(response.body(), pd, 2);
+                        Visit visit = generateVisit(response.body(), pd, Const.NextStation.CONSULTATION);
                         Log.d(TAG, "Editing Visit: " + visit);
                         if (visit.getTag() != thisVisit.getTag()) {
                           if (visit != null) {
@@ -661,7 +661,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                     }
                   });
                 }
-              } else {                                                                                //existing patient new triage
+              } else {                                                                                //existing patient new triage  TODO upload profile pic if personalData.getProfilePicBase64 exists
                 //PUT patient
                 Log.d(TAG, "Existing patient new visit new triage");
                 Patient patient = generatePatient(personalData);
@@ -683,7 +683,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                         onFailure(call, new Throwable("No response"));
                       }else {
                         //POST visit
-                        Visit visit = generateVisit(response.body(), pd, 2);
+                        Visit visit = generateVisit(response.body(), pd, Const.NextStation.CONSULTATION);
                         if (visit != null) {
                           Call<Visit> visitCall = visitService.addVisit("1", visit);
                           visitCall.enqueue(new Callback<Visit>() {
@@ -747,7 +747,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                 }
               }
             } else {
-              if (thisConsultation != null) {                                                         //existing patient edit consultation (and triage)
+              if (thisConsultation != null) {                                                         //existing patient edit consultation (and triage)  TODO update profile pic if personalData.getProfilePicBase64 exists
                 //PUT patient
                 //PUT visit (iff tag number have been modified?)
                 //PUT triage
@@ -756,15 +756,90 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                 //PUT investigations (how?)
                 //Update related_data (how?)
               } else {
-                if (thisTriage != null) {                                                             //existing patient new consultation edit triage
-                  //PUT patient
-                  //PUT visit (iff tag number have been modified?)
-                  //PUT triage
-                  //POST consultation
-                  //POST related_data
-                  //POST investigation
-                  //POST prescription
-                } else {                                                                              //existing patient new consultation new triage
+                if (thisTriage != null) {                                                             //existing patient new consultation edit triage  TODO update profile pic if personalData.getProfilePicBase64 exists
+                  Patient patient = generatePatient(personalData);
+                  if (patient != null) {
+                    Call<Patient> patientCall = patientService.addPatient("1", patient);  //PUT patient
+                    patientCall.enqueue(new Callback<Patient>() {
+                      @Override
+                      public void onResponse(Call<Patient> call, Response<Patient> response) {
+                        if (response  == null || response.code() < 200 || response.code() >= 300 || response.body() == null) {
+                          onFailure(call, new Throwable("sth wrong"));
+                        } else {                                                          //PUT visit (iff tag number have been modified?)
+                          Visit visit = generateVisit(response.body(), pd, Const.NextStation.PHARMACY);
+                          Log.d(TAG, "Editing Visit: " + visit);
+                          if (visit != null) {
+                            Call<Visit> visitCall = visitService.editVisit("1", visit, thisVisit.getId());
+                            visitCall.enqueue(new Callback<Visit>() {
+                              @Override
+                              public void onResponse(Call<Visit> call, Response<Visit> response) {
+//                                  Log.d(TAG, "visit call response code: " + response.code());
+//                                  if (response.code() < 500 && response.code() >= 400) {
+//                                    try {
+//                                      Log.d(TAG, response.errorBody().string());
+//                                    } catch (IOException e) {
+//                                      e.printStackTrace();
+//                                    }
+//                                  }
+//                                  Log.d(TAG, response.body().toString());
+//                                  if (response.body() == null || response.code() > 299 || response.code() < 200) {
+//                                    onFailure(call, new Throwable("No response"));
+//                                  } else {
+//                                    //PUT triage
+//                                    Log.d(TAG, "Editing triage: " + thisTriage);
+//                                    Triage triage = generateTriage(response.body(), vs, cc, tr);
+//                                    Call<Triage> triageCall = triageService.editTriage("1", triage, thisTriage.getId());
+//                                    triageCall.enqueue(new Callback<Triage>() {
+//                                      @Override
+//                                      public void onResponse(Call<Triage> call, Response<Triage> response) {
+//                                        Log.d(TAG, "triage call response code: " + response.code());
+//                                        if (response.code() < 500 && response.code() >= 400) {
+//                                          try {
+//                                            Log.d(TAG, response.errorBody().string());
+//                                          } catch (IOException e) {
+//                                            e.printStackTrace();
+//                                          }
+//                                        }
+//                                        Log.d(TAG, response.body().toString());
+//                                        progressDialog.dismiss();
+//                                        finish();
+//                                      }
+//
+//                                      @Override
+//                                      public void onFailure(Call<Triage> call, Throwable t) {
+//                                        progressDialog.dismiss();
+//                                        //TODO error dialog
+//                                      }
+//                                    });
+//                                  }
+                              }
+
+                              @Override
+                              public void onFailure(Call<Visit> call, Throwable t) {
+                                progressDialog.dismiss();
+                                //TODO error dialog
+                              }
+                            });
+                          }
+
+
+                        }
+                      }
+
+                      @Override
+                      public void onFailure(Call<Patient> call, Throwable t) {
+
+                      }
+                    });
+
+                    //PUT visit (iff tag number have been modified?)
+                    //PUT triage
+                    //POST consultation
+                    //POST related_data
+                    //POST investigation
+                    //POST prescription
+                  }
+                } else {                                                                              //existing patient new consultation new triage  TODO update profile pic if personalData.getProfilePicBase64 exists
                   //PUT patient
                   //POST visit
                   //POST triage
@@ -776,7 +851,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
               }
             }
           } else {
-            if (isTriage) {                                                                           //new patient new triage
+            if (isTriage) {                                                                           //new patient new triage  TODO upload profile pic if personalData.getProfilePicBase64 exists
               //POST patient
               Log.d(TAG, "New patient new visit new triage");
               Patient patient = generatePatient(personalData);
@@ -798,7 +873,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                       onFailure(call, new Throwable("No response"));
                     } else {
                       //POST visit
-                      Visit visit = generateVisit(response.body(), pd, 2);
+                      Visit visit = generateVisit(response.body(), pd, Const.NextStation.CONSULTATION);
                       if (visit != null) {
                         Call<Visit> visitCall = visitService.addVisit("1", visit);
                         visitCall.enqueue(new Callback<Visit>() {
@@ -1207,7 +1282,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return diagnosisFragment;
         case 16:
           if (investigationFragment == null) {
-              investigationFragment = ListOfCardsFragment.newInstance("Investigation");
+            investigationFragment = ListOfCardsFragment.newInstance("Investigation");
           }
           return investigationFragment;
         case 17:

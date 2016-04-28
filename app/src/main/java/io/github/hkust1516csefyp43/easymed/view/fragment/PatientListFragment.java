@@ -31,10 +31,12 @@ import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Attachment;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
-import io.github.hkust1516csefyp43.easymed.utility.CircleTransform;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.ImageTransformer;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
@@ -155,6 +157,12 @@ public class PatientListFragment extends Fragment{
   }
 
   private void proceed() {
+    Clinic clinic = Cache.CurrentUser.getClinic(getContext());
+    String clincId = null;
+    if (clinic != null && clinic.getClinicId() != null) {
+      clincId = clinic.getClinicId();
+    }
+
     OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
     ohc1.readTimeout(1, TimeUnit.MINUTES);
     ohc1.connectTimeout(1, TimeUnit.MINUTES);
@@ -169,7 +177,7 @@ public class PatientListFragment extends Fragment{
     switch (whichPage) {
       case Const.PatientListPageId.POST_TRIAGE:
       case Const.PatientListPageId.PRE_CONSULTATION:
-        Call<List<Patient>> patientList = patientService.getPatients("1", null, "2", null, null, null, null, null, null, null, Util.todayString());         //set to today == nothing to see -_-
+        Call<List<Patient>> patientList = patientService.getPatients("1", clincId, "2", null, null, null, null, null, null, null, Util.todayString());         //set to today == nothing to see -_-
 //        Call<List<Patient>> patientList = patientService.getPatients("1", null, "2", null, null, null, null, null, null, null, null);
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
@@ -198,7 +206,7 @@ public class PatientListFragment extends Fragment{
         });
         break;
       case Const.PatientListPageId.NOT_YET:
-        Call<List<Patient>> patientList2 = patientService.getPatients("1", null, null, null, null, null, null, null, null, null, null);
+        Call<List<Patient>> patientList2 = patientService.getPatients("1", clincId, null, null, null, null, null, null, null, null, null);
         patientList2.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -225,7 +233,7 @@ public class PatientListFragment extends Fragment{
         break;
       case Const.PatientListPageId.POST_CONSULTATION:
       case Const.PatientListPageId.PRE_PHARMACY:
-        Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, Util.todayString());          //set to today == nothing to see -_-
+        Call<List<Patient>> patientList3 = patientService.getPatients("1", clincId, "3", null, null, null, null, null, null, null, Util.todayString());          //set to today == nothing to see -_-
 //        Call<List<Patient>> patientList3 = patientService.getPatients("1", null, "3", null, null, null, null, null, null, null, null);
         patientList3.enqueue(new Callback<List<Patient>>() {
           @Override
@@ -251,7 +259,7 @@ public class PatientListFragment extends Fragment{
         });
         break;
       case Const.PatientListPageId.POST_PHARMACY:
-        Call<List<Patient>> patientList4 = patientService.getPatients("1", null, "1", null, null, null, null, null, null, null, Util.todayString());          //set to today == nothing to see -_-
+        Call<List<Patient>> patientList4 = patientService.getPatients("1", clincId, "1", null, null, null, null, null, null, null, Util.todayString());          //set to today == nothing to see -_-
 //        Call<List<Patient>> patientList4 = patientService.getPatients("1", null, "1", null, null, null, null, null, null, null, null);
         patientList4.enqueue(new Callback<List<Patient>>() {
           @Override
@@ -280,7 +288,7 @@ public class PatientListFragment extends Fragment{
       case Const.PatientListPageId.TRIAGE_SEARCH:
         Log.d(TAG, "name: " + nameSearchName);
         if (nameSearchName != null) {
-          Call<List<Patient>> patientCall = patientService.getPatients("1", null, null, null, null, null, null, null, null, nameSearchName, null);
+          Call<List<Patient>> patientCall = patientService.getPatients("1", clincId, null, null, null, null, null, null, null, nameSearchName, null);
           patientCall.enqueue(new Callback<List<Patient>>() {
             @Override
             public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -310,7 +318,7 @@ public class PatientListFragment extends Fragment{
         break;
       case Const.PatientListPageId.CONSULTATION_SEARCH:
         if (nameSearchName != null) {
-          Call<List<Patient>> patientCall = patientService.getPatients("1", null, null, null, null, null, null, null, null, nameSearchName, null);
+          Call<List<Patient>> patientCall = patientService.getPatients("1", clincId, null, null, null, null, null, null, null, nameSearchName, null);
           patientCall.enqueue(new Callback<List<Patient>>() {
             @Override
             public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -425,8 +433,16 @@ public class PatientListFragment extends Fragment{
             public void onResponse(Call<Attachment> call, Response<Attachment> response) {
               if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().getFileInBase64() != null) {
                 byte[] decodedString = Base64.decode(response.body().getFileInBase64(), Base64.DEFAULT);
-                Bitmap decodedByte = CircleTransform.transform(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
-                holder.proPic.setImageBitmap(decodedByte);
+                if (decodedString != null) {
+                  Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                  if (decodedByte != null) {
+                    decodedByte = ImageTransformer.circleCrop(ImageTransformer.centerCrop(decodedByte));
+                    holder.proPic.setImageBitmap(decodedByte);
+                  }
+                } else {
+                  aPatient.setProfilePicBase64(Const.EMPTY_STRING);
+                  patients.set(position, aPatient);
+                }
               }
             }
 
@@ -440,8 +456,14 @@ public class PatientListFragment extends Fragment{
           });
         } else if (aPatient.getProfilePicBase64() != null && !aPatient.getProfilePicBase64().equals(Const.EMPTY_STRING)) {
           byte[] decodedString = Base64.decode(aPatient.getProfilePicBase64(), Base64.DEFAULT);
-          Bitmap decodedByte = CircleTransform.transform(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
-          holder.proPic.setImageBitmap(decodedByte);
+          Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+          if (decodedByte != null) {
+            decodedByte = ImageTransformer.circleCrop(ImageTransformer.centerCrop(decodedByte));
+            holder.proPic.setImageBitmap(decodedByte);
+          } else {
+            aPatient.setProfilePicBase64(Const.EMPTY_STRING);
+            patients.set(position, aPatient);
+          }
         }
 
         StringBuilder subtitle = new StringBuilder();

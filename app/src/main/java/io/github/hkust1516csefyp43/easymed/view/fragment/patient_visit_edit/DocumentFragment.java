@@ -42,7 +42,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DocumentFragment extends Fragment implements OnSendData{
+public class DocumentFragment extends Fragment implements OnSendData {
   public static final String TAG = DocumentFragment.class.getSimpleName();
   private static final String key1 = Const.BundleKey.EDIT_PATIENT;
   private static final String key2 = Const.BundleKey.WHICH_DOCUMENT;

@@ -1,6 +1,8 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Attachment;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
@@ -71,7 +75,7 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
 
     setSupportActionBar(toolbar);
 
-    ImageView ivProfilePic = (ImageView) findViewById(R.id.profile_pic);
+    final ImageView ivProfilePic = (ImageView) findViewById(R.id.profile_pic);
 
     thisPatient = (Patient) this.getIntent().getSerializableExtra(Const.BundleKey.READ_ONLY_PATIENT);
     fabOn = getIntent().getBooleanExtra(Const.BundleKey.ON_OR_OFF, false);
@@ -98,7 +102,51 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
     }
 
     if (ivProfilePic != null && thisPatient != null) {
-      ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(thisPatient.getLastNameSpaceFirstName())));
+      ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(thisPatient.getLastNameSpaceFirstName())));        //act as placeholder + fallback
+      if (thisPatient.getImageId() != null && thisPatient.getProfilePicBase64() == null) {
+        OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+        ohc1.readTimeout(1, TimeUnit.MINUTES);
+        ohc1.connectTimeout(1, TimeUnit.MINUTES);
+        Retrofit retrofit = new Retrofit
+            .Builder()
+            .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+            .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+            .client(ohc1.build())
+            .build();
+        v2API.attachments attachmentService = retrofit.create(v2API.attachments.class);
+        Call<Attachment> attachmentCall = attachmentService.getAttachment("1", thisPatient.getImageId());
+        attachmentCall.enqueue(new Callback<Attachment>() {
+          @Override
+          public void onResponse(Call<Attachment> call, Response<Attachment> response) {
+            if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().getFileInBase64() != null) {
+              byte[] decodedString = Base64.decode(response.body().getFileInBase64(), Base64.DEFAULT);
+              Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+              if (decodedByte != null) {
+                ivProfilePic.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                ivProfilePic.setImageBitmap(decodedByte);
+              } else {
+                thisPatient.setProfilePicBase64(Const.EMPTY_STRING);
+              }
+            }
+          }
+
+          @Override
+          public void onFailure(Call<Attachment> call, Throwable t) {
+            t.printStackTrace();
+            ivProfilePic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(thisPatient.getLastNameSpaceFirstName())));
+            thisPatient.setProfilePicBase64(Const.EMPTY_STRING);
+          }
+        });
+      } else if (thisPatient.getProfilePicBase64() != null && !thisPatient.getProfilePicBase64().equals(Const.EMPTY_STRING)) {
+        byte[] decodedString = Base64.decode(thisPatient.getProfilePicBase64(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        if (decodedByte != null) {
+          ivProfilePic.setScaleType(ImageView.ScaleType.CENTER_CROP);
+          ivProfilePic.setImageBitmap(decodedByte);
+        } else {
+          thisPatient.setProfilePicBase64(Const.EMPTY_STRING);
+        }
+      }
     }
 
     //TODO /v2/visits/ token patient_id >> populate ui accordingly
