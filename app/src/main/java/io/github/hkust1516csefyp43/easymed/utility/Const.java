@@ -16,6 +16,13 @@ public class Const {
   public static final int ACTION_SELECT_PICTURE = 1;
   public static final int ACTION_REMOVE_PICTURE = 2;
 
+  public class NextStation {
+    public static final int TRIAGE = 1;
+    public static final int CONSULTATION = 2;
+    public static final int PHARMACY = 3;
+    public static final int FINISHED = 1;
+  }
+
   public class PatientListPageId {
     public static final int POST_TRIAGE = 1;
     public static final int NOT_YET = 2;
