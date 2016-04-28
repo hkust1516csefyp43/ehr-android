@@ -5,10 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -91,19 +87,25 @@ public class Util {
   /**
    * calculate age for PersonalDataFragment
    * @param year
-   * @param month
+   * @param month 0-11
    * @param day
    * @return int array of 3: year, month and week
    */
   public static int[] birthdayToAgeYMW(int year, int month, int day) {
-    int[] ageArray = new int[3];  //Year Month Week
-    LocalDate birthday = new LocalDate(year, month, day);
-    LocalDate now = new LocalDate();
-    PeriodType periodType = PeriodType.yearMonthDayTime();
-    Period difference = new Period(birthday, now, periodType);
-    ageArray[0] = difference.getYears();
-    ageArray[1] = difference.getMonths();
-    ageArray[2] = difference.getDays()/7;
+    int[] ageArray = new int[3];  //Year Month Day/Week
+    GregorianCalendar now = new GregorianCalendar();
+    ageArray[0] = now.get(Calendar.YEAR) - year;
+    ageArray[1] = now.get(Calendar.MONTH) - month;
+    ageArray[2] = now.get(Calendar.DAY_OF_MONTH) - day;
+    if (ageArray[2] < 0)
+      ageArray[1]--;
+    if (ageArray[1] < 0) {
+      ageArray[0] --;
+      ageArray[1] = 12 + ageArray[1];
+    }
+    if (ageArray[0] < 0)
+      return null;        //error
+    ageArray[2] = ageArray[2] / 7;
     return ageArray;
   }
 
@@ -116,7 +118,7 @@ public class Util {
   public static String birthdayToAgeString(int year, int month, int day) {
     GregorianCalendar n = new GregorianCalendar();
     if (year < 1800 || month < 1 || month > 12 || day < 1 || day > 31 || new GregorianCalendar(year, month - 1, day).compareTo(n) != -1) {
-      return "Invalid birthday";
+      return null;
     } else {
       long now = new GregorianCalendar().getTimeInMillis();
       long bd = new GregorianCalendar(year, month - 1, day).getTimeInMillis();
