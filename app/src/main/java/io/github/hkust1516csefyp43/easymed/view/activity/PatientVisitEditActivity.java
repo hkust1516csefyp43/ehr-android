@@ -302,9 +302,9 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     };
     new MaterialDialog.Builder(this)
         .title("Are you sure")
-        .content("Please don't leave")
-        .positiveText("Fuck off")
-        .negativeText("okey dokey")
+        .content("ALl the unsave data will be losed")
+        .positiveText("Leave")
+        .negativeText("Stay")
         .onPositive(yes)
         .onNegative(no)
         .autoDismiss(false)

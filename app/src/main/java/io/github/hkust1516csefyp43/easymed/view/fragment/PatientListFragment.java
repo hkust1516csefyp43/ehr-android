@@ -157,10 +157,13 @@ public class PatientListFragment extends Fragment{
   }
 
   private void proceed() {
-    Clinic clinic = Cache.CurrentUser.getClinic(getContext());
+    Context context = getContext();
     String clincId = null;
-    if (clinic != null && clinic.getClinicId() != null) {
-      clincId = clinic.getClinicId();
+    if (context != null) {
+      Clinic clinic = Cache.CurrentUser.getClinic(context);
+      if (clinic != null && clinic.getClinicId() != null) {
+        clincId = clinic.getClinicId();
+      }
     }
 
     OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
