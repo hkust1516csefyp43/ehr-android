@@ -68,6 +68,10 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
 
   private ArrayList<Card> cardList = new ArrayList<>();
 
+  //prescription specific stuff
+  private HashMap<String, String> medicationVsIdHM = new HashMap<>();
+  private boolean inMedicationPage = false;
+
   public static ListOfCardsFragment newInstance(String title) {
     ListOfCardsFragment fragment = new ListOfCardsFragment();
     Bundle args = new Bundle();
@@ -391,58 +395,88 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       recyclerView.setAdapter(adapter);
       recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
     } else if (category > 0) {                                                                      //TODO create a blank page w/ keywords
-
-      v2API.keywords keywordService = retrofit.create(v2API.keywords.class);
-      Call<List<Keyword>> keywordsCall = null;
-      switch (category) {
-        case 1:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null);
-          break;
-        case 2:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, null, true, null, null, null, null, null, null, null, null, null, null, null);
-          break;
-        case 3:
-          keywordsCall = keywordService.getKeywords("1", null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null);
-          break;
-        case 4:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, true, null, null, null, null, null, null, null, null, null);
-          break;
-        case 5:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, true, null, null, null, null, null, null, null, null, null, null);
-          break;
-        case 7:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, true, null, null, null, null, null, null, null, null);
-          break;
-        default:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-      }
-      if (keywordsCall != null) {
-        keywordsCall.enqueue(new Callback<List<Keyword>>() {
+      if (category == 6) {
+        v2API.medications medicationService = retrofit.create(v2API.medications.class);
+        Call<List<Medication>> medicationsCall = medicationService.getMedications("1", null, null, null, null, null, null);
+        medicationsCall.enqueue(new Callback<List<Medication>>() {
           @Override
-          public void onResponse(Call<List<Keyword>> call, Response<List<Keyword>> response) {
+          public void onResponse(Call<List<Medication>> call, Response<List<Medication>> response) {
             if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
+              inMedicationPage = true;
               ArrayList<String> keywordArrayList = new ArrayList<>();
-              for (Keyword k : response.body()) {
-                keywordArrayList.add(k.getKeyword());
+              for (Medication m:response.body()) {
+                medicationVsIdHM.put(m.getMedication(), m.getMedicationId());
+                keywordArrayList.add(m.getMedication());
               }
               adapter = new FragRecyclerViewAdapter(getContext(), false, keywordArrayList, title);
               recyclerView.setAdapter(adapter);
               recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
             } else {
-              onFailure(call, new Throwable("sth wrong when fetching keywords"));
+              onFailure(call, new Throwable("sth wrong when getting list of medications"));
             }
           }
 
           @Override
-          public void onFailure(Call<List<Keyword>> call, Throwable t) {
-            t.printStackTrace();
+          public void onFailure(Call<List<Medication>> call, Throwable t) {
+            t.printStackTrace();                //no keywords, just type
             adapter = new FragRecyclerViewAdapter(getContext(), false, null, title);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
           }
         });
-      } else {    //TODO keywordcall is empty, which should never happen (because switch + default)
+      } else {
+        v2API.keywords keywordService = retrofit.create(v2API.keywords.class);
+        Call<List<Keyword>> keywordsCall = null;
+        switch (category) {
+          case 1:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null);
+            break;
+          case 2:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, true, null, null, null, null, null, null, null, null, null, null, null);
+            break;
+          case 3:
+            keywordsCall = keywordService.getKeywords("1", null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            break;
+          case 4:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, true, null, null, null, null, null, null, null, null, null);
+            break;
+          case 5:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, true, null, null, null, null, null, null, null, null, null, null);
+            break;
+          case 7:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, true, null, null, null, null, null, null, null, null);
+            break;
+          default:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        }
+        if (keywordsCall != null) {
+          keywordsCall.enqueue(new Callback<List<Keyword>>() {
+            @Override
+            public void onResponse(Call<List<Keyword>> call, Response<List<Keyword>> response) {
+              if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
+                ArrayList<String> keywordArrayList = new ArrayList<>();
+                for (Keyword k : response.body()) {
+                  keywordArrayList.add(k.getKeyword());
+                }
+                adapter = new FragRecyclerViewAdapter(getContext(), false, keywordArrayList, title);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+              } else {
+                onFailure(call, new Throwable("sth wrong when fetching keywords"));
+              }
+            }
 
+            @Override
+            public void onFailure(Call<List<Keyword>> call, Throwable t) {
+              t.printStackTrace();
+              adapter = new FragRecyclerViewAdapter(getContext(), false, null, title);
+              recyclerView.setAdapter(adapter);
+              recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            }
+          });
+        } else {    //TODO keywordcall is empty, which should never happen (because switch + default)
+
+        }
       }
     }
     return view;
@@ -472,7 +506,15 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
   @Override
   public Serializable onSendData() {
     if (adapter != null) {
-      return new ListOfCards(cardList);
+      if (inMedicationPage) {         //translate medicaiton name into id
+        ArrayList<Card> newCardList = new ArrayList<>();
+        for (Card c:cardList) {
+          Card newCard = new Card(medicationVsIdHM.get(c.getCardTitle()), c.getCardDescription());
+          newCardList.add(newCard);
+        }
+        return newCardList;
+      } else
+        return new ListOfCards(cardList);
     }
     return null;
   }

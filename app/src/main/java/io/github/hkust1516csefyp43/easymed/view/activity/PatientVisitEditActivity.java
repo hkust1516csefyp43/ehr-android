@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -49,6 +50,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.VitalSigns;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
@@ -1111,7 +1113,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     return consultation;
   }
 
-  private ArrayList<RelatedData> generateRelatedDataPlural (@NonNull Consultation consultation, ListOfCards drugHistory, ListOfCards screening, ListOfCards allergy, ListOfCards diagnosis, ListOfCards investigations, ListOfCards advice, ListOfCards followup) {
+  private ArrayList<RelatedData> generateRelatedDataPlural (@NonNull Consultation consultation, @Nullable ListOfCards drugHistory, @Nullable ListOfCards screening, @Nullable ListOfCards allergy, @Nullable ListOfCards diagnosis, @Nullable ListOfCards investigations, @Nullable ListOfCards advice, @Nullable ListOfCards followup) {
     ArrayList<RelatedData> relatedDataArrayList = new ArrayList<>();
     if (drugHistory != null && drugHistory.getCardArrayList() != null && drugHistory.getCardArrayList().size() > 0) {
       for (Card c:drugHistory.getCardArrayList()) {
@@ -1184,6 +1186,20 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       }
     }
     return relatedDataArrayList;
+  }
+
+  private ArrayList<Prescription> generatePrescriptions(@NonNull Consultation consultation, ListOfCards prescriptions) {
+    ArrayList<Prescription> prescriptionArrayList = new ArrayList<>();
+    if (prescriptions != null && prescriptions.getCardArrayList() != null && prescriptions.getCardArrayList().size() > 0) {
+      for (Card c:prescriptions.getCardArrayList()) {
+        Prescription aPrescription = new Prescription();
+        aPrescription.setConsultationId(consultation.getId());
+        aPrescription.setPrescribed(false);
+        aPrescription.setDetail(c.getCardDescription());
+        aPrescription.setMedicationId(c.getCardTitle());
+      }
+    }
+    return prescriptionArrayList;
   }
 
   @Override
