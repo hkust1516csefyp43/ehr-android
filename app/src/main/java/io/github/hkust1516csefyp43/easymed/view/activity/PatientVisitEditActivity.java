@@ -36,10 +36,12 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Card;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.ListOfCards;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.PersonalData;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Pregnancy;
@@ -71,6 +73,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   private static final String TAG = PatientVisitEditActivity.class.getSimpleName();
   public static final String[] DEFAULT_PHYSICAL_EXAMINATION = {"General Appearance", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Other"};
   public static final String[] DEFAULT_REVICE_OF_SYSTEM = {"EENT", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Locomotor", "Neurology"};
+  public static final String[] DEFAULT_RED_FLAG = {"Alertness", "Breathing", "Circulation", "Dehydration", "DEFG"};
 
   private PersonalDataFragment personalDataFragment;
   private VitalSignFragment vitalSignFragment;
@@ -385,6 +388,23 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         VitalSigns vitalSigns = null;
         String chiefComplaints = null;
         String triageRemark = null;
+        String hpi = null;
+        String pmh = null;
+        String fh = null;
+        String sh = null;
+        ListOfCards dh = null;
+        ListOfCards screening = null;
+        ListOfCards allergy = null;
+        Pregnancy pregnancy = null;
+        ListOfCards ros = null;
+        ListOfCards rf = null;
+        ListOfCards pe = null;
+        ListOfCards diagnosis = null;
+        ListOfCards investigation = null;
+        ListOfCards medication = null;
+        ListOfCards advice = null;
+        ListOfCards followup = null;
+        String consultationRemark = null;
         errorInAnyPage = false;
 
         if (personalDataFragment != null) {
@@ -421,23 +441,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           }
         }
         if (!isTriage) {
-          String hpi = null;
-          ListOfCards pmh = null;
-          String fh = null;
-          String sh = null;
-          ListOfCards dh = null;
-          ListOfCards screening = null;
-          ListOfCards allergy = null;
-          Pregnancy pregnancy = null;
-          ListOfCards ros = null;
-          ListOfCards rf = null;
-          ListOfCards pe = null;
-          ListOfCards diagnosis = null;
-          ListOfCards investigation = null;
-          ListOfCards medication = null;
-          ListOfCards advice = null;
-          ListOfCards followup = null;
-          String consultationRemark = null;
 
           if (hpiFragment != null) {
             serializable = hpiFragment.onSendData();
@@ -448,7 +451,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           if (pmhFragment != null) {
             serializable = pmhFragment.onSendData();
             if (serializable instanceof ListOfCards) {
-              pmh = (ListOfCards) serializable;
+              pmh = (String) serializable;
             }
           }
           if (fhFragment != null) {
@@ -557,7 +560,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
             .client(ohc1.build())
             .build();
-
         v2API.patients patientService = retrofit.create(v2API.patients.class);
         final v2API.triages triageService = retrofit.create(v2API.triages.class);
         v2API.consultations consultationService = retrofit.create(v2API.consultations.class);
@@ -759,6 +761,23 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
               } else {
                 if (thisTriage != null) {                                                             //existing patient new consultation edit triage  TODO update profile pic if personalData.getProfilePicBase64 exists
                   Patient patient = generatePatient(personalData);
+                  final String finalHPI = hpi;
+                  final String finalPMH = pmh;
+                  final String finalFH = fh;
+                  final String finalSH = sh;
+                  final ListOfCards finalDH = dh;
+                  final ListOfCards finalScreening = screening;
+                  final ListOfCards finalALlergy = allergy;
+                  final Pregnancy finalPregnancy = pregnancy;
+                  final ListOfCards finalROS = ros;
+                  final ListOfCards finalRF = rf;
+                  final ListOfCards finalPE = pe;
+                  final ListOfCards finalDiagnosis = diagnosis;
+                  final ListOfCards finalInvestigation = investigation;
+                  final ListOfCards finalMedication = medication;
+                  final ListOfCards finalAdvice = advice;
+                  final ListOfCards finalFollowUp = followup;
+                  final String finalConsultationRemark = consultationRemark;
                   if (patient != null) {
                     Call<Patient> patientCall = patientService.addPatient("1", patient);  //PUT patient
                     patientCall.enqueue(new Callback<Patient>() {
@@ -774,45 +793,47 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                             visitCall.enqueue(new Callback<Visit>() {
                               @Override
                               public void onResponse(Call<Visit> call, Response<Visit> response) {
-//                                  Log.d(TAG, "visit call response code: " + response.code());
-//                                  if (response.code() < 500 && response.code() >= 400) {
-//                                    try {
-//                                      Log.d(TAG, response.errorBody().string());
-//                                    } catch (IOException e) {
-//                                      e.printStackTrace();
-//                                    }
-//                                  }
-//                                  Log.d(TAG, response.body().toString());
-//                                  if (response.body() == null || response.code() > 299 || response.code() < 200) {
-//                                    onFailure(call, new Throwable("No response"));
-//                                  } else {
-//                                    //PUT triage
-//                                    Log.d(TAG, "Editing triage: " + thisTriage);
-//                                    Triage triage = generateTriage(response.body(), vs, cc, tr);
-//                                    Call<Triage> triageCall = triageService.editTriage("1", triage, thisTriage.getId());
-//                                    triageCall.enqueue(new Callback<Triage>() {
-//                                      @Override
-//                                      public void onResponse(Call<Triage> call, Response<Triage> response) {
-//                                        Log.d(TAG, "triage call response code: " + response.code());
-//                                        if (response.code() < 500 && response.code() >= 400) {
-//                                          try {
-//                                            Log.d(TAG, response.errorBody().string());
-//                                          } catch (IOException e) {
-//                                            e.printStackTrace();
-//                                          }
-//                                        }
-//                                        Log.d(TAG, response.body().toString());
+                                Log.d(TAG, "visit call response code: " + response.code());
+                                if (response.code() < 500 && response.code() >= 400) {
+                                  try {
+                                    Log.d(TAG, response.errorBody().string());
+                                  } catch (IOException e) {
+                                    e.printStackTrace();
+                                  }
+                                }
+                                if (response.body() == null || response.code() > 299 || response.code() < 200) {
+                                  onFailure(call, new Throwable("No response"));
+                                } else {
+                                  //PUT triage
+                                  Log.d(TAG, "Editing triage: " + thisTriage);
+                                  Triage triage = generateTriage(response.body(), vs, cc, tr);
+                                  Call<Triage> triageCall = triageService.editTriage("1", triage, thisTriage.getId());
+                                  triageCall.enqueue(new Callback<Triage>() {
+                                    @Override
+                                    public void onResponse(Call<Triage> call, Response<Triage> response) {
+                                      Log.d(TAG, "triage call response code: " + response.code());
+                                      if (response.code() < 500 && response.code() >= 400) {
+                                        try {
+                                          Log.d(TAG, response.errorBody().string());
+                                        } catch (IOException e) {
+                                          e.printStackTrace();
+                                        }
+                                      }
+                                      Log.d(TAG, response.body().toString());
 //                                        progressDialog.dismiss();
 //                                        finish();
-//                                      }
-//
-//                                      @Override
-//                                      public void onFailure(Call<Triage> call, Throwable t) {
-//                                        progressDialog.dismiss();
-//                                        //TODO error dialog
-//                                      }
-//                                    });
-//                                  }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Triage> call, Throwable t) {
+                                      progressDialog.dismiss();
+                                      //TODO error dialog
+                                    }
+                                  });
+                                  //POST consultation (then POST rd and prescription (with consultation_id)
+                                  Consultation consultation = generateConsultation(response.body(), finalPregnancy, finalROS, finalRF, finalPE, finalConsultationRemark);
+                                  //TODO
+                                }
                               }
 
                               @Override
@@ -832,10 +853,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                       }
                     });
-
-                    //PUT visit (iff tag number have been modified?)
-                    //PUT triage
-                    //POST consultation
                     //POST related_data
                     //POST investigation
                     //POST prescription
@@ -1019,26 +1036,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     return triage;
   }
 
-  private Consultation generateConsultation(Visit visit,
-                                            String hpi,
-                                            ListOfCards pmh,
-                                            String fh,
-                                            String sh,
-                                            ListOfCards dh,
-                                            ListOfCards screening,
-                                            ListOfCards allergy,
-                                            Pregnancy pregnancy,
-                                            ListOfCards ros,
-                                            ListOfCards rf,
-                                            ListOfCards pe,
-                                            ListOfCards diagnosis,
-                                            ListOfCards investigation,
-                                            ListOfCards medication,
-                                            ListOfCards advice,
-                                            ListOfCards followup,
-                                            String consultationRemark) {
+  private Consultation generateConsultation(@NonNull Visit visit, Pregnancy pregnancy, ListOfCards ros, ListOfCards rf, ListOfCards pe, String consultationRemark) {
     Consultation consultation = new Consultation();
     Date date = new Date();
+    consultation.setVisitId(visit.getId());
     consultation.setStartTime(date);
     consultation.setEndTime(date);
     if (pregnancy != null) {
@@ -1051,16 +1052,49 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       consultation.setPregNumStillBirth(pregnancy.getNoOfStillBirth());
       consultation.setPregRemark(pregnancy.getOtherInformation());
     }
-//    if (visit != null) {
-//      consultation.setVisitId(visit.getId());
-//    }
+    if (ros != null && ros.getCardArrayList() != null && ros.getCardArrayList().size() > 0) {
+      HashMap<String, String> cardHM = new HashMap<>();
+      for (Card c:ros.getCardArrayList()) {
+        cardHM.put(c.getCardTitle(), c.getCardDescription());
+      }
+      consultation.setRosEent(cardHM.get("EENT"));
+      consultation.setRosRespi(cardHM.get("Respiratory"));
+      consultation.setRosGastro(cardHM.get("Gastrointestinal"));
+      consultation.setRosGenital(cardHM.get("Genital/Urinary"));
+      consultation.setRosEnt(cardHM.get("ENT"));
+      consultation.setRosSkin(cardHM.get("Skin"));
+      consultation.setRosLocomotor(cardHM.get("Locomotor"));
+      consultation.setRosNeruology(cardHM.get("Neruology"));
+    }
+    if (rf != null  && rf.getCardArrayList() != null && rf.getCardArrayList().size() > 0 ) {
+      HashMap<String, String> cardHM = new HashMap<>();
+      for (Card c:rf.getCardArrayList()) {
+        cardHM.put(c.getCardTitle(), c.getCardDescription());
+      }
+      consultation.setRfAlertness(cardHM.get("Alertness"));
+      consultation.setRfBreathing(cardHM.get("Breathing"));
+      consultation.setRfCirculation(cardHM.get("Circulation"));
+      consultation.setRfDehydration(cardHM.get("Dehydration"));
+      consultation.setRfDefg(cardHM.get("DEFG"));
+    }
+    if (pe != null && pe.getCardArrayList() != null && pe.getCardArrayList().size() > 0) {
+      HashMap<String, String> cardHM = new HashMap<>();
+      for (Card c:pe.getCardArrayList()) {
+        cardHM.put(c.getCardTitle(), c.getCardDescription());
+      }
+      consultation.setPeGeneral(cardHM.get("General Appearance"));
+      consultation.setPeRespiratory(cardHM.get("Respiratory"));
+      consultation.setPeCardio(cardHM.get("Cardiovascular"));
+      consultation.setPeGastro(cardHM.get("Gastrointestinal"));
+      consultation.setPeGenital(cardHM.get("Genital/Urinary"));
+      consultation.setPeEnt(cardHM.get("ENT"));
+      consultation.setPeSkin(cardHM.get("Skin"));
+      consultation.setPeOther(cardHM.get("Other"));
+    }
     if (consultationRemark != null) {
       consultation.setRemark(consultationRemark);
     }
-    consultation.setVisitId(visit.getId());
     Log.d(TAG, "output " + consultation.toString());
-
-    //TODO
     return consultation;
   }
 
@@ -1259,26 +1293,17 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return pregnancyFragment;
         case 12:
           if (rosFragment == null) {
-            if (thisConsultation != null)
-              rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM, thisConsultation);
-            else
-              rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM, null);
+            rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM, thisConsultation);
           }
           return rosFragment;
         case 13:
           if (rfFragment == null) {
-            if (thisConsultation != null)
-              rfFragment = ListOfCardsFragment.newInstance("Red Flags", 8, thisConsultation.getId());
-            else
-              rfFragment = ListOfCardsFragment.newInstance("Red Flags", 8, null);
+            rfFragment = ListOfCardsFragment.newInstance("Red Flags", DEFAULT_RED_FLAG, thisConsultation);
           }
           return rfFragment;
         case 14:
           if (peFragment == null) {
-            if (thisConsultation != null)
-              peFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION, thisConsultation);
-            else
-              peFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION, null);
+            peFragment = ListOfCardsFragment.newInstance("Physical Examination", DEFAULT_PHYSICAL_EXAMINATION, thisConsultation);
           }
           return peFragment;
         case 15:
