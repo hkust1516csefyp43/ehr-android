@@ -93,6 +93,11 @@
             android:label="@string/title_activity_clinic_report_export"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:name=".view.activity.ProfileEditActivity"
+            android:label="@string/title_activity_profile_edit"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>
