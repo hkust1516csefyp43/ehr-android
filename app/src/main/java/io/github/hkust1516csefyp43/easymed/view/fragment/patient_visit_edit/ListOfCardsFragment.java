@@ -66,6 +66,8 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
   private String consultationId = null;
   private Consultation consultation = null;
 
+  private ArrayList<Card> cardList = new ArrayList<>();
+
   public static ListOfCardsFragment newInstance(String title) {
     ListOfCardsFragment fragment = new ListOfCardsFragment();
     Bundle args = new Bundle();
@@ -131,7 +133,6 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
         .client(ohc1.build())
         .build();
 
-    recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
     recyclerView.setHasFixedSize(true);
     fab.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
 
@@ -154,8 +155,12 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                   ArrayList<String> data = tetdcv.getData();
                   tetdcv.clearData();
                   Log.d(TAG, data.toString());
-                  if (data != null) {
-                    adapter.addCard(new Card(data.get(0), data.get(1)));
+                  if (data.get(0) != null && data.get(1) != null) {
+                    cardList.add(new Card(data.get(0), data.get(1)));
+                    if (adapter != null)
+                      adapter.notifyDataSetChanged();
+                    else
+                      Log.d(TAG, "opps");
                   }
                 }
               }
@@ -163,7 +168,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
             .onNegative(new MaterialDialog.SingleButtonCallback() {
               @Override
               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                if (adapter != null && adapter.getData() != null && adapter.getData().size() <= 0 && tvAssistance != null) {
+                if (adapter != null && cardList != null && cardList.size() <= 0 && tvAssistance != null) {
                   tvAssistance.setVisibility(View.VISIBLE);
                 }
                 tetdcv.clearData();
@@ -212,8 +217,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                       Card card = new Card(p.getMedicationName(), p.getDetail());
                       cards.add(card);
                     }
-                    adapter = new FragRecyclerViewAdapter(cards, getContext(), false, finalKeywordArrayList, title);
+                    adapter = new FragRecyclerViewAdapter(getContext(), false, finalKeywordArrayList, title);
                     recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                   } else {
                     onFailure(call, new Throwable("sth wrong"));
                   }
@@ -222,7 +228,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 @Override
                 public void onFailure(Call<List<Prescription>> call, Throwable t) {
                   t.printStackTrace();
-                  adapter = new FragRecyclerViewAdapter(null, getContext(), false, finalKeywordArrayList, title);
+                  adapter = new FragRecyclerViewAdapter(getContext(), false, finalKeywordArrayList, title);
+                  recyclerView.setAdapter(adapter);
+                  recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                 }
               });
             } else {
@@ -245,8 +253,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                     Card card = new Card("ID: " + p.getConsultationId(), p.getDetail());
                     cards.add(card);
                   }
-                  adapter = new FragRecyclerViewAdapter(cards, getContext(), false, null, title);
+                  adapter = new FragRecyclerViewAdapter(getContext(), false, null, title);
                   recyclerView.setAdapter(adapter);
+                  recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                 } else {
                   onFailure(call, new Throwable("sth wrong"));
                 }
@@ -255,7 +264,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
               @Override
               public void onFailure(Call<List<Prescription>> call, Throwable t) {
                 t.printStackTrace();
-                adapter = new FragRecyclerViewAdapter(null, getContext(), false, null, title);
+                adapter = new FragRecyclerViewAdapter(getContext(), false, null, title);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
               }
             });
           }
@@ -306,8 +317,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                       for (RelatedData rd: response.body()) {
                         cards.add(new Card(rd.getData(), rd.getRemark()));
                       }
-                      adapter = new FragRecyclerViewAdapter(cards, getContext(), false, finalKeywordArrayList, title);
+                      adapter = new FragRecyclerViewAdapter(getContext(), false, finalKeywordArrayList, title);
                       recyclerView.setAdapter(adapter);
+                      recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                     } else {
                       onFailure(call, new Throwable("sth wrong"));
                     }
@@ -316,7 +328,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                   @Override
                   public void onFailure(Call<List<RelatedData>> call, Throwable t) {
                     t.printStackTrace();
-                    adapter = new FragRecyclerViewAdapter(null, getContext(), false, finalKeywordArrayList, title);
+                    adapter = new FragRecyclerViewAdapter(getContext(), false, finalKeywordArrayList, title);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                   }
                 });
               } else {
@@ -339,8 +353,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                     for (RelatedData rd: response.body()) {
                       cards.add(new Card(rd.getData(), rd.getRemark()));
                     }
-                    adapter = new FragRecyclerViewAdapter(cards, getContext(), false, null, title);
+                    adapter = new FragRecyclerViewAdapter(getContext(), false, null, title);
                     recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                   } else {
                     onFailure(call, new Throwable("sth wrong"));
                   }
@@ -349,7 +364,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 @Override
                 public void onFailure(Call<List<RelatedData>> call, Throwable t) {
                   t.printStackTrace();
-                  adapter = new FragRecyclerViewAdapter(null, getContext(), false, null, title);
+                  adapter = new FragRecyclerViewAdapter(getContext(), false, null, title);
+                  recyclerView.setAdapter(adapter);
+                  recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                 }
               });
             }
@@ -360,15 +377,16 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       }
 
     } else if (preFillItems != null && preFillItems.length > 0) {                                   //TODO create empty default cards
+      Log.d(TAG, "create empty default cards");
       fab.setVisibility(View.GONE);
       ArrayList<Card> preFillCards = new ArrayList<>();
       for (String s : preFillItems) {
-        preFillCards.add(new Card(s, "Fill this or flip the switch"));
+        cardList.add(new Card(s, ""));
       }
-      adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true);
       tvAssistance.setVisibility(View.GONE);
-      adapter = new FragRecyclerViewAdapter(preFillCards, getContext(), true, null, title);
+      adapter = new FragRecyclerViewAdapter(getContext(), true, null, title);
       recyclerView.setAdapter(adapter);
+      recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
     } else if (category > 0) {                                                                      //TODO create a blank page w/ keywords
 
       v2API.keywords keywordService = retrofit.create(v2API.keywords.class);
@@ -404,7 +422,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
               for (Keyword k : response.body()) {
                 keywordArrayList.add(k.getKeyword());
               }
-              adapter = new FragRecyclerViewAdapter(null, getContext(), false, keywordArrayList, title);
+              adapter = new FragRecyclerViewAdapter(getContext(), false, keywordArrayList, title);
+              recyclerView.setAdapter(adapter);
+              recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
             } else {
               onFailure(call, new Throwable("sth wrong when fetching keywords"));
             }
@@ -413,7 +433,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
           @Override
           public void onFailure(Call<List<Keyword>> call, Throwable t) {
             t.printStackTrace();
-            adapter = new FragRecyclerViewAdapter(null, getContext(), false, null, title);
+            adapter = new FragRecyclerViewAdapter(getContext(), false, null, title);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
           }
         });
       } else {    //TODO keywordcall is empty, which should never happen (because switch + default)
@@ -447,98 +469,72 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
   @Override
   public Serializable onSendData() {
     if (adapter != null) {
-      return new ListOfCards(adapter.getData());
+      return new ListOfCards(cardList);
     }
     return null;
   }
 
   private class FragRecyclerViewAdapter extends RecyclerView.Adapter<FragRecyclerViewHolder> {
     Context context;
-    ArrayList<Card> data;
     boolean displaySwitch;
-    ArrayList<String> suggestions;
     String title;
-
-    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> listOfDefaultCards, Context c, boolean displaySwitch) {
-      data = listOfDefaultCards;
-      this.context = c;
-      this.displaySwitch = displaySwitch;
-    }
+    ArrayList<String> suggestions;
 
     /**
      * Create a new FragRecyclerViewAdapter
-     * @param listOfDefaultCards  if there is any default cards
      * @param c                   is the context, nothing special
      * @param displaySwitch       is true if you want to display switches on each individual card. It will also A) disable fab and B)disable edit on title
      * @param listOfKeywords      i.e. a list of suggestions for auto complete
      * @param title               i.e. the title for the dialog
      */
-    public FragRecyclerViewAdapter(@Nullable ArrayList<Card> listOfDefaultCards, Context c, boolean displaySwitch, @Nullable ArrayList<String> listOfKeywords, @Nullable String title) {
-      this(listOfDefaultCards, c, displaySwitch);
-      suggestions = listOfKeywords;
+    public FragRecyclerViewAdapter(Context c, boolean displaySwitch, @Nullable ArrayList<String> listOfKeywords, @Nullable String title) {
+      this.context = c;
+      this.displaySwitch = displaySwitch;
+      this.suggestions = listOfKeywords;
       this.title = title;
     }
 
 
     @Override
     public FragRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      return new FragRecyclerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_visit, parent, false), context, suggestions, title, this, displaySwitch);
+      return new FragRecyclerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_visit, parent, false));
     }
 
     @Override
     public void onBindViewHolder(final FragRecyclerViewHolder holder, int position) {
-      if (data != null){
-        if (data.size() > 0) {
+      if (cardList != null){
+        if (cardList.size() > 0) {
           final FragRecyclerViewHolder viewHolder = holder;
-          viewHolder.cardTitle.setText(data.get(position).getCardTitle());
-          viewHolder.cardDescription.setText(data.get(position).getCardDescription());
+          viewHolder.cardTitle.setText(cardList.get(position).getCardTitle());
+          viewHolder.cardDescription.setText(cardList.get(position).getCardDescription());
           if (displaySwitch) {
             viewHolder.setEditableTitle(false);
             viewHolder.cardSwitch.setVisibility(View.VISIBLE);
             viewHolder.tvEmptyIndicator.setVisibility(View.VISIBLE);
-            viewHolder.cardSwitch.setChecked(data.get(position).isChecked());
+            viewHolder.cardSwitch.setChecked(cardList.get(position).isChecked());
             viewHolder.cardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
               @Override
               public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
                   viewHolder.cardDescription.setVisibility(View.GONE);
-                  data.get(holder.getAdapterPosition()).setChecked(false);
+                  cardList.get(holder.getAdapterPosition()).setChecked(false);
                 } else {
                   viewHolder.cardDescription.setVisibility(View.VISIBLE);
-                  data.get(holder.getAdapterPosition()).setChecked(true);
+                  cardList.get(holder.getAdapterPosition()).setChecked(true);
                 }
               }
             });
           }
-        }
-      }
-    }
-
-    public ArrayList<Card> getData() {
-      return data;
-    }
-
-    public void addCard(Card c) {
-      if (data == null)
-        data = new ArrayList<>();
-      data.add(c);
-      this.notifyItemInserted(data.size() - 1);
-    }
-
-    public void deleteCard(int position) {
-      data.remove(position);
-      this.notifyItemRemoved(position);
-    }
-
-    public void deleteAllCards() {
-      data = new ArrayList<>();
-      this.notifyDataSetChanged();
+        } else
+          Log.d(TAG, "empty cardList");
+      } else
+        Log.d(TAG, "no cardList");
     }
 
     @Override
     public int getItemCount() {
-      if (data != null){
-        return data.size();
+      if (cardList != null){
+        return cardList.size();
       } else
         return 0;
     }
@@ -552,7 +548,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     public boolean editableTitle = true;
 
 
-    public FragRecyclerViewHolder(View itemView, Context context, ArrayList<String> suggestions, String title, FragRecyclerViewAdapter fragRecyclerViewAdapter, boolean displaySwitch) {
+    public FragRecyclerViewHolder(View itemView) {
       super(itemView);
       cardTitle = (TextView) itemView.findViewById(R.id.item_name);
       cardDescription = (TextView) itemView.findViewById(R.id.item_description);

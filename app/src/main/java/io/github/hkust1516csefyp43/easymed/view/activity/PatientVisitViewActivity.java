@@ -96,13 +96,13 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
         if (thisPatient.getTag() != null) {
           s.append(thisPatient.getTag().toString() + ". ");
         }
-        s.append(thisPatient.getLastNameSpaceFirstName());
+        s.append(Util.displayNameBuilder(thisPatient.getLastName(), thisPatient.getFirstName()));
         actionBar.setTitle(s.toString());
       }
     }
 
     if (ivProfilePic != null && thisPatient != null) {
-      ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(thisPatient.getLastNameSpaceFirstName())));        //act as placeholder + fallback
+      ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(thisPatient.getLastName(), thisPatient.getFirstName()))));        //act as placeholder + fallback
       if (thisPatient.getImageId() != null && thisPatient.getProfilePicBase64() == null) {
         OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
         ohc1.readTimeout(1, TimeUnit.MINUTES);
@@ -133,7 +133,7 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
           @Override
           public void onFailure(Call<Attachment> call, Throwable t) {
             t.printStackTrace();
-            ivProfilePic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(thisPatient.getLastNameSpaceFirstName())));
+            ivProfilePic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(thisPatient.getLastName(), thisPatient.getFirstName()))));
             thisPatient.setProfilePicBase64(Const.EMPTY_STRING);
           }
         });

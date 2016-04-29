@@ -422,7 +422,7 @@ public class PatientListFragment extends Fragment{
         name.append(aPatient.getFirstName());
         holder.patientName.setText(name.toString());
         holder.nativeName.setText(aPatient.getNativeName());
-        holder.proPic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), ColorGenerator.MATERIAL.getColor(aPatient.getLastNameSpaceFirstName())));  //act as placeholder + fallback
+        holder.proPic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(aPatient.getLastName(), aPatient.getFirstName()))));  //act as placeholder + fallback
         if (aPatient.getImageId() != null && aPatient.getProfilePicBase64() == null) {
           OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
           ohc1.readTimeout(1, TimeUnit.MINUTES);
@@ -456,7 +456,7 @@ public class PatientListFragment extends Fragment{
             @Override
             public void onFailure(Call<Attachment> call, Throwable t) {
               t.printStackTrace();
-              holder.proPic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), ColorGenerator.MATERIAL.getColor(aPatient.getLastNameSpaceFirstName())));
+              holder.proPic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(aPatient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(aPatient.getLastName(), aPatient.getFirstName()))));
               aPatient.setProfilePicBase64(Const.EMPTY_STRING);
               patients.set(position, aPatient);
             }

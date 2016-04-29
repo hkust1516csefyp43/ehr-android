@@ -230,9 +230,9 @@ public class Patient implements Serializable, Comparable<Patient> {
     this.nextStation = nextStation;
   }
 
-  public String getLastNameSpaceFirstName() {
-    return getLastName() + " " + getFirstName();
-  }
+//  public String getLastNameSpaceFirstName() {
+//    return getLastName() + " " + getFirstName();
+//  }
 
   public String getProfilePicBase64() {
     return profilePicBase64;

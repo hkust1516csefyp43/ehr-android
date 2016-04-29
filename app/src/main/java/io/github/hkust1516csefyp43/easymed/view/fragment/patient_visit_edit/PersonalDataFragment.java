@@ -149,7 +149,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
     if (ivProfilePic != null) {
       if (patient != null) {
-        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(patient.getLastNameSpaceFirstName())));        //act as placeholder + fallback
+        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(patient.getLastName(), patient.getFirstName()))));        //act as placeholder + fallback
         if (patient.getImageId() != null && patient.getProfilePicBase64() == null) {
           OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
           ohc1.readTimeout(1, TimeUnit.MINUTES);
@@ -175,7 +175,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
             @Override
             public void onFailure(Call<Attachment> call, Throwable t) {
               t.printStackTrace();
-              ivProfilePic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(patient.getLastNameSpaceFirstName())));
+              ivProfilePic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(patient.getLastName(), patient.getFirstName()))));
               patient.setProfilePicBase64(Const.EMPTY_STRING);
             }
           });

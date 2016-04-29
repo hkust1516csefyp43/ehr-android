@@ -51,6 +51,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.ChiefComplaintFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit.DocumentFragment;
@@ -268,7 +269,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
     //set toolbar title (last name first name)
     if (thisPatient != null && supportActionBar != null) {
-      supportActionBar.setTitle(thisPatient.getLastNameSpaceFirstName());
+      supportActionBar.setTitle(Util.displayNameBuilder(thisPatient.getLastName(), thisPatient.getFirstName()));
     }
     if (thisPatient == null && supportActionBar != null) {
       supportActionBar.setTitle("New Patient");

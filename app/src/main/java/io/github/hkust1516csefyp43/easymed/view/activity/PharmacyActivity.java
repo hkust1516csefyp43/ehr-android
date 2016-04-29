@@ -95,7 +95,7 @@ public class PharmacyActivity extends AppCompatActivity {
       Log.d(TAG, "patient is not null: " + patient.toString());
       ImageView ivProfilePic = (ImageView) findViewById(R.id.profile_pic);
       if (ivProfilePic != null) {
-        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(patient.getLastNameSpaceFirstName())));
+        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(patient.getLastName(), patient.getFirstName()))));
       }
       if (patient.getVisitId() != null) {
         Log.d(TAG, "vid exist: " + patient.getVisitId());
@@ -182,7 +182,7 @@ public class PharmacyActivity extends AppCompatActivity {
       }
 
       if (actionBar != null) {
-        actionBar.setTitle(patient.getLastNameSpaceFirstName());
+        actionBar.setTitle(Util.displayNameBuilder(patient.getLastName(), patient.getFirstName()));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
       }

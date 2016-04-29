@@ -310,4 +310,14 @@ public class Util {
     return dateInString(gc);
   }
 
+  public static String displayNameBuilder(@Nullable String lastName, @NonNull String firstName) {
+    StringBuilder name = new StringBuilder();
+    if (lastName != null) {
+      name.append(lastName);
+      name.append(" ");
+    }
+    name.append(firstName);
+    return name.toString();
+  }
+
 }
