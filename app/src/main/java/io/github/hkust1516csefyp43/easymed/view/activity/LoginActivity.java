@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     httpClient.connectTimeout(1, TimeUnit.MINUTES);
     Retrofit retrofit = new Retrofit
         .Builder()
-        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .baseUrl(Const.Database.getCurrentAPI())
         .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
         .client(httpClient.build())
         .build();
@@ -133,6 +133,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (response.body() != null && response.body().size() > 0) {
           clinicList.setVisibility(View.VISIBLE);
           ArrayAdapter<Clinic> clinicArrayAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, response.body());
+          Log.d(TAG, "list of clinics: " + response.body().toString());
           clinicList.setAdapter(clinicArrayAdapter);
           clinicList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -146,7 +147,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
               Log.d(TAG, "?");
             }
           });
-        }
+        } else
+          Log.d(TAG, "nope");
       }
 
       @Override

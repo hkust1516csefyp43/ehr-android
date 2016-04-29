@@ -116,7 +116,7 @@ public class SyncActivity extends AppCompatActivity {
               ohc1.connectTimeout(2, TimeUnit.MINUTES);
               Retrofit retrofit = new Retrofit
                   .Builder()
-                  .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+                  .baseUrl(Const.Database.getCurrentAPI())
                   .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
                   .client(ohc1.build())
                   .build();

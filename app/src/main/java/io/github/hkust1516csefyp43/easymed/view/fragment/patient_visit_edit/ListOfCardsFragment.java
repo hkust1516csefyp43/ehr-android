@@ -126,7 +126,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     ohc1.connectTimeout(1, TimeUnit.MINUTES);
     final Retrofit retrofit = new Retrofit
         .Builder()
-        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .baseUrl(Const.Database.getCurrentAPI())
         .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
         .client(ohc1.build())
         .build();
@@ -147,21 +147,23 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
             .onPositive(new MaterialDialog.SingleButtonCallback() {
               @Override
               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                if (tvAssistance != null) {
-                  tvAssistance.setVisibility(View.GONE);
-                }
-                ArrayList<String> data = tetdcv.getData();
-                tetdcv.clearData();
-                Log.d(TAG, data.toString());
-                if (data != null) {
-                  adapter.addCard(new Card(data.get(0), data.get(1)));
+                if (adapter != null) {
+                  if (tvAssistance != null) {
+                    tvAssistance.setVisibility(View.GONE);
+                  }
+                  ArrayList<String> data = tetdcv.getData();
+                  tetdcv.clearData();
+                  Log.d(TAG, data.toString());
+                  if (data != null) {
+                    adapter.addCard(new Card(data.get(0), data.get(1)));
+                  }
                 }
               }
             })
             .onNegative(new MaterialDialog.SingleButtonCallback() {
               @Override
               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                if (adapter != null && adapter.getData().size() <= 0 && tvAssistance != null) {
+                if (adapter != null && adapter.getData() != null && adapter.getData().size() <= 0 && tvAssistance != null) {
                   tvAssistance.setVisibility(View.VISIBLE);
                 }
                 tetdcv.clearData();

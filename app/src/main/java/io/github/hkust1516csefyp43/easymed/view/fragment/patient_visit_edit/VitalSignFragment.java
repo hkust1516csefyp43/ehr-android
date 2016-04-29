@@ -97,6 +97,9 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     etHeight = (EditText) view.findViewById(R.id.etHeight);
     tvBMI = (TextView) view.findViewById(R.id.tvBMI);
 
+    if (thisTriage != null)
+      inflaterEverything();
+
     tvBMI.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -216,6 +219,23 @@ public class VitalSignFragment extends Fragment implements OnSendData{
       }
     });
     return view;
+  }
+
+  /**
+   * TODO fill me up
+   */
+  private void inflaterEverything() {
+    if (thisTriage != null) {
+      if (etSystolic != null) {
+
+      }
+      if (etDiastolic != null) {
+
+      }
+      if (etWeight != null) {
+
+      }
+    }
   }
 
   private String BMICalculator(double w, double h) {

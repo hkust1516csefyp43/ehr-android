@@ -116,7 +116,7 @@ public class PatientListFragment extends Fragment{
     ohc1.connectTimeout(1, TimeUnit.MINUTES);
     Retrofit retrofit = new Retrofit
         .Builder()
-        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .baseUrl(Const.Database.getCurrentAPI())
         .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
         .client(ohc1.build())
         .build();
@@ -169,9 +169,10 @@ public class PatientListFragment extends Fragment{
     OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
     ohc1.readTimeout(1, TimeUnit.MINUTES);
     ohc1.connectTimeout(1, TimeUnit.MINUTES);
+
     Retrofit retrofit = new Retrofit
         .Builder()
-        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .baseUrl(Const.Database.getCurrentAPI())
         .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
         .client(ohc1.build())
         .build();
@@ -185,8 +186,10 @@ public class PatientListFragment extends Fragment{
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
-
-            Log.d(TAG, response.body().toString());
+            if (response == null || response.body() == null){
+              onFailure(call, new Throwable("empty response"));
+              return;
+            }
             patients = response.body();
             Collections.sort(patients);
             if (numberListener != null) {
@@ -204,7 +207,7 @@ public class PatientListFragment extends Fragment{
 
           @Override
           public void onFailure(Call<List<Patient>> call, Throwable t) {
-
+            t.printStackTrace();
           }
         });
         break;
@@ -213,7 +216,10 @@ public class PatientListFragment extends Fragment{
         patientList2.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
-            Log.d(TAG, response.body().toString());
+            if (response == null || response.body() == null){
+              onFailure(call, new Throwable("empty response"));
+              return;
+            }
             patients = response.body();
             if (numberListener != null) {
               Log.d(TAG, "not yet counter update triggered: " + patients.size());
@@ -230,7 +236,7 @@ public class PatientListFragment extends Fragment{
 
           @Override
           public void onFailure(Call<List<Patient>> call, Throwable t) {
-
+            t.printStackTrace();
           }
         });
         break;
@@ -423,7 +429,7 @@ public class PatientListFragment extends Fragment{
           ohc1.connectTimeout(1, TimeUnit.MINUTES);
           Retrofit retrofit = new Retrofit
               .Builder()
-              .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+              .baseUrl(Const.Database.getCurrentAPI())
               .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
               .client(ohc1.build())
               .build();

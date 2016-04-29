@@ -156,7 +156,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       ohc1.connectTimeout(1, TimeUnit.MINUTES);
       Retrofit retrofit = new Retrofit
           .Builder()
-          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+          .baseUrl(Const.Database.getCurrentAPI())
           .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
           .client(ohc1.build())
           .build();
@@ -302,7 +302,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     };
     new MaterialDialog.Builder(this)
         .title("Are you sure")
-        .content("All the unsave data will be losed")
+        .content("All unsaved data will be lost")
         .positiveText("Leave")
         .negativeText("Stay")
         .onPositive(yes)
@@ -552,7 +552,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         ohc1.connectTimeout(1, TimeUnit.MINUTES);
         Retrofit retrofit = new Retrofit
             .Builder()
-            .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+            .baseUrl(Const.Database.getCurrentAPI())
             .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
             .client(ohc1.build())
             .build();
@@ -906,7 +906,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                         e.printStackTrace();
                                       }
                                     }
-                                    Log.d(TAG, response.body().toString());
                                     progressDialog.dismiss();
                                     finish();
                                   }

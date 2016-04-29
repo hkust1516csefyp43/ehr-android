@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
@@ -25,6 +26,7 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -34,6 +36,8 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -152,7 +156,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
           ohc1.connectTimeout(1, TimeUnit.MINUTES);
           Retrofit retrofit = new Retrofit
               .Builder()
-              .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+              .baseUrl(Const.Database.getCurrentAPI())
               .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
               .client(ohc1.build())
               .build();
@@ -181,13 +185,13 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
           ivProfilePic.setImageBitmap(decodedByte);
         }
       }
-//      else {
+//      else if (patient != null) {   //// FIXME: 28/4/16 
 //        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(patient.getLastNameSpaceFirstName())));
 //      }
+      
       ivProfilePic.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          //TODO add new image dialog
           new MaterialDialog.Builder(getContext())
               .title("Patient picture")
               .items(R.array.image_array)
@@ -199,11 +203,12 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
                       openCamera();
                       break;
                     case Const.ACTION_SELECT_PICTURE:
+                      pickImage();
                       break;
                     case Const.ACTION_REMOVE_PICTURE:
+                      ivProfilePic.setImageDrawable(getResources().getDrawable(R.drawable.easymed));
                       //save as default
                     default:
-                      //TODO remove picture & put a Text Drawable
                   }
                 }
               })
@@ -418,6 +423,12 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     }
   }
 
+  public void pickImage() {
+    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+    intent.setType("image/*");
+    startActivityForResult(intent, 4021);
+  }
+
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -436,6 +447,76 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
         } else {
           Log.d("qqq811", "umm the image is null");
         }
+      } else {
+        new MaterialDialog.Builder(getContext())
+            .title("Error")
+            .content("Cannot open the file. Please try again.")
+            .positiveText("Dismiss")
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+              @Override
+              public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+              }
+            })
+            .theme(Theme.LIGHT)
+            .show();
+      }
+    } else if (requestCode == 4021) {
+      if (resultCode == Activity.RESULT_OK) {
+        if (data == null) {                         //Display an error
+          new MaterialDialog.Builder(getContext())
+              .title("Error")
+              .content("Cannot get the data. Please try again")
+              .positiveText("Dismiss")
+              .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                  dialog.dismiss();
+                }
+              })
+              .theme(Theme.LIGHT)
+              .show();
+          return;
+        }
+        Context context = getContext();
+        if (context != null) {
+          try {
+            InputStream inputStream = context.getContentResolver().openInputStream(data.getData());
+            Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
+            ivProfilePic.setImageBitmap(ImageTransformer.centerCrop(imageBitmap));
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream .toByteArray();
+            profilePicBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+          } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            new MaterialDialog.Builder(getContext())
+                .title("Error")
+                .content("Cannot open the file. Please try again.")
+                .positiveText("Dismiss")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                  @Override
+                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                  }
+                })
+                .theme(Theme.LIGHT)
+                .show();
+          }
+        }
+      } else {
+        new MaterialDialog.Builder(getContext())
+            .title("Error")
+            .content("Cannot open the file. Please try again.")
+            .positiveText("Dismiss")
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+              @Override
+              public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+              }
+            })
+            .theme(Theme.LIGHT)
+            .show();
       }
     }
   }

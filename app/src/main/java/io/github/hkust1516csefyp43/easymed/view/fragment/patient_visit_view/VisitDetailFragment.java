@@ -172,7 +172,7 @@ public class VisitDetailFragment extends Fragment {
       ohc1.connectTimeout(1, TimeUnit.MINUTES);
       final Retrofit retrofit = new Retrofit
           .Builder()
-          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+          .baseUrl(Const.Database.getCurrentAPI())
           .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
           .client(ohc1.build())
           .build();
@@ -183,7 +183,6 @@ public class VisitDetailFragment extends Fragment {
         public void onResponse(Call<List<Triage>> call, Response<List<Triage>> response) {
           stuffGot++;
           Log.d(TAG, visit.getId());
-          Log.d(TAG, response.body().toString());
           if (response.body() != null && response.body().size() != 0){
             triage = response.body().get(0);
             if (triage != null){

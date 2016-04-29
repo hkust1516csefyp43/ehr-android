@@ -149,7 +149,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     ohc1.connectTimeout(1, TimeUnit.MINUTES);
     final Retrofit retrofit = new Retrofit
         .Builder()
-        .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+        .baseUrl(Const.Database.getCurrentAPI())
         .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
         .client(ohc1.build())
         .build();
@@ -333,7 +333,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       ohc1.connectTimeout(1, TimeUnit.MINUTES);
       Retrofit retrofit = new Retrofit
           .Builder()
-          .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
+          .baseUrl(Const.Database.getCurrentAPI())
           .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
           .client(ohc1.build())
           .build();

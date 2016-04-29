@@ -74,12 +74,20 @@ public class Const {
     public static final String GENDERS = "96VrgNXBWHQtJkfc";
   }
 
-  public class Database {
+  public static class Database {
     public static final String API_VERSION = "2";
     public static final String CLOUD_API_BASE_URL_121 = "https://one2one-easymed.herokuapp.com/v" + API_VERSION + "/";
     public static final String LOCAL_API_BASE_URL_121 = "http://192.168.0.193:3000/v" + API_VERSION + "/";
     public static final String CLOUD_API_BASE_URL_121_dev = "https://ehr-api.herokuapp.com/v" + API_VERSION + "/";
     public static final String LOCAL_API_BASE_URL_121_dev = "http://192.168.0.194:3000/v" + API_VERSION + "/";
+
+    public static String currentAPI = CLOUD_API_BASE_URL_121_dev;
+    public static void setCurrentAPI(String api) {
+      currentAPI = api;
+    }
+    public static String getCurrentAPI() {
+      return currentAPI;
+    }
   }
 
   public static class BMI {
