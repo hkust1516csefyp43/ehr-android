@@ -183,11 +183,10 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       tvAssistance.setText("Add " + title + " ->");
     }
 
-    if (consultation != null) {                                                                     //TODO fill default cards with existing data
+    if (consultation != null && preFillItems != null && preFillItems.length > 0) {                  //TODO fill default cards with existing data
       Log.d(TAG, "existing data w/ default cards");
       fab.setVisibility(View.GONE);
       tvAssistance.setVisibility(View.GONE);
-
 
     } else if (category > 0 && consultationId != null) {                                            //fill with existing data (from API call)
       if (category == 6) {
@@ -218,6 +217,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                       cards.add(card);
                     }
                     adapter = new FragRecyclerViewAdapter(getContext(), false, finalKeywordArrayList, title);
+
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                   } else {
@@ -276,25 +276,28 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
         Call<List<Keyword>> keywordsCall = null;
         switch (category) {
           case 1:
-            keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null);
+            keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null);
             break;
           case 2:
-            keywordsCall = keywordService.getKeywords("1", null, null, null, null, true, null, null, null, null, null, null, null, null, null, null);
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, true, null, null, null, null, null, null, null, null, null, null, null);
             break;
           case 3:
-            keywordsCall = keywordService.getKeywords("1", null, null, true, null, null, null, null, null, null, null, null, null, null, null, null);
+            keywordsCall = keywordService.getKeywords("1", null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null);
             break;
           case 4:
-            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, true, null, null, null, null, null, null, null, null);
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, true, null, null, null, null, null, null, null, null, null);
             break;
           case 5:
-            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, true, null, null, null, null, null, null, null, null, null);
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, true, null, null, null, null, null, null, null, null, null, null);
             break;
           case 7:
-            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, true, null, null, null, null, null, null, null);
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, true, null, null, null, null, null, null, null, null);
+            break;
+          case 8:
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, true);
             break;
           default:
-            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
         if (keywordsCall != null) {
           keywordsCall.enqueue(new Callback<List<Keyword>>() {
@@ -393,25 +396,25 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       Call<List<Keyword>> keywordsCall = null;
       switch (category) {
         case 1:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null);
+          keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null);
           break;
         case 2:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, null, true, null, null, null, null, null, null, null, null, null, null);
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, true, null, null, null, null, null, null, null, null, null, null, null);
           break;
         case 3:
-          keywordsCall = keywordService.getKeywords("1", null, null, true, null, null, null, null, null, null, null, null, null, null, null, null);
+          keywordsCall = keywordService.getKeywords("1", null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null);
           break;
         case 4:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, true, null, null, null, null, null, null, null, null);
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, true, null, null, null, null, null, null, null, null, null);
           break;
         case 5:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, true, null, null, null, null, null, null, null, null, null);
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, true, null, null, null, null, null, null, null, null, null, null);
           break;
         case 7:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, true, null, null, null, null, null, null, null);
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, true, null, null, null, null, null, null, null, null);
           break;
         default:
-          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+          keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
       }
       if (keywordsCall != null) {
         keywordsCall.enqueue(new Callback<List<Keyword>>() {
@@ -525,6 +528,35 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
               }
             });
           }
+          final TwoEditTextDialogCustomView twoEditTextDialogCustomView = new TwoEditTextDialogCustomView(getContext(), suggestions, title, cardList.get(holder.getAdapterPosition()).getCardTitle(), cardList.get(holder.getAdapterPosition()).getCardDescription(), displaySwitch);
+          holder.thisWholeCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              MaterialDialog.Builder b = new MaterialDialog.Builder(getContext())
+                  .customView(twoEditTextDialogCustomView, true)
+                  .title("Modify")
+                  .positiveText("Confirm")
+                  .negativeText("Cancel")
+                  .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                      ArrayList<String> data = twoEditTextDialogCustomView.getData();
+                      twoEditTextDialogCustomView.clearData();
+                      Log.d("qqq141", data.toString());
+                      cardList.set(holder.getAdapterPosition(), new Card(data.get(0), data.get(1)));
+                      adapter.notifyDataSetChanged();
+                    }
+                  })
+                  .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                      twoEditTextDialogCustomView.clearData();
+                      dialog.dismiss();
+                    }
+                  });
+              b.show();
+            }
+          });
         } else
           Log.d(TAG, "empty cardList");
       } else
@@ -546,6 +578,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     public SwitchCompat cardSwitch;
     public TextView tvEmptyIndicator;
     public boolean editableTitle = true;
+    public View thisWholeCard;
 
 
     public FragRecyclerViewHolder(View itemView) {
@@ -554,6 +587,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       cardDescription = (TextView) itemView.findViewById(R.id.item_description);
       cardSwitch = (SwitchCompat) itemView.findViewById(R.id.scNull);
       tvEmptyIndicator = (TextView) itemView.findViewById(R.id.tv_empty_indicator);
+      thisWholeCard = itemView.findViewById(R.id.cardVisitEdit);
     }
 
     @Override

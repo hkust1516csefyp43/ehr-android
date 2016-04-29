@@ -305,7 +305,8 @@ public interface v2API {
         @Query("medication_frequency") Boolean medicationFrequency,
         @Query("unit") Boolean unit,
         @Query("investigation") Boolean investigation,
-        @Query("relationship_type") Boolean relationshipType
+        @Query("relationship_type") Boolean relationshipType,
+        @Query("red_flag") Boolean redFlag
     );
 
     @GET("keywords/{id}")

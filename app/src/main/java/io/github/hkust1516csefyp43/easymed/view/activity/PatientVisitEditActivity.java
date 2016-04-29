@@ -1267,7 +1267,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return rosFragment;
         case 13:
           if (rfFragment == null) {
-            rfFragment = ListOfCardsFragment.newInstance("Red Flags");
+            if (thisConsultation != null)
+              rfFragment = ListOfCardsFragment.newInstance("Red Flags", 8, thisConsultation.getId());
+            else
+              rfFragment = ListOfCardsFragment.newInstance("Red Flags", 8, null);
           }
           return rfFragment;
         case 14:
