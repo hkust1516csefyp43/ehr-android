@@ -49,6 +49,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.VitalSigns;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
@@ -554,7 +555,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
         ohc1.readTimeout(1, TimeUnit.MINUTES);
         ohc1.connectTimeout(1, TimeUnit.MINUTES);
-        Retrofit retrofit = new Retrofit
+        final Retrofit retrofit = new Retrofit
             .Builder()
             .baseUrl(Const.Database.getCurrentAPI())
             .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
@@ -562,7 +563,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             .build();
         v2API.patients patientService = retrofit.create(v2API.patients.class);
         final v2API.triages triageService = retrofit.create(v2API.triages.class);
-        v2API.consultations consultationService = retrofit.create(v2API.consultations.class);
+        final v2API.consultations consultationService = retrofit.create(v2API.consultations.class);
         final v2API.visits visitService = retrofit.create(v2API.visits.class);
 
         final PersonalData pd = personalData;
@@ -820,6 +821,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                         }
                                       }
                                       Log.d(TAG, response.body().toString());
+                                      //do nothing, consultation and other stuff should take longer (i think)
 //                                        progressDialog.dismiss();
 //                                        finish();
                                     }
@@ -832,7 +834,18 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                   });
                                   //POST consultation (then POST rd and prescription (with consultation_id)
                                   Consultation consultation = generateConsultation(response.body(), finalPregnancy, finalROS, finalRF, finalPE, finalConsultationRemark);
-                                  //TODO
+                                  Call<Consultation> consultationCall = consultationService.addConsultation("1", consultation);
+                                  consultationCall.enqueue(new Callback<Consultation>() {
+                                    @Override
+                                    public void onResponse(Call<Consultation> call, Response<Consultation> response) {
+                                      //POST all rd and prescriptions
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Consultation> call, Throwable t) {
+
+                                    }
+                                  });
                                 }
                               }
 
@@ -1096,6 +1109,81 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     }
     Log.d(TAG, "output " + consultation.toString());
     return consultation;
+  }
+
+  private ArrayList<RelatedData> generateRelatedDataPlural (@NonNull Consultation consultation, ListOfCards drugHistory, ListOfCards screening, ListOfCards allergy, ListOfCards diagnosis, ListOfCards investigations, ListOfCards advice, ListOfCards followup) {
+    ArrayList<RelatedData> relatedDataArrayList = new ArrayList<>();
+    if (drugHistory != null && drugHistory.getCardArrayList() != null && drugHistory.getCardArrayList().size() > 0) {
+      for (Card c:drugHistory.getCardArrayList()) {
+        RelatedData aRelatedData = new RelatedData();
+        aRelatedData.setConsultationId(consultation.getId());
+        aRelatedData.setCategory(6);
+        aRelatedData.setData(c.getCardTitle());
+        aRelatedData.setRemark(c.getCardDescription());
+        relatedDataArrayList.add(aRelatedData);
+      }
+    }
+    if (screening != null && screening.getCardArrayList() != null && screening.getCardArrayList().size() > 0) {
+      for (Card c:screening.getCardArrayList()) {
+        RelatedData aRelatedData = new RelatedData();
+        aRelatedData.setCategory(1);
+        aRelatedData.setConsultationId(consultation.getId());
+        aRelatedData.setData(c.getCardTitle());
+        aRelatedData.setRemark(c.getCardDescription());
+        relatedDataArrayList.add(aRelatedData);
+      }
+    }
+    if (allergy != null && allergy.getCardArrayList() != null && allergy.getCardArrayList().size() > 0) {
+      for (Card c:allergy.getCardArrayList()) {
+        RelatedData aRelatedData = new RelatedData();
+        aRelatedData.setCategory(2);
+        aRelatedData.setConsultationId(consultation.getId());
+        aRelatedData.setData(c.getCardTitle());
+        aRelatedData.setRemark(c.getCardDescription());
+        relatedDataArrayList.add(aRelatedData);
+      }
+    }
+    if (diagnosis != null && diagnosis.getCardArrayList() != null && diagnosis.getCardArrayList().size() > 0) {
+      for (Card c:diagnosis.getCardArrayList()) {
+        RelatedData aRelatedData = new RelatedData();
+        aRelatedData.setCategory(3);
+        aRelatedData.setConsultationId(consultation.getId());
+        aRelatedData.setData(c.getCardTitle());
+        aRelatedData.setRemark(c.getCardDescription());
+        relatedDataArrayList.add(aRelatedData);
+      }
+    }
+    if (investigations != null && investigations.getCardArrayList() != null && investigations.getCardArrayList().size() > 0) {
+      for (Card c:investigations.getCardArrayList()) {
+        RelatedData aRelatedData = new RelatedData();
+        aRelatedData.setCategory(8);
+        aRelatedData.setConsultationId(consultation.getId());
+        aRelatedData.setData(c.getCardTitle());
+        aRelatedData.setRemark(c.getCardDescription());
+        relatedDataArrayList.add(aRelatedData);
+      }
+    }
+    if (advice != null && advice.getCardArrayList() != null && advice.getCardArrayList().size() > 0) {
+      for (Card c:advice.getCardArrayList()) {
+        RelatedData aRelatedData = new RelatedData();
+        aRelatedData.setCategory(4);
+        aRelatedData.setConsultationId(consultation.getId());
+        aRelatedData.setData(c.getCardTitle());
+        aRelatedData.setRemark(c.getCardDescription());
+        relatedDataArrayList.add(aRelatedData);
+      }
+    }
+    if (followup != null && followup.getCardArrayList() != null && followup.getCardArrayList().size() > 0) {
+      for (Card c:followup.getCardArrayList()) {
+        RelatedData aRelatedData = new RelatedData();
+        aRelatedData.setCategory(5);
+        aRelatedData.setConsultationId(consultation.getId());
+        aRelatedData.setData(c.getCardTitle());
+        aRelatedData.setRemark(c.getCardDescription());
+        relatedDataArrayList.add(aRelatedData);
+      }
+    }
+    return relatedDataArrayList;
   }
 
   @Override
