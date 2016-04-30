@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.ArrayAdapter;
@@ -39,9 +40,14 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
     actv = new AutoCompleteTextView(context);
     actv.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_text_color)));
     actv.setHint(title);
+    Log.d("qqq10", "idk");
     if (suggestions != null) {
-      String[] list = suggestions.toArray(new String[0]);
+      Log.d("qqq7", suggestions.toString());
+      String[] list = new String[suggestions.size()];
+      list = suggestions.toArray(list);
+      Log.d("qqq8", list.toString());
       ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_selectable_list_item, list);
+      actv.setThreshold(1);
       actv.setAdapter(adapter);
     }
 
@@ -70,14 +76,19 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
     super(context, null, R.style.AppTheme);
     this.setOrientation(VERTICAL);
 
+    Log.d("qqq9", title + String.valueOf(displaySwitch));
     if (!displaySwitch) {
+      Log.d("qqq9", title + "ok");
       TextInputLayout til = new TextInputLayout(context);
       actv = new AutoCompleteTextView(context);
-      actv.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_text_color)));
       actv.setHint(title);
       if (suggestions != null) {
-        String[] list = suggestions.toArray(new String[0]);
+        Log.d("qqq7", suggestions.toString());
+        String[] list = new String[suggestions.size()];
+        list = suggestions.toArray(list);
+        Log.d("qqq8", list.toString());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_selectable_list_item, list);
+        actv.setThreshold(1);
         actv.setAdapter(adapter);
       }
       if (text1 != null)
@@ -85,6 +96,7 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
       til.addView(actv);
       this.addView(til);
     } else {
+      Log.d("qqq9", "wtf");
       tv = new TextView(context);
       tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
       tv.setGravity(Gravity.CENTER_HORIZONTAL);

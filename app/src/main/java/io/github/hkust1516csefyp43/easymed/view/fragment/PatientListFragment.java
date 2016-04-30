@@ -186,11 +186,13 @@ public class PatientListFragment extends Fragment{
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
+
             if (response == null || response.body() == null){
               onFailure(call, new Throwable("empty response"));
               return;
             }
             patients = response.body();
+            Log.d(TAG, "qqqqq" + call.request().toString() + "/" + response.body().size() + ": " + response.body().toString());
             Collections.sort(patients);
             if (numberListener != null) {
               Log.d(TAG, "post triage counter update triggered: " + patients.size());

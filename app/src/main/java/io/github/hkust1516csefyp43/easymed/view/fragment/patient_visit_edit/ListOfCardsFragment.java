@@ -85,6 +85,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     Bundle args = new Bundle();
     args.putString(Const.BundleKey.KEY_TITLE, title);
     args.putInt(Const.BundleKey.RELATED_DATA_CATEGORY, category);
+    Log.d(TAG, "qqq4: " + category);
     args.putString(Const.BundleKey.CONSULTATION_ID, consultationId);
     fragment.setArguments(args);
     return fragment;
@@ -112,6 +113,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       title = bundle.getString(Const.BundleKey.KEY_TITLE);
       preFillItems = bundle.getStringArray(Const.BundleKey.KEY_PRE_FILL_ITEMS);
       category = bundle.getInt(Const.BundleKey.RELATED_DATA_CATEGORY, -1);
+      Log.d(TAG, "qqq5: " + category);
       consultationId = bundle.getString(Const.BundleKey.CONSULTATION_ID);
       Serializable serializable = bundle.getSerializable(Const.BundleKey.WHOLE_CONSULTATION);
       if (serializable instanceof Consultation)
@@ -206,6 +208,50 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 keywordArrayList.add(k.getMedication());
                 medicationHM.put(k.getMedicationId(), k.getMedication());
               }
+              Log.d("qqq11", keywordArrayList.toString());
+              final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), keywordArrayList, title, null, null, false);
+              fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  Log.d("qqq12", "yes?");
+                  new MaterialDialog.Builder(getContext())
+                      .title("Add")
+                      .customView(tetdcv, true)
+                      .positiveText("Confirm")
+                      .negativeText("Cancel")
+                      .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                          if (adapter != null) {
+                            if (tvAssistance != null) {
+                              tvAssistance.setVisibility(View.GONE);
+                            }
+                            ArrayList<String> data = tetdcv.getData();
+                            tetdcv.clearData();
+                            Log.d(TAG, data.toString());
+                            if (data.get(0) != null && data.get(1) != null) {
+                              cardList.add(new Card(data.get(0), data.get(1)));
+                              if (adapter != null)
+                                adapter.notifyDataSetChanged();
+                              else
+                                Log.d(TAG, "opps");
+                            }
+                          }
+                        }
+                      })
+                      .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                          if (adapter != null && cardList != null && cardList.size() <= 0 && tvAssistance != null) {
+                            tvAssistance.setVisibility(View.VISIBLE);
+                          }
+                          tetdcv.clearData();
+                          dialog.dismiss();
+                        }
+                      })
+                      .show();
+                }
+              });
               v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
               Call<List<Prescription>> prescriptionCall = prescriptionService.getPrescriptions("1", null, null, consultationId, null, null, null, null);
               final ArrayList<String> finalKeywordArrayList = keywordArrayList;
@@ -396,18 +442,66 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
     } else if (category > 0) {                                                                      //TODO create a blank page w/ keywords
       if (category == 6) {
+        Log.d(TAG, "qqq1");
         v2API.medications medicationService = retrofit.create(v2API.medications.class);
         Call<List<Medication>> medicationsCall = medicationService.getMedications("1", null, null, null, null, null, null);
+        Log.d(TAG, "qqq2");
         medicationsCall.enqueue(new Callback<List<Medication>>() {
           @Override
           public void onResponse(Call<List<Medication>> call, Response<List<Medication>> response) {
+            Log.d(TAG, "qqq3");
             if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
+              Log.d(TAG, response.body().toString());
               inMedicationPage = true;
               ArrayList<String> keywordArrayList = new ArrayList<>();
               for (Medication m:response.body()) {
                 medicationVsIdHM.put(m.getMedication(), m.getMedicationId());
                 keywordArrayList.add(m.getMedication());
               }
+              Log.d(TAG, "qqq6: " + keywordArrayList.toString());
+              final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), keywordArrayList, title, null, null, false);
+              fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  Log.d("qqq12", "yes?");
+                  new MaterialDialog.Builder(getContext())
+                      .title("Add")
+                      .customView(tetdcv, true)
+                      .positiveText("Confirm")
+                      .negativeText("Cancel")
+                      .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                          if (adapter != null) {
+                            if (tvAssistance != null) {
+                              tvAssistance.setVisibility(View.GONE);
+                            }
+                            ArrayList<String> data = tetdcv.getData();
+                            tetdcv.clearData();
+                            Log.d(TAG, data.toString());
+                            if (data.get(0) != null && data.get(1) != null) {
+                              cardList.add(new Card(data.get(0), data.get(1)));
+                              if (adapter != null)
+                                adapter.notifyDataSetChanged();
+                              else
+                                Log.d(TAG, "opps");
+                            }
+                          }
+                        }
+                      })
+                      .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                          if (adapter != null && cardList != null && cardList.size() <= 0 && tvAssistance != null) {
+                            tvAssistance.setVisibility(View.VISIBLE);
+                          }
+                          tetdcv.clearData();
+                          dialog.dismiss();
+                        }
+                      })
+                      .show();
+                }
+              });
               adapter = new FragRecyclerViewAdapter(getContext(), false, keywordArrayList, title);
               recyclerView.setAdapter(adapter);
               recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -521,7 +615,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
 
   private class FragRecyclerViewAdapter extends RecyclerView.Adapter<FragRecyclerViewHolder> {
     Context context;
-    boolean displaySwitch;
+    boolean displaySwitch = false;
     String title;
     ArrayList<String> suggestions;
 
