@@ -30,7 +30,7 @@ public class ListOfCards implements Serializable {
   @Override
   public String toString() {
     return "ListOfCards{" +
-        "cardArrayList=" + cardArrayList +
+        "cardArrayList=" + cardArrayList.toString() +
         '}';
   }
 }

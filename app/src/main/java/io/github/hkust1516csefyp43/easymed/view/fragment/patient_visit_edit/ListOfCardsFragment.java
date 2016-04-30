@@ -196,6 +196,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
 
     } else if (category > 0 && consultationId != null) {                                            //fill with existing data (from API call)
       if (category == 6) {
+        inMedicationPage = true;
         v2API.medications medicationService = retrofit.create(v2API.medications.class);
         Call<List<Medication>> medicationsCall = medicationService.getMedications("1", null, null, null, null, null, null);
         medicationsCall.enqueue(new Callback<List<Medication>>() {
@@ -203,10 +204,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
           public void onResponse(Call<List<Medication>> call, Response<List<Medication>> response) {
             if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0 && response.body().size() > 0) {
               ArrayList<String> keywordArrayList = new ArrayList<>();
-              final HashMap<String, String> medicationHM = new HashMap<>();
               for (Medication k : response.body()) {
                 keywordArrayList.add(k.getMedication());
-                medicationHM.put(k.getMedicationId(), k.getMedication());
+                medicationVsIdHM.put(k.getMedication(), k.getMedicationId());
               }
               Log.d("qqq11", keywordArrayList.toString());
               final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), keywordArrayList, title, null, null, false);
@@ -262,7 +262,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                     List<Prescription> prescriptions = response.body();
                     ArrayList<Card> cards = new ArrayList<>();
                     for (Prescription p: prescriptions) {
-                      p.setMedicationName(medicationHM.get(p.getMedicationId()));
+                      p.setMedicationName(medicationVsIdHM.get(p.getMedicationId()));
                       Card card = new Card(p.getMedicationName(), p.getDetail());
                       cards.add(card);
                     }
@@ -443,6 +443,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     } else if (category > 0) {                                                                      //TODO create a blank page w/ keywords
       if (category == 6) {
         Log.d(TAG, "qqq1");
+        inMedicationPage = true;
         v2API.medications medicationService = retrofit.create(v2API.medications.class);
         Call<List<Medication>> medicationsCall = medicationService.getMedications("1", null, null, null, null, null, null);
         Log.d(TAG, "qqq2");
@@ -452,9 +453,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
             Log.d(TAG, "qqq3");
             if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
               Log.d(TAG, response.body().toString());
-              inMedicationPage = true;
               ArrayList<String> keywordArrayList = new ArrayList<>();
               for (Medication m:response.body()) {
+                Log.d(TAG, "qqq300" + m.getMedication() + "/" + m.getMedicationId());
                 medicationVsIdHM.put(m.getMedication(), m.getMedicationId());
                 keywordArrayList.add(m.getMedication());
               }
@@ -599,16 +600,23 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
 
   @Override
   public Serializable onSendData() {
+    Log.d(TAG, "qqq0" + title);
     if (adapter != null) {
-      if (inMedicationPage) {         //translate medicaiton name into id
+      if (inMedicationPage) {         //translate medication name into id
+        Log.d(TAG, "qqq1" + title);
         ArrayList<Card> newCardList = new ArrayList<>();
         for (Card c:cardList) {
+          Log.d(TAG, "qqq2" + title + c.toString());
+          Log.d(TAG, "qqq21 " + title + medicationVsIdHM.toString());
           Card newCard = new Card(medicationVsIdHM.get(c.getCardTitle()), c.getCardDescription());
           newCardList.add(newCard);
         }
-        return newCardList;
-      } else
+        Log.d(TAG, "qqq3" + title+newCardList.size());
+        return new ListOfCards(newCardList);
+      } else{
+        Log.d(TAG, "qqq4" + title);
         return new ListOfCards(cardList);
+      }
     }
     return null;
   }

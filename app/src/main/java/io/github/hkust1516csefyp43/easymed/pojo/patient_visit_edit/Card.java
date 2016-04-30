@@ -79,4 +79,13 @@ public class Card implements Serializable, Parcelable {
     dest.writeString(cardDescription);
     dest.writeByte((byte) (checked ? 0x01 : 0x00));
   }
+
+  @Override
+  public String toString() {
+    return "Card{" +
+        "cardTitle='" + cardTitle + '\'' +
+        ", cardDescription='" + cardDescription + '\'' +
+        ", checked=" + checked +
+        '}';
+  }
 }

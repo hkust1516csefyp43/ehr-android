@@ -210,6 +210,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (mi != null) {
       Log.d(TAG, "setting notification icon");
       mi.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_notifications_none).color(Color.WHITE).actionBar());
+      mi.setVisible(false);
     } else {
       Log.d(TAG, "cannot set notification icon");
     }

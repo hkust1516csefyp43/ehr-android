@@ -1,6 +1,8 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,6 +36,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Attachment;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
@@ -57,7 +61,7 @@ public class PharmacyActivity extends AppCompatActivity {
   private DynamicBox box;
   private FloatingActionButton floatingActionButton;
 
-  private Patient patient;
+  private Patient thisPatient;
 
   private List<Prescription> prescriptions;
 
@@ -81,7 +85,7 @@ public class PharmacyActivity extends AppCompatActivity {
       Serializable serializable = intent.getSerializableExtra(Const.BundleKey.READ_ONLY_PATIENT);
       if (serializable instanceof Patient) {
         Log.d(TAG, "patient saved");
-        patient = (Patient) serializable;
+        thisPatient = (Patient) serializable;
       }
     }
 
@@ -91,14 +95,61 @@ public class PharmacyActivity extends AppCompatActivity {
 
     ActionBar actionBar = getSupportActionBar();
 
-    if (patient != null) {
-      Log.d(TAG, "patient is not null: " + patient.toString());
-      ImageView ivProfilePic = (ImageView) findViewById(R.id.profile_pic);
+    if (thisPatient != null) {
+      Log.d(TAG, "patient is not null: " + thisPatient.toString());
+      final ImageView ivProfilePic = (ImageView) findViewById(R.id.profile_pic);
       if (ivProfilePic != null) {
-        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(patient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(patient.getLastName(), patient.getFirstName()))));
+        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(thisPatient.getLastName(), thisPatient.getFirstName()))));
       }
-      if (patient.getVisitId() != null) {
-        Log.d(TAG, "vid exist: " + patient.getVisitId());
+      if (ivProfilePic != null && thisPatient != null) {
+        ivProfilePic.setImageDrawable(TextDrawable.builder().buildRect(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(thisPatient.getLastName(), thisPatient.getFirstName()))));        //act as placeholder + fallback
+        if (thisPatient.getImageId() != null && thisPatient.getProfilePicBase64() == null) {
+          OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+          ohc1.readTimeout(1, TimeUnit.MINUTES);
+          ohc1.connectTimeout(1, TimeUnit.MINUTES);
+          Retrofit retrofit = new Retrofit
+              .Builder()
+              .baseUrl(Const.Database.getCurrentAPI())
+              .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+              .client(ohc1.build())
+              .build();
+          v2API.attachments attachmentService = retrofit.create(v2API.attachments.class);
+          Call<Attachment> attachmentCall = attachmentService.getAttachment("1", thisPatient.getImageId());
+          attachmentCall.enqueue(new Callback<Attachment>() {
+            @Override
+            public void onResponse(Call<Attachment> call, Response<Attachment> response) {
+              if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().getFileInBase64() != null) {
+                byte[] decodedString = Base64.decode(response.body().getFileInBase64(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                if (decodedByte != null) {
+                  ivProfilePic.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                  ivProfilePic.setImageBitmap(decodedByte);
+                } else {
+                  thisPatient.setProfilePicBase64(Const.EMPTY_STRING);
+                }
+              }
+            }
+
+            @Override
+            public void onFailure(Call<Attachment> call, Throwable t) {
+              t.printStackTrace();
+              ivProfilePic.setImageDrawable(TextDrawable.builder().buildRound(Util.getTextDrawableText(thisPatient), ColorGenerator.MATERIAL.getColor(Util.displayNameBuilder(thisPatient.getLastName(), thisPatient.getFirstName()))));
+              thisPatient.setProfilePicBase64(Const.EMPTY_STRING);
+            }
+          });
+        } else if (thisPatient.getProfilePicBase64() != null && !thisPatient.getProfilePicBase64().equals(Const.EMPTY_STRING)) {
+          byte[] decodedString = Base64.decode(thisPatient.getProfilePicBase64(), Base64.DEFAULT);
+          Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+          if (decodedByte != null) {
+            ivProfilePic.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            ivProfilePic.setImageBitmap(decodedByte);
+          } else {
+            thisPatient.setProfilePicBase64(Const.EMPTY_STRING);
+          }
+        }
+      }
+      if (thisPatient.getVisitId() != null) {
+        Log.d(TAG, "vid exist: " + thisPatient.getVisitId());
 
         OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
         ohc1.readTimeout(1, TimeUnit.MINUTES);
@@ -110,7 +161,7 @@ public class PharmacyActivity extends AppCompatActivity {
             .client(ohc1.build())
             .build();
         v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
-        Call<List<Prescription>> prescriptionsCall = prescriptionService.getPrescriptions("1", patient.getVisitId(), null, null, null, null, null, null);
+        Call<List<Prescription>> prescriptionsCall = prescriptionService.getPrescriptions("1", thisPatient.getVisitId(), null, null, null, null, null, null);
         prescriptionsCall.enqueue(new Callback<List<Prescription>>() {
           @Override
           public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
@@ -182,7 +233,7 @@ public class PharmacyActivity extends AppCompatActivity {
       }
 
       if (actionBar != null) {
-        actionBar.setTitle(Util.displayNameBuilder(patient.getLastName(), patient.getFirstName()));
+        actionBar.setTitle(Util.displayNameBuilder(thisPatient.getLastName(), thisPatient.getFirstName()));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
       }
@@ -274,7 +325,7 @@ public class PharmacyActivity extends AppCompatActivity {
         v2API.visits visitService = retrofit.create(v2API.visits.class);
         Visit visit = new Visit();
         visit.setNextStation(1);
-        Call<Visit> visitCall = visitService.editVisit("1", visit, patient.getVisitId());
+        Call<Visit> visitCall = visitService.editVisit("1", visit, thisPatient.getVisitId());
         visitCall.enqueue(new Callback<Visit>() {
           @Override
           public void onResponse(Call<Visit> call, Response<Visit> response) {
@@ -354,7 +405,7 @@ public class PharmacyActivity extends AppCompatActivity {
           v2API.visits visitService = retrofit.create(v2API.visits.class);
           Visit visit = new Visit();
           visit.setNextStation(1);
-          Call<Visit> visitCall = visitService.editVisit("1", visit, patient.getVisitId());
+          Call<Visit> visitCall = visitService.editVisit("1", visit, thisPatient.getVisitId());
           visitCall.enqueue(new Callback<Visit>() {
             @Override
             public void onResponse(Call<Visit> call, Response<Visit> response) {
@@ -420,6 +471,7 @@ public class PharmacyActivity extends AppCompatActivity {
       tvPrescriptionDetail = (TextView) itemView.findViewById(R.id.tvPrescriptionDetail);
       llTheWholeThing = (LinearLayout) itemView.findViewById(R.id.rlPrescription);
       vStockCircle = itemView.findViewById(R.id.vStockCircle);
+      vStockCircle.setVisibility(View.GONE);
       llTheWholeThing.setLongClickable(true);
     }
 
