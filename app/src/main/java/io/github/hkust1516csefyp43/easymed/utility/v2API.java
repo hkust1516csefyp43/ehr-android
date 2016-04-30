@@ -633,4 +633,12 @@ public interface v2API {
         @Path("id")           String id
     );
   }
+
+  interface login {
+
+  }
+
+  interface signup {
+
+  }
 }

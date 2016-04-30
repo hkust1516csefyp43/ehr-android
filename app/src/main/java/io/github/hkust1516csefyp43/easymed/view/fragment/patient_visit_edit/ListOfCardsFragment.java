@@ -358,6 +358,49 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 for (Keyword k : response.body()) {
                   keywordArrayList.add(k.getKeyword());
                 }
+                final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), keywordArrayList, title, null, null, false);
+                fab.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                    Log.d("qqq12", "yes?");
+                    new MaterialDialog.Builder(getContext())
+                        .title("Add")
+                        .customView(tetdcv, true)
+                        .positiveText("Confirm")
+                        .negativeText("Cancel")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                          @Override
+                          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            if (adapter != null) {
+                              if (tvAssistance != null) {
+                                tvAssistance.setVisibility(View.GONE);
+                              }
+                              ArrayList<String> data = tetdcv.getData();
+                              tetdcv.clearData();
+                              Log.d(TAG, data.toString());
+                              if (data.get(0) != null && data.get(1) != null) {
+                                cardList.add(new Card(data.get(0), data.get(1)));
+                                if (adapter != null)
+                                  adapter.notifyDataSetChanged();
+                                else
+                                  Log.d(TAG, "opps");
+                              }
+                            }
+                          }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                          @Override
+                          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            if (adapter != null && cardList != null && cardList.size() <= 0 && tvAssistance != null) {
+                              tvAssistance.setVisibility(View.VISIBLE);
+                            }
+                            tetdcv.clearData();
+                            dialog.dismiss();
+                          }
+                        })
+                        .show();
+                  }
+                });
                 v2API.related_data relatedDataService = retrofit.create(v2API.related_data.class);
                 Call<List<RelatedData>> relatedDataCall = null;
                 relatedDataCall = relatedDataService.getRelatedDataPlural("1", consultationId, category, null, null, null, null, null);
@@ -556,6 +599,49 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 adapter = new FragRecyclerViewAdapter(getContext(), false, keywordArrayList, title);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), keywordArrayList, title, null, null, false);
+                fab.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                    Log.d("qqq12", "yes?");
+                    new MaterialDialog.Builder(getContext())
+                        .title("Add")
+                        .customView(tetdcv, true)
+                        .positiveText("Confirm")
+                        .negativeText("Cancel")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                          @Override
+                          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            if (adapter != null) {
+                              if (tvAssistance != null) {
+                                tvAssistance.setVisibility(View.GONE);
+                              }
+                              ArrayList<String> data = tetdcv.getData();
+                              tetdcv.clearData();
+                              Log.d(TAG, data.toString());
+                              if (data.get(0) != null && data.get(1) != null) {
+                                cardList.add(new Card(data.get(0), data.get(1)));
+                                if (adapter != null)
+                                  adapter.notifyDataSetChanged();
+                                else
+                                  Log.d(TAG, "opps");
+                              }
+                            }
+                          }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                          @Override
+                          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            if (adapter != null && cardList != null && cardList.size() <= 0 && tvAssistance != null) {
+                              tvAssistance.setVisibility(View.VISIBLE);
+                            }
+                            tetdcv.clearData();
+                            dialog.dismiss();
+                          }
+                        })
+                        .show();
+                  }
+                });
               } else {
                 onFailure(call, new Throwable("sth wrong when fetching keywords"));
               }

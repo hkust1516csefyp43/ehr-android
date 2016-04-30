@@ -23,6 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.answers.Answers;
@@ -60,14 +62,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
   private AutoCompleteTextView mEmailView;
   private EditText mPasswordView;
-  private View mProgressView;
-  private View mLoginFormView;
+  private ProgressBar mProgressView;
+  private ScrollView mLoginFormView;
   private AppCompatSpinner clinicList;
   private Clinic currentClinic;
-  /**
-   * ATTENTION: This was auto-generated to implement the App Indexing API.
-   * See https://g.co/AppIndexing/AndroidStudio for more information.
-   */
   private GoogleApiClient client;
 
   @Override
@@ -103,19 +101,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
       mRegisterButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View view) {
-          Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-          finish();
+          Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
           startActivity(intent);
         }
       });
     }
 
-    mLoginFormView = findViewById(R.id.login_form);
-    mProgressView = findViewById(R.id.login_progress);
+    mLoginFormView = (ScrollView) findViewById(R.id.login_form);
+    mProgressView = (ProgressBar) findViewById(R.id.login_progress);
     clinicList = (AppCompatSpinner) findViewById(R.id.spinner);
 
     Log.d(TAG, "ANDROID ID = " + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
 
+    if (mProgressView != null) {
+      mProgressView.setVisibility(View.VISIBLE);
+    }
     OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
     httpClient.readTimeout(1, TimeUnit.MINUTES);
     httpClient.connectTimeout(1, TimeUnit.MINUTES);
@@ -134,6 +134,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
           clinicList.setVisibility(View.VISIBLE);
           ArrayAdapter<Clinic> clinicArrayAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, response.body());
           Log.d(TAG, "list of clinics: " + response.body().toString());
+          if (mProgressView != null) {
+            mProgressView.setVisibility(View.GONE);
+          }
           clinicList.setAdapter(clinicArrayAdapter);
           clinicList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -210,6 +213,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
       showProgress(true);
 
       //TODO Replace this asynctask with just retrofit (call + callback)
+      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+      ohc1.readTimeout(2, TimeUnit.MINUTES);
+      ohc1.connectTimeout(2, TimeUnit.MINUTES);
+      OkHttpClient.Builder ohc2 = new OkHttpClient.Builder();
+      ohc2.readTimeout(1, TimeUnit.MINUTES);
+      ohc2.connectTimeout(1, TimeUnit.MINUTES);
+      Retrofit retrofit = new Retrofit
+          .Builder()
+          .baseUrl(Const.Database.getCurrentAPI())
+          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+          .client(ohc2.build())
+          .build();
+
       mAuthTask = new UserLoginTask(email, password);
       mAuthTask.execute((Void) null);
     }

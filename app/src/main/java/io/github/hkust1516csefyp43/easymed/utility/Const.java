@@ -16,6 +16,11 @@ public class Const {
   public static final int ACTION_SELECT_PICTURE = 1;
   public static final int ACTION_REMOVE_PICTURE = 2;
 
+  public class SignUp {
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+  }
+
   public class NextStation {
     public static final int TRIAGE = 1;
     public static final int CONSULTATION = 2;

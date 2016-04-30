@@ -98,6 +98,11 @@
             android:label="@string/title_activity_profile_edit"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:name=".view.activity.SignUpActivity"
+            android:label="@string/title_activity_sign_up"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>
