@@ -233,7 +233,6 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
     MenuItem menuItem = menu.findItem(R.id.report);
     if (menuItem != null) {
       menuItem.setIcon(new IconicsDrawable(this).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_file_excel));
-      menuItem.setVisible(false);       //TODO hide for presentation
     }
     return true;
   }

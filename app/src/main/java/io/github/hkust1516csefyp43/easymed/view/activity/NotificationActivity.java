@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -119,10 +121,14 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
 
   private class NotificationRecyclerViewViewHolder extends RecyclerView.ViewHolder {
     TextView tvNotification;
+    TextView tvDate;
+    LinearLayout llTheWholeThing;
 
     public NotificationRecyclerViewViewHolder(View itemView) {
       super(itemView);
       tvNotification = (TextView) itemView.findViewById(R.id.tv_notification);
+      tvDate = (TextView) itemView.findViewById(R.id.tvDate);
+      llTheWholeThing = (LinearLayout) itemView.findViewById(R.id.llTheWholeThing); //TODO onclick >> read
     }
   }
 
@@ -141,6 +147,7 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
     @Override
     public void onBindViewHolder(NotificationRecyclerViewViewHolder holder, int position) {
       holder.tvNotification.setText(notifications.get(position).getMessage());
+      holder.tvDate.setText(Util.dateInString(notifications.get(position).getRemindDate()));
     }
 
     @Override

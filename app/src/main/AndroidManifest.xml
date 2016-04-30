@@ -103,6 +103,11 @@
             android:label="@string/title_activity_sign_up"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:name=".view.activity.GenerateNewReportActivity"
+            android:label="@string/title_activity_generate_new_report"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

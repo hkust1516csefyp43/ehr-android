@@ -1,15 +1,10 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.Settings;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.TextUtils;
@@ -20,7 +15,6 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -33,7 +27,6 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +35,6 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
-import io.github.hkust1516csefyp43.easymed.utility.Validator;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -54,13 +46,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity{
 
   private static final String TAG = LoginActivity.class.getSimpleName();
 
   private UserLoginTask mAuthTask = null;
 
-  private AutoCompleteTextView mEmailView;
+  private TextInputEditText mUsername;
   private EditText mPasswordView;
   private ProgressBar mProgressView;
   private ScrollView mLoginFormView;
@@ -72,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
-    mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+    mUsername = (TextInputEditText) findViewById(R.id.email);
 
     mPasswordView = (EditText) findViewById(R.id.password);
     mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -110,8 +102,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     mLoginFormView = (ScrollView) findViewById(R.id.login_form);
     mProgressView = (ProgressBar) findViewById(R.id.login_progress);
     clinicList = (AppCompatSpinner) findViewById(R.id.spinner);
-
-    Log.d(TAG, "ANDROID ID = " + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
 
     if (mProgressView != null) {
       mProgressView.setVisibility(View.VISIBLE);
@@ -159,8 +149,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Log.d(TAG, "Received nothing");
       }
     });
-    // ATTENTION: This was auto-generated to implement the App Indexing API.
-    // See https://g.co/AppIndexing/AndroidStudio for more information.
     client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
   }
 
@@ -173,66 +161,44 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     if (mAuthTask != null) {
       return;
     }
-
-    // Reset errors.
-    mEmailView.setError(null);
+    mUsername.setError(null);
     mPasswordView.setError(null);
-
-    // Store values at the time of the login attempt.
-    String email = mEmailView.getText().toString();
+    String username = mUsername.getText().toString();
     String password = mPasswordView.getText().toString();
-
     boolean cancel = false;
     View focusView = null;
-
-    // Check for a valid password, if the user entered one.
     if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
       mPasswordView.setError(getString(R.string.error_invalid_password));
       focusView = mPasswordView;
       cancel = true;
     }
-
-    // Check for a valid email address.
-    if (TextUtils.isEmpty(email)) {
-      mEmailView.setError(getString(R.string.error_field_required));
-      focusView = mEmailView;
-      cancel = true;
-    } else if (!Validator.email(email)) {
-      mEmailView.setError(getString(R.string.error_invalid_email));
-      focusView = mEmailView;
+    if (TextUtils.isEmpty(username)) {
+      mUsername.setError(getString(R.string.error_field_required));
+      focusView = mUsername;
       cancel = true;
     }
 
     if (cancel) {
-      // There was an error; don't attempt login and focus the first
-      // form field with an error.
       focusView.requestFocus();
     } else {
-      // Show a progress spinner, and kick off a background task to
-      // perform the user login attempt.
       showProgress(true);
+//      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+//      ohc1.readTimeout(2, TimeUnit.MINUTES);
+//      ohc1.connectTimeout(2, TimeUnit.MINUTES);
+//      OkHttpClient.Builder ohc2 = new OkHttpClient.Builder();
+//      ohc2.readTimeout(1, TimeUnit.MINUTES);
+//      ohc2.connectTimeout(1, TimeUnit.MINUTES);
+//      Retrofit retrofit = new Retrofit
+//          .Builder()
+//          .baseUrl(Const.Database.getCurrentAPI())
+//          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+//          .client(ohc2.build())
+//          .build();
+//      Log.d(TAG, "ANDROID ID = " + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
 
-      //TODO Replace this asynctask with just retrofit (call + callback)
-      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-      ohc1.readTimeout(2, TimeUnit.MINUTES);
-      ohc1.connectTimeout(2, TimeUnit.MINUTES);
-      OkHttpClient.Builder ohc2 = new OkHttpClient.Builder();
-      ohc2.readTimeout(1, TimeUnit.MINUTES);
-      ohc2.connectTimeout(1, TimeUnit.MINUTES);
-      Retrofit retrofit = new Retrofit
-          .Builder()
-          .baseUrl(Const.Database.getCurrentAPI())
-          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-          .client(ohc2.build())
-          .build();
-
-      mAuthTask = new UserLoginTask(email, password);
+      mAuthTask = new UserLoginTask(username, password);
       mAuthTask.execute((Void) null);
     }
-  }
-
-  private boolean isEmailValid(String email) {
-    return email.contains("@");
   }
 
   private boolean isPasswordValid(String password) {
@@ -245,49 +211,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
   private void showProgress(final boolean show) {
     mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
     mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-  }
-
-  @Override
-  public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-    return new CursorLoader(this,
-        // Retrieve data rows for the device user's 'profile' contact.
-        Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-            ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-        // Select only email addresses.
-        ContactsContract.Contacts.Data.MIMETYPE +
-            " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-        .CONTENT_ITEM_TYPE},
-
-        // Show primary email addresses first. Note that there won't be
-        // a primary email address if the user hasn't specified one.
-        ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-  }
-
-  @Override
-  public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-    List<String> emails = new ArrayList<>();
-    cursor.moveToFirst();
-    while (!cursor.isAfterLast()) {
-      emails.add(cursor.getString(ProfileQuery.ADDRESS));
-      cursor.moveToNext();
-    }
-
-    addEmailsToAutoComplete(emails);
-  }
-
-  @Override
-  public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-  }
-
-  private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-    //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-    ArrayAdapter<String> adapter =
-        new ArrayAdapter<>(LoginActivity.this,
-            android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-    mEmailView.setAdapter(adapter);
   }
 
   private void openEverything() {
@@ -333,16 +256,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     );
     AppIndex.AppIndexApi.end(client, viewAction);
     client.disconnect();
-  }
-
-  private interface ProfileQuery {
-    String[] PROJECTION = {
-        ContactsContract.CommonDataKinds.Email.ADDRESS,
-        ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-    };
-
-    int ADDRESS = 0;
-    int IS_PRIMARY = 1;
   }
 
   /**

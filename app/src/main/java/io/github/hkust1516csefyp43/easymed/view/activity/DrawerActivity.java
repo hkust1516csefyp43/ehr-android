@@ -117,7 +117,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     menuItem = menu.findItem(R.id.nav_reports);
     if (menuItem != null) {
       menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_file_chart).color(Color.GRAY).actionBar().paddingDp(2));
-      menuItem.setVisible(false);       //TODO hide for presentation
     }
     menuItem = menu.findItem(R.id.nav_admin);
     if (menuItem != null) {
@@ -210,7 +209,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (mi != null) {
       Log.d(TAG, "setting notification icon");
       mi.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_notifications_none).color(Color.WHITE).actionBar());
-      mi.setVisible(false);
     } else {
       Log.d(TAG, "cannot set notification icon");
     }
