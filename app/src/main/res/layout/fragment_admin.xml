@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="3"
+        android:weightSum="4"
         android:layout_below="@id/app_bar">
 
         <LinearLayout
@@ -77,12 +77,37 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/other"
+            android:id="@+id/users"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_weight="1"
             android:background="@color/primary_lighter_color"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivUsers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Users"
+                android:textColor="@color/text_color"
+                android:textSize="32sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/other"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:background="@color/primary_lightest_color"
             android:gravity="center">
 
             <ImageView

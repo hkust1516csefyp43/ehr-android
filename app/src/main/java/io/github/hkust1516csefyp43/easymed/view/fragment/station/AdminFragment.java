@@ -20,6 +20,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.view.activity.CreateUserActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.SyncActivity;
 
 public class AdminFragment extends Fragment {
@@ -49,13 +50,16 @@ public class AdminFragment extends Fragment {
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     LinearLayout llSync = (LinearLayout) view.findViewById(R.id.synchronisation);
     LinearLayout llStatics = (LinearLayout) view.findViewById(R.id.statics);
+    LinearLayout llUsers = (LinearLayout) view.findViewById(R.id.users);
     LinearLayout llOthers = (LinearLayout) view.findViewById(R.id.other);
     ImageView ivSync = (ImageView) view.findViewById(R.id.ivSync);
     ImageView ivStatic = (ImageView) view.findViewById(R.id.ivStatic);
+    ImageView ivUsers = (ImageView) view.findViewById(R.id.ivUsers);
     ImageView ivOther = (ImageView) view.findViewById(R.id.ivOther);
 
     ivSync.setImageDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_sync));
     ivStatic.setImageDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_table_edit));
+    ivUsers.setImageDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_human));
     ivOther.setImageDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_settings_box));
 
     llSync.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +73,12 @@ public class AdminFragment extends Fragment {
       @Override
       public void onClick(View v) {
         //TODO
+      }
+    });
+    llUsers.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        openUserManagementPage();
       }
     });
     llOthers.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +103,11 @@ public class AdminFragment extends Fragment {
     //TODO other setting (setting)
 
     return view;
+  }
+
+  private void openUserManagementPage() {
+    Intent intent = new Intent(getContext(), CreateUserActivity.class);
+    startActivity(intent);
   }
 
   @Override
