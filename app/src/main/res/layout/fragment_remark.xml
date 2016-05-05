@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="bottom"
-            android:text="Any Remark?"
+            android:text="@string/any_remark"
             android:layout_centerVertical="true"/>
 
         <TextView
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Yes"
+            android:text="@string/yes"
             android:gravity="center"
             android:layout_marginLeft="4dp"
             android:layout_centerVertical="true"/>
@@ -43,7 +43,7 @@
             android:layout_toLeftOf="@id/scRemark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No"
+            android:text="@string/no"
             android:gravity="center"
             android:layout_centerVertical="true"/>
 
@@ -61,7 +61,7 @@
             android:id="@+id/etRemark"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Type here"/>
+            android:hint="@string/type_here"/>
 
     </android.support.design.widget.TextInputLayout>
 

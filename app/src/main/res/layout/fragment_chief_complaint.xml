@@ -12,7 +12,7 @@
             android:id="@+id/chief_complaint"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="The major health problem or concern, and its time course (e.g. chest pain for past 4 hours)"/>
+            android:hint="@string/cc_definition"/>
 
     </android.support.design.widget.TextInputLayout>
 

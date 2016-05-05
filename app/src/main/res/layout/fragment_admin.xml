@@ -45,7 +45,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sync"
+                android:text="@string/sync"
                 android:textColor="@color/text_color"
                 android:textSize="32sp"/>
 
@@ -70,7 +70,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Static"
+                android:text="@string/staticString"
                 android:textColor="@color/text_color"
                 android:textSize="32sp"/>
 
@@ -95,7 +95,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Users"
+                android:text="@string/users"
                 android:textColor="@color/text_color"
                 android:textSize="32sp"/>
 
@@ -120,7 +120,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Other"
+                android:text="@string/other"
                 android:textColor="@color/text_color"
                 android:textSize="32sp"/>
 

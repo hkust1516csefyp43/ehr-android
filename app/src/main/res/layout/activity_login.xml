@@ -60,7 +60,7 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Username"
+                    android:hint="@string/username"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -107,7 +107,7 @@
                     style="?android:textAppearanceSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SIGH UP"
+                    android:text="@string/sigh_up"
                     android:layout_weight="1"
                     android:textStyle="bold"
                     android:padding="4dp"/>

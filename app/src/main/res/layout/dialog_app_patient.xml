@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Not Sure"
+            android:text="@string/not_sure"
             android:textColor="@color/text_color"
             android:textSize="32sp"/>
 
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="New Patient"
+            android:text="@string/new_patient"
             android:textColor="@color/text_color"
             android:textSize="32sp"/>
 
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Open Saving"
+            android:text="@string/open_saving"
             android:textColor="@color/secondary_text_color"
             android:textSize="32sp"/>
 

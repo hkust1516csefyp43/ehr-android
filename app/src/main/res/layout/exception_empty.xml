@@ -25,17 +25,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/exception.title"
-                android:text="No prescriptions" />
+                android:text="@string/no_prescriptions" />
 
             <TextView
                 android:id="@+id/exception_message"
                 style="@style/exception.message"
-                android:text="Click the button to retry." />
+                android:text="@string/click_the_button_to_retry" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Report"
+                android:text="@string/report"
                 android:id="@+id/exception_button"
                 android:layout_below="@+id/exception_wrapper"
                 style="@style/exception.button"

@@ -382,14 +382,14 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:text="Click here to select date"
+                android:text="@string/click_to_select_date"
                 android:textSize="12sp"/>
 
             <Button
                 android:id="@+id/removeButton2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Remove"/>
+                android:text="@string/remove"/>
 
         </LinearLayout>
 
