@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.LayoutInflaterCompat;
@@ -48,11 +47,11 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
-import io.github.hkust1516csefyp43.easymed.view.fragment.AdminFragment;
-import io.github.hkust1516csefyp43.easymed.view.fragment.InventoryFragment;
-import io.github.hkust1516csefyp43.easymed.view.fragment.ReportsFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.station.AdminFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.ConsultationFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.station.InventoryFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.PharmacyFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.station.ReportsFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.TriageFragment;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -227,70 +226,68 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     return super.onOptionsItemSelected(item);
   }
 
-  @SuppressWarnings("StatementWithEmptyBody")
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
-    // Handle navigation view item clicks here.
     int id = item.getItemId();
-
-    if (id == R.id.nav_triage) {
-      TriageFragment triageFragment = new TriageFragment();
-      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.fragment_container, triageFragment).commit();
-    } else if (id == R.id.nav_consultation) {
-      ConsultationFragment consultationFragment = new ConsultationFragment();
-      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.fragment_container, consultationFragment).commit();
-
-    } else if (id == R.id.nav_pharmacy) {
-      PharmacyFragment pharmacyFragment = new PharmacyFragment();
-      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.fragment_container, pharmacyFragment).commit();
-    } else if (id == R.id.nav_inventory) {
-      InventoryFragment inventoryFragment = new InventoryFragment();
-      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.fragment_container, inventoryFragment).commit();
-    } else if (id == R.id.nav_reports) {
-      ReportsFragment reportsFragment = new ReportsFragment();
-      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.fragment_container, reportsFragment).commit();
-    } else if (id == R.id.nav_admin) {
-      AdminFragment adminFragment = new AdminFragment();
-      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-      fragmentTransaction.replace(R.id.fragment_container, adminFragment).commit();
-    } else if (id == R.id.nav_settings) {
-      Snackbar.make(findViewById(android.R.id.content), "Coming soon", Snackbar.LENGTH_LONG).show();
-      //swap fragment to SettingsFragment
-    } else if (id == R.id.nav_about) {
-      //Trigger AboutLibrary
-      new LibsBuilder()
-          .withActivityTitle("About")
-          .withFields(R.string.class.getFields())
-          .withAboutIconShown(true)
-          .withAboutVersionShown(true)
-          .withVersionShown(true)
-          .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
-          .start(DrawerActivity.this);
-    } else if (id == R.id.nav_logout) {
-      new MaterialDialog.Builder(this)
-          .theme(Theme.LIGHT)
-          .autoDismiss(true)
-          .content("Are you sure you want to logout?")
-          .positiveText("Logout")
-          //TODO icon?
-          .negativeColor(getResources().getColor(R.color.colorAccent))
-          .onPositive(this)
-          .negativeText("Dismiss")
-          .onNegative(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-              dialog.dismiss();
-            }
-          })
-          .show();
-
+    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+    switch (id) {
+      case R.id.nav_triage:
+        TriageFragment triageFragment = new TriageFragment();
+        fragmentTransaction.replace(R.id.fragment_container, triageFragment).commit();
+        break;
+      case R.id.nav_consultation:
+        ConsultationFragment consultationFragment = new ConsultationFragment();
+        fragmentTransaction.replace(R.id.fragment_container, consultationFragment).commit();
+        break;
+      case R.id.nav_pharmacy:
+        PharmacyFragment pharmacyFragment = new PharmacyFragment();
+        fragmentTransaction.replace(R.id.fragment_container, pharmacyFragment).commit();
+        break;
+      case R.id.nav_inventory:
+        InventoryFragment inventoryFragment = new InventoryFragment();
+        fragmentTransaction.replace(R.id.fragment_container, inventoryFragment).commit();
+        break;
+      case R.id.nav_reports:
+        ReportsFragment reportsFragment = new ReportsFragment();
+        fragmentTransaction.replace(R.id.fragment_container, reportsFragment).commit();
+        break;
+      case R.id.nav_admin:
+        AdminFragment adminFragment = new AdminFragment();
+        fragmentTransaction.replace(R.id.fragment_container, adminFragment).commit();
+        break;
+      case R.id.nav_settings:
+        Intent intent = new Intent(DrawerActivity.this, SettingsActivity.class);
+        startActivity(intent);
+        break;
+      case R.id.nav_about:
+        new LibsBuilder()
+            .withActivityTitle("About")
+            .withFields(R.string.class.getFields())
+            .withAboutIconShown(true)
+            .withAboutVersionShown(true)
+            .withVersionShown(true)
+            .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+            .start(DrawerActivity.this);
+        break;
+      case R.id.nav_logout:
+        new MaterialDialog.Builder(this)
+            .theme(Theme.LIGHT)
+            .autoDismiss(true)
+            .content("Are you sure you want to logout?")
+            .positiveText("Logout")
+            //TODO icon?
+            .negativeColor(getResources().getColor(R.color.colorAccent))
+            .onPositive(this)
+            .negativeText("Dismiss")
+            .onNegative(new MaterialDialog.SingleButtonCallback() {
+              @Override
+              public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+              }
+            })
+            .show();
+        break;
     }
-
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     if (drawer != null) {
       drawer.closeDrawer(GravityCompat.START);

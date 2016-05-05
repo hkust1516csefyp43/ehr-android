@@ -1,14 +1,19 @@
-package io.github.hkust1516csefyp43.easymed.view.fragment;
+package io.github.hkust1516csefyp43.easymed.view.fragment.station;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +23,18 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.view.fragment.MedicationVariantListFragment;
 
-public class ReportsFragment extends Fragment {
+public class InventoryFragment extends Fragment {
+  private String TAG = InventoryFragment.class.getSimpleName();
+
   private OnFragmentInteractionListener mListener;
-
   private FloatingActionButton floatingActionButton;
+  private TabLayout tabLayout;
+  private ViewPager viewPager;
 
-  public static ReportsFragment newInstance(String param1, String param2) {
-    ReportsFragment fragment = new ReportsFragment();
+  public static InventoryFragment newInstance(String param1, String param2) {
+    InventoryFragment fragment = new InventoryFragment();
     Bundle args = new Bundle();
 //    args.putString(ARG_PARAM1, param1);
 //    args.putString(ARG_PARAM2, param2);
@@ -33,7 +42,7 @@ public class ReportsFragment extends Fragment {
     return fragment;
   }
 
-  public ReportsFragment() {
+  public InventoryFragment() {
     // Required empty public constructor
   }
 
@@ -48,9 +57,10 @@ public class ReportsFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_reports, container, false);
+    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-    toolbar.setTitle("Reports");
+    toolbar.setTitle("Inventory");
+    toolbar.setSubtitle("In this suitcase");
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -59,6 +69,36 @@ public class ReportsFragment extends Fragment {
     if (drawer != null) {
       drawer.setDrawerListener(toggle);
       toggle.syncState();
+    }
+
+
+    tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+    viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+
+    if (viewPager != null && tabLayout != null) {
+      tabLayout.addTab(tabLayout.newTab().setText("Out of stock"));
+      tabLayout.addTab(tabLayout.newTab().setText("Inadequate"));
+      tabLayout.addTab(tabLayout.newTab().setText("Enough"));
+      tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+          viewPager.setCurrentItem(tab.getPosition());
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+          viewPager.setCurrentItem(tab.getPosition());
+        }
+      });
+
+      viewPager.setAdapter(new medicationVariantsPagesAdapter(getFragmentManager()));
+      viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+      viewPager.setOffscreenPageLimit(3);
     }
 
     floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -87,5 +127,23 @@ public class ReportsFragment extends Fragment {
   public void onDetach() {
     super.onDetach();
     mListener = null;
+  }
+
+  private class medicationVariantsPagesAdapter extends FragmentPagerAdapter {
+
+    public medicationVariantsPagesAdapter(FragmentManager fm) {
+      super(fm);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+      Log.d(TAG, "starting mvll page " + position);
+      return MedicationVariantListFragment.newInstance(position);
+    }
+
+    @Override
+    public int getCount() {
+      return 3;
+    }
   }
 }

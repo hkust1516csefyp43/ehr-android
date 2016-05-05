@@ -108,6 +108,10 @@
             android:label="@string/title_activity_generate_new_report"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:name=".view.activity.SettingsActivity"
+            android:label="@string/title_activity_settings">
+        </activity>
     </application>
 
 </manifest>
