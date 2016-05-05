@@ -1,4 +1,6 @@
-# README
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/ehr-android/localized.svg)](https://crowdin.com/project/ehr-android)
+
+You need to use this app in conjunction to out [Easymed server](https://github.com/hkust1516csefyp43/ehr-server). And if you want to use it on iOS device, you should check out the [iOS version](https://github.com/hkust1516csefyp43/ehr-ios) of the app.
 
 ```
             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
