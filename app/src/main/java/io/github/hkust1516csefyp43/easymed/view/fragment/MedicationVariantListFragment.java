@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -27,6 +26,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.MedicationVarian
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.DividerItemDecoration;
+import mehdi.sakout.dynamicbox.DynamicBox;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -43,7 +43,7 @@ public class MedicationVariantListFragment extends Fragment {
 
   private SwipeRefreshLayout swipeRefreshLayout;
   private RecyclerView recyclerView;
-  private ProgressBar progressBar;
+  private DynamicBox box;
 //  private DragScrollBar dragScrollBar;
 
   private int whichPage;
@@ -82,8 +82,8 @@ public class MedicationVariantListFragment extends Fragment {
     swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl);
     swipeRefreshLayout.setVisibility(View.GONE);
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-    progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-    progressBar.setVisibility(View.VISIBLE);
+    box = new DynamicBox(getContext(), recyclerView);
+    box.showLoadingLayout();
     refresh(view);
     return view;
   }
@@ -202,18 +202,25 @@ public class MedicationVariantListFragment extends Fragment {
   }
 
   private void showError() {
-    //TODO
+    if (box != null) {
+      box.showExceptionLayout();
+    }
   }
 
   private void showEmptyUI() {
-    //TODO
+    //TODO custom view
+    if (box != null) {
+      box.showExceptionLayout();
+    }
   }
 
   private void showUI() {
     if (recyclerView != null && swipeRefreshLayout != null) {
       recyclerView.setAdapter(new medicationVariantRecyclerViewAdapter());
       recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-      progressBar.setVisibility(View.GONE);
+      if (box != null) {
+        box.hideAll();
+      }
       swipeRefreshLayout.setRefreshing(false);
       swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
         @Override

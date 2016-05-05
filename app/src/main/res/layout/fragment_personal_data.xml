@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="6"
                     android:layout_gravity="center_vertical"
-                    android:text="Status"/>
+                    android:text="@string/status"/>
 
                 <Spinner
                     android:id="@+id/sStatus"
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="6"
                     android:layout_gravity="center_vertical"
-                    android:text="Blood Type"
+                    android:text="@string/blood_type"
                     android:visibility="gone"/>
 
                 <Spinner
@@ -177,7 +177,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number"
-                            android:hint="Years"
+                            android:hint="@string/years"
                             android:selectAllOnFocus="true"
                             android:imeOptions="actionNext"
                             android:maxLines="1"/>
@@ -194,7 +194,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number"
-                            android:hint="Months"
+                            android:hint="@string/months"
                             android:selectAllOnFocus="true"
                             android:imeOptions="actionNext"
                             android:text="0"
@@ -265,7 +265,7 @@
                 <TextView
                     android:id="@+id/tvPhoneNumber"
                     android:layout_columnSpan="6"
-                    android:text="Phone Number"
+                    android:text="@string/phone_number"
                     android:layout_gravity="center_vertical"/>
 
                 <android.support.design.widget.TextInputLayout

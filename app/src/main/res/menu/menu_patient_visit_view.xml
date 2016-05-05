@@ -4,6 +4,6 @@
     <item
         android:id="@+id/report"
         android:orderInCategory="100"
-        android:title="Report"
+        android:title="@string/report"
         app:showAsAction="always"/>
 </menu>

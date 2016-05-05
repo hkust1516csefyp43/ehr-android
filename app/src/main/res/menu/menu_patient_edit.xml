@@ -5,12 +5,12 @@
         android:id="@+id/chief_complaint"
         android:orderInCategory="100"
         android:title="CC"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/history"
         android:orderInCategory="200"
-        android:title="History"
-        app:showAsAction="always"/>
+        android:title="@string/history"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/confirm"
         android:orderInCategory="300"

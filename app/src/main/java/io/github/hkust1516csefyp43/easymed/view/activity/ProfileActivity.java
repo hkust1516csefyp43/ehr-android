@@ -59,12 +59,12 @@ public class ProfileActivity extends AppCompatActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //TODO edit stuff
+        openEditProfile();
       }
     });
   }
 
-  private void openEditProfie(){
+  private void openEditProfile(){
     Intent intent = new Intent(this, EditProfileActivity.class);
     startActivity(intent);
   }

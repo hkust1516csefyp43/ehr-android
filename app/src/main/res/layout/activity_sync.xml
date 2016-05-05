@@ -32,7 +32,7 @@
         <Button
             android:id="@+id/bPullFromCloud"
             android:layout_width="196dp"
-            android:text="Pull from cloud"
+            android:text="Before leaving office"
             android:layout_height="wrap_content"/>
 
         <TextView
@@ -45,7 +45,7 @@
         <Button
             android:id="@+id/bPushToLocal"
             android:layout_width="196dp"
-            android:text="Push To Local"
+            android:text="Before starting mobile clinic"
             android:layout_height="wrap_content"/>
 
         <TextView
@@ -58,7 +58,7 @@
         <Button
             android:id="@+id/bPullFromLocal"
             android:layout_width="196dp"
-            android:text="Pull From Local"
+            android:text="Before leaving mobile clinic"
             android:layout_height="wrap_content"/>
 
         <TextView
@@ -71,7 +71,7 @@
         <Button
             android:id="@+id/bPushToCloud"
             android:layout_width="196dp"
-            android:text="Push to Cloud"
+            android:text="After back to office"
             android:layout_height="wrap_content"/>
 
         <TextView
