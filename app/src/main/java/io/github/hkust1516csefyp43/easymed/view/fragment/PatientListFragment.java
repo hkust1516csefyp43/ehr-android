@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -42,6 +41,7 @@ import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitViewActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.PharmacyActivity;
+import mehdi.sakout.dynamicbox.DynamicBox;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,8 +63,8 @@ public class PatientListFragment extends Fragment{
   private OnPatientsFetchedListener numberListener;
 
   private RecyclerView recyclerView;
-  private ProgressBar progressBar;
   private SwipeRefreshLayout swipeRefreshLayout;
+  private DynamicBox box;
 
   public static PatientListFragment newInstance(int whichPage, String nameSearchString) {
     PatientListFragment fragment = new PatientListFragment();
@@ -94,7 +94,6 @@ public class PatientListFragment extends Fragment{
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_patient_list, container, false);
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-    progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
     swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl);
     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
@@ -103,7 +102,10 @@ public class PatientListFragment extends Fragment{
       }
     });
     recyclerView.setVisibility(View.GONE);
-    progressBar.setVisibility(View.VISIBLE);
+    if (recyclerView != null) {
+      box = new DynamicBox(getContext(), recyclerView);
+      box.showLoadingLayout();
+    }
     return view;
   }
 
@@ -204,12 +206,17 @@ public class PatientListFragment extends Fragment{
               swipeRefreshLayout.setRefreshing(false);
             }
             recyclerView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
+            if (box != null) {
+              box.hideAll();
+            }
           }
 
           @Override
           public void onFailure(Call<List<Patient>> call, Throwable t) {
             t.printStackTrace();
+            if (box != null) {
+              box.showExceptionLayout();
+            }
           }
         });
         break;
@@ -233,12 +240,18 @@ public class PatientListFragment extends Fragment{
               swipeRefreshLayout.setRefreshing(false);
             }
             recyclerView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
+            if (box != null) {
+              box.showExceptionLayout();
+            }
           }
 
           @Override
           public void onFailure(Call<List<Patient>> call, Throwable t) {
             t.printStackTrace();
+            if (box != null) {
+              box.showExceptionLayout();
+            }
+
           }
         });
         break;
@@ -260,11 +273,16 @@ public class PatientListFragment extends Fragment{
               swipeRefreshLayout.setRefreshing(false);
             }
             recyclerView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
+            if (box != null) {
+              box.hideAll();
+            }
           }
 
           @Override
           public void onFailure(Call<List<Patient>> call, Throwable t) {
+            if (box != null) {
+              box.showExceptionLayout();
+            }
           }
         });
         break;
@@ -285,12 +303,17 @@ public class PatientListFragment extends Fragment{
               swipeRefreshLayout.setRefreshing(false);
             }
             recyclerView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
+            if (box != null) {
+              box.hideAll();
+            }
           }
 
           @Override
           public void onFailure(Call<List<Patient>> call, Throwable t) {
-
+            t.printStackTrace();
+            if (box != null) {
+              box.showExceptionLayout();
+            }
           }
         });
         break;
@@ -310,7 +333,9 @@ public class PatientListFragment extends Fragment{
                 swipeRefreshLayout.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
                 recyclerView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+                if (box != null) {
+                  box.hideAll();
+                }
               } else {
                 onFailure(call, new Throwable("empty response wtf"));
               }
@@ -319,6 +344,9 @@ public class PatientListFragment extends Fragment{
             @Override
             public void onFailure(Call<List<Patient>> call, Throwable t) {
               t.printStackTrace();
+              if (box != null) {
+                box.showExceptionLayout();
+              }
             }
           });
         } else {
@@ -337,7 +365,9 @@ public class PatientListFragment extends Fragment{
                 recyclerView.setAdapter(new PatientRecyclerViewAdapter());
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+                if (box != null) {
+                  box.hideAll();
+                }
               } else {
                 onFailure(call, new Throwable("empty response wtf"));
               }
@@ -346,6 +376,9 @@ public class PatientListFragment extends Fragment{
             @Override
             public void onFailure(Call<List<Patient>> call, Throwable t) {
               t.printStackTrace();
+              if (box != null) {
+                box.showExceptionLayout();
+              }
             }
           });
         } else {

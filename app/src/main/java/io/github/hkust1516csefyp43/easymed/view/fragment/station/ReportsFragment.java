@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.station;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.view.activity.GenerateNewReportActivity;
 
 public class ReportsFragment extends Fragment {
   private OnFragmentInteractionListener mListener;
@@ -66,11 +68,16 @@ public class ReportsFragment extends Fragment {
     floatingActionButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //TODO
+        openGenerateNewReport();
       }
     });
 
     return view;
+  }
+
+  private void openGenerateNewReport() {
+    Intent intent = new Intent(getContext(), GenerateNewReportActivity.class);
+    startActivity(intent);
   }
 
   @Override
