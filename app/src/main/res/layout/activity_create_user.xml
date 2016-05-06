@@ -34,21 +34,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="7dp"
         app:fab_labelStyle="@style/menu_labels_style"
-        app:fab_labelsPosition="left">
+        app:fab_labelsPosition="left"
+        app:fab_addButtonColorNormal="@color/colorAccent">
         
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabScan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_title="Scan QR code"/>
+            app:fab_title="Scan QR code"
+            app:fab_colorNormal="@color/colorAccent"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabScratch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_title="Add from scratch"/>
+            app:fab_title="Add from scratch"
+            app:fab_colorNormal="@color/colorAccent"/>
         
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

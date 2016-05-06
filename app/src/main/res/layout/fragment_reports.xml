@@ -2,7 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -18,17 +19,58 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.design.widget.FloatingActionButton
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="18dp"
+                android:text="Visit count for the last 6 months"/>
+
+            <com.db.chart.view.LineChartView
+                android:id="@+id/linechart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"/>
+        android:layout_margin="7dp"
+        app:fab_labelStyle="@style/menu_labels_style"
+        app:fab_labelsPosition="left"
+        app:fab_addButtonColorNormal="@color/colorAccent">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_title="1 day"
+            app:fab_colorNormal="@color/colorAccent"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_title="Multiple days"
+            app:fab_colorNormal="@color/colorAccent"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </android.support.design.widget.CoordinatorLayout>

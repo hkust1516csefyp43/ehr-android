@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -318,6 +319,23 @@ public class Util {
     }
     name.append(firstName);
     return name.toString();
+  }
+
+  /**
+   * @param year e.g. 2014
+   * @param month 0 for January, 1 for February ...
+   * @return an array list of 2 strings: start date and end date
+   */
+  public static ArrayList<String> getMonthStartEndDates(int year, int month) {
+    ArrayList<String> arrayList = new ArrayList<>();
+    GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month, 1);
+    String date = String.valueOf(year) + "-" + String.valueOf(month + 1) + "-1";
+    arrayList.add(date);
+    gregorianCalendar.add(Calendar.MONTH, 1);
+    gregorianCalendar.add(Calendar.DAY_OF_MONTH, -1);
+    date = String.valueOf(gregorianCalendar.get(Calendar.YEAR)) + "-" + String.valueOf(gregorianCalendar.get(Calendar.MONTH) + 1) + "-" + String.valueOf(gregorianCalendar.get(Calendar.DAY_OF_MONTH));
+    arrayList.add(date);
+    return arrayList;
   }
 
 }
