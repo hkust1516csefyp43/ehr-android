@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.utility;
 
 import android.graphics.Color;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -336,6 +337,24 @@ public class Util {
     date = String.valueOf(gregorianCalendar.get(Calendar.YEAR)) + "-" + String.valueOf(gregorianCalendar.get(Calendar.MONTH) + 1) + "-" + String.valueOf(gregorianCalendar.get(Calendar.DAY_OF_MONTH));
     arrayList.add(date);
     return arrayList;
+  }
+
+  public static boolean isExternalStorageWritable() {
+    String state = Environment.getExternalStorageState();
+    if (Environment.MEDIA_MOUNTED.equals(state)) {
+      return true;
+    }
+    return false;
+  }
+
+  /* Checks if external storage is available to at least read */
+  public static boolean isExternalStorageReadable() {
+    String state = Environment.getExternalStorageState();
+    if (Environment.MEDIA_MOUNTED.equals(state) ||
+        Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+      return true;
+    }
+    return false;
   }
 
 }

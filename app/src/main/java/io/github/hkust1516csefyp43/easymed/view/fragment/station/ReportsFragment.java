@@ -26,6 +26,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.utility.ExcelGenerator;
 import io.github.hkust1516csefyp43.easymed.view.activity.GenerateNewReportActivity;
 
 public class ReportsFragment extends Fragment {
@@ -66,6 +67,12 @@ public class ReportsFragment extends Fragment {
 
     FloatingActionButton fabOne = (FloatingActionButton) view.findViewById(R.id.fabOne);
     fabOne.setIconDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_calendar));
+    fabOne.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        ExcelGenerator.createWorkbook("Test3.xls");
+      }
+    });
 
     FloatingActionButton fabRange = (FloatingActionButton) view.findViewById(R.id.fabRange);
     fabRange.setIconDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_calendar_multiple));
