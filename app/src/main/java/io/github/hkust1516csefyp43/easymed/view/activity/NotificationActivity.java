@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -13,8 +14,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -122,13 +126,15 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
   private class NotificationRecyclerViewViewHolder extends RecyclerView.ViewHolder {
     TextView tvNotification;
     TextView tvDate;
-    LinearLayout llTheWholeThing;
+    ImageView ivReadButton;
+    View ivUnreadCircle;
 
     public NotificationRecyclerViewViewHolder(View itemView) {
       super(itemView);
       tvNotification = (TextView) itemView.findViewById(R.id.tv_notification);
       tvDate = (TextView) itemView.findViewById(R.id.tvDate);
-      llTheWholeThing = (LinearLayout) itemView.findViewById(R.id.llTheWholeThing); //TODO onclick >> read
+      ivReadButton = (ImageView) itemView.findViewById(R.id.ivReadUnread);
+      ivUnreadCircle = (View) itemView.findViewById(R.id.vUnreadCircle);
     }
   }
 
@@ -146,8 +152,16 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
 
     @Override
     public void onBindViewHolder(NotificationRecyclerViewViewHolder holder, int position) {
-      holder.tvNotification.setText(notifications.get(position).getMessage());
-      holder.tvDate.setText(Util.dateInString(notifications.get(position).getRemindDate()));
+      Notification thisNotification = notifications.get(holder.getAdapterPosition());
+      holder.tvNotification.setText(thisNotification.getMessage());
+      holder.tvDate.setText(Util.dateInString(thisNotification.getRemindDate()));
+      if (thisNotification.getRead()) {
+        holder.ivReadButton.setVisibility(View.INVISIBLE);
+        holder.ivReadButton.setImageDrawable(new IconicsDrawable(getBaseContext()).actionBar().color(Color.WHITE).icon(CommunityMaterial.Icon.cmd_checkbox_blank_circle_outline));
+      } else {
+        holder.ivReadButton.setVisibility(View.VISIBLE);
+        holder.ivReadButton.setImageDrawable(new IconicsDrawable(getBaseContext()).actionBar().color(Color.WHITE).icon(CommunityMaterial.Icon.cmd_checkbox_marked_circle_outline));
+      }
     }
 
     @Override

@@ -78,4 +78,5 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.diogobernardino:williamchart:2.2'
     compile 'net.sourceforge.jexcelapi:jxl:2.6.12'
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 }
