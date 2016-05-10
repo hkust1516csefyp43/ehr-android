@@ -37,6 +37,7 @@ import com.mikepenz.iconics.context.IconicsLayoutInflater;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import de.cketti.library.changelog.ChangeLog;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
@@ -70,6 +71,11 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     LayoutInflaterCompat.setFactory(getLayoutInflater(), new IconicsLayoutInflater(getDelegate()));
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_drawer);
+
+    ChangeLog cl = new ChangeLog(this);
+    if (cl.isFirstRun()) {
+      cl.getLogDialog().show();
+    }
 
     Log.d(TAG, "before");
     new ThingsToDoInBackground().execute();

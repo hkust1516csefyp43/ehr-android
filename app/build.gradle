@@ -79,4 +79,5 @@ dependencies {
     compile 'com.diogobernardino:williamchart:2.2'
     compile 'net.sourceforge.jexcelapi:jxl:2.6.12'
     compile "com.daimajia.swipelayout:library:1.2.0@aar"
+    compile 'de.cketti.library.changelog:ckchangelog:1.2.2'
 }
