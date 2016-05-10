@@ -1,7 +1,6 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -23,9 +22,6 @@ import android.widget.TextView;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -58,7 +54,6 @@ public class LoginActivity extends AppCompatActivity{
   private ScrollView mLoginFormView;
   private AppCompatSpinner clinicList;
   private Clinic currentClinic;
-  private GoogleApiClient client;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +144,6 @@ public class LoginActivity extends AppCompatActivity{
         Log.d(TAG, "Received nothing");
       }
     });
-    client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
   }
 
   /**
@@ -205,9 +199,6 @@ public class LoginActivity extends AppCompatActivity{
     return password.length() > 4;
   }
 
-  /**
-   * Shows the progress UI and hides the login form.
-   */
   private void showProgress(final boolean show) {
     mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
     mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
@@ -218,50 +209,6 @@ public class LoginActivity extends AppCompatActivity{
     startActivity(intent);
   }
 
-  @Override
-  public void onStart() {
-    super.onStart();
-
-    // ATTENTION: This was auto-generated to implement the App Indexing API.
-    // See https://g.co/AppIndexing/AndroidStudio for more information.
-    client.connect();
-    Action viewAction = Action.newAction(
-        Action.TYPE_VIEW, // TODO: choose an action type.
-        "Login Page", // TODO: Define a title for the content shown.
-        // TODO: If you have web page content that matches this app activity's content,
-        // make sure this auto-generated web page URL is correct.
-        // Otherwise, set the URL to null.
-        Uri.parse("http://host/path"),
-        // TODO: Make sure this auto-generated app deep link URI is correct.
-        Uri.parse("android-app://io.github.hkust1516csefyp43.easymed/http/host/path")
-    );
-    AppIndex.AppIndexApi.start(client, viewAction);
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-
-    // ATTENTION: This was auto-generated to implement the App Indexing API.
-    // See https://g.co/AppIndexing/AndroidStudio for more information.
-    Action viewAction = Action.newAction(
-        Action.TYPE_VIEW, // TODO: choose an action type.
-        "Login Page", // TODO: Define a title for the content shown.
-        // TODO: If you have web page content that matches this app activity's content,
-        // make sure this auto-generated web page URL is correct.
-        // Otherwise, set the URL to null.
-        Uri.parse("http://host/path"),
-        // TODO: Make sure this auto-generated app deep link URI is correct.
-        Uri.parse("android-app://io.github.hkust1516csefyp43.easymed/http/host/path")
-    );
-    AppIndex.AppIndexApi.end(client, viewAction);
-    client.disconnect();
-  }
-
-  /**
-   * Represents an asynchronous login/registration task used to authenticate
-   * the user.
-   */
   public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
     private final String mEmail;
@@ -275,21 +222,22 @@ public class LoginActivity extends AppCompatActivity{
     @Override
     protected Boolean doInBackground(Void... params) {
       // TODO: attempt authentication against a network service.
-
       try {
         // Simulate network access.
         Thread.sleep(2000);
       } catch (InterruptedException e) {
         return false;
       }
+      OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+      httpClient.readTimeout(1, TimeUnit.MINUTES);
+      httpClient.connectTimeout(1, TimeUnit.MINUTES);
+      Retrofit retrofit = new Retrofit
+          .Builder()
+          .baseUrl(Const.Database.getCurrentAPI())
+          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+          .client(httpClient.build())
+          .build();
 
-//      for (String credential : DUMMY_CREDENTIALS) {
-//        String[] pieces = credential.split(":");
-//        if (pieces[0].equals(mEmail)) {
-//          // Account exists, return true if the password matches.
-//          return pieces[1].equals(mPassword);
-//        }
-//      }
       return true;
     }
 

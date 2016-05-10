@@ -184,7 +184,7 @@ public class PatientListFragment extends Fragment{
       case Const.PatientListPageId.POST_TRIAGE:
       case Const.PatientListPageId.PRE_CONSULTATION:
         Log.d(TAG, clincId + "/" + Util.todayString());
-        Call<List<Patient>> patientList = patientService.getPatients("1", clincId, "2", null, null, null, null, null, null, null, Util.todayString());
+        Call<List<Patient>> patientList = patientService.getPatients("1", clincId, "2", null, null, null, null, null, null, null, Util.todayStringWithTimeZone());
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {

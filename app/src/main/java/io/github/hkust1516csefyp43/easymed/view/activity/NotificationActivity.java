@@ -134,7 +134,7 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
       tvNotification = (TextView) itemView.findViewById(R.id.tv_notification);
       tvDate = (TextView) itemView.findViewById(R.id.tvDate);
       ivReadButton = (ImageView) itemView.findViewById(R.id.ivReadUnread);
-      ivUnreadCircle = (View) itemView.findViewById(R.id.vUnreadCircle);
+      ivUnreadCircle = itemView.findViewById(R.id.vUnreadCircle);
     }
   }
 
@@ -158,9 +158,21 @@ public class NotificationActivity extends AppCompatActivity implements SwipeRefr
       if (thisNotification.getRead()) {
         holder.ivReadButton.setVisibility(View.INVISIBLE);
         holder.ivReadButton.setImageDrawable(new IconicsDrawable(getBaseContext()).actionBar().color(Color.WHITE).icon(CommunityMaterial.Icon.cmd_checkbox_blank_circle_outline));
+        holder.ivReadButton.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            //TODO PUT notification/:id
+          }
+        });
       } else {
         holder.ivReadButton.setVisibility(View.VISIBLE);
         holder.ivReadButton.setImageDrawable(new IconicsDrawable(getBaseContext()).actionBar().color(Color.WHITE).icon(CommunityMaterial.Icon.cmd_checkbox_marked_circle_outline));
+        holder.ivReadButton.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            //TODO PUT notification/:id
+          }
+        });
       }
     }
 

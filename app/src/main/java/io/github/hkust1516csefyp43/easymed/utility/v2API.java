@@ -641,4 +641,9 @@ public interface v2API {
   interface signup {
 
   }
+
+  interface users {
+
+  }
+
 }

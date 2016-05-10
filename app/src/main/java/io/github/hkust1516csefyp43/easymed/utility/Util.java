@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Random;
+import java.util.TimeZone;
 
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.utility.Const.BMI;
@@ -24,6 +25,8 @@ import io.github.hkust1516csefyp43.easymed.utility.Const.BMI.WeightForAgeStatus;
  * Created by Louis on 5/11/15.
  */
 public class Util {
+  private static final String TAG = Util.class.getSimpleName();
+
   public final static int HOW_MANY_MS_IN_S = 1000;
   public final static int HOW_MANY_S_IN_MIN = 60;
   public final static int HOW_MANY_MIN_IN_HOUR = 60;
@@ -310,6 +313,56 @@ public class Util {
   public static String todayString() {
     GregorianCalendar gc = new GregorianCalendar();
     return dateInString(gc);
+  }
+
+  /**
+   * Clone from java.util.TimeZone
+   * @param builder
+   * @param count
+   * @param value
+   */
+  private static void appendNumber(StringBuilder builder, int count, int value) {
+    String string = Integer.toString(value);
+    for (int i = 0; i < count - string.length(); i++) {
+      builder.append('0');
+    }
+    builder.append(string);
+  }
+
+  /**
+   * Clone from java.util.TimeZone
+   * @param includeGmt
+   * @param includeMinuteSeparator
+   * @param offsetMillis
+   * @return
+   */
+  public static String createGmtOffsetString(boolean includeGmt, boolean includeMinuteSeparator, int offsetMillis) {
+    int offsetMinutes = offsetMillis / 60000;
+    char sign = '+';
+    if (offsetMinutes < 0) {
+      sign = '-';
+      offsetMinutes = -offsetMinutes;
+    }
+    StringBuilder builder = new StringBuilder(9);
+    if (includeGmt) {
+      builder.append("GMT");
+    }
+    builder.append(sign);
+    appendNumber(builder, 2, offsetMinutes / 60);
+    if (includeMinuteSeparator) {
+      builder.append(':');
+    }
+    appendNumber(builder, 2, offsetMinutes % 60);
+    return builder.toString();
+  }
+
+  public static String todayStringWithTimeZone() {
+    GregorianCalendar gregorianCalendar = new GregorianCalendar();
+    TimeZone timeZone = gregorianCalendar.getTimeZone();
+    String date = todayString() + "T00:00:00.000";
+    date = date + createGmtOffsetString(false, false, timeZone.getOffset(gregorianCalendar.getTimeInMillis()));
+    Log.d(TAG, "qqq: " + date);
+    return date;
   }
 
   public static String displayNameBuilder(@Nullable String lastName, @NonNull String firstName) {
