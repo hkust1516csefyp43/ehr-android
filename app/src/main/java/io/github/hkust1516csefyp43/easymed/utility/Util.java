@@ -1,6 +1,5 @@
 package io.github.hkust1516csefyp43.easymed.utility;
 
-import android.graphics.Color;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,12 +8,11 @@ import android.util.Log;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.Random;
 import java.util.TimeZone;
 
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
@@ -196,25 +194,6 @@ public class Util {
     return true;
   }
 
-  /**
-   * Generate a random color
-   * @return a color-int
-   */
-  public static int getRandomColor() {
-    Random rand = new Random();
-    int r, g, b;
-    do {
-      r = rand.nextInt(255);
-    } while (r < 50);
-    do {
-      g = rand.nextInt(255);
-    } while (g < 50);
-    do {
-      b = rand.nextInt(255);
-    } while (b < 50);
-    return Color.rgb(r, g, b);
-  }
-
   private static int charToInt(Character c) {
     if (c == null)                      //null >> 1
       return 1;
@@ -385,20 +364,27 @@ public class Util {
   }
 
   /**
-   * @param year e.g. 2014
-   * @param month 0 for January, 1 for February ...
-   * @return an array list of 2 strings: start date and end date
+   * Get start date so that you can pass to API to get by date range
+   * @param year
+   * @param month
+   * @return example: "2016-3-1T00:00:00.000+0800"
    */
-  public static ArrayList<String> getMonthStartEndDates(int year, int month) {
-    ArrayList<String> arrayList = new ArrayList<>();
+  public static String getMonthStartDateStringWithTimeZone(int year, int month) {
     GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month, 1);
-    String date = String.valueOf(year) + "-" + String.valueOf(month + 1) + "-1";
-    arrayList.add(date);
+    return MessageFormat.format("{0}-{1}-1T00:00:00.000{2}", String.valueOf(year), String.valueOf(month + 1), createGmtOffsetString(false, false, gregorianCalendar.getTimeZone().getOffset(gregorianCalendar.getTimeInMillis())));
+  }
+
+  /**
+   * Get end date so that you can pass to API to get by date range
+   * @param year
+   * @param month
+   * @return example: "2016-3-31T23:59:59.999+0800"
+   */
+  public static String getMonthEndDateStringWithTimeZone(int year, int month) {
+    GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month, 1);
     gregorianCalendar.add(Calendar.MONTH, 1);
-    gregorianCalendar.add(Calendar.DAY_OF_MONTH, -1);
-    date = String.valueOf(gregorianCalendar.get(Calendar.YEAR)) + "-" + String.valueOf(gregorianCalendar.get(Calendar.MONTH) + 1) + "-" + String.valueOf(gregorianCalendar.get(Calendar.DAY_OF_MONTH));
-    arrayList.add(date);
-    return arrayList;
+    gregorianCalendar.add(Calendar.MILLISECOND, -1);
+    return (String.valueOf(gregorianCalendar.get(Calendar.YEAR)) + '-' + String.valueOf(gregorianCalendar.get(Calendar.MONTH) + 1) + '-' + String.valueOf(gregorianCalendar.get(Calendar.DAY_OF_MONTH)) + 'T' + String.valueOf(gregorianCalendar.get(Calendar.HOUR_OF_DAY)) + ':' + String.valueOf(gregorianCalendar.get(Calendar.MINUTE)) + ':' + String.valueOf(gregorianCalendar.get(Calendar.SECOND)) + '.' + String.valueOf(gregorianCalendar.get(Calendar.MILLISECOND)) + createGmtOffsetString(false, false, gregorianCalendar.getTimeZone().getOffset(gregorianCalendar.getTimeInMillis())));
   }
 
   public static boolean isExternalStorageWritable() {
@@ -412,8 +398,7 @@ public class Util {
   /* Checks if external storage is available to at least read */
   public static boolean isExternalStorageReadable() {
     String state = Environment.getExternalStorageState();
-    if (Environment.MEDIA_MOUNTED.equals(state) ||
-        Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+    if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
       return true;
     }
     return false;
