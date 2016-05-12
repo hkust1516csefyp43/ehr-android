@@ -45,7 +45,9 @@ public class VitalSignFragment extends Fragment implements OnSendData{
   private TextView tvTemperatureUnit;
   private EditText etSpo2;
   private EditText etWeight;
+  private TextView tvWeightUnit;
   private EditText etHeight;
+  private TextView tvHeightUnit;
 
   private double dWeight;
   private double dHeight;
@@ -55,7 +57,9 @@ public class VitalSignFragment extends Fragment implements OnSendData{
 
   private Triage thisTriage = null;
 
-  private boolean isCelsius = true;
+  private boolean tempIsCelsius = true;
+  private boolean weightIsKg = true;
+  private boolean heightIsCm = true;
 
   public VitalSignFragment() {
     // Required empty public constructor
@@ -99,24 +103,56 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     tvTemperatureUnit = (TextView) view.findViewById(R.id.tv_temperature_unit);
     etSpo2 = (EditText) view.findViewById(R.id.etSpo2);
     etWeight = (EditText) view.findViewById(R.id.etWeight);
+    tvWeightUnit = (TextView) view.findViewById(R.id.tv_weight_unit);
     etHeight = (EditText) view.findViewById(R.id.etHeight);
+    tvHeightUnit = (TextView) view.findViewById(R.id.tv_height_unit);
     tvBMI = (TextView) view.findViewById(R.id.tvBMI);
 
     if (thisTriage != null)
       inflaterEverything();
 
+    tvWeightUnit.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (weightIsKg) {
+          tvWeightUnit.setText(R.string.lb);
+          weightIsKg = false;
+          if (etWeight != null && !etWeight.getText().toString().equals("")) {
+            etWeight.setText(String.valueOf(Util.roundDouble(Util.kgTolb(Double.parseDouble(etWeight.getText().toString())), 2)));
+          }
+        } else {
+          tvWeightUnit.setText(R.string.kg);
+          weightIsKg = true;
+          if (etWeight != null && !etWeight.getText().toString().equals("")) {
+            etWeight.setText(String.valueOf(Util.roundDouble(Util.lbToKg(Double.parseDouble(etWeight.getText().toString())), 2)));
+          }
+        }
+      }
+    });
+
+    tvHeightUnit.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (heightIsCm) {
+
+        } else {
+
+        }
+      }
+    });
+
     tvTemperatureUnit.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (isCelsius) {
-          tvTemperatureUnit.setText("°F");
-          isCelsius = false;
+        if (tempIsCelsius) {
+          tvTemperatureUnit.setText(R.string.degreeF);
+          tempIsCelsius = false;
           if (etTemperature != null && !etTemperature.getText().toString().equals("")) {
             etTemperature.setText(String.valueOf(Util.roundDouble(Util.celsiusToFahrenheit(Double.parseDouble(etTemperature.getText().toString())), 2)));
           }
         } else {
-          tvTemperatureUnit.setText("°C");
-          isCelsius = true;
+          tvTemperatureUnit.setText(R.string.degreeC);
+          tempIsCelsius = true;
           if (etTemperature != null && !etTemperature.getText().toString().equals("")) {
             etTemperature.setText(String.valueOf(Util.roundDouble(Util.fahrenheitToCelsius(Double.parseDouble(etTemperature.getText().toString())), 2)));
           }
@@ -348,7 +384,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     if (etTemperature != null && etTemperature.getText() != null && etTemperature.getText().length() != 0) {
       try {
         double temp = Double.parseDouble(etTemperature.getText().toString());
-        if (!isCelsius) {
+        if (!tempIsCelsius) {
           temp = Util.fahrenheitToCelsius(temp);
         }
         vs.setTemperature(temp);

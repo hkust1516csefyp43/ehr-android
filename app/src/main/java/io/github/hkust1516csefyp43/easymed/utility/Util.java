@@ -52,6 +52,14 @@ public class Util {
     return toTimeAgo(diff);
   }
 
+  public static double kgTolb(double kg) {
+    return kg / 0.45359237;
+  }
+
+  public static double lbToKg(double lb) {
+    return lb * 0.45359237;
+  }
+
   public static double celsiusToFahrenheit(double c) {
     return (c * 1.8 + 32);
   }

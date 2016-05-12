@@ -130,4 +130,7 @@
     <string name="no_of_still_birth">No. of still birth</string>
     <string name="chief_complain_short_form">CC</string>
     <string name="existing_patient">Existing Patient</string>
+    <string name="lb">lb</string>
+    <string name="degreeF">°F</string>
+    <string name="degreeC">°C</string>
 </resources>
