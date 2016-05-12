@@ -30,6 +30,7 @@ import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.VitalSigns;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.Util;
 
 public class VitalSignFragment extends Fragment implements OnSendData{
   private static final String TAG = VitalSignFragment.class.getSimpleName();
@@ -41,6 +42,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
   private EditText etPulseRate;
   private EditText etRespiratoryRate;
   private EditText etTemperature;
+  private TextView tvTemperatureUnit;
   private EditText etSpo2;
   private EditText etWeight;
   private EditText etHeight;
@@ -52,6 +54,8 @@ public class VitalSignFragment extends Fragment implements OnSendData{
   private OnFragmentInteractionListener mListener;
 
   private Triage thisTriage = null;
+
+  private boolean isCelsius = true;
 
   public VitalSignFragment() {
     // Required empty public constructor
@@ -92,6 +96,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     etPulseRate = (EditText) view.findViewById(R.id.etPulseRate);
     etRespiratoryRate = (EditText) view.findViewById(R.id.etRespiratoryRate);
     etTemperature = (EditText) view.findViewById(R.id.etTemperature);
+    tvTemperatureUnit = (TextView) view.findViewById(R.id.tv_temperature_unit);
     etSpo2 = (EditText) view.findViewById(R.id.etSpo2);
     etWeight = (EditText) view.findViewById(R.id.etWeight);
     etHeight = (EditText) view.findViewById(R.id.etHeight);
@@ -99,6 +104,25 @@ public class VitalSignFragment extends Fragment implements OnSendData{
 
     if (thisTriage != null)
       inflaterEverything();
+
+    tvTemperatureUnit.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (isCelsius) {
+          tvTemperatureUnit.setText("°F");
+          isCelsius = false;
+          if (etTemperature != null && !etTemperature.getText().toString().equals("")) {
+            etTemperature.setText(String.valueOf(Util.roundDouble(Util.celsiusToFahrenheit(Double.parseDouble(etTemperature.getText().toString())), 2)));
+          }
+        } else {
+          tvTemperatureUnit.setText("°C");
+          isCelsius = true;
+          if (etTemperature != null && !etTemperature.getText().toString().equals("")) {
+            etTemperature.setText(String.valueOf(Util.roundDouble(Util.fahrenheitToCelsius(Double.parseDouble(etTemperature.getText().toString())), 2)));
+          }
+        }
+      }
+    });
 
     tvBMI.addTextChangedListener(new TextWatcher() {
       @Override
@@ -323,8 +347,11 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     }
     if (etTemperature != null && etTemperature.getText() != null && etTemperature.getText().length() != 0) {
       try {
-        //TODO if in F, change back to C first (Utils.fahrenheitToCelsius)
-        vs.setTemperature(Double.parseDouble(etTemperature.getText().toString()));
+        double temp = Double.parseDouble(etTemperature.getText().toString());
+        if (!isCelsius) {
+          temp = Util.fahrenheitToCelsius(temp);
+        }
+        vs.setTemperature(temp);
       } catch (NumberFormatException e) {
         etTemperature.setError("This is not a number");
         return new Throwable("Temperature is not a number");

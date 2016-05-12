@@ -44,7 +44,6 @@ public class MedicationVariantListFragment extends Fragment {
   private SwipeRefreshLayout swipeRefreshLayout;
   private RecyclerView recyclerView;
   private DynamicBox box;
-//  private DragScrollBar dragScrollBar;
 
   private int whichPage;
   private int counter = 0;

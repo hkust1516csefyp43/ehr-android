@@ -290,6 +290,7 @@ public class VisitDetailFragment extends Fragment {
                 tvConsultationVisitId.setText("Visit ID: " + consultation.getVisitId());
                 linearLayout.addView(tvConsultationVisitId);
               }
+
 //              if (triage.getHeight() != null){
 //                TextView textView4 = new TextView(context);
 //                textView4.setText(String.valueOf(triage.getHeight()));

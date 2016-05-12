@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -59,6 +60,14 @@ public class Util {
 
   public static double fahrenheitToCelsius(double f) {
     return ((f - 32) / 1.8);
+  }
+
+  public static double roundDouble (double value, int places) {
+    if (places < 0) throw new IllegalArgumentException();
+
+    BigDecimal bd = new BigDecimal(value);
+    bd = bd.setScale(places, RoundingMode.HALF_UP);
+    return bd.doubleValue();
   }
 
   public static String toTimeAgo(long dateMsDiff) {
