@@ -285,7 +285,23 @@ public class MedicationVariantListFragment extends Fragment {
           final MedicationVariant medicationVariant = medicationVariants.get(holder.getAdapterPosition());
           if (medicationVariant != null) {
             holder.biggest.setText(medicationNames.get(medicationVariant.getMedicationId()));
-            holder.bigger.setText("name + strength + form");
+            StringBuilder stringBuilder = new StringBuilder();
+            if (medicationVariant.getName() != null) {
+              stringBuilder.append(medicationVariant.getName());
+            }
+            if (medicationVariant.getStrength() != null) {
+              if (!stringBuilder.toString().equals("")) {
+                stringBuilder.append(", ");
+              }
+              stringBuilder.append(medicationVariant.getStrength());
+            }
+            if (medicationVariant.getForm() != null) {
+              if (!stringBuilder.toString().equals("")) {
+                stringBuilder.append(", ");
+              }
+              stringBuilder.append(medicationVariant.getForm());
+            }
+            holder.bigger.setText(stringBuilder.toString());
             if (medicationVariant.getRemark() == null || medicationVariant.getRemark().length() == 0) {
               holder.big.setVisibility(View.GONE);
             } else {

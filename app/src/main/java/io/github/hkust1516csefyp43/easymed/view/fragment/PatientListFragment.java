@@ -160,11 +160,11 @@ public class PatientListFragment extends Fragment{
 
   private void proceed() {
     Context context = getContext();
-    String clincId = null;
+    String clinicId = null;
     if (context != null) {
       Clinic clinic = Cache.CurrentUser.getClinic(context);
       if (clinic != null && clinic.getClinicId() != null) {
-        clincId = clinic.getClinicId();
+        clinicId = clinic.getClinicId();
       }
     }
 
@@ -183,7 +183,7 @@ public class PatientListFragment extends Fragment{
     switch (whichPage) {
       case Const.PatientListPageId.POST_TRIAGE:
       case Const.PatientListPageId.PRE_CONSULTATION:
-        Call<List<Patient>> patientList = patientService.getPatients("1", clincId, "2", null, null, null, null, null, null, null, Util.todayStringWithTimeZone());
+        Call<List<Patient>> patientList = patientService.getPatients("1", clinicId, "2", null, null, null, null, null, null, null, Util.todayStringWithTimeZone());
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -220,7 +220,7 @@ public class PatientListFragment extends Fragment{
         });
         break;
       case Const.PatientListPageId.NOT_YET:
-        Call<List<Patient>> patientList2 = patientService.getPatients("1", clincId, null, null, null, null, null, null, null, null, null);
+        Call<List<Patient>> patientList2 = patientService.getPatients("1", clinicId, null, null, null, null, null, null, null, null, null);
         patientList2.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -256,7 +256,7 @@ public class PatientListFragment extends Fragment{
         break;
       case Const.PatientListPageId.POST_CONSULTATION:
       case Const.PatientListPageId.PRE_PHARMACY:
-        Call<List<Patient>> patientList3 = patientService.getPatients("1", clincId, "3", null, null, null, null, null, null, null, Util.todayStringWithTimeZone());
+        Call<List<Patient>> patientList3 = patientService.getPatients("1", clinicId, "3", null, null, null, null, null, null, null, Util.todayStringWithTimeZone());
         patientList3.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -286,7 +286,7 @@ public class PatientListFragment extends Fragment{
         });
         break;
       case Const.PatientListPageId.POST_PHARMACY:
-        Call<List<Patient>> patientList4 = patientService.getPatients("1", clincId, "1", null, null, null, null, null, null, null, Util.todayStringWithTimeZone());
+        Call<List<Patient>> patientList4 = patientService.getPatients("1", clinicId, "1", null, null, null, null, null, null, null, Util.todayStringWithTimeZone());
         patientList4.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -319,7 +319,7 @@ public class PatientListFragment extends Fragment{
       case Const.PatientListPageId.TRIAGE_SEARCH:
         Log.d(TAG, "name: " + nameSearchName);
         if (nameSearchName != null) {
-          Call<List<Patient>> patientCall = patientService.getPatients("1", clincId, null, null, null, null, null, null, null, nameSearchName, null);
+          Call<List<Patient>> patientCall = patientService.getPatients("1", clinicId, null, null, null, null, null, null, null, nameSearchName, null);
           patientCall.enqueue(new Callback<List<Patient>>() {
             @Override
             public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -354,7 +354,7 @@ public class PatientListFragment extends Fragment{
         break;
       case Const.PatientListPageId.CONSULTATION_SEARCH:
         if (nameSearchName != null) {
-          Call<List<Patient>> patientCall = patientService.getPatients("1", clincId, null, null, null, null, null, null, null, nameSearchName, null);
+          Call<List<Patient>> patientCall = patientService.getPatients("1", clinicId, null, null, null, null, null, null, null, nameSearchName, null);
           patientCall.enqueue(new Callback<List<Patient>>() {
             @Override
             public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
