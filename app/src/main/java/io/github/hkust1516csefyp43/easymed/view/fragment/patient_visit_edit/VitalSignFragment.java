@@ -47,7 +47,6 @@ public class VitalSignFragment extends Fragment implements OnSendData{
   private EditText etWeight;
   private TextView tvWeightUnit;
   private EditText etHeight;
-  private TextView tvHeightUnit;
 
   private double dWeight;
   private double dHeight;
@@ -59,7 +58,6 @@ public class VitalSignFragment extends Fragment implements OnSendData{
 
   private boolean tempIsCelsius = true;
   private boolean weightIsKg = true;
-  private boolean heightIsCm = true;
 
   public VitalSignFragment() {
     // Required empty public constructor
@@ -105,7 +103,6 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     etWeight = (EditText) view.findViewById(R.id.etWeight);
     tvWeightUnit = (TextView) view.findViewById(R.id.tv_weight_unit);
     etHeight = (EditText) view.findViewById(R.id.etHeight);
-    tvHeightUnit = (TextView) view.findViewById(R.id.tv_height_unit);
     tvBMI = (TextView) view.findViewById(R.id.tvBMI);
 
     if (thisTriage != null)
@@ -126,17 +123,6 @@ public class VitalSignFragment extends Fragment implements OnSendData{
           if (etWeight != null && !etWeight.getText().toString().equals("")) {
             etWeight.setText(String.valueOf(Util.roundDouble(Util.lbToKg(Double.parseDouble(etWeight.getText().toString())), 2)));
           }
-        }
-      }
-    });
-
-    tvHeightUnit.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (heightIsCm) {
-
-        } else {
-
         }
       }
     });
@@ -395,7 +381,11 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     }
     if (etWeight != null && etWeight.getText() != null && etWeight.getText().length() != 0) {
       try {
-        vs.setWeight(Double.parseDouble(etWeight.getText().toString()));
+        double temp = Double.parseDouble(etWeight.getText().toString());
+        if (!weightIsKg) {
+          temp = Util.lbToKg(temp);
+        }
+        vs.setWeight(temp);
       } catch (NumberFormatException e) {
         etWeight.setError("This is not a number");
         return new Throwable("Weight is not a number");
