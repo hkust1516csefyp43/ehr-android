@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-    <release version="1.2.7" versioncode="27" >
+    <release version="1.2.6" versioncode="27" >
         <change>Change log added</change>
+        <change>Temperature and Weight conversion</change>
+        <change>Details of each inventory item is being display</change>
+        <change>Bug fix: timezone difference knock patients to yesterday/tomorrow's list</change>
     </release>
 </changelog>
