@@ -77,7 +77,19 @@ public class ReportsFragment extends Fragment {
     FloatingActionButton fabRange = (FloatingActionButton) view.findViewById(R.id.fabRange);
     fabRange.setIconDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_calendar_multiple));
 
-    LineChartView lineChartView = (LineChartView) view.findViewById(R.id.linechart);
+    LineChartView lineChartView = monthlyVisitsGraphGenerator((LineChartView) view.findViewById(R.id.linechart));
+    if (lineChartView != null) {
+      lineChartView.show();
+    } //TODO else some error message?
+    return view;
+  }
+
+  /**
+   * TODO Call API, animations, etc
+   * @param lineChartView
+   * @return
+   */
+  private LineChartView monthlyVisitsGraphGenerator(LineChartView lineChartView) {
     if (lineChartView != null) {
       lineChartView.setClickable(true);
       lineChartView.setClickablePointRadius(10);
@@ -111,10 +123,10 @@ public class ReportsFragment extends Fragment {
           .setLabelsColor(Color.parseColor("#6a84c3"))
           .setXAxis(true)
           .setYAxis(true);
-      lineChartView.show();
+      return lineChartView;
+    } else {
+      return null;
     }
-
-    return view;
   }
 
   private void openGenerateNewReport() {
