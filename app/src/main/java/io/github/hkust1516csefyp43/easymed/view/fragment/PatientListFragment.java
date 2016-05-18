@@ -187,26 +187,31 @@ public class PatientListFragment extends Fragment{
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
-
             if (response == null || response.body() == null){
               onFailure(call, new Throwable("empty response"));
-              return;
-            }
-            patients = response.body();
-            Log.d(TAG, "qqqqq" + call.request().toString() + "/" + response.body().size() + ": " + response.body().toString());
-            Collections.sort(patients);
-            if (numberListener != null) {
-              Log.d(TAG, "post triage counter update triggered: " + patients.size());
-              numberListener.updateTabTitleCounter(whichPage, patients.size());
-            }
-            recyclerView.setAdapter(new PatientRecyclerViewAdapter());
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            if (swipeRefreshLayout != null) {
-              swipeRefreshLayout.setRefreshing(false);
-            }
-            recyclerView.setVisibility(View.VISIBLE);
-            if (box != null) {
-              box.hideAll();
+            } else {
+              patients = response.body();
+              Log.d(TAG, "qqqqq" + call.request().toString() + "/" + response.body().size() + ": " + response.body().toString());
+              Collections.sort(patients);
+              if (numberListener != null) {
+                Log.d(TAG, "post triage counter update triggered: " + patients.size());
+                numberListener.updateTabTitleCounter(whichPage, patients.size());
+              }
+              recyclerView.setAdapter(new PatientRecyclerViewAdapter());
+              recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+              if (swipeRefreshLayout != null) {
+                swipeRefreshLayout.setRefreshing(false);
+              }
+              recyclerView.setVisibility(View.VISIBLE);
+              if (box != null) {
+                if (patients.size() == 0) {
+                  View emptyListView = getActivity().getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
+                  box.addCustomView(emptyListView, "emptyPatients");    //TODO put tag to Const.java
+                  box.showCustomView("emptyPatients");
+                } else {
+                  box.hideAll();
+                }
+              }
             }
           }
 
@@ -273,7 +278,13 @@ public class PatientListFragment extends Fragment{
             }
             recyclerView.setVisibility(View.VISIBLE);
             if (box != null) {
-              box.hideAll();
+              if (patients.size() == 0) {
+                View emptyListView = getActivity().getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
+                box.addCustomView(emptyListView, "emptyPatients");    //TODO put tag to Const.java
+                box.showCustomView("emptyPatients");
+              } else {
+                box.hideAll();
+              }
             }
           }
 
@@ -303,7 +314,13 @@ public class PatientListFragment extends Fragment{
             }
             recyclerView.setVisibility(View.VISIBLE);
             if (box != null) {
-              box.hideAll();
+              if (patients.size() == 0) {
+                View emptyListView = getActivity().getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
+                box.addCustomView(emptyListView, "emptyPatients");    //TODO put tag to Const.java
+                box.showCustomView("emptyPatients");
+              } else {
+                box.hideAll();
+              }
             }
           }
 
@@ -326,14 +343,19 @@ public class PatientListFragment extends Fragment{
               if (response != null) {
                 Log.d(TAG, response.body().toString());
                 patients = response.body();
-                //TODO display sth when length = 0
                 recyclerView.setAdapter(new PatientRecyclerViewAdapter());
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 swipeRefreshLayout.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
                 recyclerView.setVisibility(View.VISIBLE);
                 if (box != null) {
-                  box.hideAll();
+                  if (patients.size() == 0) {
+                    View emptyListView = getActivity().getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
+                    box.addCustomView(emptyListView, "emptyPatients");    //TODO put tag to Const.java
+                    box.showCustomView("emptyPatients");
+                  } else {
+                    box.hideAll();
+                  }
                 }
               } else {
                 onFailure(call, new Throwable("empty response wtf"));
@@ -365,7 +387,13 @@ public class PatientListFragment extends Fragment{
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 recyclerView.setVisibility(View.VISIBLE);
                 if (box != null) {
-                  box.hideAll();
+                  if (patients.size() == 0) {
+                    View emptyListView = getActivity().getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
+                    box.addCustomView(emptyListView, "emptyPatients");    //TODO put tag to Const.java
+                    box.showCustomView("emptyPatients");
+                  } else {
+                    box.hideAll();
+                  }
                 }
               } else {
                 onFailure(call, new Throwable("empty response wtf"));

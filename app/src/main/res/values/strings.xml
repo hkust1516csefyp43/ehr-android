@@ -133,4 +133,6 @@
     <string name="lb">lb</string>
     <string name="degreeF">°F</string>
     <string name="degreeC">°C</string>
+    <string name="no_patients">No patients</string>
+    <string name="pull_down_to_refresh">Pull down to refresh</string>
 </resources>

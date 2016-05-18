@@ -386,7 +386,7 @@ public class PharmacyActivity extends AppCompatActivity {
 
   private void showNoPrescriptions() {
     if (box != null) {
-      View view = getLayoutInflater().inflate(R.layout.exception_failure_report, null, false);
+      View view = getLayoutInflater().inflate(R.layout.exception_prescriptions_failure_report, null, false);
       Button button = (Button) view.findViewById(R.id.exception_button);
       button.setOnClickListener(new View.OnClickListener() {
         @Override
