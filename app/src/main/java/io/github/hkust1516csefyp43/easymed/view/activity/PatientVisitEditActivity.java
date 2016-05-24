@@ -2,6 +2,7 @@ package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -662,7 +664,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                     @Override
                                     public void onFailure(Call<Triage> call, Throwable t) {
                                       progressDialog.dismiss();
-                                      //TODO error dialog
+                                      new AlertDialog.Builder(PatientVisitEditActivity.this)
+                                          .setTitle("Error")
+                                          .setMessage("Failed to update triage record. Please try again.\nDetail: '" + t.toString() + "'")
+                                          .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                              dialog.dismiss();
+                                            }
+                                          })
+                                          .show();
                                     }
                                   });
                                 }
@@ -671,7 +682,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                               @Override
                               public void onFailure(Call<Visit> call, Throwable t) {
                                 progressDialog.dismiss();
-                                //TODO error dialog
+                                new AlertDialog.Builder(PatientVisitEditActivity.this)
+                                    .setTitle("Error")
+                                    .setMessage("Failed to update visit record. Please try again.\nDetail: '" + t.toString() + "'")
+                                    .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                                      @Override
+                                      public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                      }
+                                    })
+                                    .show();
                               }
                             });
                           }
@@ -684,7 +704,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                     @Override
                     public void onFailure(Call<Patient> call, Throwable t) {
                       progressDialog.dismiss();
-                      //TODO error dialog
+                      new AlertDialog.Builder(PatientVisitEditActivity.this)
+                          .setTitle("Error")
+                          .setMessage("Failed to update patient record. Please try again.\nDetail: '" + t.toString() + "'")
+                          .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                              dialog.dismiss();
+                            }
+                          })
+                          .show();
                     }
                   });
                 }
@@ -751,6 +780,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                     @Override
                                     public void onFailure(Call<Triage> call, Throwable t) {
                                       progressDialog.dismiss();
+                                      //TODO
                                     }
                                   });
                                 }
@@ -760,6 +790,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                             @Override
                             public void onFailure(Call<Visit> call, Throwable t) {
                               progressDialog.dismiss();
+                              //TODO
                             }
                           });
                         }
@@ -769,6 +800,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                     @Override
                     public void onFailure(Call<Patient> call, Throwable t) {
                       progressDialog.dismiss();
+                      new AlertDialog.Builder(PatientVisitEditActivity.this)
+                          .setTitle("Error")
+                          .setMessage("Failed to update patient record. Please try again.\nDetail: '" + t.toString() + "'")
+                          .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                              dialog.dismiss();
+                            }
+                          })
+                          .show();
                     }
                   });
                 }
@@ -835,7 +876,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                   @Override
                                   public void onFailure(Call<Triage> call, Throwable t) {
                                     progressDialog.dismiss();
-                                    //TODO error dialog
+                                    new AlertDialog.Builder(PatientVisitEditActivity.this)
+                                        .setTitle("Error")
+                                        .setMessage("Failed to update triage record. Please try again.\nDetail: '" + t.toString() + "'")
+                                        .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                          }
+                                        })
+                                        .show();
                                   }
                                 });
                                 //POST consultation (then POST rd and prescription (with consultation_id)
@@ -875,6 +925,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                         @Override
                                         public void onFailure(Call<RelatedData> call, Throwable t) {
                                           progressDialog.dismiss();
+                                          new AlertDialog.Builder(PatientVisitEditActivity.this)
+                                              .setTitle("Error")
+                                              .setMessage("Failed to add some data. Please try again.\nDetail: '" + t.toString() + "'")
+                                              .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                  dialog.dismiss();
+                                                }
+                                              })
+                                              .show();
                                         }
                                       });
                                     }
@@ -900,6 +960,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                         @Override
                                         public void onFailure(Call<Prescription> call, Throwable t) {
                                           progressDialog.dismiss();
+                                          new AlertDialog.Builder(PatientVisitEditActivity.this)
+                                              .setTitle("Error")
+                                              .setMessage("Failed to add some data. Please try again.\nDetail: '" + t.toString() + "'")
+                                              .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                  dialog.dismiss();
+                                                }
+                                              })
+                                              .show();
                                         }
                                       });
                                     }
@@ -910,6 +980,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                   @Override
                                   public void onFailure(Call<Consultation> call, Throwable t) {
                                     progressDialog.dismiss();
+                                    new AlertDialog.Builder(PatientVisitEditActivity.this)
+                                        .setTitle("Error")
+                                        .setMessage("Failed to update consultation record. Please try again.\nDetail: '" + t.toString() + "'")
+                                        .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                          }
+                                        })
+                                        .show();
                                   }
                                 });
                               }
@@ -918,7 +998,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                             @Override
                             public void onFailure(Call<Visit> call, Throwable t) {
                               progressDialog.dismiss();
-                              //TODO error dialog
+                              new AlertDialog.Builder(PatientVisitEditActivity.this)
+                                  .setTitle("Error")
+                                  .setMessage("Failed to update visit record. Please try again.\nDetail: '" + t.toString() + "'")
+                                  .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                      dialog.dismiss();
+                                    }
+                                  })
+                                  .show();
                             }
                           });
                         }
@@ -930,6 +1019,16 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                     @Override
                     public void onFailure(Call<Patient> call, Throwable t) {
                       progressDialog.dismiss();
+                      new AlertDialog.Builder(PatientVisitEditActivity.this)
+                          .setTitle("Error")
+                          .setMessage("Failed to update patient record. Please try again.\nDetail: '" + t.toString() + "'")
+                          .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                              dialog.dismiss();
+                            }
+                          })
+                          .show();
                     }
                   });
                 }
