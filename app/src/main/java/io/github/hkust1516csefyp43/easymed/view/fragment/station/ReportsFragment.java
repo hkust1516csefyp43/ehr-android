@@ -14,24 +14,42 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.db.chart.Tools;
 import com.db.chart.listener.OnEntryClickListener;
 import com.db.chart.model.LineSet;
+import com.db.chart.model.Point;
 import com.db.chart.view.AxisController;
 import com.db.chart.view.LineChartView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Count;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.ExcelGenerator;
+import io.github.hkust1516csefyp43.easymed.utility.Util;
+import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.activity.GenerateNewReportActivity;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ReportsFragment extends Fragment {
   private static final String TAG = ReportsFragment.class.getSimpleName();
   private OnFragmentInteractionListener mListener;
+  ProgressBar pbLineChartView;
 
 //  public static ReportsFragment newInstance() {
 //    ReportsFragment fragment = new ReportsFragment();
@@ -42,13 +60,13 @@ public class ReportsFragment extends Fragment {
     // Required empty public constructor
   }
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-
-    }
-  }
+//  @Override
+//  public void onCreate(Bundle savedInstanceState) {
+//    super.onCreate(savedInstanceState);
+//    if (getArguments() != null) {
+//
+//    }
+//  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +75,6 @@ public class ReportsFragment extends Fragment {
     toolbar.setTitle("Reports");
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     if (drawer != null) {
@@ -77,10 +94,13 @@ public class ReportsFragment extends Fragment {
     FloatingActionButton fabRange = (FloatingActionButton) view.findViewById(R.id.fabRange);
     fabRange.setIconDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_calendar_multiple));
 
-    LineChartView lineChartView = monthlyVisitsGraphGenerator((LineChartView) view.findViewById(R.id.linechart));
-    if (lineChartView != null) {
-      lineChartView.show();
-    } //TODO else some error message?
+    pbLineChartView = (ProgressBar) view.findViewById(R.id.pbLineChardView);
+    monthlyVisitsGraphGenerator((LineChartView) view.findViewById(R.id.linechart));
+//    LineChartView lineChartView = monthlyVisitsGraphGenerator((LineChartView) view.findViewById(R.id.linechart));
+//    if (lineChartView != null && pbLineChartView != null) {
+//      pbLineChartView.setVisibility(View.GONE);
+//      lineChartView.show();
+//    } //TODO else some error message?
     return view;
   }
 
@@ -89,8 +109,63 @@ public class ReportsFragment extends Fragment {
    * @param lineChartView
    * @return
    */
-  private LineChartView monthlyVisitsGraphGenerator(LineChartView lineChartView) {
+  private void monthlyVisitsGraphGenerator(final LineChartView lineChartView) {
+    final HashMap<Integer, Point> pointHashMap = new HashMap<>();
+    OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+    ohc1.readTimeout(1, TimeUnit.MINUTES);
+    ohc1.connectTimeout(1, TimeUnit.MINUTES);
+    Retrofit retrofit = new Retrofit
+        .Builder()
+        .baseUrl(Const.Database.getCurrentAPI())
+        .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+        .client(ohc1.build())
+        .build();
+    final v2API.visits visitService = retrofit.create(v2API.visits.class);
+    GregorianCalendar today = new GregorianCalendar();
+    int year = today.get(Calendar.YEAR);
+    int month = today.get(Calendar.MONTH);
+    int callsQueue = 6;
+    while (callsQueue > 0) {
+      final int myPosition = callsQueue;
+      Call<Count> countCall = visitService.getVisitCount("1", Util.getMonthEndDateStringWithTimeZone(year, month), Util.getMonthStartDateStringWithTimeZone(year, month));
+      callsQueue--;
+      month--;
+      if (month < 0) {
+        month = 11;
+        year--;
+      }
+      countCall.enqueue(new Callback<Count>() {
+        @Override
+        public void onResponse(Call<Count> call, Response<Count> response) {
+          if (response != null) {
+            if (response.code() < 200 || response.code() >= 300) {
+              onFailure(call, new Throwable(response.toString()));
+            } else {
+              Point point = new Point("Date string", (float) response.body().getCount());
+              Log.d(TAG, "point: " + point.toString());
+              pointHashMap.put(myPosition, point);
+              if (pointHashMap.size() >= 6) {
+                Log.d(TAG, "coming soon: " + pointHashMap.toString());
+                continuePlotting(lineChartView, pointHashMap);
+              }
+            }
+          } else {
+            onFailure(call, new Throwable("Something's wrong (Error code: 100000)"));
+          }
+        }
+
+        @Override
+        public void onFailure(Call<Count> call, Throwable t) {
+          t.printStackTrace();
+          //TODO dialog
+        }
+      });
+    }
+  }
+
+  private void continuePlotting(LineChartView lineChartView, HashMap<Integer, Point> pointHashMap) {
     if (lineChartView != null) {
+      Log.d(TAG, "coming soon2: " + pointHashMap.toString());
       lineChartView.setClickable(true);
       lineChartView.setClickablePointRadius(10);
 //      lineChartView.setOnClickListener(new View.OnClickListener() {
@@ -105,12 +180,14 @@ public class ReportsFragment extends Fragment {
           Log.d(TAG, "oecl");
         }
       });
-      LineSet lineSet = new LineSet();
-      lineSet.addPoint("Dec 15", 1);
-      lineSet.addPoint("Jan 16", 3);
-      lineSet.addPoint("Feb 16", 2);
-      lineSet.addPoint("Mar 16", 4);
-      lineSet.addPoint("Apr 16", 6);
+      final LineSet lineSet = new LineSet();
+      float max = 0;
+      for (int i = 6; i > 0; i--) {
+        if (pointHashMap.get(i).getValue() > max)
+          max = pointHashMap.get(i).getValue();
+        Log.d(TAG, "coming soon 3: " + i + '/' + pointHashMap.get(i));
+        lineSet.addPoint(pointHashMap.get(i));
+      }
       lineSet.setColor(Color.parseColor("#758cbb"))
           .setDotsColor(Color.parseColor("#758cbb"))
           .setThickness(1)
@@ -118,15 +195,16 @@ public class ReportsFragment extends Fragment {
           .beginAt(0);
       lineChartView.addData(lineSet);
       lineChartView.setBorderSpacing(Tools.fromDpToPx(15))
-          .setAxisBorderValues(0, 10)
+          .setAxisBorderValues(0, Math.round(max))
           .setYLabels(AxisController.LabelPosition.NONE)
           .setLabelsColor(Color.parseColor("#6a84c3"))
           .setXAxis(true)
           .setYAxis(true);
-      return lineChartView;
-    } else {
-      return null;
+      lineChartView.setVisibility(View.VISIBLE);
+      pbLineChartView.setVisibility(View.GONE);
+      lineChartView.show();
     }
+
   }
 
   private void openGenerateNewReport() {

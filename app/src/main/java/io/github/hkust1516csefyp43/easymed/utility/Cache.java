@@ -146,7 +146,9 @@ public class Cache {
       removeUser(context);
       removeClinic(context);
       clearNotifications(context);
-      //TODO remove genders, document types, etc
+      DatabaseData.deleteDocumentTypes(context);
+      DatabaseData.deleteGenders(context);
+      //TODO remove db sync data, etc
     }
   }
 

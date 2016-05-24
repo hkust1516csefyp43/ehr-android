@@ -7,6 +7,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.BlockedDevice;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.BloodType;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Count;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Country;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Document;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
@@ -478,6 +479,14 @@ public interface v2API {
         @Header("token") String token,
         @Body Visit visit,
         @Path("id") String id
+    );
+
+    @GET("visits/count")
+    Call<Count> getVisitCount(
+        @Header("token")  String token,
+        @Query("visit_date_range_before") String beforeWhatDate,
+        @Query("visit_date_range_after")  String afterWhatDate
+
     );
   }
 

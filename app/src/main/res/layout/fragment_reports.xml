@@ -37,10 +37,18 @@
                 android:textSize="18dp"
                 android:text="Visit count for the last 6 months"/>
 
+            <ProgressBar
+                android:id="@+id/pbLineChardView"
+                android:layout_margin="32dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"/>
+
             <com.db.chart.view.LineChartView
                 android:id="@+id/linechart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"/>
+                android:layout_height="300dp"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
