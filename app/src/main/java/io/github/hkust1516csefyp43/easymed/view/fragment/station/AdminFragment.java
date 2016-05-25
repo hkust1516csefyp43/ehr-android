@@ -21,6 +21,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.view.activity.CreateUserActivity;
+import io.github.hkust1516csefyp43.easymed.view.activity.StaticDataActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.SyncActivity;
 
 public class AdminFragment extends Fragment {
@@ -72,7 +73,8 @@ public class AdminFragment extends Fragment {
     llStatics.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //TODO
+        Intent intent = new Intent(getContext(), StaticDataActivity.class);
+        startActivity(intent);
       }
     });
     llUsers.setOnClickListener(new View.OnClickListener() {

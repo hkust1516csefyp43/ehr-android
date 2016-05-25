@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
@@ -116,6 +116,11 @@
         <activity
             android:name=".view.activity.CreateUserActivity"
             android:label="@string/title_activity_create_user"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name=".view.activity.StaticDataActivity"
+            android:label="@string/title_activity_static_data"
             android:theme="@style/AppTheme">
         </activity>
     </application>

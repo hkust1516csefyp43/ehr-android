@@ -127,10 +127,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (menuItem != null) {
       menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_male).color(Color.GRAY).actionBar().paddingDp(2));
     }
-    menuItem = menu.findItem(R.id.nav_settings);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).actionBar().paddingDp(2));
-    }
+//    menuItem = menu.findItem(R.id.nav_settings);
+//    if (menuItem != null) {
+//      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).actionBar().paddingDp(2));
+//    }
     menuItem = menu.findItem(R.id.nav_about);
     if (menuItem != null) {
       menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_info).color(Color.GRAY).actionBar().paddingDp(2));
@@ -261,10 +261,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         AdminFragment adminFragment = new AdminFragment();
         fragmentTransaction.replace(R.id.fragment_container, adminFragment).commit();
         break;
-      case R.id.nav_settings:
-        Intent intent = new Intent(DrawerActivity.this, SettingsActivity.class);
-        startActivity(intent);
-        break;
+//      case R.id.nav_settings:
+//        Intent intent = new Intent(DrawerActivity.this, SettingsActivity.class);
+//        startActivity(intent);
+//        break;
       case R.id.nav_about:
         new LibsBuilder()
             .withActivityTitle("About")
