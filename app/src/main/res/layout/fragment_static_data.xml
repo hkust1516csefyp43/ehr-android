@@ -4,10 +4,9 @@
              android:layout_height="match_parent"
              tools:context="io.github.hkust1516csefyp43.easymed.view.fragment.StaticDataFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <de.codecrafters.tableview.TableView
+        android:id="@+id/tableView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

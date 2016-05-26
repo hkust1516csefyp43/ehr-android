@@ -8,10 +8,9 @@ import com.google.gson.annotations.SerializedName;
 public class Gender {
   @SerializedName("gender_id")    private String id;
   @SerializedName("description")  private String gender;
+  @SerializedName("biological_gender") private String biologicalGender;
 
-  public Gender(String id, String gender) {
-    this.id = id;
-    this.gender = gender;
+  public Gender() {
   }
 
   public String getId() {
@@ -30,8 +29,22 @@ public class Gender {
     this.gender = gender;
   }
 
+  public String getBiologicalGender() {
+    return biologicalGender;
+  }
+
+  public void setBiologicalGender(String biologicalGender) {
+    this.biologicalGender = biologicalGender;
+  }
+
   @Override
   public String toString() {
-    return "Gender{" + "id='" + id + '\'' + ", gender='" + gender + '\'' + '}';
+    return "Gender{" +
+        "id='" + id + '\'' +
+        ", gender='" + gender + '\'' +
+        ", biologicalGender='" + biologicalGender + '\'' +
+        '}';
   }
+
+
 }

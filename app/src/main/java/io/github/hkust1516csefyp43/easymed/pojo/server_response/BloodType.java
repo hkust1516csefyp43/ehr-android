@@ -3,6 +3,7 @@ package io.github.hkust1516csefyp43.easymed.pojo.server_response;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Created by Louis on 20/4/16.
@@ -35,5 +36,14 @@ public class BloodType implements Serializable {
   @Override
   public String toString() {
     return "BloodType{" + "id='" + id + '\'' + ", type='" + type + '\'' + '}';
+  }
+
+  //TODO
+  public static class BloodTypeComparator implements Comparator<BloodType> {
+
+    @Override
+    public int compare(BloodType lhs, BloodType rhs) {
+      return 0;
+    }
   }
 }

@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.view.fragment.StaticDataFragment;
 
 public class StaticDataActivity extends AppCompatActivity {
@@ -36,6 +37,7 @@ public class StaticDataActivity extends AppCompatActivity {
 
     viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     viewPager.setAdapter(new staticDataAdapter(getSupportFragmentManager()));
+    viewPager.setOffscreenPageLimit(6);
     tabLayout.setupWithViewPager(viewPager);
     tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
   }
@@ -70,13 +72,27 @@ public class StaticDataActivity extends AppCompatActivity {
 
     @Override
     public Fragment getItem(int position) {
-      return StaticDataFragment.newInstance();
+      switch (position) {
+        case 0:
+          return StaticDataFragment.newInstance(Const.StaticPages.BLOOD_TYPES);
+        case 1:
+          return StaticDataFragment.newInstance(Const.StaticPages.GENDERS);
+        case 2:
+          return StaticDataFragment.newInstance(Const.StaticPages.KEYWORDS);
+        case 3:
+          return StaticDataFragment.newInstance(Const.StaticPages.SUITCASES);
+        case 4:
+          return StaticDataFragment.newInstance(Const.StaticPages.CLINICS);
+        case 5:
+          return StaticDataFragment.newInstance(Const.StaticPages.COUNTRIES);
+        default:
+          return StaticDataFragment.newInstance();
+      }
     }
 
     @Override
     public int getCount() {
-      //TODO is it 6?: blood type, gender, keywords, suitcase, country, clinic(warning)
-      return 6;
+      return tabs.length;
     }
   }
 

@@ -39,6 +39,15 @@ public class Const {
     public static final int CONSULTATION_SEARCH = 8;
   }
 
+  public class StaticPages {
+    public static final int KEYWORDS = 1;
+    public static final int GENDERS = 2;
+    public static final int CLINICS = 3;
+    public static final int SUITCASES = 4;
+    public static final int COUNTRIES = 5;
+    public static final int BLOOD_TYPES = 6;
+  }
+
   public class BundleKey {
     public static final String WHICH_PATIENT_LIST_ID = "mMvUxFsUQF84Fkj4";
     public static final String READ_ONLY_PATIENT = "AhYeXQg86VDvbN1P";
@@ -61,6 +70,7 @@ public class Const {
     public static final String REMARK_DATA = "7jafPg5F2kxNBYRy";
     public static final String CHIEF_COMPLAINT_DATA = "h8NQHFfjSJ6MjKNd";
     public static final String MAYBE_EMPTY = "Wx3DNVZrG5w1FqgX";
+    public static final String WHICH_STATIC_DATA = "UE1y13vaS5P4ThvF";
   }
 
   public class CacheKey {

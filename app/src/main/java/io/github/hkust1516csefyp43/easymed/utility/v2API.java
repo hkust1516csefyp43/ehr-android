@@ -19,6 +19,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Suitcase;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import retrofit2.Call;
@@ -652,6 +653,14 @@ public interface v2API {
   }
 
   interface users {
+
+  }
+
+  interface suitcases {
+    @GET("suitcases")
+    Call<List<Suitcase>> getSuitcases(
+        @Header("token")    String token
+    );
 
   }
 
