@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="1.2.7" versioncode="28">
+        <change>ADD: display static data in Admin page</change>
+        <change>ADD: display basic analytic in Report page</change>
+        <change>ADD: message when the patient list is actually empty, not error or anything else</change>
+        <change>ADD: basic interface in edit profile picture</change>
+    </release>
     <release version="1.2.6" versioncode="27" >
         <change>Change log added</change>
         <change>Temperature and Weight conversion</change>
