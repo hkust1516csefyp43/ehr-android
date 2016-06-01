@@ -2,9 +2,12 @@ package io.github.hkust1516csefyp43.easymed.view.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,6 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -58,12 +64,14 @@ public class SyncActivity extends AppCompatActivity {
     bPushToCloud = (Button) findViewById(R.id.bPushToCloud);
     tvPushToCloud = (TextView) findViewById(R.id.tvPushToCloud);
 
-    toolbar.setTitle("Synchronization");
-    setSupportActionBar(toolbar);
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
-      actionBar.setDisplayShowHomeEnabled(true);
+    if (toolbar != null) {
+      toolbar.setTitle(R.string.synchronization);
+      setSupportActionBar(toolbar);
+      ActionBar actionBar = getSupportActionBar();
+      if (actionBar != null) {
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+      }
     }
 
     GregorianCalendar lastPullFromCloud = Cache.Synchronisation.getLastPullFromCloud(this);
@@ -105,7 +113,6 @@ public class SyncActivity extends AppCompatActivity {
     bPullFromCloud.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //TODO show loading screen
         final ProgressDialog progressDialog = ProgressDialog.show(c, "Loading", "Please wait");
         CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("ehr-api.herokuapp.com", 443, 10000, new AsyncResponse() {
           @Override
@@ -140,6 +147,17 @@ public class SyncActivity extends AppCompatActivity {
                   Log.d(TAG, "failed: " + t.toString());
                   if (progressDialog != null) {
                     progressDialog.dismiss();
+                    AlertDialog alertDialog = new AlertDialog
+                        .Builder(SyncActivity.this)
+                        .setMessage("Something goes wrong. Please try again.\nError: " + t.toString())
+                        .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                          }
+                        })
+                        .show();
+
                   }
                 }
               });
@@ -158,9 +176,55 @@ public class SyncActivity extends AppCompatActivity {
       public void onClick(View v) {
         List<Query> queryList = Cache.Synchronisation.getPullFromCloudData(getBaseContext());
         if (queryList != null && queryList.size() > 0) {
-          //call api
-        } else {
-          //nothing to push
+          int currentProgress = 0;
+          final ProgressDialog progressDialog = new ProgressDialog(SyncActivity.this);
+          progressDialog.setMessage("Uploading");
+          progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+          progressDialog.setIndeterminate(true);
+          progressDialog.setProgress(0);
+          progressDialog.setMax(queryList.size());
+          progressDialog.show();
+          for (int i = 0; i < queryList.size(); i++) {
+            OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+            ohc1.readTimeout(2, TimeUnit.MINUTES);
+            ohc1.connectTimeout(2, TimeUnit.MINUTES);
+            Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(Const.Database.getCurrentAPI())
+                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                .client(ohc1.build())
+                .build();
+            v2API.queries queryService = retrofit.create(v2API.queries.class);
+            Call<Query> queryCall = queryService.pushQuery("1", queryList.get(i));
+            queryCall.enqueue(new Callback<Query>() {
+              @Override
+              public void onResponse(Call<Query> call, Response<Query> response) {
+                if (response == null) {
+                  onFailure(call, new Throwable("empty response"));
+                } else if (response.code() < 200 || response.code() >= 300) {
+                  onFailure(call, new Throwable("Invalid response: " + response.toString()));
+                } else {
+
+                  progressDialog.setProgress(progressDialog.getProgress()+1);
+                  //TODO check if you can dismiss dialog
+                }
+              }
+
+              @Override
+              public void onFailure(Call<Query> call, Throwable t) {
+                t.printStackTrace();
+
+              }
+            });
+          }
+
+        } else {  //nothing to push
+          new MaterialDialog.Builder(SyncActivity.this).title("Nothing to push").positiveText("Dismiss").onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+              dialog.dismiss();
+            }
+          }).show();
         }
       }
     });
@@ -220,9 +284,9 @@ public class SyncActivity extends AppCompatActivity {
       public void onClick(View v) {
         List<Query> queryList = Cache.Synchronisation.getPullFromLocalData(getBaseContext());
         if (queryList != null && queryList.size() > 0) {
-          //call api
+          //TODO call api
         } else {
-          //nothing to push
+          //TODO nothing to push
         }
       }
     });

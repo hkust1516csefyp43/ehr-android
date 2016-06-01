@@ -56,12 +56,12 @@ public class AdminFragment extends Fragment {
     ImageView ivSync = (ImageView) view.findViewById(R.id.ivSync);
     ImageView ivStatic = (ImageView) view.findViewById(R.id.ivStatic);
     ImageView ivUsers = (ImageView) view.findViewById(R.id.ivUsers);
-    ImageView ivOther = (ImageView) view.findViewById(R.id.ivOther);
+    ImageView ivStatus = (ImageView) view.findViewById(R.id.ivOther);
 
     ivSync.setImageDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_sync));
     ivStatic.setImageDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_table_edit));
     ivUsers.setImageDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_human));
-    ivOther.setImageDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_settings_box));
+    ivStatus.setImageDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_settings_box));
 
     llSync.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -86,7 +86,7 @@ public class AdminFragment extends Fragment {
     llOthers.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //TODO
+        //TODO call status api and show it in some kind of dialog/activity
       }
     });
 
@@ -99,10 +99,6 @@ public class AdminFragment extends Fragment {
       drawer.setDrawerListener(toggle);
       toggle.syncState();
     }
-
-    //TODO synchronize (sync)
-    //TODO data management (table edit)
-    //TODO other setting (setting)
 
     return view;
   }

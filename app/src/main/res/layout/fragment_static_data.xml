@@ -2,11 +2,14 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             xmlns:table="http://schemas.android.com/apk/res-auto"
              tools:context="io.github.hkust1516csefyp43.easymed.view.fragment.StaticDataFragment">
 
     <de.codecrafters.tableview.TableView
         android:id="@+id/tableView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        table:tableView_headerColor="@color/primary_lighter_color"
+        table:tableView_headerElevation="10"/>
 
 </FrameLayout>

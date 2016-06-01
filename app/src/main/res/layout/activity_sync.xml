@@ -31,7 +31,9 @@
 
         <Button
             android:id="@+id/bPullFromCloud"
-            android:layout_width="196dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:text="@string/before_leaving_office"
             android:layout_height="wrap_content"/>
 
@@ -44,7 +46,9 @@
 
         <Button
             android:id="@+id/bPushToLocal"
-            android:layout_width="196dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:text="@string/before_starting_mobile_clinic"
             android:layout_height="wrap_content"/>
 
@@ -57,7 +61,9 @@
 
         <Button
             android:id="@+id/bPullFromLocal"
-            android:layout_width="196dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:text="@string/before_leaving_mobile_clinic"
             android:layout_height="wrap_content"/>
 
@@ -70,7 +76,9 @@
 
         <Button
             android:id="@+id/bPushToCloud"
-            android:layout_width="196dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:text="@string/after_back_to_office"
             android:layout_height="wrap_content"/>
 

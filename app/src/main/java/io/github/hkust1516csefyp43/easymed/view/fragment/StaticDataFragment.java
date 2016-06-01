@@ -58,10 +58,8 @@ public class StaticDataFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_static_data, container, false);
     tableView = (TableView) view.findViewById(R.id.tableView);
-    //TODO call api accordingly
     if (tableView != null && whichStaticData != null) {
       final DynamicBox box = new DynamicBox(getActivity(), tableView);
       box.showLoadingLayout();
@@ -141,7 +139,7 @@ public class StaticDataFragment extends Fragment {
               if (response.code() < 200 || response.code() >= 300) {
                 onFailure(call, new Throwable(response.toString()));
               } else {
-                tableView.setColumnCount(2);
+                tableView.setColumnCount(1);
                 SimpleTableHeaderAdapter simpleTableHeaderAdapter = new SimpleTableHeaderAdapter(getContext(), "Name");
                 tableView.setHeaderAdapter(simpleTableHeaderAdapter);
                 tableView.setDataAdapter(new SuitcaseDataAdapter(getContext(), response.body()));
