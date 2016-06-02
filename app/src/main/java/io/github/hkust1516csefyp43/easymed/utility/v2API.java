@@ -2,6 +2,7 @@ package io.github.hkust1516csefyp43.easymed.utility;
 
 import java.util.List;
 
+import io.github.hkust1516csefyp43.easymed.pojo.LoginCredentials;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Attachment;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.BlockedDevice;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.BloodType;
@@ -645,7 +646,8 @@ public interface v2API {
   }
 
   interface login {
-
+    @POST("login")
+    Call<Object> login(@Body LoginCredentials loginCredentials);
   }
 
   interface signup {

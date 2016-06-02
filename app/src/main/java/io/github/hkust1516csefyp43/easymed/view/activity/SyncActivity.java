@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.GsonBuilder;
 
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -49,6 +50,9 @@ public class SyncActivity extends AppCompatActivity {
   private TextView tvPullFromLocal;
   private Button bPushToCloud;
   private TextView tvPushToCloud;
+
+  private int pushProgress = 0;
+  private int pushTotal;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +127,7 @@ public class SyncActivity extends AppCompatActivity {
               ohc1.connectTimeout(2, TimeUnit.MINUTES);
               Retrofit retrofit = new Retrofit
                   .Builder()
-                  .baseUrl(Const.Database.getCurrentAPI())
+                  .baseUrl(Const.Database.CLOUD_API_BASE_URL_121_dev)
                   .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
                   .client(ohc1.build())
                   .build();
@@ -147,7 +151,7 @@ public class SyncActivity extends AppCompatActivity {
                   Log.d(TAG, "failed: " + t.toString());
                   if (progressDialog != null) {
                     progressDialog.dismiss();
-                    AlertDialog alertDialog = new AlertDialog
+                    new AlertDialog
                         .Builder(SyncActivity.this)
                         .setMessage("Something goes wrong. Please try again.\nError: " + t.toString())
                         .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
@@ -162,8 +166,17 @@ public class SyncActivity extends AppCompatActivity {
                 }
               });
             } else {
-              progressDialog.dismiss();
-              //TODO cannot access local server
+              progressDialog.dismiss();                                                             //cannot access local server
+              new AlertDialog
+                  .Builder(SyncActivity.this)
+                  .setMessage("Cannot access Local Server (The Bag)")
+                  .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                      dialog.dismiss();
+                    }
+                  })
+                  .show();
             }
           }
         });
@@ -174,58 +187,88 @@ public class SyncActivity extends AppCompatActivity {
     bPushToLocal.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        List<Query> queryList = Cache.Synchronisation.getPullFromCloudData(getBaseContext());
-        if (queryList != null && queryList.size() > 0) {
-          int currentProgress = 0;
-          final ProgressDialog progressDialog = new ProgressDialog(SyncActivity.this);
-          progressDialog.setMessage("Uploading");
-          progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-          progressDialog.setIndeterminate(true);
-          progressDialog.setProgress(0);
-          progressDialog.setMax(queryList.size());
-          progressDialog.show();
-          for (int i = 0; i < queryList.size(); i++) {
-            OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-            ohc1.readTimeout(2, TimeUnit.MINUTES);
-            ohc1.connectTimeout(2, TimeUnit.MINUTES);
-            Retrofit retrofit = new Retrofit
-                .Builder()
-                .baseUrl(Const.Database.getCurrentAPI())
-                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-                .client(ohc1.build())
-                .build();
-            v2API.queries queryService = retrofit.create(v2API.queries.class);
-            Call<Query> queryCall = queryService.pushQuery("1", queryList.get(i));
-            queryCall.enqueue(new Callback<Query>() {
-              @Override
-              public void onResponse(Call<Query> call, Response<Query> response) {
-                if (response == null) {
-                  onFailure(call, new Throwable("empty response"));
-                } else if (response.code() < 200 || response.code() >= 300) {
-                  onFailure(call, new Throwable("Invalid response: " + response.toString()));
-                } else {
+        final ProgressDialog searchingServerDialog = ProgressDialog.show(c, "Loading", "Please wait");
+        CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("192.168.0.194", 3000, new AsyncResponse() {
+          @Override
+          public void processFinish(String output, Boolean successful) {
+            if (successful) {
+              searchingServerDialog.dismiss();
+              List<Query> queryList = Cache.Synchronisation.getPullFromCloudData(getBaseContext());
+              if (queryList != null && queryList.size() > 0) {
 
-                  progressDialog.setProgress(progressDialog.getProgress()+1);
-                  //TODO check if you can dismiss dialog
+                //TODO change to material dialog
+                final ProgressDialog progressDialog = new ProgressDialog(SyncActivity.this);
+                progressDialog.setMessage("Uploading");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setProgress(0);
+                progressDialog.setMax(queryList.size());
+                progressDialog.show();
+
+                pushTotal = queryList.size();
+
+                for (int i = 0; i < pushTotal; i++) {
+                  OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+                  ohc1.readTimeout(2, TimeUnit.MINUTES);
+                  ohc1.connectTimeout(2, TimeUnit.MINUTES);
+                  Retrofit retrofit = new Retrofit
+                      .Builder()
+                      .baseUrl(Const.Database.LOCAL_API_BASE_URL_121_dev)
+                      .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                      .client(ohc1.build())
+                      .build();
+                  v2API.queries queryService = retrofit.create(v2API.queries.class);
+                  Call<Query> queryCall = queryService.pushQuery("1", queryList.get(i));
+                  queryCall.enqueue(new Callback<Query>() {
+                    @Override
+                    public void onResponse(Call<Query> call, Response<Query> response) {
+                      if (response == null) {
+                        onFailure(call, new Throwable("empty response"));
+                      } else if (response.code() < 200 || response.code() >= 300) {
+                        onFailure(call, new Throwable("Invalid response: " + new GsonBuilder().create().toJson(response)));
+                      } else {
+                        setPushProgress(pushProgress + 1);
+                        progressDialog.setProgress(progressDialog.getProgress()+1);
+                        finishedPushingYet(progressDialog);
+                      }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Query> call, Throwable t) {
+                      t.printStackTrace();
+                      //TODO how to handle errors?
+                      setPushProgress(pushProgress + 1);
+                      progressDialog.setProgress(progressDialog.getProgress()+1);
+                      finishedPushingYet(progressDialog);
+                    }
+                  });
                 }
+
+              } else {  //nothing to push
+                new MaterialDialog.Builder(SyncActivity.this).title("Nothing to push").positiveText("Dismiss").onPositive(new MaterialDialog.SingleButtonCallback() {
+                  @Override
+                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                  }
+                }).show();
               }
-
-              @Override
-              public void onFailure(Call<Query> call, Throwable t) {
-                t.printStackTrace();
-
-              }
-            });
-          }
-
-        } else {  //nothing to push
-          new MaterialDialog.Builder(SyncActivity.this).title("Nothing to push").positiveText("Dismiss").onPositive(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-              dialog.dismiss();
+            } else {  //TODO server not accessible
+              searchingServerDialog.dismiss();
+              new AlertDialog
+                  .Builder(SyncActivity.this)
+                  .setTitle("Error")
+                  .setMessage("Cannot access Local Server (The Bag). You can check the following:\n1. Are you on the right Wi-Fi network?\n2. Is the server on?")
+                  .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                      dialog.dismiss();
+                    }
+                  })
+                  .show();
             }
-          }).show();
-        }
+          }
+        });
+        checkIfServerIsAvailable.execute();
       }
     });
 
@@ -282,12 +325,88 @@ public class SyncActivity extends AppCompatActivity {
     bPushToCloud.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        List<Query> queryList = Cache.Synchronisation.getPullFromLocalData(getBaseContext());
-        if (queryList != null && queryList.size() > 0) {
-          //TODO call api
-        } else {
-          //TODO nothing to push
-        }
+        final ProgressDialog searchingServerDialog = ProgressDialog.show(c, "Loading", "Please wait");
+        CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("ehr-api.herokuapp.com", 443, 10000, new AsyncResponse() {
+          @Override
+          public void processFinish(String output, Boolean successful) {
+            if (successful) {
+              searchingServerDialog.dismiss();
+              List<Query> queryList = Cache.Synchronisation.getPullFromLocalData(getBaseContext());
+              if (queryList != null && queryList.size() > 0) {
+
+                //TODO change to material dialog
+                final ProgressDialog progressDialog = new ProgressDialog(SyncActivity.this);
+                progressDialog.setMessage("Uploading");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setProgress(0);
+                progressDialog.setMax(queryList.size());
+                progressDialog.show();
+
+                pushTotal = queryList.size();
+
+                for (int i = 0; i < pushTotal; i++) {
+                  OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+                  ohc1.readTimeout(2, TimeUnit.MINUTES);
+                  ohc1.connectTimeout(2, TimeUnit.MINUTES);
+                  Retrofit retrofit = new Retrofit
+                      .Builder()
+                      .baseUrl(Const.Database.LOCAL_API_BASE_URL_121_dev)
+                      .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                      .client(ohc1.build())
+                      .build();
+                  v2API.queries queryService = retrofit.create(v2API.queries.class);
+                  Call<Query> queryCall = queryService.pushQuery("1", queryList.get(i));
+                  queryCall.enqueue(new Callback<Query>() {
+                    @Override
+                    public void onResponse(Call<Query> call, Response<Query> response) {
+                      if (response == null) {
+                        onFailure(call, new Throwable("empty response"));
+                      } else if (response.code() < 200 || response.code() >= 300) {
+                        onFailure(call, new Throwable("Invalid response: " + new GsonBuilder().create().toJson(response)));
+                      } else {
+                        setPushProgress(pushProgress + 1);
+                        progressDialog.setProgress(progressDialog.getProgress()+1);
+                        finishedPushingYet(progressDialog);
+                      }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Query> call, Throwable t) {
+                      t.printStackTrace();
+                      //TODO how to handle errors?
+                      setPushProgress(pushProgress + 1);
+                      progressDialog.setProgress(progressDialog.getProgress()+1);
+                      finishedPushingYet(progressDialog);
+                    }
+                  });
+                }
+
+              } else {  //nothing to push
+                new MaterialDialog.Builder(SyncActivity.this).title("Nothing to push").positiveText("Dismiss").onPositive(new MaterialDialog.SingleButtonCallback() {
+                  @Override
+                  public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                  }
+                }).show();
+              }
+            } else {  //TODO server not accessible
+              searchingServerDialog.dismiss();
+              new AlertDialog
+                  .Builder(SyncActivity.this)
+                  .setTitle("Error")
+                  .setMessage("Cannot access the cloud server. Are you sure you are connected to the internet?")
+                  .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                      dialog.dismiss();
+                    }
+                  })
+                  .show();
+            }
+          }
+        });
+        checkIfServerIsAvailable.execute();
       }
     });
   }
@@ -298,10 +417,25 @@ public class SyncActivity extends AppCompatActivity {
       case android.R.id.home:
         // app icon in action bar clicked; goto parent activity.
         this.finish();
+        pushTotal = 0;
+        pushProgress = 0;
         return true;
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  private void setPushProgress(int i) {
+    pushProgress = i;
+  }
+
+  private boolean finishedPushingYet(ProgressDialog pd) {
+    if (pushTotal - pushProgress <= 0) {
+      pd.dismiss();
+      tvPushToLocal.setText("Last pull: " + Util.GCInStringForSync(new GregorianCalendar()));
+      return true;
+    } else
+      return false;
   }
 
   private class CheckIfServerIsAvailable extends AsyncTask<Void, Boolean, Boolean> {

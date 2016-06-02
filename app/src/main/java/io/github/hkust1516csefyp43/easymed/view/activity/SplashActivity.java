@@ -70,7 +70,7 @@ public class SplashActivity extends AppCompatActivity {
     }
   }
 
-  private class CheckIfServerIsAvailable extends AsyncTask<Void, Boolean, Boolean> {
+  public class CheckIfServerIsAvailable extends AsyncTask<Void, Boolean, Boolean> {
     Context context;
     String host;
     int port;

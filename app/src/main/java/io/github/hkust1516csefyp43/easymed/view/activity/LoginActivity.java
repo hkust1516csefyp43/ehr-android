@@ -3,6 +3,7 @@ package io.github.hkust1516csefyp43.easymed.view.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
@@ -23,10 +24,12 @@ import android.widget.TextView;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.pojo.LoginCredentials;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
@@ -188,7 +191,7 @@ public class LoginActivity extends AppCompatActivity{
 //          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
 //          .client(ohc2.build())
 //          .build();
-//      Log.d(TAG, "ANDROID ID = " + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+
 
       mAuthTask = new UserLoginTask(username, password);
       mAuthTask.execute((Void) null);
@@ -221,13 +224,6 @@ public class LoginActivity extends AppCompatActivity{
 
     @Override
     protected Boolean doInBackground(Void... params) {
-      // TODO: attempt authentication against a network service.
-      try {
-        // Simulate network access.
-        Thread.sleep(2000);
-      } catch (InterruptedException e) {
-        return false;
-      }
       OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
       httpClient.readTimeout(1, TimeUnit.MINUTES);
       httpClient.connectTimeout(1, TimeUnit.MINUTES);
@@ -237,8 +233,23 @@ public class LoginActivity extends AppCompatActivity{
           .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
           .client(httpClient.build())
           .build();
-
-      return true;
+      v2API.login loginService = retrofit.create(v2API.login.class);
+      Call<Object> objectCall = loginService.login(new LoginCredentials(mEmail, mPassword, Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)));
+      try {
+        Response<Object> response = objectCall.execute();
+        if (response == null) {
+//          onFailure(call, new Throwable("Something's wrong. Please try again."));
+          return false;
+        } else if (response.code() >= 300 || response.code() <200) {
+//          onFailure(call, new Throwable("Username or password is wrong"));
+          return false;
+        } else {    //successful
+          return true;
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+        return false;
+      }
     }
 
     @Override

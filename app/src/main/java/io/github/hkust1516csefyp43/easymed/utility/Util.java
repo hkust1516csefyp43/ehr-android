@@ -296,6 +296,11 @@ public class Util {
     return "" + gc.get(Calendar.YEAR) + "-" + (gc.get(Calendar.MONTH) + 1) + "-" + gc.get(Calendar.DAY_OF_MONTH);
   }
 
+  /**
+   * Give me a GregorianCalendar and I give you a string
+   * @param gregorianCalendar
+   * @return
+   */
   public static String GCInStringForSync(GregorianCalendar gregorianCalendar) {
     return dateInString(gregorianCalendar) + " " + gregorianCalendar.get(Calendar.HOUR_OF_DAY) + ":" + gregorianCalendar.get(Calendar.MINUTE) + ":" + gregorianCalendar.get(Calendar.SECOND);
   }
