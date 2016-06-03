@@ -441,7 +441,13 @@ public class SyncActivity extends AppCompatActivity {
         try {
           Response<Query> queryResponse = queryCall.execute();
           Log.d(TAG, "in progress: " + i + "/" + new GsonBuilder().create().toJson(queryResponse));
-          progressDialog.setProgress(progressDialog.getProgress() + 1);
+          runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+              //TODO still does not work (cannot update the UI)
+              progressDialog.setProgress(progressDialog.getProgress() + 1);
+            }
+          });
         } catch (IOException e) {
           e.printStackTrace();
         }
