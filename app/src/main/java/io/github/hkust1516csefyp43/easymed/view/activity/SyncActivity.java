@@ -20,6 +20,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -112,7 +113,6 @@ public class SyncActivity extends AppCompatActivity {
       }
     }
 
-    //TODO onclick >> call api
     final Context c = this;
     bPullFromCloud.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -207,42 +207,8 @@ public class SyncActivity extends AppCompatActivity {
 
                 pushTotal = queryList.size();
 
-                for (int i = 0; i < pushTotal; i++) {
-                  OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-                  ohc1.readTimeout(2, TimeUnit.MINUTES);
-                  ohc1.connectTimeout(2, TimeUnit.MINUTES);
-                  Retrofit retrofit = new Retrofit
-                      .Builder()
-                      .baseUrl(Const.Database.LOCAL_API_BASE_URL_121_dev)
-                      .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-                      .client(ohc1.build())
-                      .build();
-                  v2API.queries queryService = retrofit.create(v2API.queries.class);
-                  Call<Query> queryCall = queryService.pushQuery("1", queryList.get(i));
-                  queryCall.enqueue(new Callback<Query>() {
-                    @Override
-                    public void onResponse(Call<Query> call, Response<Query> response) {
-                      if (response == null) {
-                        onFailure(call, new Throwable("empty response"));
-                      } else if (response.code() < 200 || response.code() >= 300) {
-                        onFailure(call, new Throwable("Invalid response: " + new GsonBuilder().create().toJson(response)));
-                      } else {
-                        setPushProgress(pushProgress + 1);
-                        progressDialog.setProgress(progressDialog.getProgress()+1);
-                        finishedPushingYet(progressDialog);
-                      }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Query> call, Throwable t) {
-                      t.printStackTrace();
-                      //TODO how to handle errors?
-                      setPushProgress(pushProgress + 1);
-                      progressDialog.setProgress(progressDialog.getProgress()+1);
-                      finishedPushingYet(progressDialog);
-                    }
-                  });
-                }
+                PushToServer pushToServer = new PushToServer(queryList, Const.Database.LOCAL_API_BASE_URL_121_dev, progressDialog, tvPushToLocal);
+                pushToServer.execute();
 
               } else {  //nothing to push
                 new MaterialDialog.Builder(SyncActivity.this).title("Nothing to push").positiveText("Dismiss").onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -345,42 +311,9 @@ public class SyncActivity extends AppCompatActivity {
 
                 pushTotal = queryList.size();
 
-                for (int i = 0; i < pushTotal; i++) {
-                  OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-                  ohc1.readTimeout(2, TimeUnit.MINUTES);
-                  ohc1.connectTimeout(2, TimeUnit.MINUTES);
-                  Retrofit retrofit = new Retrofit
-                      .Builder()
-                      .baseUrl(Const.Database.LOCAL_API_BASE_URL_121_dev)
-                      .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-                      .client(ohc1.build())
-                      .build();
-                  v2API.queries queryService = retrofit.create(v2API.queries.class);
-                  Call<Query> queryCall = queryService.pushQuery("1", queryList.get(i));
-                  queryCall.enqueue(new Callback<Query>() {
-                    @Override
-                    public void onResponse(Call<Query> call, Response<Query> response) {
-                      if (response == null) {
-                        onFailure(call, new Throwable("empty response"));
-                      } else if (response.code() < 200 || response.code() >= 300) {
-                        onFailure(call, new Throwable("Invalid response: " + new GsonBuilder().create().toJson(response)));
-                      } else {
-                        setPushProgress(pushProgress + 1);
-                        progressDialog.setProgress(progressDialog.getProgress()+1);
-                        finishedPushingYet(progressDialog);
-                      }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Query> call, Throwable t) {
-                      t.printStackTrace();
-                      //TODO how to handle errors?
-                      setPushProgress(pushProgress + 1);
-                      progressDialog.setProgress(progressDialog.getProgress()+1);
-                      finishedPushingYet(progressDialog);
-                    }
-                  });
-                }
+                //TODO just for loop + async >> OOM; sync >> cannot be on main thread
+                PushToServer pushToServer = new PushToServer(queryList, Const.Database.CLOUD_API_BASE_URL_121_dev, progressDialog, tvPushToCloud);
+                pushToServer.execute();
 
               } else {  //nothing to push
                 new MaterialDialog.Builder(SyncActivity.this).title("Nothing to push").positiveText("Dismiss").onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -474,4 +407,53 @@ public class SyncActivity extends AppCompatActivity {
       }
     }
   }
+
+  private class PushToServer extends AsyncTask<Void, Integer, Integer> {
+
+    List<Query> queries;
+    String baseUrl;
+    ProgressDialog progressDialog;
+    TextView textView;
+
+    public PushToServer(List<Query> queries, String baseUrl, ProgressDialog progressDialog, TextView textView) {
+      this.queries = queries;
+      this.baseUrl = baseUrl;
+      this.progressDialog = progressDialog;
+      this.textView = textView;
+    }
+
+    @Override
+    protected Integer doInBackground(Void... params) {
+      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+      ohc1.readTimeout(2, TimeUnit.MINUTES);
+      ohc1.connectTimeout(2, TimeUnit.MINUTES);
+      Retrofit retrofit = new Retrofit
+          .Builder()
+          .baseUrl(baseUrl)
+          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+          .client(ohc1.build())
+          .build();
+      v2API.queries queryService = retrofit.create(v2API.queries.class);
+      Log.d(TAG, "Before for loop");
+      for (int i = 0; i < queries.size(); i++) {
+        Log.d(TAG, "In the for loop: " + i);
+        Call<Query> queryCall = queryService.pushQuery("1", queries.get(i));
+        try {
+          Response<Query> queryResponse = queryCall.execute();
+          Log.d(TAG, "in progress: " + i + "/" + new GsonBuilder().create().toJson(queryResponse));
+          progressDialog.setProgress(progressDialog.getProgress() + 1);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      progressDialog.dismiss();
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(Integer integer) {
+      textView.setText("Last push: " + Util.GCInStringForSync(new GregorianCalendar()));
+    }
+  }
+
 }
