@@ -120,11 +120,11 @@ public class LoginActivity extends AppCompatActivity{
       public void onResponse(Call<List<Clinic>> call, final Response<List<Clinic>> response) {
         if (response.body() != null && response.body().size() > 0) {
           clinicList.setVisibility(View.VISIBLE);
-          ArrayAdapter<Clinic> clinicArrayAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, response.body());
           Log.d(TAG, "list of clinics: " + response.body().toString());
           if (mProgressView != null) {
             mProgressView.setVisibility(View.GONE);
           }
+          ArrayAdapter<Clinic> clinicArrayAdapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, response.body());
           clinicList.setAdapter(clinicArrayAdapter);
           clinicList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -22,100 +22,107 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <GridLayout
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="18"
-        android:rowCount="14"
-        android:layout_margin="8dp"
+        android:paddingTop="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:text="Name"
-            android:layout_columnSpan="6"
-            android:layout_rowSpan="2"
-            android:layout_gravity="center_vertical"/>
-
-        <android.support.design.widget.TextInputLayout
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_columnSpan="12"
-            android:layout_rowSpan="2">
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lines="1"/>
-        </android.support.design.widget.TextInputLayout>
-        <TextView
-            android:text="Medication"
-            android:layout_columnSpan="6"
-            android:layout_rowSpan="2"
-            android:layout_gravity="center_vertical"/>
-        <Spinner
-            android:layout_columnSpan="12"
-            android:layout_rowSpan="2"/>
-        <TextView
-            android:text="Strength"
-            android:layout_columnSpan="6"
-            android:layout_rowSpan="2"
-            android:layout_gravity="center_vertical"/>
+            android:layout_height="wrap_content"
+            android:columnCount="18"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:rowCount="12">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_columnSpan="12"
-            android:layout_rowSpan="2">
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lines="1"/>
-        </android.support.design.widget.TextInputLayout>
-        <TextView
-            android:text="Form"
-            android:layout_columnSpan="6"
-            android:layout_rowSpan="2"
-            android:layout_gravity="center_vertical"/>
+            <TextView
+                android:text="Name"
+                android:layout_columnSpan="6"
+                android:layout_rowSpan="2"
+                android:layout_gravity="center_vertical"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_columnSpan="12"
-            android:layout_rowSpan="2">
-            <EditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lines="1"/>
-        </android.support.design.widget.TextInputLayout>
-        <TextView
-            android:text="Stock"
-            android:layout_columnSpan="6"
-            android:layout_rowSpan="2"
-            android:layout_gravity="center_vertical"/>
-        <Spinner
-            android:layout_columnSpan="12"
-            android:layout_rowSpan="2"/>
-        <TextView
-            android:text="Suitcase"
-            android:layout_columnSpan="6"
-            android:layout_rowSpan="2"
-            android:layout_gravity="center_vertical"/>
-        <Spinner
-            android:layout_columnSpan="12"
-            android:layout_rowSpan="2"/>
-        <TextView
-            android:text="Remark"
-            android:layout_columnSpan="6"
-            android:layout_rowSpan="2"
-            android:layout_gravity="center_vertical"/>
+                android:layout_columnSpan="12"
+                android:layout_rowSpan="2">
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"/>
+            </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:text="Medication"
+                android:layout_columnSpan="6"
+                android:layout_rowSpan="2"
+                android:layout_gravity="center_vertical"/>
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/acs_medication"
+                android:layout_columnSpan="12"
+                android:layout_rowSpan="2"/>
+            <TextView
+                android:text="Strength"
+                android:layout_columnSpan="6"
+                android:layout_rowSpan="2"
+                android:layout_gravity="center_vertical"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_columnSpan="12"
-            android:layout_rowSpan="2">
-            <EditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lines="1"/>
-        </android.support.design.widget.TextInputLayout>
+                android:layout_columnSpan="12"
+                android:layout_rowSpan="2">
+                <EditText
+                    android:id="@+id/et_strength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"/>
+            </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:text="Form"
+                android:layout_columnSpan="6"
+                android:layout_rowSpan="2"
+                android:layout_gravity="center_vertical"/>
 
-    </GridLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_columnSpan="12"
+                android:layout_rowSpan="2">
+                <android.support.v7.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/et_form"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"/>
+            </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:text="Stock"
+                android:layout_columnSpan="6"
+                android:layout_rowSpan="2"
+                android:layout_gravity="center_vertical"/>
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/acs_stock"
+                android:layout_columnSpan="12"
+                android:layout_rowSpan="2"/>
+            <TextView
+                android:text="Remark"
+                android:layout_columnSpan="6"
+                android:layout_rowSpan="2"
+                android:layout_gravity="center_vertical"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_columnSpan="12"
+                android:layout_rowSpan="2">
+                <EditText
+                    android:id="@+id/tv_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="1"/>
+            </android.support.design.widget.TextInputLayout>
+
+        </GridLayout>
+
+    </ScrollView>
 
 
     <android.support.design.widget.FloatingActionButton

@@ -53,11 +53,7 @@ public class Medication implements Serializable {
 
   @Override
   public String toString() {
-    return "Medication{" +
-        "createTimestamp=" + createTimestamp +
-        ", medications='" + medication + '\'' +
-        ", medicationId='" + medicationId + '\'' +
-        ", userId='" + userId + '\'' +
-        '}';
+    //Because
+    return medication;
   }
 }
