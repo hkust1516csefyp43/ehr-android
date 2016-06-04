@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
     tvWhichServer = (TextView) findViewById(R.id.tv_which_server);
 
     //TODO extract urls from cache/const
-    final CheckIfServerIsAvailable task2 = new CheckIfServerIsAvailable(this, "Internet", "ehr-api.herokuapp.com", Const.Database.CLOUD_API_BASE_URL_121_dev, 443, new AsyncResponse() {
+    final CheckIfServerIsAvailable task2 = new CheckIfServerIsAvailable(this, "Internet", Const.Database.CLOUD, "ehr-api.herokuapp.com", Const.Database.CLOUD_API_BASE_URL_121_dev, 443, new AsyncResponse() {
       @Override
       public void processFinish(String output, Boolean successful) {
         if (!successful) {
@@ -52,7 +52,7 @@ public class SplashActivity extends AppCompatActivity {
         }
       }
     });
-    CheckIfServerIsAvailable task1 = new CheckIfServerIsAvailable(this, "Local", "192.168.0.194", 3000, 3000, Const.Database.LOCAL_API_BASE_URL_121_dev, new AsyncResponse() {
+    CheckIfServerIsAvailable task1 = new CheckIfServerIsAvailable(this, "Local", Const.Database.LOCAL, "192.168.0.194", 3000, 3000, Const.Database.LOCAL_API_BASE_URL_121_dev, new AsyncResponse() {
       @Override
       public void processFinish(String output, Boolean successful) {
         if (!successful)
@@ -77,23 +77,26 @@ public class SplashActivity extends AppCompatActivity {
     String apiUrl;
     AsyncResponse delegate;
     String serverName;
+    int serverType;
     int timeout = 10000;
 
-    public CheckIfServerIsAvailable(Context context, String serverName, String host, String apiUrl, int port, AsyncResponse delegate) {
+    public CheckIfServerIsAvailable(Context context, String serverName, int serverType, String host, String apiUrl, int port, AsyncResponse delegate) {
       this.context = context;
       this.host = host;
       this.port = port;
       this.delegate = delegate;
       this.serverName = serverName;
+      this.serverType = serverType;
       this.apiUrl = apiUrl;
     }
 
-    public CheckIfServerIsAvailable(Context context, String serverName, String host, int port, int timeout, String apiUrl, AsyncResponse delegate) {
+    public CheckIfServerIsAvailable(Context context, String serverName, int serverType, String host, int port, int timeout, String apiUrl, AsyncResponse delegate) {
       this.context = context;
       this.host = host;
       this.port = port;
       this.delegate = delegate;
       this.serverName = serverName;
+      this.serverType = serverType;
       this.timeout = timeout;
       this.apiUrl = apiUrl;
     }
@@ -112,6 +115,7 @@ public class SplashActivity extends AppCompatActivity {
           tvWhichServer.setVisibility(View.VISIBLE);
           tvWhichServer.setText("You are now connected to the '" + serverName + "' server");
           Const.Database.setCurrentAPI(apiUrl);
+
         }
         final Class target;
         User user = Cache.CurrentUser.getUser(context);

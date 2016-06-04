@@ -21,6 +21,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.view.activity.CreateUserActivity;
+import io.github.hkust1516csefyp43.easymed.view.activity.ServerStatusActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.StaticDataActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.SyncActivity;
 
@@ -87,6 +88,7 @@ public class AdminFragment extends Fragment {
       @Override
       public void onClick(View v) {
         //TODO call status api and show it in some kind of dialog/activity
+        openServerStatusActivity();
       }
     });
 
@@ -101,6 +103,11 @@ public class AdminFragment extends Fragment {
     }
 
     return view;
+  }
+
+  private void openServerStatusActivity() {
+    Intent intent = new Intent(getContext(), ServerStatusActivity.class);
+    startActivity(intent);
   }
 
   private void openUserManagementPage() {

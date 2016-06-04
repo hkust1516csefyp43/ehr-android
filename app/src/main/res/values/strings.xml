@@ -140,5 +140,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="synchronization">Synchronization</string>
-    <string name="server_status">Server status</string>
+    <string name="server_status">Server Status</string>
+    <string name="title_activity_server_status">ServerStatusActivity</string>
+    <string name="server_app_version">Server App Version</string>
+    <string name="node_js_version">Node.js Version</string>
+    <string name="npm_version">NPM Version</string>
 </resources>

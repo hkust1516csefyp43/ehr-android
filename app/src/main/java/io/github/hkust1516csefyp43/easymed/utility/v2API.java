@@ -20,6 +20,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.ServerStatus;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Suitcase;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
@@ -666,4 +667,13 @@ public interface v2API {
 
   }
 
+  interface staticAPI {
+    @GET("static/status")
+    Call<ServerStatus> getStatus();
+
+    @GET("static/shutdown")
+    Call<Object> shutdown(
+        @Header("token") String token
+    );
+  }
 }

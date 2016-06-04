@@ -91,8 +91,8 @@ public class Const {
 
   public static class Database {
     public static final String API_VERSION = "2";
-    public static final String CLOUD_API_BASE_URL_121 = "https://one2one-easymed.herokuapp.com/v" + API_VERSION + "/";
-    public static final String LOCAL_API_BASE_URL_121 = "http://192.168.0.193:3000/v" + API_VERSION + "/";
+//    public static final String CLOUD_API_BASE_URL_121 = "https://one2one-easymed.herokuapp.com/v" + API_VERSION + "/";
+//    public static final String LOCAL_API_BASE_URL_121 = "http://192.168.0.193:3000/v" + API_VERSION + "/";
     public static final String CLOUD_API_BASE_URL_121_dev = "https://ehr-api.herokuapp.com/v" + API_VERSION + "/";
     public static final String LOCAL_API_BASE_URL_121_dev = "http://192.168.0.194:3000/v" + API_VERSION + "/";
 
@@ -103,6 +103,9 @@ public class Const {
     public static String getCurrentAPI() {
       return currentAPI;
     }
+    public static final int LOCAL = 0;
+    public static final int CLOUD = 1;
+    public static int currentServerType = CLOUD;
   }
 
   public static class BMI {
