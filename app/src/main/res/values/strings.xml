@@ -145,4 +145,5 @@
     <string name="server_app_version">Server App Version</string>
     <string name="node_js_version">Node.js Version</string>
     <string name="npm_version">NPM Version</string>
+    <string name="title_activity_inventory_add">InventoryAddActivity</string>
 </resources>

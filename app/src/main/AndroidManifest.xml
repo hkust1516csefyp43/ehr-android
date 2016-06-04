@@ -128,6 +128,11 @@
             android:label="@string/title_activity_server_status"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:name=".view.activity.InventoryAddActivity"
+            android:label="@string/title_activity_inventory_add"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

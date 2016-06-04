@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.station;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
+import io.github.hkust1516csefyp43.easymed.view.activity.InventoryAddActivity;
 import io.github.hkust1516csefyp43.easymed.view.fragment.MedicationVariantListFragment;
 
 public class InventoryFragment extends Fragment {
@@ -100,11 +102,16 @@ public class InventoryFragment extends Fragment {
     floatingActionButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //TODO
+        showAddItemActivity();
       }
     });
 
     return view;
+  }
+
+  private void showAddItemActivity() {
+    Intent intent = new Intent(getContext(), InventoryAddActivity.class);
+    startActivity(intent);
   }
 
   @Override
