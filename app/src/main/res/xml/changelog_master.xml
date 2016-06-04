@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="2.0.0" versioncode="">
+
+    </release>
+    <release version="2.0.0 beta 1" versioncode="">
+
+    </release>
+    <release version="1.3.1" versioncode="30">
+        <change>ADD: Shut down server</change>
+        <change>ADD: Server status report</change>
+        <change>ADD: Add inventory item</change>
+        <change>FIX: Chart in Reports now display correct month</change>
+        <change>Minor bug fixes</change>
+    </release>
     <release version="1.3.0" versioncode="29">
         <change>FIX: Synchronization</change>
         <change>FIX: Login</change>

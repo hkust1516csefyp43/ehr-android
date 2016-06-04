@@ -26,9 +26,12 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
@@ -124,8 +127,10 @@ public class ReportsFragment extends Fragment {
     GregorianCalendar today = new GregorianCalendar();
     int year = today.get(Calendar.YEAR);
     int month = today.get(Calendar.MONTH);
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("LLL yy", Locale.US);
     int callsQueue = 6;
     while (callsQueue > 0) {
+      final String text = simpleDateFormat.format(new Date(year, month, 1));
       final int myPosition = callsQueue;
       Call<Count> countCall = visitService.getVisitCount("1", Util.getMonthEndDateStringWithTimeZone(year, month), Util.getMonthStartDateStringWithTimeZone(year, month));
       callsQueue--;
@@ -141,7 +146,7 @@ public class ReportsFragment extends Fragment {
             if (response.code() < 200 || response.code() >= 300) {
               onFailure(call, new Throwable(response.toString()));
             } else {
-              Point point = new Point("Date string", (float) response.body().getCount());
+              Point point = new Point(text, (float) response.body().getCount());
               Log.d(TAG, "point: " + point.toString());
               pointHashMap.put(myPosition, point);
               if (pointHashMap.size() >= 6) {
@@ -182,7 +187,7 @@ public class ReportsFragment extends Fragment {
       });
       final LineSet lineSet = new LineSet();
       float max = 0;
-      for (int i = 6; i > 0; i--) {
+      for (int i = 1; i <= 6; i++) {
         if (pointHashMap.get(i).getValue() > max)
           max = pointHashMap.get(i).getValue();
         Log.d(TAG, "coming soon 3: " + i + '/' + pointHashMap.get(i));

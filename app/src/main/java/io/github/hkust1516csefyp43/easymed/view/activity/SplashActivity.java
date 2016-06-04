@@ -115,7 +115,7 @@ public class SplashActivity extends AppCompatActivity {
           tvWhichServer.setVisibility(View.VISIBLE);
           tvWhichServer.setText("You are now connected to the '" + serverName + "' server");
           Const.Database.setCurrentAPI(apiUrl);
-
+          Const.Database.currentServerType = serverType;
         }
         final Class target;
         User user = Cache.CurrentUser.getUser(context);
