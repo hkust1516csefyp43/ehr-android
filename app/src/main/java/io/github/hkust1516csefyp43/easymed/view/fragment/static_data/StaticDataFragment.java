@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed.view.fragment;
+package io.github.hkust1516csefyp43.easymed.view.fragment.static_data;
 
 import android.content.Context;
 import android.os.Bundle;

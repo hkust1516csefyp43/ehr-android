@@ -13,8 +13,9 @@ import android.view.MenuItem;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
-import io.github.hkust1516csefyp43.easymed.view.fragment.KeywordsFragment;
-import io.github.hkust1516csefyp43.easymed.view.fragment.StaticDataFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.static_data.ClinicsFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.static_data.KeywordsFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.static_data.StaticDataFragment;
 
 public class StaticDataActivity extends AppCompatActivity {
   private TabLayout tabLayout;
@@ -79,13 +80,12 @@ public class StaticDataActivity extends AppCompatActivity {
         case 1:
           return StaticDataFragment.newInstance(Const.StaticPages.GENDERS);
         case 2:
-//          return StaticDataFragment.newInstance(Const.StaticPages.KEYWORDS);
-          return KeywordsFragment.newInstance(); //for some reason it crashes so badly
+          return KeywordsFragment.newInstance();
         case 3:
           return StaticDataFragment.newInstance(Const.StaticPages.SUITCASES);
         case 4:
-          return StaticDataFragment.newInstance(Const.StaticPages.CLINICS);
-        //TODO
+//          return StaticDataFragment.newInstance(Const.StaticPages.CLINICS);
+          return ClinicsFragment.newInstance();
         case 5:
           return StaticDataFragment.newInstance(Const.StaticPages.COUNTRIES);
         //TODO

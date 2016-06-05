@@ -310,7 +310,10 @@ public interface v2API {
         @Query("unit") Boolean unit,
         @Query("investigation") Boolean investigation,
         @Query("relationship_type") Boolean relationshipType,
-        @Query("red_flag") Boolean redFlag
+        @Query("red_flag") Boolean redFlag,
+        @Query("offset") Integer offset,
+        @Query("limit")Integer limit,
+        @Query("sort_by")String sortBy
     );
 
     @GET("keywords/{id}")

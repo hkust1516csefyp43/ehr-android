@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed.view.fragment;
+package io.github.hkust1516csefyp43.easymed.view.fragment.static_data;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -60,7 +60,7 @@ public class KeywordsFragment extends Fragment {
         .client(ohc1.build())
         .build();
     v2API.keywords keywordService = retrofit.create(v2API.keywords.class);
-    Call<List<Keyword>> keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    Call<List<Keyword>> keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "keyword");
     keywordsCall.enqueue(new Callback<List<Keyword>>() {
       @Override
       public void onResponse(Call<List<Keyword>> call, Response<List<Keyword>> response) {

@@ -119,7 +119,7 @@ public class InventoryAddActivity extends AppCompatActivity {
       });
 
       v2API.keywords keywordService = retrofit.create(v2API.keywords.class);
-      Call<List<Keyword>> keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, true, null, null, null, null, null);
+      Call<List<Keyword>> keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, null, null, null, true, null, null, null, null, null, null, null, null);
       keywordsCall.enqueue(new Callback<List<Keyword>>() {
         @Override
         public void onResponse(Call<List<Keyword>> call, Response<List<Keyword>> response) {if (response == null) {
