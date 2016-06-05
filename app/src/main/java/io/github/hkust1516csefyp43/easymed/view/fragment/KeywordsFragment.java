@@ -43,18 +43,13 @@ public class KeywordsFragment extends Fragment {
   }
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    Log.d(TAG, "on create");
-    super.onCreate(savedInstanceState);
-  }
-
-  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     Log.d(TAG, "ocv");
     View view =  inflater.inflate(R.layout.fragment_keywords, container, false);
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-    box = new DynamicBox(getContext(), view);
+    box = new DynamicBox(getContext(), recyclerView);
     box.showLoadingLayout();
+    Log.d(TAG, "loading");
     OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
     ohc1.readTimeout(2, TimeUnit.MINUTES);
     ohc1.connectTimeout(2, TimeUnit.MINUTES);
@@ -69,6 +64,7 @@ public class KeywordsFragment extends Fragment {
     keywordsCall.enqueue(new Callback<List<Keyword>>() {
       @Override
       public void onResponse(Call<List<Keyword>> call, Response<List<Keyword>> response) {
+        Log.d(TAG, "got sth");
         if (response == null) {
           onFailure(call, new Throwable("Empty response!?"));
         } else if (response.code() >= 300 || response.code() < 200) {
@@ -77,10 +73,13 @@ public class KeywordsFragment extends Fragment {
           onFailure(call, new Throwable("Empty response body"));
         } else {
           if(response.body().size() <= 0) {
-            //empty >> show sth
+            //TODO empty >> show sth
+            Log.d(TAG, "nothing to show");
             box.showExceptionLayout();
           } else {
             //not empty
+            keywordList = response.body();
+            Log.d(TAG, "sth to show: " + keywordList.toString());
             recyclerView.setAdapter(new keywordsAdapter());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             box.hideAll();

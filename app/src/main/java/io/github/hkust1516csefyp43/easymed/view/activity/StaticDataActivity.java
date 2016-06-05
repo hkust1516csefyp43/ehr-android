@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.view.fragment.KeywordsFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.StaticDataFragment;
 
 public class StaticDataActivity extends AppCompatActivity {
@@ -78,8 +79,8 @@ public class StaticDataActivity extends AppCompatActivity {
         case 1:
           return StaticDataFragment.newInstance(Const.StaticPages.GENDERS);
         case 2:
-          return StaticDataFragment.newInstance(Const.StaticPages.KEYWORDS);
-//          return KeywordsFragment.newInstance(); //for some reason it crashes so badly
+//          return StaticDataFragment.newInstance(Const.StaticPages.KEYWORDS);
+          return KeywordsFragment.newInstance(); //for some reason it crashes so badly
         case 3:
           return StaticDataFragment.newInstance(Const.StaticPages.SUITCASES);
         case 4:
