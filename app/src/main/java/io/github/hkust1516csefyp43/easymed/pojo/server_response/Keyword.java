@@ -6,22 +6,22 @@ import com.google.gson.annotations.SerializedName;
  * Created by Louis on 22/3/16.
  */
 public class Keyword {
-  @SerializedName("keyword_id")				private String id;
-  @SerializedName("keyword")					private String keyword;
-  @SerializedName("advice")					private Boolean advice;
-  @SerializedName("allergen")					private Boolean allergen;
-  @SerializedName("chief_complain")			private Boolean chiefComplain;
-  @SerializedName("diagnosis")				private Boolean diagnosis;
-  @SerializedName("education")				private Boolean education;
-  @SerializedName("follow_up")				private Boolean followUp;
-  @SerializedName("general")					private Boolean general;
-  @SerializedName("investigation")			private Boolean investigation;
-  @SerializedName("medication_form")			private Boolean medicationForm;
+  @SerializedName("keyword_id")				      private String  id;
+  @SerializedName("keyword")					      private String  keyword;
+  @SerializedName("advice")					        private Boolean advice;
+  @SerializedName("allergen")					      private Boolean allergen;
+  @SerializedName("chief_complain")			    private Boolean chiefComplain;
+  @SerializedName("diagnosis")				      private Boolean diagnosis;
+  @SerializedName("education")				      private Boolean education;
+  @SerializedName("follow_up")				      private Boolean followUp;
+  @SerializedName("general")					      private Boolean general;
+  @SerializedName("investigation")			    private Boolean investigation;
+  @SerializedName("medication_form")			  private Boolean medicationForm;
   @SerializedName("medication_frequency")		private Boolean medicationFrequency;
-  @SerializedName("medication_route")			private Boolean medicationRoute;
-  @SerializedName("relationship_type")		private Boolean relationshipTypes;
-  @SerializedName("screening")				private Boolean screening;
-  @SerializedName("unit")						private Boolean unit;
+  @SerializedName("medication_route")			  private Boolean medicationRoute;
+  @SerializedName("relationship_type")		  private Boolean relationshipTypes;
+  @SerializedName("screening")				      private Boolean screening;
+  @SerializedName("unit")						        private Boolean unit;
 
   public Keyword(String id, String keyword, Boolean advice, Boolean allergen, Boolean chiefComplain, Boolean diagnosis, Boolean education, Boolean followUp, Boolean general, Boolean investigation, Boolean medicationForm, Boolean medicationFrequency, Boolean medicationRoute, Boolean relationshipTypes, Boolean screening, Boolean unit) {
     this.id = id;

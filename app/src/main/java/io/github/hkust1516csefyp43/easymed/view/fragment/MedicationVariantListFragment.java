@@ -23,6 +23,7 @@ import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.MedicationVariant;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.DividerItemDecoration;
@@ -94,6 +95,7 @@ public class MedicationVariantListFragment extends Fragment {
         if (context != null)
           recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        String suitcaseId = Cache.CurrentUser.getClinic(getContext()).getSuitcaseId();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
           @Override public void log(String message) {
             Log.d(TAG, "mvlf: " + message);
@@ -111,7 +113,7 @@ public class MedicationVariantListFragment extends Fragment {
             .client(ohc1.build())
             .build();
         v2API.medication_variants medicationVariantService = retrofit.create(v2API.medication_variants.class);
-        Call<List<MedicationVariant>> medicationCall = medicationVariantService.getMedicationVariants("1", whichPage, null);
+        Call<List<MedicationVariant>> medicationCall = medicationVariantService.getMedicationVariants("1", whichPage, suitcaseId);
         medicationCall.enqueue(new Callback<List<MedicationVariant>>() {
           @Override
           public void onResponse(Call<List<MedicationVariant>> call, Response<List<MedicationVariant>> response) {
@@ -257,7 +259,6 @@ public class MedicationVariantListFragment extends Fragment {
 
     public medicationVariantItemViewHolder(View itemView) {
       super(itemView);
-      //TODO fill me up
       biggest = (TextView) itemView.findViewById(R.id.biggest_tv);
       bigger = (TextView) itemView.findViewById(R.id.bigger_tv);
       big = (TextView) itemView.findViewById(R.id.big_tv);

@@ -79,13 +79,17 @@ public class StaticDataActivity extends AppCompatActivity {
           return StaticDataFragment.newInstance(Const.StaticPages.GENDERS);
         case 2:
           return StaticDataFragment.newInstance(Const.StaticPages.KEYWORDS);
+//          return KeywordsFragment.newInstance(); //for some reason it crashes so badly
         case 3:
           return StaticDataFragment.newInstance(Const.StaticPages.SUITCASES);
         case 4:
           return StaticDataFragment.newInstance(Const.StaticPages.CLINICS);
+        //TODO
         case 5:
           return StaticDataFragment.newInstance(Const.StaticPages.COUNTRIES);
+        //TODO
         default:
+          //TODO show error
           return StaticDataFragment.newInstance();
       }
     }
