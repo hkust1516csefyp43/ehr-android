@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-    <release version="2.0.0" versioncode="">
-
-    </release>
-    <release version="2.0.0 beta 1" versioncode="">
-
+    <release version="2.0.0" versioncode="31">
+        <change>First stable release!</change>
+        <change>Minor bug fixes (dah!)</change>
     </release>
     <release version="1.3.1" versioncode="30">
         <change>ADD: Shut down server</change>
