@@ -18,6 +18,12 @@ public class Document implements Serializable {
   public Document() {
   }
 
+  public Document(String documentInHtml, String document_type, String patientId) {
+    this.documentInHtml = documentInHtml;
+    this.document_type = document_type;
+    this.patientId = patientId;
+  }
+
   public String getId() {
     return id;
   }

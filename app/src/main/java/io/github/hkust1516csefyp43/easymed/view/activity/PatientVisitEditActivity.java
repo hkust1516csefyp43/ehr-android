@@ -40,6 +40,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
@@ -51,6 +52,8 @@ import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Pregnancy;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.VitalSigns;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Document;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
@@ -1379,6 +1382,28 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                     if (response.body() == null || response.code() > 299 || response.code() < 200) {
                       onFailure(call, new Throwable("No response"));
                     } else {
+                      //TODO create 4 new documents
+                      List<DocumentType> documentTypeList = Cache.DatabaseData.getDocumentTypes(getBaseContext());
+                      for (DocumentType documentType:documentTypeList) {
+                        Call<Document> documentCall = documentService.addDocument("1", new Document("<html><head></head><body></body></html>", documentType.getId(), response.body().getPatientId()));
+                        documentCall.enqueue(new Callback<Document>() {
+                          @Override
+                          public void onResponse(Call<Document> call, Response<Document> response) {
+                            if (response == null) {
+                              onFailure(call, new Throwable("Empty response"));
+                            } else if (response.code() >= 300 || response.code() < 200) {
+                              onFailure(call, new Throwable("Wrong: " + response.code()));
+                            } else if (response.body() == null) {
+                              onFailure(call, new Throwable("Empty response body"));
+                            } //else >> successful >> idc
+                          }
+
+                          @Override
+                          public void onFailure(Call<Document> call, Throwable t) {
+                            t.printStackTrace();
+                          }
+                        });
+                      }
                       //POST visit
                       Visit visit = generateVisit(response.body(), pd, Const.NextStation.CONSULTATION);
                       if (visit != null) {
