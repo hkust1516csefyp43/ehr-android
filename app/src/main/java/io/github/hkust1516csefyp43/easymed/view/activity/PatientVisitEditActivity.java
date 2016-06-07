@@ -602,6 +602,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         final ListOfCards finalFollowUp = followup;
         final String finalConsultationRemark = consultationRemark;
 
+        Log.d(TAG, "Input consultation: " + finalDH+ '\n' + finalScreening + '\n' + finalAllergy + '\n' + finalPregnancy
+        + '\n' + finalROS + '\n' + finalRF + '\n' + finalPE + '\n' + finalDiagnosis + '\n' + finalInvestigation
+        + '\n' + finalMedication + '\n' + finalAdvice + '\n' + finalFollowUp + '\n' + finalConsultationRemark);
+
         if (!errorInAnyPage) {
           if (thisPatient != null) {
             if (isTriage) {

@@ -108,6 +108,17 @@ public class Const {
     public static int currentServerType = CLOUD;
   }
 
+  public class RelatedDataCategory{
+    public static final int SCREENING = 1;
+    public static final int ALLERGY = 2;
+    public static final int DIAGNOSIS = 3;
+    public static final int ADVICE = 4;
+    public static final int FOLLOW_UP = 5;
+    public static final int DRUG_HISTORY = 6;
+    public static final int INVESTIGATION = 8;
+
+  }
+
   public static class BMI {
     /**
      * BOY
