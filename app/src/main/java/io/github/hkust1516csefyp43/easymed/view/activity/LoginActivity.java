@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
@@ -56,6 +57,7 @@ public class LoginActivity extends AppCompatActivity{
   private ProgressBar mProgressView;
   private ScrollView mLoginFormView;
   private AppCompatSpinner clinicList;
+
   private Clinic currentClinic;
 
   @Override
@@ -155,46 +157,36 @@ public class LoginActivity extends AppCompatActivity{
    * errors are presented and no actual login attempt is made.
    */
   private void attemptLogin() {
-    if (mAuthTask != null) {
-      return;
-    }
-    mUsername.setError(null);
-    mPasswordView.setError(null);
-    String username = mUsername.getText().toString();
-    String password = mPasswordView.getText().toString();
-    boolean cancel = false;
-    View focusView = null;
-    if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-      mPasswordView.setError(getString(R.string.error_invalid_password));
-      focusView = mPasswordView;
-      cancel = true;
-    }
-    if (TextUtils.isEmpty(username)) {
-      mUsername.setError(getString(R.string.error_field_required));
-      focusView = mUsername;
-      cancel = true;
-    }
-
-    if (cancel) {
-      focusView.requestFocus();
+    if (currentClinic == null) {
+      Toast.makeText(getBaseContext(), "Select clinic first", Toast.LENGTH_LONG).show();
     } else {
-      showProgress(true);
-//      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-//      ohc1.readTimeout(2, TimeUnit.MINUTES);
-//      ohc1.connectTimeout(2, TimeUnit.MINUTES);
-//      OkHttpClient.Builder ohc2 = new OkHttpClient.Builder();
-//      ohc2.readTimeout(1, TimeUnit.MINUTES);
-//      ohc2.connectTimeout(1, TimeUnit.MINUTES);
-//      Retrofit retrofit = new Retrofit
-//          .Builder()
-//          .baseUrl(Const.Database.getCurrentAPI())
-//          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-//          .client(ohc2.build())
-//          .build();
+      if (mAuthTask != null) {
+        return;
+      }
+      mUsername.setError(null);
+      mPasswordView.setError(null);
+      String username = mUsername.getText().toString();
+      String password = mPasswordView.getText().toString();
+      boolean cancel = false;
+      View focusView = null;
+      if (!isPasswordValid(password)) {
+        mPasswordView.setError(getString(R.string.error_invalid_password));
+        focusView = mPasswordView;
+        cancel = true;
+      }
+      if (TextUtils.isEmpty(username)) {
+        mUsername.setError(getString(R.string.error_field_required));
+        focusView = mUsername;
+        cancel = true;
+      }
 
-
-      mAuthTask = new UserLoginTask(username, password);
-      mAuthTask.execute((Void) null);
+      if (cancel) {
+        focusView.requestFocus();
+      } else {
+        showProgress(true);
+        mAuthTask = new UserLoginTask(username, password);
+        mAuthTask.execute((Void) null);
+      }
     }
   }
 
@@ -258,7 +250,6 @@ public class LoginActivity extends AppCompatActivity{
       showProgress(false);
 
       if (success) {
-        openEverything();
         //TODO get the actual user json
         User user = new User();
         user.setEmail(mEmail);
@@ -293,6 +284,7 @@ public class LoginActivity extends AppCompatActivity{
         });
         Cache.CurrentUser.setClinic(getApplicationContext(), currentClinic);
         Cache.CurrentUser.setUser(getApplicationContext(), user);
+        openEverything();
         finish();
       } else {
         Answers.getInstance().logLogin(new LoginEvent().putSuccess(false));
