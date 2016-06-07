@@ -85,7 +85,7 @@ public class BioFragment extends Fragment {
           }
 
           if (patient.getGenderId() != null){
-            Log.d(TAG, patient.getGenderId());
+            Log.d(TAG, "Gender ID: " + patient.getGenderId());
             OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
             ohc1.readTimeout(1, TimeUnit.MINUTES);
             ohc1.connectTimeout(1, TimeUnit.MINUTES);
@@ -102,9 +102,16 @@ public class BioFragment extends Fragment {
               @Override
               public void onResponse(Call<Gender> call, Response<Gender> response) {
                 if (response.body() != null){
+                  Log.d(TAG, "Gender response code: " + response.code());
+                  Log.d(TAG, "Gender request: " + response.body());
+
                   TextView tvBioGender = new TextView(context);
                   tvBioGender.setText("Gender: " + response.body().getGender());
                   llPatientInfo.addView(tvBioGender);
+                } else {
+                  Log.d(TAG, "Sth wrong");
+                  Log.d(TAG, "Gender response code: " + response.code());
+                  Log.d(TAG, "Gender request: " + response.body());
                 }
               }
 
