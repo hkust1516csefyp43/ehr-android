@@ -41,13 +41,17 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnSendData;
 import io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.PersonalData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Attachment;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.ImageTransformer;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
@@ -87,6 +91,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   private boolean anyError = false;
   private int cantTouchThis = 0;
   private String profilePicBase64 = null;
+  private String currentGenderId;
 
   public static PersonalDataFragment newInstance(Patient p) {
     PersonalDataFragment fragment = new PersonalDataFragment();
@@ -278,9 +283,13 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
     //TODO from DB
     sGender = (Spinner) view.findViewById(R.id.sGender);
-    genderArray = new String[]{
-        "Male", "Female", "Disclosed", "Custom"
-    };
+    final List<Gender> genders = Cache.DatabaseData.getGenders(getContext());
+    genderArray = new String[genders.size()];
+    final HashMap<String, String> genderHM = new HashMap<>(genders.size());
+    for (int i = 0; i < genders.size(); i++) {
+      genderArray[i] = genders.get(i).getGender();
+      genderHM.put(genders.get(i).getGender(), genders.get(i).getId());
+    }
     ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, genderArray);
     sGender.setAdapter(adapter1);
 //    if(patient != null && patient.getGenderId() != null){
@@ -289,12 +298,13 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     sGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+        String a = (String) parent.getItemAtPosition(position);
+        currentGenderId = genderHM.get(a);
       }
 
       @Override
       public void onNothingSelected(AdapterView<?> parent) {
-
+        currentGenderId = genders.get(0).getId();
       }
     });
 
@@ -580,6 +590,9 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     }
     if (etPhoneNumber != null) {
       pd.setPhoneNumber(etPhoneNumber.getText().toString());
+    }
+    if (currentGenderId != null) {
+      pd.setGenderId(currentGenderId);
     }
     return pd;
   }

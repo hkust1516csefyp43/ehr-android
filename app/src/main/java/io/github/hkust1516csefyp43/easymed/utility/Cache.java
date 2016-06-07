@@ -259,6 +259,7 @@ public class Cache {
   }
 
   public static class DatabaseData {
+
     public static void setDocumentTypes (Context context, List<DocumentType> documentTypes) {
       Gson gson = new GsonBuilder().create();
       String jsonString = gson.toJson(documentTypes);

@@ -1656,6 +1656,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     patient.setNativeName(personalData.getNativeName());
     patient.setPhoneNumber(personalData.getPhoneNumber());
     patient.setClinicId(Cache.CurrentUser.getClinic(getBaseContext()).getClinicId());
+    patient.setGenderId(personalData.getGenderId());
     Log.d(TAG, "output " + patient.toString());
     return patient;
   }

@@ -183,12 +183,21 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     gendersCall.enqueue(new Callback<List<Gender>>() {
       @Override
       public void onResponse(Call<List<Gender>> call, Response<List<Gender>> response) {
-
+        if (response == null) {
+          onFailure(call, new Throwable("Empty response"));
+        } else if (response.code() >= 300 || response.code() < 200) {
+          onFailure(call, new Throwable("Error from server: " + response.code()));
+        } else if (response.body().size() <= 0){
+          onFailure(call, new Throwable("Empty list of genders"));
+        } else {
+          Cache.DatabaseData.setGenders(getBaseContext(), response.body());
+        }
       }
 
       @Override
       public void onFailure(Call<List<Gender>> call, Throwable t) {
-
+        t.printStackTrace();
+        //TODO try fetch again
       }
     });
 
