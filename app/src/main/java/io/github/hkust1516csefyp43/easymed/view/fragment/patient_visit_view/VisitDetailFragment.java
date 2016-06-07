@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
@@ -343,132 +344,132 @@ public class VisitDetailFragment extends Fragment {
                                     textView14.setText("PE skin: " + consultation.getPeSkin());
                                     linearLayout.addView(textView14);
                                 }
-                                if (consultation.getPregBreastFeeding() != null){
+                                if (consultation.getPregBreastFeeding() != null) {
                                     TextView textView15 = new TextView(context);
                                     textView15.setText("Preg breast feeding: " + consultation.getPregBreastFeeding());
                                     linearLayout.addView(textView15);
                                 }
-                                if (consultation.getPregContraceptive() != null){
+                                if (consultation.getPregContraceptive() != null) {
                                     TextView textView16 = new TextView(context);
                                     textView16.setText("Preg contraceptive: " + consultation.getPregContraceptive());
                                     linearLayout.addView(textView16);
                                 }
-                                if (consultation.getPregCurrPreg() != null){
+                                if (consultation.getPregCurrPreg() != null) {
                                     TextView textView17 = new TextView(context);
                                     textView17.setText("Preg curr preg: " + consultation.getPregCurrPreg());
                                     linearLayout.addView(textView17);
                                 }
-                                if (consultation.getPregGestation() != null){
+                                if (consultation.getPregGestation() != null) {
                                     TextView textView18 = new TextView(context);
                                     textView18.setText("Preg gestation: " + consultation.getPregGestation());
                                     linearLayout.addView(textView18);
                                 }
-                                if (consultation.getPregLmp() != null){
+                                if (consultation.getPregLmp() != null) {
                                     TextView textView19 = new TextView(context);
                                     textView19.setText("Preg lmp: " + consultation.getPregLmp());
                                     linearLayout.addView(textView19);
                                 }
-                                if (consultation.getPregNumAbortion() != null){
+                                if (consultation.getPregNumAbortion() != null) {
                                     TextView textView20 = new TextView(context);
                                     textView20.setText("Preg num abortion: " + consultation.getPregNumAbortion());
                                     linearLayout.addView(textView20);
                                 }
-                                if (consultation.getPregNumLiveBirth() != null){
+                                if (consultation.getPregNumLiveBirth() != null) {
                                     TextView textView21 = new TextView(context);
                                     textView21.setText("Preg num live birth: " + consultation.getPregNumLiveBirth());
                                     linearLayout.addView(textView21);
                                 }
-                                if (consultation.getPregNumMiscarriage() != null){
+                                if (consultation.getPregNumMiscarriage() != null) {
                                     TextView textView22 = new TextView(context);
                                     textView22.setText("Preg num miscarriage: " + consultation.getPregNumMiscarriage());
                                     linearLayout.addView(textView22);
                                 }
-                                if (consultation.getPregNumPreg() != null){
+                                if (consultation.getPregNumPreg() != null) {
                                     TextView textView23 = new TextView(context);
                                     textView23.setText("Preg num preg: " + consultation.getPregNumPreg());
                                     linearLayout.addView(textView23);
                                 }
-                                if (consultation.getPregNumStillBirth() != null){
+                                if (consultation.getPregNumStillBirth() != null) {
                                     TextView textView24 = new TextView(context);
                                     textView24.setText("Preg num still birth: " + consultation.getPregNumStillBirth());
                                     linearLayout.addView(textView24);
                                 }
-                                if (consultation.getPregRemark() != null){
+                                if (consultation.getPregRemark() != null) {
                                     TextView textView25 = new TextView(context);
                                     textView25.setText("Preg remark: " + consultation.getPregRemark());
                                     linearLayout.addView(textView25);
                                 }
-                                if (consultation.getRemark() != null){
+                                if (consultation.getRemark() != null) {
                                     TextView textView26 = new TextView(context);
                                     textView26.setText("Remark " + consultation.getRemark());
                                     linearLayout.addView(textView26);
                                 }
-                                if (consultation.getRfAlertness() != null){
+                                if (consultation.getRfAlertness() != null) {
                                     TextView textView27 = new TextView(context);
                                     textView27.setText("RF alertness: " + consultation.getRfAlertness());
                                     linearLayout.addView(textView27);
                                 }
-                                if (consultation.getRfBreathing() != null){
+                                if (consultation.getRfBreathing() != null) {
                                     TextView textView28 = new TextView(context);
                                     textView28.setText("RF breathing: " + consultation.getRfBreathing());
                                     linearLayout.addView(textView28);
                                 }
-                                if (consultation.getRfCirculation() != null){
+                                if (consultation.getRfCirculation() != null) {
                                     TextView textView29 = new TextView(context);
                                     textView29.setText("RF circulation: " + consultation.getRfCirculation());
                                     linearLayout.addView(textView29);
                                 }
-                                if (consultation.getRfDefg() != null){
+                                if (consultation.getRfDefg() != null) {
                                     TextView textView30 = new TextView(context);
                                     textView30.setText("RF defg: " + consultation.getRfDefg());
                                     linearLayout.addView(textView30);
                                 }
-                                if (consultation.getRfDehydration() != null){
+                                if (consultation.getRfDehydration() != null) {
                                     TextView textView31 = new TextView(context);
                                     textView31.setText("RF Dehydration: " + consultation.getRfDehydration());
                                     linearLayout.addView(textView31);
                                 }
-                                if (consultation.getRosEent() != null){
+                                if (consultation.getRosEent() != null) {
                                     TextView textView32 = new TextView(context);
                                     textView32.setText("ROS Eent: " + consultation.getRosEent());
                                     linearLayout.addView(textView32);
                                 }
-                                if (consultation.getRosRespi() != null){
+                                if (consultation.getRosRespi() != null) {
                                     TextView textView33 = new TextView(context);
                                     textView33.setText("ROS respi: " + consultation.getRosRespi());
                                     linearLayout.addView(textView33);
                                 }
-                                if (consultation.getRosCardio() != null){
+                                if (consultation.getRosCardio() != null) {
                                     TextView textView34 = new TextView(context);
                                     textView34.setText("ROS cardio: " + consultation.getRosCardio());
                                     linearLayout.addView(textView34);
                                 }
-                                if (consultation.getRosGastro() != null){
+                                if (consultation.getRosGastro() != null) {
                                     TextView textView35 = new TextView(context);
                                     textView35.setText("ROS gastro: " + consultation.getRosGastro());
                                     linearLayout.addView(textView35);
                                 }
-                                if (consultation.getRosGenital() != null){
+                                if (consultation.getRosGenital() != null) {
                                     TextView textView36 = new TextView(context);
                                     textView36.setText("ROS genital: " + consultation.getRosGenital());
                                     linearLayout.addView(textView36);
                                 }
-                                if (consultation.getRosEnt() != null){
+                                if (consultation.getRosEnt() != null) {
                                     TextView textView37 = new TextView(context);
                                     textView37.setText("ROS Ent: " + consultation.getRosEnt());
                                     linearLayout.addView(textView37);
                                 }
-                                if (consultation.getRosSkin() != null){
+                                if (consultation.getRosSkin() != null) {
                                     TextView textView38 = new TextView(context);
                                     textView38.setText("ROS skin: " + consultation.getRosSkin());
                                     linearLayout.addView(textView38);
                                 }
-                                if (consultation.getRosLocomotor() != null){
+                                if (consultation.getRosLocomotor() != null) {
                                     TextView textView39 = new TextView(context);
                                     textView39.setText("ROS locomotor: " + consultation.getRosLocomotor());
                                     linearLayout.addView(textView39);
                                 }
-                                if (consultation.getRosNeruology() != null){
+                                if (consultation.getRosNeruology() != null) {
                                     TextView textView40 = new TextView(context);
                                     textView40.setText("ROS neurology: " + consultation.getRosNeruology());
                                     linearLayout.addView(textView40);
@@ -481,7 +482,8 @@ public class VisitDetailFragment extends Fragment {
                                     @Override
                                     public void onResponse(Call<List<RelatedData>> call, Response<List<RelatedData>> response) {
                                         stuffGot++;
-                                        if (response.body() != null && response.body().size() > 0){
+
+                                        if (response.body() != null && response.body().size() > 0) {
                                             allRelatedData = response.body();
                                             advices = new ArrayList<RelatedData>();
                                             allergies = new ArrayList<RelatedData>();
@@ -491,7 +493,7 @@ public class VisitDetailFragment extends Fragment {
                                             investigations = new ArrayList<RelatedData>();
                                             screenings = new ArrayList<RelatedData>();
 
-                                            for (RelatedData r: allRelatedData){
+                                            for (RelatedData r : allRelatedData) {
                                                 if (r.getCategory() == Const.RelatedDataCategory.ADVICE) {
                                                     advices.add(r);
                                                 } else if (r.getCategory() == Const.RelatedDataCategory.ALLERGY) {
@@ -511,9 +513,67 @@ public class VisitDetailFragment extends Fragment {
 
                                             if (advices.size() > 0) {
                                                 TextView tv1 = new TextView(context);
-                                                tv1.setText("Advice: " );
+                                                String output = "Advices: ";
+                                                for (RelatedData data : advices) {
+                                                    output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                }
+                                                tv1.setText(output);
+                                                linearLayout.addView(tv1);
                                             }
-//                                            linearLayout.addView();
+                                            if (allergies.size() > 0) {
+                                                TextView tv2 = new TextView(context);
+                                                String output = "Allergies: ";
+                                                for (RelatedData data : allergies) {
+                                                    output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                }
+                                                tv2.setText(output);
+                                                linearLayout.addView(tv2);
+                                            }
+                                            if (diagnosiss.size() > 0) {
+                                                TextView tv3 = new TextView(context);
+                                                String output = "Diagnosis: ";
+                                                for (RelatedData data : diagnosiss) {
+                                                    output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                }
+                                                tv3.setText(output);
+                                                linearLayout.addView(tv3);
+                                            }
+                                            if (investigations.size() > 0) {
+                                                TextView tv4 = new TextView(context);
+                                                String output = "Investigations: ";
+                                                for (RelatedData data : investigations) {
+                                                    output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                }
+                                                tv4.setText(output);
+                                                linearLayout.addView(tv4);
+                                            }
+                                            if (drugHistories.size() > 0) {
+                                                TextView tv5 = new TextView(context);
+                                                String output = "Drug Histories: ";
+                                                for (RelatedData data : drugHistories) {
+                                                    output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                }
+                                                tv5.setText(output);
+                                                linearLayout.addView(tv5);
+                                            }
+                                            if (followups.size() > 0) {
+                                                TextView tv6 = new TextView(context);
+                                                String output = "Follow-ups: ";
+                                                for (RelatedData data : followups) {
+                                                    output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                }
+                                                tv6.setText(output);
+                                                linearLayout.addView(tv6);
+                                            }
+                                            if (screenings.size() > 0) {
+                                                TextView tv7 = new TextView(context);
+                                                String output = "Screenings: ";
+                                                for (RelatedData data : screenings) {
+                                                    output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                }
+                                                tv7.setText(output);
+                                                linearLayout.addView(tv7);
+                                            }
                                         }
 
 
