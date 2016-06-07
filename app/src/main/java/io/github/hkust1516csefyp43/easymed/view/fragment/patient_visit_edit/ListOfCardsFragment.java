@@ -193,7 +193,6 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       Log.d(TAG, "existing data w/ default cards");
       fab.setVisibility(View.GONE);
       tvAssistance.setVisibility(View.GONE);
-
     } else if (category > 0 && consultationId != null) {                                            //fill with existing data (from API call)
       if (category == 6) {
         inMedicationPage = true;

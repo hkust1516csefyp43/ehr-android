@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="2.0.1" versioncode="32">
+        <change>Gender fixed</change>
+        <change>Inventory fixed</change>
+    </release>
     <release version="2.0.0" versioncode="31">
         <change>First stable release!</change>
         <change>Minor bug fixes (dah!)</change>

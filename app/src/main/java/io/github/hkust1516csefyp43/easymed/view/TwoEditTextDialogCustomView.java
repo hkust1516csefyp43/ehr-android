@@ -54,7 +54,7 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
     TextInputLayout til2 = new TextInputLayout(context);
 
     et = new EditText(context);
-    et.setLines(8);
+    et.setLines(4);
     et.setHint("Description");
 
     til.addView(actv);
@@ -103,8 +103,10 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
       tv.setPadding(0, 0, 0, 16);
       LayoutParams llp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
       tv.setLayoutParams(llp);
-      if (text1 != null)
+      if (text1 != null){
+        actv = null;
         tv.setText(text1);
+      }
       this.addView(tv);
     }
 
@@ -123,10 +125,11 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
 
   public ArrayList<String> getData() {
     ArrayList<String> output = new ArrayList<>();
-    if (actv != null)
+    if (actv != null) {
       output.add(actv.getText().toString());
-    else
-      output.add(et.getText().toString());
+    } else {
+      output.add(tv.getText().toString());
+    }
     output.add(et.getText().toString());
     return output;
   }
