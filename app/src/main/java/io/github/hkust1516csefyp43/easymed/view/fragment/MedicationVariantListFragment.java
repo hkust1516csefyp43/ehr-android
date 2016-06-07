@@ -96,6 +96,7 @@ public class MedicationVariantListFragment extends Fragment {
           recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         String suitcaseId = Cache.CurrentUser.getClinic(getContext()).getSuitcaseId();
+        Log.d(TAG, "Suitcase id: " + suitcaseId);
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
           @Override public void log(String message) {
             Log.d(TAG, "mvlf: " + message);

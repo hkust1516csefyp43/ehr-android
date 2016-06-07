@@ -263,6 +263,34 @@ public class LoginActivity extends AppCompatActivity{
         User user = new User();
         user.setEmail(mEmail);
         Answers.getInstance().logLogin(new LoginEvent().putSuccess(true));
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.readTimeout(1, TimeUnit.MINUTES);
+        httpClient.connectTimeout(1, TimeUnit.MINUTES);
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(Const.Database.getCurrentAPI())
+                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                .client(httpClient.build())
+                .build();
+        v2API.clinics clinicsService = retrofit.create(v2API.clinics.class);
+        Call<Clinic> clinicCall = clinicsService.getClinic("1", currentClinic.getClinicId());
+        clinicCall.enqueue(new Callback<Clinic>() {
+          @Override
+          public void onResponse(Call<Clinic> call, Response<Clinic> response) {
+            if (response == null) {
+              onFailure(call, new Throwable("empty body"));
+            } else if (response.code() < 200 || response.code() >= 300) {
+              onFailure(call, new Throwable("Error from server: " + response.code()));
+            } else {
+              Cache.CurrentUser.setClinic(getBaseContext(), response.body());
+            }
+          }
+
+          @Override
+          public void onFailure(Call<Clinic> call, Throwable t) {
+            t.printStackTrace();
+          }
+        });
         Cache.CurrentUser.setClinic(getApplicationContext(), currentClinic);
         Cache.CurrentUser.setUser(getApplicationContext(), user);
         finish();
