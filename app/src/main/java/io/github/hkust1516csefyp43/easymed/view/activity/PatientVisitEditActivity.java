@@ -493,10 +493,13 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             }
           }
           if (pregnancyFragment != null) {
+            Log.d(TAG, "PF is not null");
             serializable = pregnancyFragment.onSendData();
             if (serializable instanceof Pregnancy) {
+              Log.d(TAG, "Is pregnancy");
               pregnancy = (Pregnancy) serializable;
-            }  else if (serializable instanceof Throwable) {
+            } else if (serializable instanceof Throwable) {
+              Log.d(TAG, "Is throwable");
               viewPager.setCurrentItem(11);
             }
           }
@@ -1092,6 +1095,11 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                     }
                                   });
                                   //POST consultation (then POST rd and prescription (with consultation_id)
+//                                  Log.d(TAG, finalPregnancy.toString());
+//                                  Log.d(TAG, finalROS.toString());
+//                                  Log.d(TAG, finalRF.toString());
+//                                  Log.d(TAG, finalPE.toString());
+//                                  Log.d(TAG, finalConsultationRemark.toString());
                                   Consultation consultation = generateConsultation(response.body(), finalPregnancy, finalROS, finalRF, finalPE, finalConsultationRemark);
                                   Call<Consultation> consultationCall = consultationService.addConsultation("1", consultation);
                                   consultationCall.enqueue(new Callback<Consultation>() {
@@ -1467,7 +1475,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                 });
 
 
-              }else{
+              } else {
                 //TODO
               }
 

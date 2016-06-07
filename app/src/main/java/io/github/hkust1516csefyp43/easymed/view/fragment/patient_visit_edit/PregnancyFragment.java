@@ -148,7 +148,7 @@ public class PregnancyFragment extends Fragment implements OnSendData{
     if (isContraceptive != null) {
       p.setContraceptiveUse(isContraceptive.isChecked());
     }
-    if (noPregnancy != null) {
+    if (noPregnancy != null && !noPregnancy.getText().toString().isEmpty()) {
       try {
         p.setNoOfPregnancy(Integer.parseInt(noPregnancy.getText().toString()));
       } catch (NumberFormatException e) {
@@ -157,7 +157,7 @@ public class PregnancyFragment extends Fragment implements OnSendData{
         return new Throwable("No. of Pregnancy is not a number");
       }
     }
-    if (noLiveBirth != null) {
+    if (noLiveBirth != null && !noLiveBirth.getText().toString().isEmpty()) {
       try {
         p.setNoOfLiveBirth(Integer.parseInt(noLiveBirth.getText().toString()));
       } catch (NumberFormatException e) {
@@ -166,7 +166,7 @@ public class PregnancyFragment extends Fragment implements OnSendData{
         return new Throwable("No. of Live Birth is not a number");
       }
     }
-    if (noMiscarriage != null) {
+    if (noMiscarriage != null && !noMiscarriage.getText().toString().isEmpty()) {
       try {
         p.setNoOfMiscarriage(Integer.parseInt(noMiscarriage.getText().toString()));
       } catch (NumberFormatException e) {
@@ -175,7 +175,7 @@ public class PregnancyFragment extends Fragment implements OnSendData{
         return new Throwable("No. of Miscarriage is not a number");
       }
     }
-    if (noAbortion != null) {
+    if (noAbortion != null && !noAbortion.getText().toString().isEmpty()) {
       try {
         p.setNoOfAbortion(Integer.parseInt(noAbortion.getText().toString()));
       } catch (NumberFormatException e) {
@@ -184,7 +184,7 @@ public class PregnancyFragment extends Fragment implements OnSendData{
         return new Throwable("No. of Abortion is not a number");
       }
     }
-    if (noStillBirth != null) {
+    if (noStillBirth != null && !noStillBirth.getText().toString().isEmpty()) {
       try {
         p.setNoOfStillBirth(Integer.parseInt(noStillBirth.getText().toString()));
       } catch (NumberFormatException e) {
