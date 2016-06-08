@@ -375,7 +375,8 @@ public interface v2API {
         @Query("middle_name") String middleName,
         @Query("last_name") String lastName,
         @Query("name") String name,
-        @Query("visit_date") String visitDate
+        @Query("visit_date") String visitDate,
+        @Query("sort_by") String sortBy
     );
 
     @POST("patients")
@@ -543,6 +544,12 @@ public interface v2API {
 
     //PUT :id
     //POST
+    @POST("medications")
+    Call<Medication> addMedication(
+        @Header("token") String token,
+        @Body Medication medication
+    );
+
     //DELETE :id
   }
 

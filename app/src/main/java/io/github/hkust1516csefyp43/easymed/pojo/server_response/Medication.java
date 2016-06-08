@@ -15,13 +15,20 @@ public class Medication implements Serializable {
   @SerializedName("medication")			      String medication;
   @SerializedName("medication_id")			  String medicationId;
   @SerializedName("user_id")			        String userId;
+  String tempPrescriptionDescription;
 
   public Medication() {
   }
 
-  public Medication(String userId, String medication) {
-    this.userId = userId;
+  public Medication(String medication, String tempPrescriptionDescription) {
     this.medication = medication;
+    this.tempPrescriptionDescription = tempPrescriptionDescription;
+  }
+
+  public Medication(String medication, String userId, String tempPrescriptionDescription) {
+    this.medication = medication;
+    this.userId = userId;
+    this.tempPrescriptionDescription = tempPrescriptionDescription;
   }
 
   public Date getCreateTimestamp() {
@@ -54,6 +61,14 @@ public class Medication implements Serializable {
 
   public void setUserId(String userId) {
     this.userId = userId;
+  }
+
+  public String getTempPrescriptionDescription() {
+    return tempPrescriptionDescription;
+  }
+
+  public void setTempPrescriptionDescription(String tempPrescriptionDescription) {
+    this.tempPrescriptionDescription = tempPrescriptionDescription;
   }
 
   @Override

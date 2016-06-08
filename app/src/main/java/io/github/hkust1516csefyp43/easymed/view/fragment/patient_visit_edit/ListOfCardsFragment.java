@@ -689,15 +689,22 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     if (adapter != null) {
       if (inMedicationPage) {         //translate medication name into id
         Log.d(TAG, "qqq1" + title);
+        //TODO 2 array list, 1 with medication_id, one with just names of the medication (POST medication)
+        ArrayList<Card> newMedicationList = new ArrayList<>();
         ArrayList<Card> newCardList = new ArrayList<>();
         for (Card c:cardList) {
           Log.d(TAG, "qqq2" + title + c.toString());
           Log.d(TAG, "qqq21 " + title + medicationVsIdHM.toString());
-          Card newCard = new Card(medicationVsIdHM.get(c.getCardTitle()), c.getCardDescription());
-          newCardList.add(newCard);
+          String mId = medicationVsIdHM.get(c.getCardTitle());
+          Card newCard;
+          if (mId != null) {
+            newCardList.add(new Card(mId, c.getCardDescription()));
+          } else {
+            newMedicationList.add(new Card(c.getCardTitle(), c.getCardDescription()));
+          }
         }
-        Log.d(TAG, "qqq3" + title+newCardList.size());
-        return new ListOfCards(newCardList);
+        Log.d(TAG, "qqq3" + title + newCardList.size());
+        return new ListOfCards(newCardList, newMedicationList);
       } else{
         Log.d(TAG, "qqq4" + title);
         return new ListOfCards(cardList);
