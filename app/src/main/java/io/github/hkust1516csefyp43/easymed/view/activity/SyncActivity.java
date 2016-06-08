@@ -441,23 +441,24 @@ public class SyncActivity extends AppCompatActivity {
         try {
           Response<Query> queryResponse = queryCall.execute();
           Log.d(TAG, "in progress: " + i + "/" + new GsonBuilder().create().toJson(queryResponse));
-          runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-              //TODO still does not work (cannot update the UI)
-              progressDialog.setProgress(progressDialog.getProgress() + 1);
-            }
-          });
+          publishProgress(progressDialog.getProgress() + 1);
         } catch (IOException e) {
           e.printStackTrace();
         }
       }
-      progressDialog.dismiss();
       return null;
     }
 
     @Override
+    protected void onProgressUpdate(Integer... values) {
+//      super.onProgressUpdate(values);
+      if (progressDialog != null)
+        progressDialog.setProgress(values[0]);
+    }
+
+    @Override
     protected void onPostExecute(Integer integer) {
+      progressDialog.dismiss();
       textView.setText("Last push: " + Util.GCInStringForSync(new GregorianCalendar()));
     }
   }

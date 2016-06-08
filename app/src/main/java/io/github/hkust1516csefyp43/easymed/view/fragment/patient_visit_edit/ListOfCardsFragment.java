@@ -259,11 +259,11 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
                   if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
                     List<Prescription> prescriptions = response.body();
-                    ArrayList<Card> cards = new ArrayList<>();
+//                    ArrayList<Card> cards = new ArrayList<>();
                     for (Prescription p: prescriptions) {
                       p.setMedicationName(medicationVsIdHM.get(p.getMedicationId()));
                       Card card = new Card(p.getMedicationName(), p.getDetail());
-                      cards.add(card);
+                      cardList.add(card);
                     }
                     adapter = new FragRecyclerViewAdapter(getContext(), false, finalKeywordArrayList, title);
 
@@ -297,10 +297,10 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
               public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
                 if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
                   List<Prescription> prescriptions = response.body();
-                  ArrayList<Card> cards = new ArrayList<>();
+//                  ArrayList<Card> cards = new ArrayList<>();
                   for (Prescription p: prescriptions) {
                     Card card = new Card("ID: " + p.getConsultationId(), p.getDetail());
-                    cards.add(card);
+                    cardList.add(card);
                   }
                   adapter = new FragRecyclerViewAdapter(getContext(), false, null, title);
                   recyclerView.setAdapter(adapter);
@@ -322,7 +322,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
         });
       } else {
         v2API.keywords keywordService = retrofit.create(v2API.keywords.class);
-        Call<List<Keyword>> keywordsCall = null;
+        Call<List<Keyword>> keywordsCall;
         switch (category) {
           case 1:
             keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
@@ -401,16 +401,16 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                   }
                 });
                 v2API.related_data relatedDataService = retrofit.create(v2API.related_data.class);
-                Call<List<RelatedData>> relatedDataCall = null;
+                Call<List<RelatedData>> relatedDataCall;
                 relatedDataCall = relatedDataService.getRelatedDataPlural("1", consultationId, category, null, null, null, null, null);
                 final ArrayList<String> finalKeywordArrayList = keywordArrayList;
                 relatedDataCall.enqueue(new Callback<List<RelatedData>>() {
                   @Override
                   public void onResponse(Call<List<RelatedData>> call, Response<List<RelatedData>> response) {
                     if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
-                      ArrayList<Card> cards = new ArrayList<>();
+//                      ArrayList<Card> cards = new ArrayList<>();
                       for (RelatedData rd: response.body()) {
-                        cards.add(new Card(rd.getData(), rd.getRemark()));
+                        cardList.add(new Card(rd.getData(), rd.getRemark()));
                       }
                       adapter = new FragRecyclerViewAdapter(getContext(), false, finalKeywordArrayList, title);
                       recyclerView.setAdapter(adapter);
@@ -444,9 +444,9 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 public void onResponse(Call<List<RelatedData>> call, Response<List<RelatedData>> response) {
                   if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null) {
                     //TODO no keywords to fill, just the related data then
-                    ArrayList<Card> cards = new ArrayList<>();
+//                    ArrayList<Card> cards = new ArrayList<>();
                     for (RelatedData rd: response.body()) {
-                      cards.add(new Card(rd.getData(), rd.getRemark()));
+                      cardList.add(new Card(rd.getData(), rd.getRemark()));
                     }
                     adapter = new FragRecyclerViewAdapter(getContext(), false, null, title);
                     recyclerView.setAdapter(adapter);

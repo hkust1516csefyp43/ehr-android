@@ -2460,25 +2460,25 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         case 8:
           if (dhFragment == null) {
             if (thisConsultation != null)
-              dhFragment = ListOfCardsFragment.newInstance("Drug History", 6, thisConsultation.getId());
+              dhFragment = ListOfCardsFragment.newInstance("Drug History", Const.RelatedDataCategory.DRUG_HISTORY, thisConsultation.getId());
             else
-              dhFragment = ListOfCardsFragment.newInstance("Drug History", 6, null);
+              dhFragment = ListOfCardsFragment.newInstance("Drug History", Const.RelatedDataCategory.DRUG_HISTORY, null);
           }
           return dhFragment;
         case 9:
           if (screeningFragment == null) {
             if (thisConsultation != null)
-              screeningFragment = ListOfCardsFragment.newInstance("Screening", 1, thisConsultation.getId());
+              screeningFragment = ListOfCardsFragment.newInstance("Screening", Const.RelatedDataCategory.SCREENING, thisConsultation.getId());
             else
-              screeningFragment = ListOfCardsFragment.newInstance("Screening", 1, null);
+              screeningFragment = ListOfCardsFragment.newInstance("Screening", Const.RelatedDataCategory.SCREENING, null);
           }
           return screeningFragment;
         case 10:
           if (allergyFragment == null) {
             if (thisConsultation != null)
-              allergyFragment = ListOfCardsFragment.newInstance("Allergy", 2, thisConsultation.getId());
+              allergyFragment = ListOfCardsFragment.newInstance("Allergy", Const.RelatedDataCategory.ALLERGY, thisConsultation.getId());
             else
-              allergyFragment = ListOfCardsFragment.newInstance("Allergy", 2, null);
+              allergyFragment = ListOfCardsFragment.newInstance("Allergy", Const.RelatedDataCategory.ALLERGY, null);
           }
           return allergyFragment;
         case 11:
@@ -2504,7 +2504,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         case 15:
           if (diagnosisFragment == null) {
             if (thisConsultation != null)
-              diagnosisFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis", 3, thisConsultation.getId());
+              diagnosisFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis", Const.RelatedDataCategory.DIAGNOSIS, thisConsultation.getId());
             else
               diagnosisFragment = ListOfCardsFragment.newInstance("Clinical Diagnosis", 3, null);
           }
