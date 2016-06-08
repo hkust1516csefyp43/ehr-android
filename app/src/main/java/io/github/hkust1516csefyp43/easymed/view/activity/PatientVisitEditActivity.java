@@ -827,7 +827,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                 }
               }
             } else {
-
               if (thisConsultation != null) {                                                         //existing patient edit consultation (and triage)  TODO update profile pic if personalData.getProfilePicBase64 exists
                 //PUT patient
                 //PUT visit (iff tag number have been modified?)
@@ -845,6 +844,56 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                       if (response  == null || response.code() < 200 || response.code() >= 300 || response.body() == null) {
                         onFailure(call, new Throwable("sth wrong"));
                       } else {                                                          //PUT visit (iff tag number have been modified?)
+                        //TODO edit documents
+                        Call<Document> hpiCall = documentService.editDocument("1", finalHPI.getDocID(), new Document(finalHPI.getDocHTML()));
+                        Call<Document> shCall = documentService.editDocument("1", finalSH.getDocID(), new Document(finalSH.getDocHTML()));
+                        Call<Document> fhCall = documentService.editDocument("1", finalFH.getDocID(), new Document(finalFH.getDocHTML()));
+                        Call<Document> pmhCall = documentService.editDocument("1", finalPMH.getDocID(), new Document(finalPMH.getDocHTML()));
+                        hpiCall.enqueue(new Callback<Document>() {
+                          @Override
+                          public void onResponse(Call<Document> call, Response<Document> response) {
+
+                          }
+
+                          @Override
+                          public void onFailure(Call<Document> call, Throwable t) {
+
+                          }
+                        });
+                        shCall.enqueue(new Callback<Document>() {
+                          @Override
+                          public void onResponse(Call<Document> call, Response<Document> response) {
+
+                          }
+
+                          @Override
+                          public void onFailure(Call<Document> call, Throwable t) {
+
+                          }
+                        });
+                        fhCall.enqueue(new Callback<Document>() {
+                          @Override
+                          public void onResponse(Call<Document> call, Response<Document> response) {
+
+                          }
+
+                          @Override
+                          public void onFailure(Call<Document> call, Throwable t) {
+
+                          }
+                        });
+                        pmhCall.enqueue(new Callback<Document>() {
+                          @Override
+                          public void onResponse(Call<Document> call, Response<Document> response) {
+
+                          }
+
+                          @Override
+                          public void onFailure(Call<Document> call, Throwable t) {
+
+                          }
+                        });
+
                         Visit visit = generateVisit(response.body(), pd, Const.NextStation.PHARMACY);
                         Log.d(TAG, "Editing Visit: " + visit);
                         if (visit != null) {
@@ -950,57 +999,88 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                       });
                                     }
                                     final ArrayList<Medication> medicationArrayList = generateMedications(finalMedication);
-                                    final ArrayList<Prescription> newMedPreArrList = new ArrayList<>(medicationArrayList.size());
                                     final Consultation c = response.body();
-                                    Log.d(TAG, "Medications: " + medicationArrayList.toString());
-                                    for (final Medication m:medicationArrayList) {
-                                      Call<Medication> medicationCall = medicationService.addMedication("1", m);
-                                      medicationCall.enqueue(new Callback<Medication>() {
-                                        @Override
-                                        public void onResponse(Call<Medication> call, Response<Medication> response) {
-                                          if (response == null) {
-                                            onFailure(call, new Throwable("Empty response"));
-                                          } else if (response.code() < 200 || response.code() >= 300) {
-                                            onFailure(call, new Throwable("Error from server: " + response.code()));
-                                          } else {
-                                            newMedPreArrList.add(new Prescription(response.body().getMedicationId(), m.getTempPrescriptionDescription()));
-                                            if (newMedPreArrList.size() >= medicationArrayList.size()) {
-                                              ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, newMedPreArrList);
-                                              Log.d(TAG, "Prescription list: " + prescriptionArrayList);
-                                              for (Prescription p:prescriptionArrayList){
-                                                Log.d(TAG, "prescription before added:" + p);
-                                                Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
-                                                prescriptionCall.enqueue(new Callback<Prescription>() {
-                                                  @Override
-                                                  public void onResponse(Call<Prescription> call, Response<Prescription> response) {
-                                                    Log.d(TAG, "prescription data call response code b: " + response.code());
-                                                    if (response.code() < 500 && response.code() >= 400) {
-                                                      try {
-                                                        Log.d(TAG, response.errorBody().string());
-                                                      } catch (IOException e) {
-                                                        e.printStackTrace();
+                                    if (medicationArrayList != null && medicationArrayList.size() > 0) {
+                                      final ArrayList<Prescription> newMedPreArrList = new ArrayList<>(medicationArrayList.size());
+                                      Log.d(TAG, "Medications: " + medicationArrayList.toString());
+                                      for (final Medication m:medicationArrayList) {
+                                        Call<Medication> medicationCall = medicationService.addMedication("1", m);
+                                        medicationCall.enqueue(new Callback<Medication>() {
+                                          @Override
+                                          public void onResponse(Call<Medication> call, Response<Medication> response) {
+                                            if (response == null) {
+                                              onFailure(call, new Throwable("Empty response"));
+                                            } else if (response.code() < 200 || response.code() >= 300) {
+                                              onFailure(call, new Throwable("Error from server: " + response.code() + response.raw()));
+                                            } else {
+                                              newMedPreArrList.add(new Prescription(response.body().getMedicationId(), m.getTempPrescriptionDescription()));
+                                              if (newMedPreArrList.size() >= medicationArrayList.size()) {
+                                                ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, newMedPreArrList);
+                                                Log.d(TAG, "Prescription list: " + prescriptionArrayList);
+                                                for (Prescription p:prescriptionArrayList){
+                                                  Log.d(TAG, "prescription before added:" + p);
+                                                  Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
+                                                  prescriptionCall.enqueue(new Callback<Prescription>() {
+                                                    @Override
+                                                    public void onResponse(Call<Prescription> call, Response<Prescription> response) {
+                                                      Log.d(TAG, "prescription data call response code b: " + response.code());
+                                                      if (response.code() < 500 && response.code() >= 400) {
+                                                        try {
+                                                          Log.d(TAG, response.errorBody().string());
+                                                        } catch (IOException e) {
+                                                          e.printStackTrace();
+                                                        }
                                                       }
+                                                      Log.d(TAG, "prescription added:" + response.body());
                                                     }
-                                                    Log.d(TAG, "prescription added:" + response.body());
-                                                  }
 
-                                                  @Override
-                                                  public void onFailure(Call<Prescription> call, Throwable t) {
-                                                    progressDialog.dismiss();
-                                                  }
-                                                });
+                                                    @Override
+                                                    public void onFailure(Call<Prescription> call, Throwable t) {
+                                                      progressDialog.dismiss();
+                                                    }
+                                                  });
+                                                }
+                                                progressDialog.dismiss();
+                                                finish();
                                               }
-                                              progressDialog.dismiss();
-                                              finish();
                                             }
                                           }
-                                        }
 
-                                        @Override
-                                        public void onFailure(Call<Medication> call, Throwable t) {
-                                          t.printStackTrace();
-                                        }
-                                      });
+                                          @Override
+                                          public void onFailure(Call<Medication> call, Throwable t) {
+                                            t.printStackTrace();
+                                            Log.d(TAG, call.request().toString());
+                                          }
+                                        });
+                                      }
+                                    } else {  //just prescriptions with existing medications
+                                      ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, null);
+                                      Log.d(TAG, "Prescription list: " + prescriptionArrayList);
+                                      for (Prescription p:prescriptionArrayList){
+                                        Log.d(TAG, "prescription before added:" + p);
+                                        Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
+                                        prescriptionCall.enqueue(new Callback<Prescription>() {
+                                          @Override
+                                          public void onResponse(Call<Prescription> call, Response<Prescription> response) {
+                                            Log.d(TAG, "prescription data call response code b: " + response.code());
+                                            if (response.code() < 500 && response.code() >= 400) {
+                                              try {
+                                                Log.d(TAG, response.errorBody().string());
+                                              } catch (IOException e) {
+                                                e.printStackTrace();
+                                              }
+                                            }
+                                            Log.d(TAG, "prescription added:" + response.body());
+                                          }
+
+                                          @Override
+                                          public void onFailure(Call<Prescription> call, Throwable t) {
+                                            progressDialog.dismiss();
+                                          }
+                                        });
+                                      }
+                                      progressDialog.dismiss();
+                                      finish();
                                     }
                                   }
 
@@ -1070,6 +1150,56 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                         if (response  == null || response.code() < 200 || response.code() >= 300 || response.body() == null) {
                           onFailure(call, new Throwable("sth wrong"));
                         } else {                                                          //PUT visit (iff tag number have been modified?)
+                          //TODO edit documents
+                          Call<Document> hpiCall = documentService.editDocument("1", finalHPI.getDocID(), new Document(finalHPI.getDocHTML()));
+                          Call<Document> shCall = documentService.editDocument("1", finalSH.getDocID(), new Document(finalSH.getDocHTML()));
+                          Call<Document> fhCall = documentService.editDocument("1", finalFH.getDocID(), new Document(finalFH.getDocHTML()));
+                          Call<Document> pmhCall = documentService.editDocument("1", finalPMH.getDocID(), new Document(finalPMH.getDocHTML()));
+                          hpiCall.enqueue(new Callback<Document>() {
+                            @Override
+                            public void onResponse(Call<Document> call, Response<Document> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Document> call, Throwable t) {
+
+                            }
+                          });
+                          shCall.enqueue(new Callback<Document>() {
+                            @Override
+                            public void onResponse(Call<Document> call, Response<Document> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Document> call, Throwable t) {
+
+                            }
+                          });
+                          fhCall.enqueue(new Callback<Document>() {
+                            @Override
+                            public void onResponse(Call<Document> call, Response<Document> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Document> call, Throwable t) {
+
+                            }
+                          });
+                          pmhCall.enqueue(new Callback<Document>() {
+                            @Override
+                            public void onResponse(Call<Document> call, Response<Document> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Document> call, Throwable t) {
+
+                            }
+                          });
+
                           Visit visit;
                           if (finalMedication.getCardArrayList().size() > 0 || finalMedication.getCardArrayList2().size() > 0) {
                             visit = generateVisit(response.body(), pd, Const.NextStation.PHARMACY);
@@ -1168,58 +1298,88 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                         });
                                       }
                                       final ArrayList<Medication> medicationArrayList = generateMedications(finalMedication);
-                                      final ArrayList<Prescription> newMedPreArrList = new ArrayList<>(medicationArrayList.size());
                                       final Consultation c = response.body();
-                                      Log.d(TAG, "Medications: " + medicationArrayList.toString());
-                                      for (final Medication m:medicationArrayList) {
-                                        Call<Medication> medicationCall = medicationService.addMedication("1", m);
-                                        medicationCall.enqueue(new Callback<Medication>() {
-                                          @Override
-                                          public void onResponse(Call<Medication> call, Response<Medication> response) {
-                                            if (response == null) {
-                                              onFailure(call, new Throwable("Empty response"));
-                                            } else if (response.code() < 200 || response.code() >= 300) {
-                                              onFailure(call, new Throwable("Error from server: " + response.code() + response.raw()));
-                                            } else {
-                                              newMedPreArrList.add(new Prescription(response.body().getMedicationId(), m.getTempPrescriptionDescription()));
-                                              if (newMedPreArrList.size() >= medicationArrayList.size()) {
-                                                ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, newMedPreArrList);
-                                                Log.d(TAG, "Prescription list: " + prescriptionArrayList);
-                                                for (Prescription p:prescriptionArrayList){
-                                                  Log.d(TAG, "prescription before added:" + p);
-                                                  Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
-                                                  prescriptionCall.enqueue(new Callback<Prescription>() {
-                                                    @Override
-                                                    public void onResponse(Call<Prescription> call, Response<Prescription> response) {
-                                                      Log.d(TAG, "prescription data call response code b: " + response.code());
-                                                      if (response.code() < 500 && response.code() >= 400) {
-                                                        try {
-                                                          Log.d(TAG, response.errorBody().string());
-                                                        } catch (IOException e) {
-                                                          e.printStackTrace();
+                                      if (medicationArrayList != null && medicationArrayList.size() > 0) {
+                                        final ArrayList<Prescription> newMedPreArrList = new ArrayList<>(medicationArrayList.size());
+                                        Log.d(TAG, "Medications: " + medicationArrayList.toString());
+                                        for (final Medication m:medicationArrayList) {
+                                          Call<Medication> medicationCall = medicationService.addMedication("1", m);
+                                          medicationCall.enqueue(new Callback<Medication>() {
+                                            @Override
+                                            public void onResponse(Call<Medication> call, Response<Medication> response) {
+                                              if (response == null) {
+                                                onFailure(call, new Throwable("Empty response"));
+                                              } else if (response.code() < 200 || response.code() >= 300) {
+                                                onFailure(call, new Throwable("Error from server: " + response.code() + response.raw()));
+                                              } else {
+                                                newMedPreArrList.add(new Prescription(response.body().getMedicationId(), m.getTempPrescriptionDescription()));
+                                                if (newMedPreArrList.size() >= medicationArrayList.size()) {
+                                                  ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, newMedPreArrList);
+                                                  Log.d(TAG, "Prescription list: " + prescriptionArrayList);
+                                                  for (Prescription p:prescriptionArrayList){
+                                                    Log.d(TAG, "prescription before added:" + p);
+                                                    Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
+                                                    prescriptionCall.enqueue(new Callback<Prescription>() {
+                                                      @Override
+                                                      public void onResponse(Call<Prescription> call, Response<Prescription> response) {
+                                                        Log.d(TAG, "prescription data call response code b: " + response.code());
+                                                        if (response.code() < 500 && response.code() >= 400) {
+                                                          try {
+                                                            Log.d(TAG, response.errorBody().string());
+                                                          } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                          }
                                                         }
+                                                        Log.d(TAG, "prescription added:" + response.body());
                                                       }
-                                                      Log.d(TAG, "prescription added:" + response.body());
-                                                    }
 
-                                                    @Override
-                                                    public void onFailure(Call<Prescription> call, Throwable t) {
-                                                      progressDialog.dismiss();
-                                                    }
-                                                  });
+                                                      @Override
+                                                      public void onFailure(Call<Prescription> call, Throwable t) {
+                                                        progressDialog.dismiss();
+                                                      }
+                                                    });
+                                                  }
+                                                  progressDialog.dismiss();
+                                                  finish();
                                                 }
-                                                progressDialog.dismiss();
-                                                finish();
                                               }
                                             }
-                                          }
 
-                                          @Override
-                                          public void onFailure(Call<Medication> call, Throwable t) {
-                                            t.printStackTrace();
-                                            Log.d(TAG, call.request().toString());
-                                          }
-                                        });
+                                            @Override
+                                            public void onFailure(Call<Medication> call, Throwable t) {
+                                              t.printStackTrace();
+                                              Log.d(TAG, call.request().toString());
+                                            }
+                                          });
+                                        }
+                                      } else {  //just prescriptions with existing medications
+                                        ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, null);
+                                        Log.d(TAG, "Prescription list: " + prescriptionArrayList);
+                                        for (Prescription p:prescriptionArrayList){
+                                          Log.d(TAG, "prescription before added:" + p);
+                                          Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
+                                          prescriptionCall.enqueue(new Callback<Prescription>() {
+                                            @Override
+                                            public void onResponse(Call<Prescription> call, Response<Prescription> response) {
+                                              Log.d(TAG, "prescription data call response code b: " + response.code());
+                                              if (response.code() < 500 && response.code() >= 400) {
+                                                try {
+                                                  Log.d(TAG, response.errorBody().string());
+                                                } catch (IOException e) {
+                                                  e.printStackTrace();
+                                                }
+                                              }
+                                              Log.d(TAG, "prescription added:" + response.body());
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Prescription> call, Throwable t) {
+                                              progressDialog.dismiss();
+                                            }
+                                          });
+                                        }
+                                        progressDialog.dismiss();
+                                        finish();
                                       }
                                     }
 
@@ -1266,6 +1426,55 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                         if (response  == null || response.code() < 200 || response.code() >= 300 || response.body() == null) {
                           onFailure(call, new Throwable("sth wrong"));
                         } else {                                                          //PUT visit (iff tag number have been modified?)
+                          //TODO edit documents
+                          Call<Document> hpiCall = documentService.editDocument("1", finalHPI.getDocID(), new Document(finalHPI.getDocHTML()));
+                          Call<Document> shCall = documentService.editDocument("1", finalSH.getDocID(), new Document(finalSH.getDocHTML()));
+                          Call<Document> fhCall = documentService.editDocument("1", finalFH.getDocID(), new Document(finalFH.getDocHTML()));
+                          Call<Document> pmhCall = documentService.editDocument("1", finalPMH.getDocID(), new Document(finalPMH.getDocHTML()));
+                          hpiCall.enqueue(new Callback<Document>() {
+                            @Override
+                            public void onResponse(Call<Document> call, Response<Document> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Document> call, Throwable t) {
+
+                            }
+                          });
+                          shCall.enqueue(new Callback<Document>() {
+                            @Override
+                            public void onResponse(Call<Document> call, Response<Document> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Document> call, Throwable t) {
+
+                            }
+                          });
+                          fhCall.enqueue(new Callback<Document>() {
+                            @Override
+                            public void onResponse(Call<Document> call, Response<Document> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Document> call, Throwable t) {
+
+                            }
+                          });
+                          pmhCall.enqueue(new Callback<Document>() {
+                            @Override
+                            public void onResponse(Call<Document> call, Response<Document> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Document> call, Throwable t) {
+
+                            }
+                          });
                           Visit visit = generateVisit(response.body(), pd, Const.NextStation.PHARMACY);
                           Log.d(TAG, "Editing Visit: " + visit);
                           if (visit != null) {
@@ -1364,57 +1573,88 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                         });
                                       }
                                       final ArrayList<Medication> medicationArrayList = generateMedications(finalMedication);
-                                      final ArrayList<Prescription> newMedPreArrList = new ArrayList<>(medicationArrayList.size());
                                       final Consultation c = response.body();
-                                      Log.d(TAG, "Medications: " + medicationArrayList.toString());
-                                      for (final Medication m:medicationArrayList) {
-                                        Call<Medication> medicationCall = medicationService.addMedication("1", m);
-                                        medicationCall.enqueue(new Callback<Medication>() {
-                                          @Override
-                                          public void onResponse(Call<Medication> call, Response<Medication> response) {
-                                            if (response == null) {
-                                              onFailure(call, new Throwable("Empty response"));
-                                            } else if (response.code() < 200 || response.code() >= 300) {
-                                              onFailure(call, new Throwable("Error from server: " + response.code()));
-                                            } else {
-                                              newMedPreArrList.add(new Prescription(response.body().getMedicationId(), m.getTempPrescriptionDescription()));
-                                              if (newMedPreArrList.size() >= medicationArrayList.size()) {
-                                                ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, newMedPreArrList);
-                                                Log.d(TAG, "Prescription list: " + prescriptionArrayList);
-                                                for (Prescription p:prescriptionArrayList){
-                                                  Log.d(TAG, "prescription before added:" + p);
-                                                  Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
-                                                  prescriptionCall.enqueue(new Callback<Prescription>() {
-                                                    @Override
-                                                    public void onResponse(Call<Prescription> call, Response<Prescription> response) {
-                                                      Log.d(TAG, "prescription data call response code b: " + response.code());
-                                                      if (response.code() < 500 && response.code() >= 400) {
-                                                        try {
-                                                          Log.d(TAG, response.errorBody().string());
-                                                        } catch (IOException e) {
-                                                          e.printStackTrace();
+                                      if (medicationArrayList != null && medicationArrayList.size() > 0) {
+                                        final ArrayList<Prescription> newMedPreArrList = new ArrayList<>(medicationArrayList.size());
+                                        Log.d(TAG, "Medications: " + medicationArrayList.toString());
+                                        for (final Medication m:medicationArrayList) {
+                                          Call<Medication> medicationCall = medicationService.addMedication("1", m);
+                                          medicationCall.enqueue(new Callback<Medication>() {
+                                            @Override
+                                            public void onResponse(Call<Medication> call, Response<Medication> response) {
+                                              if (response == null) {
+                                                onFailure(call, new Throwable("Empty response"));
+                                              } else if (response.code() < 200 || response.code() >= 300) {
+                                                onFailure(call, new Throwable("Error from server: " + response.code() + response.raw()));
+                                              } else {
+                                                newMedPreArrList.add(new Prescription(response.body().getMedicationId(), m.getTempPrescriptionDescription()));
+                                                if (newMedPreArrList.size() >= medicationArrayList.size()) {
+                                                  ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, newMedPreArrList);
+                                                  Log.d(TAG, "Prescription list: " + prescriptionArrayList);
+                                                  for (Prescription p:prescriptionArrayList){
+                                                    Log.d(TAG, "prescription before added:" + p);
+                                                    Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
+                                                    prescriptionCall.enqueue(new Callback<Prescription>() {
+                                                      @Override
+                                                      public void onResponse(Call<Prescription> call, Response<Prescription> response) {
+                                                        Log.d(TAG, "prescription data call response code b: " + response.code());
+                                                        if (response.code() < 500 && response.code() >= 400) {
+                                                          try {
+                                                            Log.d(TAG, response.errorBody().string());
+                                                          } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                          }
                                                         }
+                                                        Log.d(TAG, "prescription added:" + response.body());
                                                       }
-                                                      Log.d(TAG, "prescription added:" + response.body());
-                                                    }
 
-                                                    @Override
-                                                    public void onFailure(Call<Prescription> call, Throwable t) {
-                                                      progressDialog.dismiss();
-                                                    }
-                                                  });
+                                                      @Override
+                                                      public void onFailure(Call<Prescription> call, Throwable t) {
+                                                        progressDialog.dismiss();
+                                                      }
+                                                    });
+                                                  }
+                                                  progressDialog.dismiss();
+                                                  finish();
                                                 }
-                                                progressDialog.dismiss();
-                                                finish();
                                               }
                                             }
-                                          }
 
-                                          @Override
-                                          public void onFailure(Call<Medication> call, Throwable t) {
-                                            t.printStackTrace();
-                                          }
-                                        });
+                                            @Override
+                                            public void onFailure(Call<Medication> call, Throwable t) {
+                                              t.printStackTrace();
+                                              Log.d(TAG, call.request().toString());
+                                            }
+                                          });
+                                        }
+                                      } else {  //just prescriptions with existing medications
+                                        ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, null);
+                                        Log.d(TAG, "Prescription list: " + prescriptionArrayList);
+                                        for (Prescription p:prescriptionArrayList){
+                                          Log.d(TAG, "prescription before added:" + p);
+                                          Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
+                                          prescriptionCall.enqueue(new Callback<Prescription>() {
+                                            @Override
+                                            public void onResponse(Call<Prescription> call, Response<Prescription> response) {
+                                              Log.d(TAG, "prescription data call response code b: " + response.code());
+                                              if (response.code() < 500 && response.code() >= 400) {
+                                                try {
+                                                  Log.d(TAG, response.errorBody().string());
+                                                } catch (IOException e) {
+                                                  e.printStackTrace();
+                                                }
+                                              }
+                                              Log.d(TAG, "prescription added:" + response.body());
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Prescription> call, Throwable t) {
+                                              progressDialog.dismiss();
+                                            }
+                                          });
+                                        }
+                                        progressDialog.dismiss();
+                                        finish();
                                       }
                                     }
 
@@ -1472,7 +1712,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                       //TODO create 4 new documents
                       List<DocumentType> documentTypeList = Cache.DatabaseData.getDocumentTypes(getBaseContext());
                       for (DocumentType documentType:documentTypeList) {
-                        Call<Document> documentCall = documentService.addDocument("1", new Document("<html><head></head><body></body></html>", documentType.getId(), response.body().getPatientId()));
+                        Call<Document> documentCall = documentService.addDocument("1", new Document("", documentType.getId(), response.body().getPatientId()));
                         documentCall.enqueue(new Callback<Document>() {
                           @Override
                           public void onResponse(Call<Document> call, Response<Document> response) {
@@ -1499,16 +1739,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                           @Override
                           public void onResponse(Call<Visit> call, Response<Visit> response) {
                             Log.d(TAG, "visit call response code: " + response.code());
-                            if (response.code() < 500 && response.code() >= 400) {
-                              try {
-                                Log.d(TAG, response.errorBody().string());
-                              } catch (IOException e) {
-                                e.printStackTrace();
-                              }
-                            }
-                            Log.d(TAG, response.body().toString());
-                            if (response.body() == null || response.code() > 299 || response.code() < 200) {
-                              onFailure(call, new Throwable("No response"));
+                            if (response == null) {
+                              onFailure(call, new Throwable("Empty response"));
+                            } else if (response.code() >= 300 || response.code() < 200) {
+                              onFailure(call, new Throwable("error from server"));
                             } else {
                               Triage triage = generateTriage(response.body(), vs, cc, tr);
                               if (triage != null) {
@@ -1576,6 +1810,27 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                     if (response  == null || response.code() < 200 || response.code() >= 300 || response.body() == null) {
                       onFailure(call, new Throwable("sth wrong"));
                     } else {                                                          //POST visit (iff tag number have been modified?)
+                      List<DocumentType> documentTypeList = Cache.DatabaseData.getDocumentTypes(getBaseContext());
+                      for (DocumentType documentType:documentTypeList) {
+                        Call<Document> documentCall = documentService.addDocument("1", new Document("<html><head></head><body></body></html>", documentType.getId(), response.body().getPatientId()));
+                        documentCall.enqueue(new Callback<Document>() {
+                          @Override
+                          public void onResponse(Call<Document> call, Response<Document> response) {
+                            if (response == null) {
+                              onFailure(call, new Throwable("Empty response"));
+                            } else if (response.code() >= 300 || response.code() < 200) {
+                              onFailure(call, new Throwable("Wrong: " + response.code()));
+                            } else if (response.body() == null) {
+                              onFailure(call, new Throwable("Empty response body"));
+                            } //else >> successful >> idc
+                          }
+
+                          @Override
+                          public void onFailure(Call<Document> call, Throwable t) {
+                            t.printStackTrace();
+                          }
+                        });
+                      }
                       Visit visit = generateVisit(response.body(), pd, Const.NextStation.PHARMACY);
                       Log.d(TAG, "Editing Visit: " + visit);
                       if (visit != null) {
@@ -1663,57 +1918,88 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                     });
                                   }
                                   final ArrayList<Medication> medicationArrayList = generateMedications(finalMedication);
-                                  final ArrayList<Prescription> newMedPreArrList = new ArrayList<>(medicationArrayList.size());
                                   final Consultation c = response.body();
-                                  Log.d(TAG, "Medications: " + medicationArrayList.toString());
-                                  for (final Medication m:medicationArrayList) {
-                                    Call<Medication> medicationCall = medicationService.addMedication("1", m);
-                                    medicationCall.enqueue(new Callback<Medication>() {
-                                      @Override
-                                      public void onResponse(Call<Medication> call, Response<Medication> response) {
-                                        if (response == null) {
-                                          onFailure(call, new Throwable("Empty response"));
-                                        } else if (response.code() < 200 || response.code() >= 300) {
-                                          onFailure(call, new Throwable("Error from server: " + response.code()));
-                                        } else {
-                                          newMedPreArrList.add(new Prescription(response.body().getMedicationId(), m.getTempPrescriptionDescription()));
-                                          if (newMedPreArrList.size() >= medicationArrayList.size()) {
-                                            ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, newMedPreArrList);
-                                            Log.d(TAG, "Prescription list: " + prescriptionArrayList);
-                                            for (Prescription p:prescriptionArrayList){
-                                              Log.d(TAG, "prescription before added:" + p);
-                                              Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
-                                              prescriptionCall.enqueue(new Callback<Prescription>() {
-                                                @Override
-                                                public void onResponse(Call<Prescription> call, Response<Prescription> response) {
-                                                  Log.d(TAG, "prescription data call response code b: " + response.code());
-                                                  if (response.code() < 500 && response.code() >= 400) {
-                                                    try {
-                                                      Log.d(TAG, response.errorBody().string());
-                                                    } catch (IOException e) {
-                                                      e.printStackTrace();
+                                  if (medicationArrayList != null && medicationArrayList.size() > 0) {
+                                    final ArrayList<Prescription> newMedPreArrList = new ArrayList<>(medicationArrayList.size());
+                                    Log.d(TAG, "Medications: " + medicationArrayList.toString());
+                                    for (final Medication m:medicationArrayList) {
+                                      Call<Medication> medicationCall = medicationService.addMedication("1", m);
+                                      medicationCall.enqueue(new Callback<Medication>() {
+                                        @Override
+                                        public void onResponse(Call<Medication> call, Response<Medication> response) {
+                                          if (response == null) {
+                                            onFailure(call, new Throwable("Empty response"));
+                                          } else if (response.code() < 200 || response.code() >= 300) {
+                                            onFailure(call, new Throwable("Error from server: " + response.code() + response.raw()));
+                                          } else {
+                                            newMedPreArrList.add(new Prescription(response.body().getMedicationId(), m.getTempPrescriptionDescription()));
+                                            if (newMedPreArrList.size() >= medicationArrayList.size()) {
+                                              ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, newMedPreArrList);
+                                              Log.d(TAG, "Prescription list: " + prescriptionArrayList);
+                                              for (Prescription p:prescriptionArrayList){
+                                                Log.d(TAG, "prescription before added:" + p);
+                                                Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
+                                                prescriptionCall.enqueue(new Callback<Prescription>() {
+                                                  @Override
+                                                  public void onResponse(Call<Prescription> call, Response<Prescription> response) {
+                                                    Log.d(TAG, "prescription data call response code b: " + response.code());
+                                                    if (response.code() < 500 && response.code() >= 400) {
+                                                      try {
+                                                        Log.d(TAG, response.errorBody().string());
+                                                      } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                      }
                                                     }
+                                                    Log.d(TAG, "prescription added:" + response.body());
                                                   }
-                                                  Log.d(TAG, "prescription added:" + response.body());
-                                                }
 
-                                                @Override
-                                                public void onFailure(Call<Prescription> call, Throwable t) {
-                                                  progressDialog.dismiss();
-                                                }
-                                              });
+                                                  @Override
+                                                  public void onFailure(Call<Prescription> call, Throwable t) {
+                                                    progressDialog.dismiss();
+                                                  }
+                                                });
+                                              }
+                                              progressDialog.dismiss();
+                                              finish();
                                             }
-                                            progressDialog.dismiss();
-                                            finish();
                                           }
                                         }
-                                      }
 
-                                      @Override
-                                      public void onFailure(Call<Medication> call, Throwable t) {
-                                        t.printStackTrace();
-                                      }
-                                    });
+                                        @Override
+                                        public void onFailure(Call<Medication> call, Throwable t) {
+                                          t.printStackTrace();
+                                          Log.d(TAG, call.request().toString());
+                                        }
+                                      });
+                                    }
+                                  } else {  //just prescriptions with existing medications
+                                    ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(c, finalMedication, null);
+                                    Log.d(TAG, "Prescription list: " + prescriptionArrayList);
+                                    for (Prescription p:prescriptionArrayList){
+                                      Log.d(TAG, "prescription before added:" + p);
+                                      Call<Prescription> prescriptionCall = prescriptionService.addPrescription("1", p);
+                                      prescriptionCall.enqueue(new Callback<Prescription>() {
+                                        @Override
+                                        public void onResponse(Call<Prescription> call, Response<Prescription> response) {
+                                          Log.d(TAG, "prescription data call response code b: " + response.code());
+                                          if (response.code() < 500 && response.code() >= 400) {
+                                            try {
+                                              Log.d(TAG, response.errorBody().string());
+                                            } catch (IOException e) {
+                                              e.printStackTrace();
+                                            }
+                                          }
+                                          Log.d(TAG, "prescription added:" + response.body());
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Prescription> call, Throwable t) {
+                                          progressDialog.dismiss();
+                                        }
+                                      });
+                                    }
+                                    progressDialog.dismiss();
+                                    finish();
                                   }
                                 }
 
