@@ -105,8 +105,49 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     etHeight = (EditText) view.findViewById(R.id.etHeight);
     tvBMI = (TextView) view.findViewById(R.id.tvBMI);
 
-    if (thisTriage != null)
-      inflaterEverything();
+    if (thisTriage != null){
+      if (etSystolic != null) {
+        if (thisTriage.getSystolic() != null) {
+          etSystolic.setText(String.valueOf(thisTriage.getSystolic()));
+        }
+      }
+      if (etDiastolic != null) {
+        if (thisTriage.getDiastolic() != null) {
+          etDiastolic.setText(String.valueOf(thisTriage.getDiastolic()));
+        }
+      }
+      if (etWeight != null) {
+        if (thisTriage.getWeight() != null) {
+          etWeight.setText(String.valueOf(thisTriage.getWeight()));
+        }
+      }
+      if (etHeight != null) {
+        if (thisTriage.getHeight() != null) {
+          etHeight.setText(String.valueOf(thisTriage.getHeight()));
+        }
+      }
+      if (etPulseRate != null) {
+        if (thisTriage.getHeartRate() != null) {
+          etPulseRate.setText(String.valueOf(thisTriage.getHeartRate()));
+        }
+      }
+      if (etRespiratoryRate != null) {
+        if (thisTriage.getRespiratoryRate() != null) {
+          etRespiratoryRate.setText(String.valueOf(thisTriage.getRespiratoryRate()));
+        }
+      }
+      if (etTemperature != null) {
+        if (thisTriage.getWeight() != null) {
+          etTemperature.setText(String.valueOf(thisTriage.getTemperature()));
+        }
+      }
+      if (etSpo2 != null) {
+        if (thisTriage.getSpo2() != null) {
+          etSpo2.setText(String.valueOf(thisTriage.getSpo2()));
+        }
+      }
+    }
+//      inflaterEverything();
 
     tvWeightUnit.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -270,19 +311,50 @@ public class VitalSignFragment extends Fragment implements OnSendData{
   /**
    * TODO fill me up
    */
-  private void inflaterEverything() {
-    if (thisTriage != null) {
-      if (etSystolic != null) {
-
-      }
-      if (etDiastolic != null) {
-
-      }
-      if (etWeight != null) {
-
-      }
-    }
-  }
+//  private void inflaterEverything() {
+//    if (thisTriage != null) {
+//      if (etSystolic != null) {
+//        if (thisTriage.getSystolic() != null) {
+//          etSystolic.setText(thisTriage.getSystolic());
+//        }
+//      }
+//      if (etDiastolic != null) {
+//        if (thisTriage.getDiastolic() != null) {
+//          etDiastolic.setText(thisTriage.getDiastolic());
+//        }
+//      }
+//      if (etWeight != null) {
+//        if (thisTriage.getWeight() != null) {
+//          etWeight.setText(String.valueOf(thisTriage.getWeight()));
+//        }
+//      }
+//      if (etHeight != null) {
+//        if (thisTriage.getHeight() != null) {
+//          etHeight.setText(String.valueOf(thisTriage.getHeight()));
+//        }
+//      }
+//      if (etPulseRate != null) {
+//        if (thisTriage.getHeartRate() != null) {
+//          etPulseRate.setText(String.valueOf(thisTriage.getHeartRate()));
+//        }
+//      }
+//      if (etRespiratoryRate != null) {
+//        if (thisTriage.getRespiratoryRate() != null) {
+//          etRespiratoryRate.setText(String.valueOf(thisTriage.getRespiratoryRate()));
+//        }
+//      }
+//      if (etTemperature != null) {
+//        if (thisTriage.getWeight() != null) {
+//          etTemperature.setText(String.valueOf(thisTriage.getTemperature()));
+//        }
+//      }
+//      if (etSpo2 != null) {
+//        if (thisTriage.getSpo2() != null) {
+//          etSpo2.setText(String.valueOf(thisTriage.getSpo2()));
+//        }
+//      }
+//    }
+//  }
 
   private String BMICalculator(double w, double h) {
     if (w <= 0 || h <= 0)

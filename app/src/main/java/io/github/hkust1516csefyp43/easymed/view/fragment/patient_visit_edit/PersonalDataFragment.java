@@ -284,13 +284,27 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     final List<Gender> genders = Cache.DatabaseData.getGenders(getContext());
     genderArray = new String[genders.size()];
     final HashMap<String, String> genderHM = new HashMap<>(genders.size());
+    final HashMap<String, String> rGenderHM = new HashMap<>(genders.size());
     for (int i = 0; i < genders.size(); i++) {
       genderArray[i] = genders.get(i).getGender();
       genderHM.put(genders.get(i).getGender(), genders.get(i).getId());
+      rGenderHM.put(genders.get(i).getId(), genders.get(i).getGender());
     }
+
     ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, genderArray);
     sGender.setAdapter(adapter1);
 
+    if (patient != null && patient.getGenderId() != null) {
+      int index;
+      Log.d(TAG, "Gender needs to be filled");
+      for (int i = 0; i < genders.size(); i++){
+        if (rGenderHM.get(patient.getGenderId()).equals(genderArray[i])){
+          index = i;
+          Log.d(TAG, "Found gender: " + index + rGenderHM.get(patient.getGenderId()));
+          sGender.setSelection(index);
+        }
+      }
+    }
 //    if(patient != null && patient.getGenderId() != null){
 //
 //    }
@@ -325,6 +339,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
       }
     });
+
 //    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
 //    GregorianCalendar gc = new GregorianCalendar();
 //    birthday[0] = gc.get(Calendar.YEAR);
