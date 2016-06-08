@@ -54,6 +54,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Document;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
@@ -948,7 +949,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                         }
                                       });
                                     }
-                                    ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(response.body(), finalMedication);
+                                    ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(response.body(), finalMedication, null);
                                     Log.d(TAG, "Prescription list: " + prescriptionArrayList);
                                     for (Prescription p:prescriptionArrayList){
                                       Log.d(TAG, "prescription before added:" + p);
@@ -1151,7 +1152,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                           }
                                         });
                                       }
-                                      ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(response.body(), finalMedication);
+                                      ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(response.body(), finalMedication, null);
                                       Log.d(TAG, "Prescription list: " + prescriptionArrayList);
                                       for (Prescription p:prescriptionArrayList){
                                         Log.d(TAG, "prescription before added:" + p);
@@ -1320,7 +1321,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                           }
                                         });
                                       }
-                                      ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(response.body(), finalMedication);
+                                      ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(response.body(), finalMedication, null);
                                       Log.d(TAG, "Prescription list a: " + prescriptionArrayList);
                                       for (Prescription p:prescriptionArrayList){
                                         Log.d(TAG, "prescription before added a:" + p);
@@ -1593,7 +1594,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                       }
                                     });
                                   }
-                                  ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(response.body(), finalMedication);
+                                  ArrayList<Prescription> prescriptionArrayList = generatePrescriptions(response.body(), finalMedication, null);
                                   Log.d(TAG, "Prescription list: " + prescriptionArrayList);
                                   for (Prescription p:prescriptionArrayList){
                                     Log.d(TAG, "prescription before added:" + p);
@@ -1858,8 +1859,30 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     return relatedDataArrayList;
   }
 
-  private ArrayList<Prescription> generatePrescriptions(@NonNull Consultation consultation, ListOfCards prescriptions) {
+  private ArrayList<Medication> generateMedications(ListOfCards prescriptions) {
+    ArrayList<Card> newMedi = prescriptions.getCardArrayList2();
+    ArrayList<Medication> medications = new ArrayList<>();
+    for (Card c:newMedi) {
+      Medication m = new Medication(Cache.CurrentUser.getUser(getBaseContext()).getId(), c.getCardTitle());
+      medications.add(m);
+    }
+    return medications;
+  }
+
+  /**
+   * TODO before calling this someone needs to call generateMedications, and generate new prescriptions and add to this queue
+   * @param consultation
+   * @param prescriptions
+   * @param fromNewMedications
+   * @return
+   */
+  private ArrayList<Prescription> generatePrescriptions(@NonNull Consultation consultation, ListOfCards prescriptions, @Nullable ArrayList<Prescription> fromNewMedications) {
     ArrayList<Prescription> prescriptionArrayList = new ArrayList<>();
+    if (fromNewMedications != null) {
+      for (Prescription prescription: fromNewMedications) {
+        prescriptionArrayList.add(prescription);
+      }
+    }
     if (prescriptions != null) {
       if (prescriptions.getCardArrayList() != null) {
         if (prescriptions.getCardArrayList().size() > 0) {

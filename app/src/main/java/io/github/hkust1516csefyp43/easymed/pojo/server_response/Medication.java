@@ -19,6 +19,11 @@ public class Medication implements Serializable {
   public Medication() {
   }
 
+  public Medication(String userId, String medication) {
+    this.userId = userId;
+    this.medication = medication;
+  }
+
   public Date getCreateTimestamp() {
     return createTimestamp;
   }

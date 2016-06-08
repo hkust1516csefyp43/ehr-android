@@ -536,7 +536,14 @@ public class VisitDetailFragment extends Fragment {
                                 prescriptions.enqueue(new Callback<List<Prescription>>() {
                                     @Override
                                     public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
-                                        //TODO fill the UI
+                                        if (response == null) {
+                                            onFailure(call, new Throwable("Empty response"));
+                                        } else if (response.code() >= 300 || response.code() < 200) {
+                                            onFailure(call, new Throwable("Error from server: " + response.code()));
+                                        } else if (response.body().size() > 0) {
+                                            //TODO put more stuff to UI
+//                                            response.body()
+                                        }
                                     }
 
                                     @Override
