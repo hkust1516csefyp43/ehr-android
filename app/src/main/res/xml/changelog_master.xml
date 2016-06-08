@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
     <release version="2.0.2" versioncode="33">
-        <change></change>
+        <change>FIX: Prescribe medication even if it is not in the database</change>
+        <change>FIX: display previously enter data</change>
+        <change>FIX: Must select clinic before login</change>
     </release>
     <release version="2.0.1" versioncode="32">
         <change>Gender fixed</change>
