@@ -32,6 +32,9 @@ public class Card implements Serializable, Parcelable {
   private String cardDescription;
   private boolean checked;
 
+  public Card() {
+  }
+
   public Card(String name, @Nullable String description) {
     this.cardTitle = name;
     this.cardDescription = description;

@@ -10,6 +10,7 @@ public class ListOfCards implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private ArrayList<Card> cardArrayList;
+  private ArrayList<Card> cardArrayList2;
 
   public ListOfCards() {
     //empty constructor
@@ -17,6 +18,11 @@ public class ListOfCards implements Serializable {
 
   public ListOfCards(ArrayList<Card> cardArrayList) {
     this.cardArrayList = cardArrayList;
+  }
+
+  public ListOfCards(ArrayList<Card> cardArrayList, ArrayList<Card> cardArrayList2) {
+    this.cardArrayList = cardArrayList;
+    this.cardArrayList2 = cardArrayList2;
   }
 
   public ArrayList<Card> getCardArrayList() {
@@ -27,10 +33,19 @@ public class ListOfCards implements Serializable {
     this.cardArrayList = cardArrayList;
   }
 
+  public ArrayList<Card> getCardArrayList2() {
+    return cardArrayList2;
+  }
+
+  public void setCardArrayList2(ArrayList<Card> cardArrayList2) {
+    this.cardArrayList2 = cardArrayList2;
+  }
+
   @Override
   public String toString() {
     return "ListOfCards{" +
-        "cardArrayList=" + cardArrayList.toString() +
+        "cardArrayList=" + cardArrayList +
+        ", cardArrayList2=" + cardArrayList2 +
         '}';
   }
 }
