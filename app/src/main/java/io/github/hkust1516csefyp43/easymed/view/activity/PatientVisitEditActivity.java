@@ -397,10 +397,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         VitalSigns vitalSigns = null;
         String chiefComplaints = null;
         String triageRemark = null;
-        String hpi = null;
-        String pmh = null;
-        String fh = null;
-        String sh = null;
+        io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document hpi = null;
+        io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document pmh = null;
+        io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document fh = null;
+        io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document sh = null;
         ListOfCards dh = null;
         ListOfCards screening = null;
         ListOfCards allergy = null;
@@ -453,26 +453,26 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
           if (hpiFragment != null) {
             serializable = hpiFragment.onSendData();
-            if (serializable instanceof String) {
-              hpi = (String) serializable;
+            if (serializable instanceof io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document) {
+              hpi = (io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document) serializable;
             }
           }
           if (pmhFragment != null) {
             serializable = pmhFragment.onSendData();
-            if (serializable instanceof ListOfCards) {
-              pmh = (String) serializable;
+            if (serializable instanceof io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document) {
+              pmh = (io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document) serializable;
             }
           }
           if (fhFragment != null) {
             serializable = fhFragment.onSendData();
-            if (serializable instanceof String) {
-              fh = (String) serializable;
+            if (serializable instanceof io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document) {
+              fh = (io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document) serializable;
             }
           }
           if (shFragment != null) {
             serializable = shFragment.onSendData();
-            if (serializable instanceof String) {
-              sh = (String) serializable;
+            if (serializable instanceof io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document) {
+              sh = (io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document) serializable;
             }
           }
           if (dhFragment != null) {
@@ -585,10 +585,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         final String cc = chiefComplaints;
         final String tr =triageRemark;
 
-        final String finalHPI = hpi;
-        final String finalPMH = pmh;
-        final String finalFH = fh;
-        final String finalSH = sh;
+        final io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document finalHPI = hpi;
+        final io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document finalPMH = pmh;
+        final io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document finalFH = fh;
+        final io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document finalSH = sh;
         final ListOfCards finalDH = dh;
         final ListOfCards finalScreening = screening;
         final ListOfCards finalAllergy = allergy;

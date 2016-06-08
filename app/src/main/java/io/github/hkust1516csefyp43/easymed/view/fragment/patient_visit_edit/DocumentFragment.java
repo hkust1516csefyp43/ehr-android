@@ -51,6 +51,7 @@ public class DocumentFragment extends Fragment implements OnSendData {
   private LinearLayout hsvLL;
 
   private Document document;
+  private String docID;
   private int whichDocument;
   private String patientId = null;
 
@@ -155,6 +156,7 @@ public class DocumentFragment extends Fragment implements OnSendData {
                   if (response != null && response.code() < 300 && response.code() >= 200 && response.body() != null && response.body().size() == 1) {
                     document = response.body().get(0);
                     mEditor.setHtml(document.getDocumentInHtml());
+                    docID = document.getId();
                   } else {
                     onFailure(call, new Throwable("something's wrong"));
                   }
@@ -322,10 +324,10 @@ public class DocumentFragment extends Fragment implements OnSendData {
 
   @Override
   public Serializable onSendData() {
-    if (mEditor != null){
-      return mEditor.getHtml();
+    if (mEditor != null && docID != null){
+      return new io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit.Document(docID, mEditor.getHtml());
     } else {
-      return null;
+      return new Throwable("Error!!");
     }
   }
 }
