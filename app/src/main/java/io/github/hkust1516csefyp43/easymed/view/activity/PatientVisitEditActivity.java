@@ -1053,7 +1053,13 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                         if (response  == null || response.code() < 200 || response.code() >= 300 || response.body() == null) {
                           onFailure(call, new Throwable("sth wrong"));
                         } else {                                                          //PUT visit (iff tag number have been modified?)
-                          Visit visit = generateVisit(response.body(), pd, Const.NextStation.PHARMACY);
+                          //TODO if no prescription >> next station triage
+                          Visit visit;
+                          if (finalMedication.getCardArrayList().size() > 0) {
+                            visit = generateVisit(response.body(), pd, Const.NextStation.PHARMACY);
+                          } else {
+                            visit = generateVisit(response.body(), pd, Const.NextStation.TRIAGE);
+                          }
                           Log.d(TAG, "Editing Visit: " + visit);
                           if (visit != null) {
                             Call<Visit> visitCall = visitService.editVisit("1", visit, thisVisit.getId());
