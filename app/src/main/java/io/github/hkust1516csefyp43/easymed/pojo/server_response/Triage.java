@@ -29,12 +29,13 @@ public class Triage implements Serializable{
   @SerializedName("respiratory_rate")         Integer respiratoryRate;
   @SerializedName("spo2")                     Integer spo2;
   @SerializedName("temperature")              Double temperature;
+  @SerializedName("blood_sugar")              Double bloodSugar;
 
   public Triage() {
     //empty constructor
   }
 
-  public Triage(String id, String userId, String visitId, String chiefComplaints, Integer diastolic, Integer systolic, Date startTime, Date endTime, Boolean editedInConsultation, Double headCircumference, Integer heartRate, Double height, Double weight, Date lastDewormingTabletDate, String remark, Integer respiratoryRate, Integer spo2, Double temperature) {
+  public Triage(String id, String userId, String visitId, String chiefComplaints, Integer diastolic, Integer systolic, Date startTime, Date endTime, Boolean editedInConsultation, Double headCircumference, Integer heartRate, Double height, Double weight, Date lastDewormingTabletDate, String remark, Integer respiratoryRate, Integer spo2, Double temperature, Double bloodSugar) {
     this.id = id;
     this.userId = userId;
     this.visitId = visitId;
@@ -53,6 +54,7 @@ public class Triage implements Serializable{
     this.respiratoryRate = respiratoryRate;
     this.spo2 = spo2;
     this.temperature = temperature;
+    this.bloodSugar = bloodSugar;
   }
 
   public String getId() {
@@ -199,27 +201,36 @@ public class Triage implements Serializable{
     this.temperature = temperature;
   }
 
+  public Double getBloodSugar() {
+    return bloodSugar;
+  }
+
+  public void setBloodSugar(Double bloodSugar) {
+    this.bloodSugar = bloodSugar;
+  }
+
   @Override
   public String toString() {
     return "Triage{" +
-        "id='" + id + '\'' +
-        ", userId='" + userId + '\'' +
-        ", visitId='" + visitId + '\'' +
-        ", chiefComplaints='" + chiefComplaints + '\'' +
-        ", diastolic=" + diastolic +
-        ", systolic=" + systolic +
-        ", startTime=" + startTime +
-        ", endTime=" + endTime +
-        ", editedInConsultation=" + editedInConsultation +
-        ", headCircumference=" + headCircumference +
-        ", heartRate=" + heartRate +
-        ", height=" + height +
-        ", weight=" + weight +
-        ", lastDewormingTabletDate=" + lastDewormingTabletDate +
-        ", remark='" + remark + '\'' +
-        ", respiratoryRate=" + respiratoryRate +
-        ", spo2=" + spo2 +
-        ", temperature=" + temperature +
-        '}';
+            "id='" + id + '\'' +
+            ", userId='" + userId + '\'' +
+            ", visitId='" + visitId + '\'' +
+            ", chiefComplaints='" + chiefComplaints + '\'' +
+            ", diastolic=" + diastolic +
+            ", systolic=" + systolic +
+            ", startTime=" + startTime +
+            ", endTime=" + endTime +
+            ", editedInConsultation=" + editedInConsultation +
+            ", headCircumference=" + headCircumference +
+            ", heartRate=" + heartRate +
+            ", height=" + height +
+            ", weight=" + weight +
+            ", lastDewormingTabletDate=" + lastDewormingTabletDate +
+            ", remark='" + remark + '\'' +
+            ", respiratoryRate=" + respiratoryRate +
+            ", spo2=" + spo2 +
+            ", temperature=" + temperature +
+            ", bloodSugar=" + bloodSugar +
+            '}';
   }
 }

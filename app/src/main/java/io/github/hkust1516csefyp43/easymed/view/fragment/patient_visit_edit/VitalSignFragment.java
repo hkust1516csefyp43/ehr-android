@@ -21,7 +21,10 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import io.github.hkust1516csefyp43.easymed.R;
@@ -43,7 +46,9 @@ public class VitalSignFragment extends Fragment implements OnSendData{
   private EditText etRespiratoryRate;
   private EditText etTemperature;
   private TextView tvTemperatureUnit;
+  private EditText etBloodSugar;
   private EditText etSpo2;
+  private EditText etHeadCircumference;
   private EditText etWeight;
   private TextView tvWeightUnit;
   private EditText etHeight;
@@ -51,6 +56,8 @@ public class VitalSignFragment extends Fragment implements OnSendData{
   private double dWeight;
   private double dHeight;
   private int[] lddDate = new int[3];
+  private Date outputLDD;
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
   private OnFragmentInteractionListener mListener;
 
@@ -99,13 +106,22 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     etRespiratoryRate = (EditText) view.findViewById(R.id.etRespiratoryRate);
     etTemperature = (EditText) view.findViewById(R.id.etTemperature);
     tvTemperatureUnit = (TextView) view.findViewById(R.id.tv_temperature_unit);
+    etBloodSugar = (EditText) view.findViewById(R.id.etBloodSugar);
     etSpo2 = (EditText) view.findViewById(R.id.etSpo2);
+    etHeadCircumference = (EditText) view.findViewById(R.id.etHeadCircumference);
     etWeight = (EditText) view.findViewById(R.id.etWeight);
     tvWeightUnit = (TextView) view.findViewById(R.id.tv_weight_unit);
     etHeight = (EditText) view.findViewById(R.id.etHeight);
     tvBMI = (TextView) view.findViewById(R.id.tvBMI);
 
     if (thisTriage != null){
+      if (tvLDD != null){
+        if (thisTriage.getLastDewormingTabletDate() != null){
+          String text = dateFormat.format(thisTriage.getLastDewormingTabletDate());
+          tvLDD.setText(text);
+          Log.d(TAG, text);
+        }
+      }
       if (etSystolic != null) {
         if (thisTriage.getSystolic() != null) {
           etSystolic.setText(String.valueOf(thisTriage.getSystolic()));
@@ -144,6 +160,16 @@ public class VitalSignFragment extends Fragment implements OnSendData{
       if (etSpo2 != null) {
         if (thisTriage.getSpo2() != null) {
           etSpo2.setText(String.valueOf(thisTriage.getSpo2()));
+        }
+      }
+      if (etHeadCircumference != null) {
+        if (thisTriage.getHeadCircumference() != null) {
+          etHeadCircumference.setText(String.valueOf(thisTriage.getHeadCircumference()));
+        }
+      }
+      if (etBloodSugar != null) {
+        if (thisTriage.getBloodSugar() != null) {
+          etBloodSugar.setText(String.valueOf(thisTriage.getBloodSugar()));
         }
       }
     }
@@ -288,6 +314,11 @@ public class VitalSignFragment extends Fragment implements OnSendData{
               lddDate[1] = monthOfYear;
               lddDate[2] = dayOfMonth;
               tvLDD.setText(date);
+              try {
+                outputLDD = dateFormat.parse(date);
+              } catch (ParseException e) {
+                e.printStackTrace();
+              }
             }
           }
         }, gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH));
@@ -307,54 +338,6 @@ public class VitalSignFragment extends Fragment implements OnSendData{
     });
     return view;
   }
-
-  /**
-   * TODO fill me up
-   */
-//  private void inflaterEverything() {
-//    if (thisTriage != null) {
-//      if (etSystolic != null) {
-//        if (thisTriage.getSystolic() != null) {
-//          etSystolic.setText(thisTriage.getSystolic());
-//        }
-//      }
-//      if (etDiastolic != null) {
-//        if (thisTriage.getDiastolic() != null) {
-//          etDiastolic.setText(thisTriage.getDiastolic());
-//        }
-//      }
-//      if (etWeight != null) {
-//        if (thisTriage.getWeight() != null) {
-//          etWeight.setText(String.valueOf(thisTriage.getWeight()));
-//        }
-//      }
-//      if (etHeight != null) {
-//        if (thisTriage.getHeight() != null) {
-//          etHeight.setText(String.valueOf(thisTriage.getHeight()));
-//        }
-//      }
-//      if (etPulseRate != null) {
-//        if (thisTriage.getHeartRate() != null) {
-//          etPulseRate.setText(String.valueOf(thisTriage.getHeartRate()));
-//        }
-//      }
-//      if (etRespiratoryRate != null) {
-//        if (thisTriage.getRespiratoryRate() != null) {
-//          etRespiratoryRate.setText(String.valueOf(thisTriage.getRespiratoryRate()));
-//        }
-//      }
-//      if (etTemperature != null) {
-//        if (thisTriage.getWeight() != null) {
-//          etTemperature.setText(String.valueOf(thisTriage.getTemperature()));
-//        }
-//      }
-//      if (etSpo2 != null) {
-//        if (thisTriage.getSpo2() != null) {
-//          etSpo2.setText(String.valueOf(thisTriage.getSpo2()));
-//        }
-//      }
-//    }
-//  }
 
   private String BMICalculator(double w, double h) {
     if (w <= 0 || h <= 0)
@@ -470,6 +453,25 @@ public class VitalSignFragment extends Fragment implements OnSendData{
         etHeight.setError("This is not a number");
         return new Throwable("Height is not a number");
       }
+    }
+    if (etBloodSugar != null && etBloodSugar.getText() != null && etBloodSugar.getText().length() != 0) {
+      try {
+        vs.setBloodSugar(Double.parseDouble(etBloodSugar.getText().toString()));
+      } catch (NumberFormatException e) {
+        etBloodSugar.setError("This is not a number");
+        return new Throwable("Blood sugar is not a number");
+      }
+    }
+    if (etHeadCircumference != null && etHeadCircumference.getText() != null && etHeadCircumference.getText().length() != 0) {
+      try {
+        vs.setHeadCircumference(Double.parseDouble(etHeadCircumference.getText().toString()));
+      } catch (NumberFormatException e) {
+        etHeadCircumference.setError("This is not a number");
+        return new Throwable("Head circumference is not a number");
+      }
+    }
+    if (outputLDD != null) {
+        vs.setLdd(outputLDD);
     }
     return vs;
   }

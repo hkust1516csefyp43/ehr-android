@@ -21,6 +21,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -93,6 +94,9 @@ public class VisitDetailFragment extends Fragment {
     private Document fhDoc;
     private Document shDoc;
     private LinearLayout linearLayout;
+
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
 
     public static VisitDetailFragment newInstance(Patient patient, Visit visit, Boolean fabOn, Boolean isTriage) {
@@ -220,12 +224,12 @@ public class VisitDetailFragment extends Fragment {
                                 }
                                 if (triage.getStartTime() != null) {
                                     TextView tvTriageStart = new TextView(context);
-                                    tvTriageStart.setText("Start time: " + triage.getStartTime());
+                                    tvTriageStart.setText("Start time: " + timeFormat.format(triage.getStartTime()));
                                     linearLayout.addView(tvTriageStart);
                                 }
                                 if (triage.getEndTime() != null) {
                                     TextView tvTriageEnd = new TextView(context);
-                                    tvTriageEnd.setText("End time: " + triage.getEndTime());
+                                    tvTriageEnd.setText("End time: " + timeFormat.format(triage.getEndTime()));
                                     linearLayout.addView(tvTriageEnd);
                                 }
                                 if (triage.getChiefComplaints() != null) {
@@ -275,7 +279,7 @@ public class VisitDetailFragment extends Fragment {
                                 }
                                 if (triage.getLastDewormingTabletDate() != null) {
                                     TextView tvTriageLDD = new TextView(context);
-                                    tvTriageLDD.setText("Last deworming tablet date: " + triage.getLastDewormingTabletDate());
+                                    tvTriageLDD.setText("Last deworming tablet date: " + dateFormat.format(triage.getLastDewormingTabletDate()));
                                     linearLayout.addView(tvTriageLDD);
                                 }
                                 if (triage.getRemark() != null) {
@@ -331,12 +335,12 @@ public class VisitDetailFragment extends Fragment {
                                         }
                                         if (consultation.getStartTime() != null) {
                                             TextView textView4 = new TextView(context);
-                                            textView4.setText(String.valueOf("Start time: " + consultation.getStartTime()));
+                                            textView4.setText(String.valueOf("Start time: " + timeFormat.format(consultation.getStartTime())));
                                             linearLayout.addView(textView4);
                                         }
                                         if (consultation.getEndTime() != null) {
                                             TextView textView5 = new TextView(context);
-                                            textView5.setText(String.valueOf("End time: " + consultation.getEndTime()));
+                                            textView5.setText(String.valueOf("End time: " + timeFormat.format(consultation.getEndTime())));
                                             linearLayout.addView(textView5);
                                         }
                                         if (consultation.getPeCardio() != null) {
@@ -401,7 +405,7 @@ public class VisitDetailFragment extends Fragment {
                                         }
                                         if (consultation.getPregLmp() != null) {
                                             TextView textView19 = new TextView(context);
-                                            textView19.setText("Preg lmp: " + consultation.getPregLmp());
+                                            textView19.setText("Preg lmp: " + dateFormat.format(consultation.getPregLmp()));
                                             linearLayout.addView(textView19);
                                         }
                                         if (consultation.getPregNumAbortion() != null) {
@@ -550,7 +554,7 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv1 = new TextView(context);
                                                         String output = "Advices: ";
                                                         for (RelatedData data : advices) {
-                                                            output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
                                                         }
                                                         tv1.setText(output);
                                                         linearLayout.addView(tv1);
@@ -559,7 +563,7 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv2 = new TextView(context);
                                                         String output = "Allergies: ";
                                                         for (RelatedData data : allergies) {
-                                                            output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
                                                         }
                                                         tv2.setText(output);
                                                         linearLayout.addView(tv2);
@@ -568,7 +572,7 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv3 = new TextView(context);
                                                         String output = "Diagnosis: ";
                                                         for (RelatedData data : diagnosiss) {
-                                                            output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
                                                         }
                                                         tv3.setText(output);
                                                         linearLayout.addView(tv3);
@@ -577,7 +581,7 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv4 = new TextView(context);
                                                         String output = "Investigations: ";
                                                         for (RelatedData data : investigations) {
-                                                            output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
                                                         }
                                                         tv4.setText(output);
                                                         linearLayout.addView(tv4);
@@ -586,7 +590,7 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv5 = new TextView(context);
                                                         String output = "Drug Histories: ";
                                                         for (RelatedData data : drugHistories) {
-                                                            output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
                                                         }
                                                         tv5.setText(output);
                                                         linearLayout.addView(tv5);
@@ -595,7 +599,7 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv6 = new TextView(context);
                                                         String output = "Follow-ups: ";
                                                         for (RelatedData data : followups) {
-                                                            output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
                                                         }
                                                         tv6.setText(output);
                                                         linearLayout.addView(tv6);
@@ -604,7 +608,7 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv7 = new TextView(context);
                                                         String output = "Screenings: ";
                                                         for (RelatedData data : screenings) {
-                                                            output += ('\n' + data.getData() + ": " + data.getRemark());
+                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
                                                         }
                                                         tv7.setText(output);
                                                         linearLayout.addView(tv7);

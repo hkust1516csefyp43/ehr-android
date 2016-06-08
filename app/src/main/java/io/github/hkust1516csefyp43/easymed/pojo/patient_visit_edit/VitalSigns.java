@@ -2,6 +2,7 @@ package io.github.hkust1516csefyp43.easymed.pojo.patient_visit_edit;
 
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Louis on 6/4/16.
@@ -17,10 +18,28 @@ public class VitalSigns implements Serializable {
   private Integer spo2;               //%
   private Double weight;              //kg
   private Double height;              //m
-  private Integer bloodSugar;         //mg/dL
+  private Double bloodSugar;         //mg/dL
+  private Double headCircumference;
+  private Date ldd;
 
   public VitalSigns() {
     //default empty constructor
+  }
+
+  public Date getLdd() {
+    return ldd;
+  }
+
+  public void setLdd(Date ldd) {
+    this.ldd = ldd;
+  }
+
+  public Double getHeadCircumference() {
+    return headCircumference;
+  }
+
+  public void setHeadCircumference(Double headCircumference) {
+    this.headCircumference = headCircumference;
   }
 
   public Integer getSystolic() {
@@ -87,11 +106,11 @@ public class VitalSigns implements Serializable {
     this.height = height;
   }
 
-  public Integer getBloodSugar() {
+  public Double getBloodSugar() {
     return bloodSugar;
   }
 
-  public void setBloodSugar(Integer bloodSugar) {
+  public void setBloodSugar(Double bloodSugar) {
     this.bloodSugar = bloodSugar;
   }
 

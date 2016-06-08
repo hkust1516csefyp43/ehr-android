@@ -1709,6 +1709,9 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       triage.setHeight(vitalSigns.getHeight());
       triage.setTemperature(vitalSigns.getTemperature());
       triage.setSpo2(vitalSigns.getSpo2());
+      triage.setHeadCircumference(vitalSigns.getHeadCircumference());
+      triage.setBloodSugar(vitalSigns.getBloodSugar());
+      triage.setLastDewormingTabletDate(vitalSigns.getLdd());
     }
     if (chiefComplaint != null) {
       triage.setChiefComplaints(chiefComplaint);

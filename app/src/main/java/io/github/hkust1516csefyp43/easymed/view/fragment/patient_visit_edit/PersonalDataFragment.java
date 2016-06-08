@@ -342,19 +342,6 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       }
     });
 
-//    tvBirthday = (TextView) view.findViewById(R.id.tvBirthday);
-//    GregorianCalendar gc = new GregorianCalendar();
-//    birthday[0] = gc.get(Calendar.YEAR);
-//    birthday[1] = gc.get(Calendar.MONTH);
-//    birthday[2] = gc.get(Calendar.DAY_OF_MONTH);
-//    if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null &&patient.getBirthDate() != null) {
-//      birthday[0] = patient.getBirthYear();
-//      birthday[1] = patient.getBirthMonth();
-//      birthday[2] = patient.getBirthDate();
-//    }
-//    String date = "" + birthday[0] + "/" + (birthday[1] + 1) + "/" + birthday[2];
-//    tvBirthday.setText(date);
-
 
     if (etAgeYear != null && etAgeMonth != null && etAgeWeek != null && tvBirthday != null) {
       TextWatcher textWatcher = new TextWatcher() {
@@ -424,18 +411,18 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     }
 
     if (patient != null && patient.getBirthYear() != null && patient.getBirthMonth() != null && patient.getBirthDate() != null) {
-      //set tvAge
-      int[] ageArray = Util.birthdayToAgeYMW(birthday[0], birthday[1], birthday[2]);
-      etAgeYear.setText(String.valueOf(ageArray[0]));
-      etAgeMonth.setText(String.valueOf(ageArray[1]));
-      etAgeWeek.setText(String.valueOf(ageArray[2]));
       //set tvBirthday
       birthday[0] = patient.getBirthYear();
       birthday[1] = patient.getBirthMonth();
       birthday[2] = patient.getBirthDate();
       String date = "" + birthday[0] + "/" + (birthday[1] + 1) + "/" + birthday[2];
-      Log.d(TAG, date);
       tvBirthday.setText(date);
+      Log.d(TAG, date);
+      //set etAge
+      int[] ageArray = Util.birthdayToAgeYMW(birthday[0], birthday[1], birthday[2]);
+      etAgeYear.setText(String.valueOf(ageArray[0]));
+      etAgeMonth.setText(String.valueOf(ageArray[1]));
+      etAgeWeek.setText(String.valueOf(ageArray[2]));
     } else {
       if (tvBirthday != null)
         tvBirthday.setText("Click to select date");
