@@ -28,6 +28,11 @@ public class Prescription implements Serializable {
     //empty constructor
   }
 
+  public Prescription(String medicationId, String detail) {
+    this.medicationId = medicationId;
+    this.detail = detail;
+  }
+
   public String getId() {
     return id;
   }

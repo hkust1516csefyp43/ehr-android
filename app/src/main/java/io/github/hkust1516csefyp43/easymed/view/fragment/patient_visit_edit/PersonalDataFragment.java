@@ -280,8 +280,6 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     ivProfilePic = (ImageView) view.findViewById(R.id.ivProfilePic);
     //TODO get attachment by id
 
-
-    //TODO from DB
     sGender = (Spinner) view.findViewById(R.id.sGender);
     final List<Gender> genders = Cache.DatabaseData.getGenders(getContext());
     genderArray = new String[genders.size()];
@@ -292,6 +290,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     }
     ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, genderArray);
     sGender.setAdapter(adapter1);
+
 //    if(patient != null && patient.getGenderId() != null){
 //
 //    }
