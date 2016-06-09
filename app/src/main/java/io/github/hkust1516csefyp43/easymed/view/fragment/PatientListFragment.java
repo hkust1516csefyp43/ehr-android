@@ -209,7 +209,9 @@ public class PatientListFragment extends Fragment{
                     View emptyListView = getActivity().getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
                     box.addCustomView(emptyListView, "emptyPatients");    //TODO put tag to Const.java
                     box.showCustomView("emptyPatients");
-                  }catch (NullPointerException e){
+                  } catch (NullPointerException e) {  //for some reason it sometimes cannot inflate the empty UI, so I just show nothing (which is basically the same)
+                    e.printStackTrace();
+                    box.hideAll();
                     Log.d(TAG, "cant inflate empty list view");
                   }
                 } else {
