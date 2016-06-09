@@ -16,6 +16,7 @@ import java.util.List;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Query;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
@@ -306,6 +307,29 @@ public class Cache {
 
     public static void deleteGenders(Context context) {
       deleteSomething(context, Const.CacheKey.GENDERS);
+    }
+
+    public static void setMedications(Context context, List<Medication> medications) {
+      Gson gson = new GsonBuilder().create();
+      String jsonString = gson.toJson(medications);
+      setString(context, jsonString, Const.CacheKey.MEDICATIONS);
+    }
+
+    public static List<Medication> getMedications(Context context) {
+      String values = getString(context, Const.CacheKey.MEDICATIONS, null);
+      if (values != null) {
+        try {
+          List<Medication> lp = new Gson().fromJson(values, new TypeToken<List<Medication>>(){}.getType());
+          return lp;
+        } catch (JsonSyntaxException e) {
+          e.printStackTrace();
+        }
+      }
+      return null;
+    }
+
+    public static void deleteMedications(Context context) {
+      deleteSomething(context, Const.CacheKey.MEDICATIONS);
     }
   }
 }
