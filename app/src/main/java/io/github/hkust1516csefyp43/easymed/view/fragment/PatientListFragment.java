@@ -225,7 +225,7 @@ public class PatientListFragment extends Fragment{
         });
         break;
       case Const.PatientListPageId.NOT_YET:
-        Call<List<Patient>> patientList2 = patientService.getPatients("1", clinicId, null, null, null, null, null, null, null, null, null, null);
+        Call<List<Patient>> patientList2 = patientService.getPatients("1", clinicId, null, null, null, null, null, null, null, null, null, "last_name");
         patientList2.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {

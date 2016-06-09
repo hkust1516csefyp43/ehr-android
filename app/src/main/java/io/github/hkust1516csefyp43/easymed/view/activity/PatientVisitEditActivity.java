@@ -187,7 +187,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
         @Override
         public void onFailure(Call<Clinic> call, Throwable t) {
-
+          t.printStackTrace();
         }
       });
     }
@@ -676,6 +676,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                     @Override
                                     public void onFailure(Call<Triage> call, Throwable t) {
+                                      t.printStackTrace();
                                       progressDialog.dismiss();
                                       new AlertDialog.Builder(PatientVisitEditActivity.this)
                                           .setTitle("Error")
@@ -694,6 +695,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                               @Override
                               public void onFailure(Call<Visit> call, Throwable t) {
+                                t.printStackTrace();
                                 progressDialog.dismiss();
                                 new AlertDialog.Builder(PatientVisitEditActivity.this)
                                     .setTitle("Error")
@@ -716,6 +718,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                     @Override
                     public void onFailure(Call<Patient> call, Throwable t) {
+                      t.printStackTrace();
                       progressDialog.dismiss();
                       new AlertDialog.Builder(PatientVisitEditActivity.this)
                           .setTitle("Error")
@@ -792,6 +795,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                     @Override
                                     public void onFailure(Call<Triage> call, Throwable t) {
+                                      t.printStackTrace();
                                       progressDialog.dismiss();
                                       //TODO
                                     }
@@ -802,6 +806,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                             @Override
                             public void onFailure(Call<Visit> call, Throwable t) {
+                              t.printStackTrace();
                               progressDialog.dismiss();
                               //TODO
                             }
@@ -812,6 +817,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                     @Override
                     public void onFailure(Call<Patient> call, Throwable t) {
+                      t.printStackTrace();
                       progressDialog.dismiss();
                       new AlertDialog.Builder(PatientVisitEditActivity.this)
                           .setTitle("Error")
@@ -858,6 +864,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                           @Override
                           public void onFailure(Call<Document> call, Throwable t) {
+                            t.printStackTrace();
 
                           }
                         });
@@ -869,7 +876,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                           @Override
                           public void onFailure(Call<Document> call, Throwable t) {
-
+                            t.printStackTrace();
                           }
                         });
                         fhCall.enqueue(new Callback<Document>() {
@@ -880,7 +887,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                           @Override
                           public void onFailure(Call<Document> call, Throwable t) {
-
+                            t.printStackTrace();
                           }
                         });
                         pmhCall.enqueue(new Callback<Document>() {
@@ -891,7 +898,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                           @Override
                           public void onFailure(Call<Document> call, Throwable t) {
-
+                            t.printStackTrace();
                           }
                         });
 
@@ -937,6 +944,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                   @Override
                                   public void onFailure(Call<Triage> call, Throwable t) {
+                                    t.printStackTrace();
                                     progressDialog.dismiss();
                                     new AlertDialog.Builder(PatientVisitEditActivity.this)
                                         .setTitle("Error")
@@ -985,6 +993,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                         @Override
                                         public void onFailure(Call<RelatedData> call, Throwable t) {
+                                          t.printStackTrace();
                                           progressDialog.dismiss();
                                           new AlertDialog.Builder(PatientVisitEditActivity.this)
                                               .setTitle("Error")
@@ -1037,6 +1046,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                                     @Override
                                                     public void onFailure(Call<Prescription> call, Throwable t) {
+                                                      t.printStackTrace();
                                                       progressDialog.dismiss();
                                                     }
                                                   });
@@ -1077,6 +1087,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                           @Override
                                           public void onFailure(Call<Prescription> call, Throwable t) {
+                                            t.printStackTrace();
                                             progressDialog.dismiss();
                                           }
                                         });
@@ -1088,6 +1099,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                   @Override
                                   public void onFailure(Call<Consultation> call, Throwable t) {
+                                    t.printStackTrace();
                                     progressDialog.dismiss();
                                     new AlertDialog.Builder(PatientVisitEditActivity.this)
                                         .setTitle("Error")
@@ -1106,6 +1118,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                             @Override
                             public void onFailure(Call<Visit> call, Throwable t) {
+                              t.printStackTrace();
                               progressDialog.dismiss();
                               new AlertDialog.Builder(PatientVisitEditActivity.this)
                                   .setTitle("Error")
@@ -1127,6 +1140,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                     @Override
                     public void onFailure(Call<Patient> call, Throwable t) {
+                      t.printStackTrace();
                       progressDialog.dismiss();
                       new AlertDialog.Builder(PatientVisitEditActivity.this)
                           .setTitle("Error")
@@ -1165,7 +1179,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                             @Override
                             public void onFailure(Call<Document> call, Throwable t) {
-
+                              t.printStackTrace();
                             }
                           });
                           shCall.enqueue(new Callback<Document>() {
@@ -1176,7 +1190,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                             @Override
                             public void onFailure(Call<Document> call, Throwable t) {
-
+                              t.printStackTrace();
                             }
                           });
                           fhCall.enqueue(new Callback<Document>() {
@@ -1187,7 +1201,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                             @Override
                             public void onFailure(Call<Document> call, Throwable t) {
-
+                              t.printStackTrace();
                             }
                           });
                           pmhCall.enqueue(new Callback<Document>() {
@@ -1198,7 +1212,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                             @Override
                             public void onFailure(Call<Document> call, Throwable t) {
-
+                              t.printStackTrace();
                             }
                           });
 
@@ -1248,6 +1262,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                     @Override
                                     public void onFailure(Call<Triage> call, Throwable t) {
+                                      t.printStackTrace();
                                       progressDialog.dismiss();
                                       //TODO error dialog
                                     }
@@ -1295,6 +1310,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                           @Override
                                           public void onFailure(Call<RelatedData> call, Throwable t) {
+                                            t.printStackTrace();
                                             progressDialog.dismiss();
                                           }
                                         });
@@ -1337,6 +1353,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                                       @Override
                                                       public void onFailure(Call<Prescription> call, Throwable t) {
+                                                        t.printStackTrace();
                                                         progressDialog.dismiss();
                                                       }
                                                     });
@@ -1376,6 +1393,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                             @Override
                                             public void onFailure(Call<Prescription> call, Throwable t) {
+                                              t.printStackTrace();
                                               progressDialog.dismiss();
                                             }
                                           });
@@ -1387,6 +1405,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                     @Override
                                     public void onFailure(Call<Consultation> call, Throwable t) {
+                                      t.printStackTrace();
                                       progressDialog.dismiss();
                                     }
                                   });
@@ -1395,6 +1414,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                               @Override
                               public void onFailure(Call<Visit> call, Throwable t) {
+                                t.printStackTrace();
                                 progressDialog.dismiss();
                                 //TODO error dialog
                               }
@@ -1441,7 +1461,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                             @Override
                             public void onFailure(Call<Document> call, Throwable t) {
-
+                              t.printStackTrace();
                             }
                           });
                           shCall.enqueue(new Callback<Document>() {
@@ -1452,7 +1472,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                             @Override
                             public void onFailure(Call<Document> call, Throwable t) {
-
+                              t.printStackTrace();
                             }
                           });
                           fhCall.enqueue(new Callback<Document>() {
@@ -1463,7 +1483,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                             @Override
                             public void onFailure(Call<Document> call, Throwable t) {
-
+                              t.printStackTrace();
                             }
                           });
                           pmhCall.enqueue(new Callback<Document>() {
@@ -1474,7 +1494,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                             @Override
                             public void onFailure(Call<Document> call, Throwable t) {
-
+                              t.printStackTrace();
                             }
                           });
                           Visit visit = generateVisit(response.body(), pd, Const.NextStation.PHARMACY);
@@ -1519,6 +1539,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                     @Override
                                     public void onFailure(Call<Triage> call, Throwable t) {
+                                      t.printStackTrace();
                                       progressDialog.dismiss();
                                       //TODO error dialog
                                     }
@@ -1570,6 +1591,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                           @Override
                                           public void onFailure(Call<RelatedData> call, Throwable t) {
+                                            t.printStackTrace();
                                             progressDialog.dismiss();
                                           }
                                         });
@@ -1612,6 +1634,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                                       @Override
                                                       public void onFailure(Call<Prescription> call, Throwable t) {
+                                                        t.printStackTrace();
                                                         progressDialog.dismiss();
                                                       }
                                                     });
@@ -1651,6 +1674,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                             @Override
                                             public void onFailure(Call<Prescription> call, Throwable t) {
+                                              t.printStackTrace();
                                               progressDialog.dismiss();
                                             }
                                           });
@@ -1662,6 +1686,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                     @Override
                                     public void onFailure(Call<Consultation> call, Throwable t) {
+                                      t.printStackTrace();
                                       progressDialog.dismiss();
                                     }
                                   });
@@ -1695,102 +1720,102 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
               Log.d(TAG, "New patient new visit new triage");
               Patient patient = generatePatient(personalData);
               if (patient!= null){
-                Call<Patient> patientCall = patientService.addPatient("<html><head></head><body></body></html>", patient);
+                Call<Patient> patientCall = patientService.addPatient("1", patient);
                 patientCall.enqueue(new Callback<Patient>() {
                   @Override
                   public void onResponse(Call<Patient> call, Response<Patient> response) {
-                    Log.d(TAG, "patient call response code: " + response.code());
-                    if (response.code() < 500 && response.code() >= 400) {
-                      try {
-                        Log.d(TAG, response.errorBody().string());
-                      } catch (IOException e) {
-                        e.printStackTrace();
-                      }
-                    }
-                    Log.d(TAG, response.body().toString());
-                    if (response.body() == null || response.code() > 299 || response.code() < 200) {
-                      onFailure(call, new Throwable("No response"));
+                    if (response == null) {
+                      onFailure(call, new Throwable("Empty response"));
+                    } else if (response.code() >= 300 || response.code() < 200) {
+                      onFailure(call, new Throwable("Error from server: " + response.code()));
                     } else {
-                      //TODO create 4 new documents
-                      List<DocumentType> documentTypeList = Cache.DatabaseData.getDocumentTypes(getBaseContext());
-                      for (DocumentType documentType:documentTypeList) {
-                        Call<Document> documentCall = documentService.addDocument("<html><head></head><body></body></html>", new Document("", documentType.getId(), response.body().getPatientId()));
-                        documentCall.enqueue(new Callback<Document>() {
-                          @Override
-                          public void onResponse(Call<Document> call, Response<Document> response) {
-                            if (response == null) {
-                              onFailure(call, new Throwable("Empty response"));
-                            } else if (response.code() >= 300 || response.code() < 200) {
-                              onFailure(call, new Throwable("Wrong: " + response.code()));
-                            } else if (response.body() == null) {
-                              onFailure(call, new Throwable("Empty response body"));
-                            } //else >> successful >> idc
-                          }
+                      if (response.body() == null || response.code() > 299 || response.code() < 200) {
+                        onFailure(call, new Throwable("No response"));
+                      } else {
+                        //TODO create 4 new documents
+                        List<DocumentType> documentTypeList = Cache.DatabaseData.getDocumentTypes(getBaseContext());
+                        for (DocumentType documentType:documentTypeList) {
+                          Call<Document> documentCall = documentService.addDocument("1", new Document("<html><head></head><body></body></html>", documentType.getId(), response.body().getPatientId()));
+                          documentCall.enqueue(new Callback<Document>() {
+                            @Override
+                            public void onResponse(Call<Document> call, Response<Document> response) {
+                              if (response == null) {
+                                onFailure(call, new Throwable("Empty response"));
+                              } else if (response.code() >= 300 || response.code() < 200) {
+                                onFailure(call, new Throwable("Wrong: " + response.code()));
+                              } else if (response.body() == null) {
+                                onFailure(call, new Throwable("Empty response body"));
+                              } //else >> successful >> idc
+                            }
 
-                          @Override
-                          public void onFailure(Call<Document> call, Throwable t) {
-                            t.printStackTrace();
-                          }
-                        });
-                      }
-                      //POST visit
-                      Visit visit = generateVisit(response.body(), pd, Const.NextStation.CONSULTATION);
-                      if (visit != null) {
-                        Call<Visit> visitCall = visitService.addVisit("1", visit);
-                        visitCall.enqueue(new Callback<Visit>() {
-                          @Override
-                          public void onResponse(Call<Visit> call, Response<Visit> response) {
-                            Log.d(TAG, "visit call response code: " + response.code());
-                            if (response == null) {
-                              onFailure(call, new Throwable("Empty response"));
-                            } else if (response.code() >= 300 || response.code() < 200) {
-                              onFailure(call, new Throwable("error from server"));
-                            } else {
-                              Triage triage = generateTriage(response.body(), vs, cc, tr);
-                              if (triage != null) {
-                                //POST triage
-                                Call<Triage> triageCall = triageService.addTriage("1", triage);
-                                triageCall.enqueue(new Callback<Triage>() {
-                                  @Override
-                                  public void onResponse(Call<Triage> call, Response<Triage> response) {
-                                    Log.d(TAG, "triage call response code: " + response.code());
-                                    if (response.code() < 500 && response.code() >= 400) {
-                                      try {
-                                        Log.d(TAG, response.errorBody().string());
-                                      } catch (IOException e) {
-                                        e.printStackTrace();
+                            @Override
+                            public void onFailure(Call<Document> call, Throwable t) {
+                              t.printStackTrace();
+                            }
+                          });
+                        }
+                        //POST visit
+                        Visit visit = generateVisit(response.body(), pd, Const.NextStation.CONSULTATION);
+                        if (visit != null) {
+                          Call<Visit> visitCall = visitService.addVisit("1", visit);
+                          visitCall.enqueue(new Callback<Visit>() {
+                            @Override
+                            public void onResponse(Call<Visit> call, Response<Visit> response) {
+                              Log.d(TAG, "visit call response code: " + response.code());
+                              if (response == null) {
+                                onFailure(call, new Throwable("Empty response"));
+                              } else if (response.code() >= 300 || response.code() < 200) {
+                                onFailure(call, new Throwable("error from server"));
+                              } else {
+                                Triage triage = generateTriage(response.body(), vs, cc, tr);
+                                if (triage != null) {
+                                  //POST triage
+                                  Call<Triage> triageCall = triageService.addTriage("1", triage);
+                                  triageCall.enqueue(new Callback<Triage>() {
+                                    @Override
+                                    public void onResponse(Call<Triage> call, Response<Triage> response) {
+                                      Log.d(TAG, "triage call response code: " + response.code());
+                                      if (response.code() < 500 && response.code() >= 400) {
+                                        try {
+                                          Log.d(TAG, response.errorBody().string());
+                                        } catch (IOException e) {
+                                          e.printStackTrace();
+                                        }
                                       }
+                                      progressDialog.dismiss();
+                                      finish();
                                     }
-                                    progressDialog.dismiss();
-                                    finish();
-                                  }
 
-                                  @Override
-                                  public void onFailure(Call<Triage> call, Throwable t) {
-                                    progressDialog.dismiss();
-                                  }
-                                });
+                                    @Override
+                                    public void onFailure(Call<Triage> call, Throwable t) {
+                                      progressDialog.dismiss();
+                                    }
+                                  });
+                                }
                               }
                             }
-                          }
 
-                          @Override
-                          public void onFailure(Call<Visit> call, Throwable t) {
-                            progressDialog.dismiss();
-                          }
-                        });
+                            @Override
+                            public void onFailure(Call<Visit> call, Throwable t) {
+                              t.printStackTrace();
+                              progressDialog.dismiss();
+                            }
+                          });
+                        }
                       }
                     }
                   }
 
                   @Override
                   public void onFailure(Call<Patient> call, Throwable t) {
+                    t.printStackTrace();
                     progressDialog.dismiss();
                   }
                 });
 
 
               } else {
+                Log.d(TAG, "What the hack? generate patient generate empty patient?");
                 //TODO
               }
 
@@ -1915,6 +1940,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                       @Override
                                       public void onFailure(Call<RelatedData> call, Throwable t) {
+                                        t.printStackTrace();
                                         progressDialog.dismiss();
                                       }
                                     });
@@ -1957,6 +1983,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                                   @Override
                                                   public void onFailure(Call<Prescription> call, Throwable t) {
+                                                    t.printStackTrace();
                                                     progressDialog.dismiss();
                                                   }
                                                 });
@@ -1996,6 +2023,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                         @Override
                                         public void onFailure(Call<Prescription> call, Throwable t) {
+                                          t.printStackTrace();
                                           progressDialog.dismiss();
                                         }
                                       });
@@ -2007,6 +2035,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                 @Override
                                 public void onFailure(Call<Consultation> call, Throwable t) {
+                                  t.printStackTrace();
                                   progressDialog.dismiss();
                                 }
                               });
@@ -2015,6 +2044,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                           @Override
                           public void onFailure(Call<Visit> call, Throwable t) {
+                            t.printStackTrace();
                             progressDialog.dismiss();
                             //TODO error dialog
                           }
