@@ -87,6 +87,7 @@ public class Const {
     public static final String QUERIES_FROM_LOCAL = "4VRKhNFW8KnJTaSs";
     public static final String DOCUMENT_TYPES = "cc1wBYa7vmHtGVe3";
     public static final String GENDERS = "96VrgNXBWHQtJkfc";
+    public static final String MEDICATIONS = "jusGJldnJUo129F7";
   }
 
   public static class Database {

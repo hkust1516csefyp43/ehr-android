@@ -9,12 +9,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -25,17 +23,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReadWriteLock;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Consultation;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Document;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
+import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
@@ -56,10 +55,6 @@ public class VisitDetailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private FloatingActionButton floatingActionButton;
-    private ProgressBar progressBar;
-
-    private int howManyStuffToGet = 2;
-    private int stuffGot = 0;
 
     /**
      * Difference between this fabOn and the fabOn in PatientVisitViewActivity (PVVA): the code starts
@@ -76,12 +71,12 @@ public class VisitDetailFragment extends Fragment {
     private Consultation consultation;
     private List<RelatedData> allRelatedData;
 
-    private List<Prescription> prescriptions;
+    private List<Prescription> allPrescriptions;
 
     private List<RelatedData> drugHistories;
     private List<RelatedData> screenings;
     private List<RelatedData> allergies;
-    private List<RelatedData> diagnosiss;
+    private List<RelatedData> diagnosis;
     private List<RelatedData> investigations;
     private List<RelatedData> advices;
     private List<RelatedData> followups;
@@ -166,13 +161,6 @@ public class VisitDetailFragment extends Fragment {
         }
         linearLayout = (LinearLayout) view.findViewById(R.id.ll_visit_info);
         if (linearLayout != null) {
-//            progressBar = new ProgressBar(getContext());
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
-//            params.weight = 1.0f;
-//            params.gravity = Gravity.CENTER;
-//            progressBar.setVisibility(View.VISIBLE);
-//            progressBar.setLayoutParams(params);
-//            linearLayout.addView(progressBar);
 
             //TODO fix sometimes triage first, sometimes consultation first (race condition)
 
@@ -193,7 +181,6 @@ public class VisitDetailFragment extends Fragment {
             triageCall.enqueue(new Callback<List<Triage>>() {
                 @Override
                 public void onResponse(Call<List<Triage>> call, Response<List<Triage>> response) {
-//                    stuffGot++;
                     Log.d(TAG, visit.getId());
                     if (response.body() != null && response.body().size() != 0) {
                         triage = response.body().get(0);
@@ -297,11 +284,6 @@ public class VisitDetailFragment extends Fragment {
                     } else {
                         onFailure(null, null);
                     }
-//                    if (stuffGot >= howManyStuffToGet) {
-//                        if (progressBar != null) {
-//                            progressBar.setVisibility(View.GONE);
-//                        }
-//                    }
 
                     //Consultation
                     v2API.consultations consultations = retrofit.create(v2API.consultations.class);
@@ -316,6 +298,7 @@ public class VisitDetailFragment extends Fragment {
                                 if (consultation != null) {
                                     final Context context = getContext();
                                     if (context != null) {
+                                        final List<Medication> medicationList = Cache.DatabaseData.getMedications(context);
                                         TextView tvConsultationTitle = new TextView(context);
                                         tvConsultationTitle.setText("Consultation");
                                         tvConsultationTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -525,13 +508,12 @@ public class VisitDetailFragment extends Fragment {
                                         relatedDataCall.enqueue(new Callback<List<RelatedData>>() {
                                             @Override
                                             public void onResponse(Call<List<RelatedData>> call, Response<List<RelatedData>> response) {
-//                                        stuffGot++;
 
                                                 if (response.body() != null && response.body().size() > 0) {
                                                     allRelatedData = response.body();
                                                     advices = new ArrayList<RelatedData>();
                                                     allergies = new ArrayList<RelatedData>();
-                                                    diagnosiss = new ArrayList<RelatedData>();
+                                                    diagnosis = new ArrayList<RelatedData>();
                                                     drugHistories = new ArrayList<RelatedData>();
                                                     followups = new ArrayList<RelatedData>();
                                                     investigations = new ArrayList<RelatedData>();
@@ -543,7 +525,7 @@ public class VisitDetailFragment extends Fragment {
                                                         } else if (r.getCategory() == Const.RelatedDataCategory.ALLERGY) {
                                                             allergies.add(r);
                                                         } else if (r.getCategory() == Const.RelatedDataCategory.DIAGNOSIS) {
-                                                            diagnosiss.add(r);
+                                                            diagnosis.add(r);
                                                         } else if (r.getCategory() == Const.RelatedDataCategory.DRUG_HISTORY) {
                                                             drugHistories.add(r);
                                                         } else if (r.getCategory() == Const.RelatedDataCategory.FOLLOW_UP) {
@@ -559,7 +541,11 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv1 = new TextView(context);
                                                         String output = "Advices: ";
                                                         for (RelatedData data : advices) {
-                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
+                                                            if (data.getRemark() == null) {
+                                                                output += ("\n\t" + data.getData());
+                                                            } else{
+                                                                output += ("\n\t" + data.getData() + ": " + data.getRemark());
+                                                            }
                                                         }
                                                         tv1.setText(output);
                                                         linearLayout.addView(tv1);
@@ -568,17 +554,23 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv2 = new TextView(context);
                                                         String output = "Allergies: ";
                                                         for (RelatedData data : allergies) {
-                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
-                                                        }
+                                                            if (data.getRemark() == null) {
+                                                                output += ("\n\t" + data.getData());
+                                                            } else{
+                                                                output += ("\n\t" + data.getData() + ": " + data.getRemark());
+                                                            }                                                        }
                                                         tv2.setText(output);
                                                         linearLayout.addView(tv2);
                                                     }
-                                                    if (diagnosiss.size() > 0) {
+                                                    if (diagnosis.size() > 0) {
                                                         TextView tv3 = new TextView(context);
                                                         String output = "Diagnosis: ";
-                                                        for (RelatedData data : diagnosiss) {
-                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
-                                                        }
+                                                        for (RelatedData data : diagnosis) {
+                                                            if (data.getRemark() == null) {
+                                                                output += ("\n\t" + data.getData());
+                                                            } else{
+                                                                output += ("\n\t" + data.getData() + ": " + data.getRemark());
+                                                            }                                                        }
                                                         tv3.setText(output);
                                                         linearLayout.addView(tv3);
                                                     }
@@ -586,8 +578,11 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv4 = new TextView(context);
                                                         String output = "Investigations: ";
                                                         for (RelatedData data : investigations) {
-                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
-                                                        }
+                                                            if (data.getRemark() == null) {
+                                                                output += ("\n\t" + data.getData());
+                                                            } else{
+                                                                output += ("\n\t" + data.getData() + ": " + data.getRemark());
+                                                            }                                                        }
                                                         tv4.setText(output);
                                                         linearLayout.addView(tv4);
                                                     }
@@ -595,7 +590,16 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv5 = new TextView(context);
                                                         String output = "Drug Histories: ";
                                                         for (RelatedData data : drugHistories) {
-                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
+                                                            if (medicationList != null){
+                                                                for (Medication m: medicationList){
+                                                                    if (data.getData().equals(m.getMedicationId())) {
+                                                                        if (data.getRemark() == null) {
+                                                                            output += ("\n\t" + data.getData());
+                                                                        } else{
+                                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
+                                                                        }                                                                    }
+                                                                }
+                                                            }
                                                         }
                                                         tv5.setText(output);
                                                         linearLayout.addView(tv5);
@@ -604,8 +608,11 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv6 = new TextView(context);
                                                         String output = "Follow-ups: ";
                                                         for (RelatedData data : followups) {
-                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
-                                                        }
+                                                            if (data.getRemark() == null) {
+                                                                output += ("\n\t" + data.getData());
+                                                            } else{
+                                                                output += ("\n\t" + data.getData() + ": " + data.getRemark());
+                                                            }                                                        }
                                                         tv6.setText(output);
                                                         linearLayout.addView(tv6);
                                                     }
@@ -613,19 +620,15 @@ public class VisitDetailFragment extends Fragment {
                                                         TextView tv7 = new TextView(context);
                                                         String output = "Screenings: ";
                                                         for (RelatedData data : screenings) {
-                                                            output += ("\n\t" + data.getData() + ": " + data.getRemark());
-                                                        }
+                                                            if (data.getRemark() == null) {
+                                                                output += ("\n\t" + data.getData());
+                                                            } else{
+                                                                output += ("\n\t" + data.getData() + ": " + data.getRemark());
+                                                            }                                                        }
                                                         tv7.setText(output);
                                                         linearLayout.addView(tv7);
                                                     }
                                                 }
-
-
-//                                        if (stuffGot >= howManyStuffToGet) {
-//                                            if (progressBar != null) {
-//                                                progressBar.setVisibility(View.GONE);
-//                                            }
-//                                        }
                                             }
 
                                             @Override
@@ -636,11 +639,31 @@ public class VisitDetailFragment extends Fragment {
 
                                         //prescription call
                                         v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
-                                        Call<List<Prescription>> prescriptions = prescriptionService.getPrescriptions("1", null, null, consultation.getId(), null, null, null, null);
+                                        final Call<List<Prescription>> prescriptions = prescriptionService.getPrescriptions("1", null, null, consultation.getId(), null, null, null, null);
                                         prescriptions.enqueue(new Callback<List<Prescription>>() {
                                             @Override
                                             public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
                                                 //TODO fill the UI
+                                                if (response.body() != null && response.body().size() > 0) {
+                                                    allPrescriptions = response.body();
+                                                    String output = "Prescriptions: ";
+                                                    for (Prescription p: allPrescriptions){
+                                                        if (medicationList != null){
+                                                            for (Medication m: medicationList){
+                                                                if (p.getMedicationId().equals(m.getMedicationId())) {
+                                                                    if (p.getDetail() != null){
+                                                                        output += ("\n\t" + m.getMedication() + ": " + p.getDetail());
+                                                                    } else{
+                                                                        output += ("\n\t" + m.getMedication());
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    TextView tvPrescription = new TextView(context);
+                                                    tvPrescription.setText(output);
+                                                    linearLayout.addView(tvPrescription);
+                                                }
                                             }
 
                                             @Override
@@ -670,29 +693,6 @@ public class VisitDetailFragment extends Fragment {
             });
         }
         return view;
-    }
-
-    private void getOtherStuff(Retrofit retrofit) {
-        if (consultation != null && patient != null) {
-            //TODO get prescriptions
-            v2API.prescriptions prescriptionService = retrofit.create(v2API.prescriptions.class);
-            Call<List<Prescription>> prescriptions = prescriptionService.getPrescriptions("1", null, null, consultation.getId(), null, null, null, null);
-            prescriptions.enqueue(new Callback<List<Prescription>>() {
-                @Override
-                public void onResponse(Call<List<Prescription>> call, Response<List<Prescription>> response) {
-                    //TODO fill the UI
-                }
-
-                @Override
-                public void onFailure(Call<List<Prescription>> call, Throwable t) {
-
-                }
-            });
-
-            //TODO get related data
-            v2API.related_data relatedDataService = retrofit.create(v2API.related_data.class);
-            Call<List<RelatedData>> educationCall = relatedDataService.getRelatedDataPlural("1", consultation.getId(), 7, null, null, null, null, null);
-        }
     }
 
     @Override

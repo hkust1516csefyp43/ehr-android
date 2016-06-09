@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -43,6 +44,7 @@ import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListene
 import io.github.hkust1516csefyp43.easymed.listener.OnPatientsFetchedListener;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
@@ -76,10 +78,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (cl.isFirstRun()) {
       cl.getLogDialog().show();
     }
-
-    Log.d(TAG, "before");
-    new ThingsToDoInBackground().execute();
-    Log.d(TAG, "after");
 
     currentUser = Cache.CurrentUser.getUser(getApplicationContext());
 
@@ -147,6 +145,14 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     }
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+    Log.d(TAG, "before");
+    new ThingsToDoInBackground().execute();
+    Log.d(TAG, "after");
+  }
+
   private void cacheData(final Context context) {
     OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
     ohc1.readTimeout(1, TimeUnit.MINUTES);
@@ -174,6 +180,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       @Override
       public void onFailure(Call<List<DocumentType>> call, Throwable t) {
         t.printStackTrace();
+        Toast.makeText(context, "Cannot get document types...", Toast.LENGTH_SHORT);
       }
     });
 
@@ -197,11 +204,34 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       @Override
       public void onFailure(Call<List<Gender>> call, Throwable t) {
         t.printStackTrace();
+        Toast.makeText(context, "Cannot get gender list...", Toast.LENGTH_SHORT);
         //TODO try fetch again
       }
     });
 
     //3. Cache Blood Types
+    //4. Cache Medications
+    v2API.medications medicationsService = retrofit.create(v2API.medications.class);
+    Call<List<Medication>> medicationsCall = medicationsService.getMedications("1", null, null, null, null, null, null);
+    medicationsCall.enqueue(new Callback<List<Medication>>() {
+      @Override
+      public void onResponse(Call<List<Medication>> call, Response<List<Medication>> response) {
+        if (response == null) {
+          onFailure(call, new Throwable("Empty response"));
+        } else if (response.code() >= 300 || response.code() < 200) {
+          onFailure(call, new Throwable("Error from server: " + response.code()));
+        } else if (response.body().size() <= 0){
+          onFailure(call, new Throwable("Empty list of medications"));
+        } else {
+          Cache.DatabaseData.setMedications(getBaseContext(), response.body());
+        }
+      }
+
+      @Override
+      public void onFailure(Call<List<Medication>> call, Throwable t) {
+        Toast.makeText(context, "Cannot get medication list...", Toast.LENGTH_SHORT);
+      }
+    });
   }
 
   @Override
@@ -359,7 +389,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
         @Override
         public void onFailure(Call<List<Notification>> call, Throwable t) {
-
+          Toast.makeText(getApplicationContext(), "Cannot get notification list...", Toast.LENGTH_SHORT);
         }
       });
 
