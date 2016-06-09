@@ -183,7 +183,7 @@ public class PatientListFragment extends Fragment{
     switch (whichPage) {
       case Const.PatientListPageId.POST_TRIAGE:
       case Const.PatientListPageId.PRE_CONSULTATION:
-        Call<List<Patient>> patientList = patientService.getPatients("1", clinicId, "2", null, null, null, null, null, null, null, Util.todayStringWithTimeZone(), null);
+        Call<List<Patient>> patientList = patientService.getPatients("1", clinicId, "2", null, null, null, null, null, null, null, Util.todayStringWithTimeZone(), "tag");
         patientList.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -267,7 +267,7 @@ public class PatientListFragment extends Fragment{
         break;
       case Const.PatientListPageId.POST_CONSULTATION:
       case Const.PatientListPageId.PRE_PHARMACY:
-        Call<List<Patient>> patientList3 = patientService.getPatients("1", clinicId, "3", null, null, null, null, null, null, null, Util.todayStringWithTimeZone(), null);
+        Call<List<Patient>> patientList3 = patientService.getPatients("1", clinicId, "3", null, null, null, null, null, null, null, Util.todayStringWithTimeZone(), "tag");
         patientList3.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
@@ -303,7 +303,7 @@ public class PatientListFragment extends Fragment{
         });
         break;
       case Const.PatientListPageId.POST_PHARMACY:
-        Call<List<Patient>> patientList4 = patientService.getPatients("1", clinicId, "1", null, null, null, null, null, null, null, Util.todayStringWithTimeZone(), null);
+        Call<List<Patient>> patientList4 = patientService.getPatients("1", clinicId, "1", null, null, null, null, null, null, null, Util.todayStringWithTimeZone(), "tag");
         patientList4.enqueue(new Callback<List<Patient>>() {
           @Override
           public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {

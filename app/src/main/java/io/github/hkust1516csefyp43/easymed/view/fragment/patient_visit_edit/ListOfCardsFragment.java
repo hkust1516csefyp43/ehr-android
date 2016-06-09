@@ -814,7 +814,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                       ArrayList<String> data = twoEditTextDialogCustomView.getData();
                       twoEditTextDialogCustomView.clearData();
                       Log.d("qqq141", data.toString());
-                      cardList.set(holder.getAdapterPosition(), new Card(data.get(0), data.get(1)));
+                      cardList.set(holder.getAdapterPosition(), new Card(data.get(0), data.get(1)));      //TODO crash @ PE
                       adapter.notifyDataSetChanged();
                     }
                   })

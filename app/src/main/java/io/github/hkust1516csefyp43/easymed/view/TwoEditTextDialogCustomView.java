@@ -88,6 +88,7 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
         list = suggestions.toArray(list);
         Log.d("qqq8", list.toString());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_selectable_list_item, list);
+        actv.setSingleLine(true);
         actv.setThreshold(1);
         actv.setAdapter(adapter);
       }

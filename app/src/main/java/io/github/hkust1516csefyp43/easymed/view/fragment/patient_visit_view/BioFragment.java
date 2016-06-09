@@ -17,7 +17,6 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
-import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListener;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.BloodType;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
@@ -34,8 +33,6 @@ public class BioFragment extends Fragment {
   public static final String TAG = BioFragment.class.getSimpleName();
   private Patient patient;
   private static String key = Const.BundleKey.READ_ONLY_PATIENT;
-
-  private OnFragmentInteractionListener mListener;
 
   private LinearLayout llPatientInfo;
 
@@ -154,7 +151,7 @@ public class BioFragment extends Fragment {
 
               @Override
               public void onFailure(Call<BloodType> call, Throwable t) {
-
+                t.printStackTrace();
               }
             });
           }
@@ -188,29 +185,16 @@ public class BioFragment extends Fragment {
             tvBioCreateTimeStamp.setText("First created: " + patient.getCreateTimeStamp());
             llPatientInfo.addView(tvBioCreateTimeStamp);
           }
+
+          //TODO buttons to read document
+
+
         }
       } else {
         //TODO some error message?
       }
     }//else there is nothing you can do
     return view;
-  }
-
-
-  @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-    if (context instanceof OnFragmentInteractionListener) {
-      mListener = (OnFragmentInteractionListener) context;
-    } else {
-      throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-    }
-  }
-
-  @Override
-  public void onDetach() {
-    super.onDetach();
-    mListener = null;
   }
 
 }
