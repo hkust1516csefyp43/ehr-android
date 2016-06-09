@@ -1695,7 +1695,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
               Log.d(TAG, "New patient new visit new triage");
               Patient patient = generatePatient(personalData);
               if (patient!= null){
-                Call<Patient> patientCall = patientService.addPatient("1", patient);
+                Call<Patient> patientCall = patientService.addPatient("<html><head></head><body></body></html>", patient);
                 patientCall.enqueue(new Callback<Patient>() {
                   @Override
                   public void onResponse(Call<Patient> call, Response<Patient> response) {
@@ -1714,7 +1714,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                       //TODO create 4 new documents
                       List<DocumentType> documentTypeList = Cache.DatabaseData.getDocumentTypes(getBaseContext());
                       for (DocumentType documentType:documentTypeList) {
-                        Call<Document> documentCall = documentService.addDocument("1", new Document("1", documentType.getId(), response.body().getPatientId()));
+                        Call<Document> documentCall = documentService.addDocument("<html><head></head><body></body></html>", new Document("", documentType.getId(), response.body().getPatientId()));
                         documentCall.enqueue(new Callback<Document>() {
                           @Override
                           public void onResponse(Call<Document> call, Response<Document> response) {
