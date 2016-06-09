@@ -257,6 +257,11 @@ public class VisitDetailFragment extends Fragment {
                                     tvTriageTemp.setText("Temperature: " + triage.getTemperature());
                                     linearLayout.addView(tvTriageTemp);
                                 }
+                                if (triage.getBloodSugar() != null) {
+                                    TextView tvTriageBloodSugar = new TextView(context);
+                                    tvTriageBloodSugar.setText("Blood sugar: " + triage.getBloodSugar());
+                                    linearLayout.addView(tvTriageBloodSugar);
+                                }
                                 if (triage.getSpo2() != null) {
                                     TextView tvTriageSpo2 = new TextView(context);
                                     tvTriageSpo2.setText("Spo2: " + triage.getSpo2());

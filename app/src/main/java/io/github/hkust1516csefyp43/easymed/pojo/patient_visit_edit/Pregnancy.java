@@ -11,8 +11,8 @@ public class Pregnancy implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private Date lmdDate;
-  //TODO Boolean isPregnant >> Integer howMany
-  //TODO Integer Gestation
+  private Boolean currPreg;
+  private Integer Gestation;
   private Boolean breastFeeding;
   private Boolean contraceptiveUse;
   private Integer noOfPregnancy;
@@ -24,6 +24,22 @@ public class Pregnancy implements Serializable {
 
   public Pregnancy() {
     //empty constructor
+  }
+
+  public Boolean getCurrPreg() {
+    return currPreg;
+  }
+
+  public void setCurrPreg(Boolean currPreg) {
+    this.currPreg = currPreg;
+  }
+
+  public Integer getGestation() {
+    return Gestation;
+  }
+
+  public void setGestation(Integer gestation) {
+    Gestation = gestation;
   }
 
   public Date getLmdDate() {
