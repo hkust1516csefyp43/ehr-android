@@ -180,7 +180,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       @Override
       public void onFailure(Call<List<DocumentType>> call, Throwable t) {
         t.printStackTrace();
-        Toast.makeText(context, "Cannot get document types...", Toast.LENGTH_SHORT);
+        Toast.makeText(context, "Cannot get document types...", Toast.LENGTH_SHORT).show();
       }
     });
 
@@ -204,7 +204,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       @Override
       public void onFailure(Call<List<Gender>> call, Throwable t) {
         t.printStackTrace();
-        Toast.makeText(context, "Cannot get gender list...", Toast.LENGTH_SHORT);
+        Toast.makeText(context, "Cannot get gender list...", Toast.LENGTH_SHORT).show();
         //TODO try fetch again
       }
     });
@@ -229,7 +229,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
       @Override
       public void onFailure(Call<List<Medication>> call, Throwable t) {
-        Toast.makeText(context, "Cannot get medication list...", Toast.LENGTH_SHORT);
+        Toast.makeText(context, "Cannot get medication list...", Toast.LENGTH_SHORT).show();
       }
     });
   }
