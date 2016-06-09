@@ -115,6 +115,7 @@ public class Const {
     public static final int ADVICE = 4;
     public static final int FOLLOW_UP = 5;
     public static final int DRUG_HISTORY = 6;
+    public static final int EDUCATION = 7;
     public static final int INVESTIGATION = 8;
 
   }

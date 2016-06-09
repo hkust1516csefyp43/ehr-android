@@ -81,7 +81,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PatientVisitEditActivity extends AppCompatActivity implements OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener{
   private static final String TAG = PatientVisitEditActivity.class.getSimpleName();
   public static final String[] DEFAULT_PHYSICAL_EXAMINATION = {"General Appearance", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Other"};
-  public static final String[] DEFAULT_REVICE_OF_SYSTEM = {"EENT", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Locomotor", "Neurology"};
+  public static final String[] DEFAULT_REVIEW_OF_SYSTEM = {"EENT", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Locomotor", "Neurology"};
   public static final String[] DEFAULT_RED_FLAG = {"Alertness", "Breathing", "Circulation", "Dehydration", "DEFG"};
 
   private PersonalDataFragment personalDataFragment;
@@ -1050,6 +1050,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                           public void onFailure(Call<Medication> call, Throwable t) {
                                             t.printStackTrace();
                                             Log.d(TAG, call.request().toString());
+                                            progressDialog.dismiss();
                                           }
                                         });
                                       }
@@ -2488,7 +2489,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return pregnancyFragment;
         case 12:
           if (rosFragment == null) {
-            rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVICE_OF_SYSTEM, thisConsultation);
+            rosFragment = ListOfCardsFragment.newInstance("Review of System", DEFAULT_REVIEW_OF_SYSTEM, thisConsultation);
           }
           return rosFragment;
         case 13:

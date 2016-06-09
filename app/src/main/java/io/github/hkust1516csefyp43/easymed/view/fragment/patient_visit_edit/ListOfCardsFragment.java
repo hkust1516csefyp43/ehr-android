@@ -193,6 +193,35 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       Log.d(TAG, "existing data w/ default cards");
       fab.setVisibility(View.GONE);
       tvAssistance.setVisibility(View.GONE);
+      if (title.compareTo("Physical Examination") == 0) {
+        cardList.add(new Card("General Appearance", consultation.getPeGeneral()));
+        cardList.add(new Card("Respiratory", consultation.getPeRespiratory()));
+        cardList.add(new Card("Cardiovascular", consultation.getPeCardio()));
+        cardList.add(new Card("Gastrointestinal", consultation.getPeGastro()));
+        cardList.add(new Card("Genital/Urinary", consultation.getPeGenital()));
+        cardList.add(new Card("ENT", consultation.getPeEnt()));
+        cardList.add(new Card("Skin", consultation.getPeSkin()));
+        cardList.add(new Card("Other", consultation.getPeOther()));
+      } else if (title.compareTo("Review of System") == 0) {
+        cardList.add(new Card("EENT", consultation.getRosEent()));
+        cardList.add(new Card("Respiratory", consultation.getRosRespi()));
+        cardList.add(new Card("Cardiovascular", consultation.getRosCardio()));
+        cardList.add(new Card("Gastrointestinal", consultation.getRosGastro()));
+        cardList.add(new Card("Genital/Urinary", consultation.getRosGenital()));
+        cardList.add(new Card("ENT", consultation.getRosEnt()));
+        cardList.add(new Card("Skin", consultation.getRosSkin()));
+        cardList.add(new Card("Locomotor", consultation.getRosLocomotor()));
+        cardList.add(new Card("Neurology", consultation.getRosNeruology()));
+      } else if (title.compareTo("Red Flags") == 0) {
+        cardList.add(new Card("Alertness", consultation.getRfAlertness()));
+        cardList.add(new Card("Breathing", consultation.getRfBreathing()));
+        cardList.add(new Card("Circulation", consultation.getRfCirculation()));
+        cardList.add(new Card("Dehydration", consultation.getRfDehydration()));
+        cardList.add(new Card("DEFG", consultation.getRfDefg()));
+      }
+      adapter = new FragRecyclerViewAdapter(getContext(), true, null, title);
+      recyclerView.setAdapter(adapter);
+      recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     } else if (category > 0 && consultationId != null) {                                            //fill with existing data (from API call)
       if (category == 6) {
         inMedicationPage = true;
@@ -266,7 +295,6 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                       cardList.add(card);
                     }
                     adapter = new FragRecyclerViewAdapter(getContext(), false, finalKeywordArrayList, title);
-
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                   } else {
@@ -563,24 +591,24 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
         });
       } else {
         v2API.keywords keywordService = retrofit.create(v2API.keywords.class);
-        Call<List<Keyword>> keywordsCall = null;
+        Call<List<Keyword>> keywordsCall;
         switch (category) {
-          case 1:
+          case Const.RelatedDataCategory.SCREENING:
             keywordsCall = keywordService.getKeywords("1", null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             break;
-          case 2:
+          case Const.RelatedDataCategory.ALLERGY:
             keywordsCall = keywordService.getKeywords("1", null, null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             break;
-          case 3:
+          case Const.RelatedDataCategory.DIAGNOSIS:
             keywordsCall = keywordService.getKeywords("1", null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             break;
-          case 4:
+          case Const.RelatedDataCategory.ADVICE:
             keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null);
             break;
-          case 5:
+          case Const.RelatedDataCategory.FOLLOW_UP:
             keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, true, null, null, null, null, null, null, null, null, null, null, null, null, null);
             break;
-          case 7:
+          case Const.RelatedDataCategory.EDUCATION:
             keywordsCall = keywordService.getKeywords("1", null, null, null, null, null, null, null, true, null, null, null, null, null, null, null, null, null, null, null);
             break;
           default:
