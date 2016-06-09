@@ -7,6 +7,8 @@ import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -56,6 +58,16 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
     et = new EditText(context);
     et.setLines(4);
     et.setHint("Description");
+
+    actv.setSingleLine(true);
+    actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        et.setFocusableInTouchMode(true);
+        et.requestFocus();
+      }
+    });
+//    et.setSingleLine(true);
 
     til.addView(actv);
     til2.addView(et);
