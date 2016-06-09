@@ -655,6 +655,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                   //PUT triage
                                   Log.d(TAG, "Editing triage: " + thisTriage);
                                   Triage triage = generateTriage(response.body(), vs, cc, tr);
+                                  Log.d(TAG, "qqq" + triage.toString());
                                   Call<Triage> triageCall = triageService.editTriage("1", triage, thisTriage.getId());
                                   triageCall.enqueue(new Callback<Triage>() {
                                     @Override
@@ -906,7 +907,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                   @Override
                                   public void onResponse(Call<Consultation> call, Response<Consultation> response) {
                                     Log.d(TAG, "consultation call response code: " + response.code());
-                                    if (response.code() < 500 && response.code() >= 400) {
+                                    if (response.code() <= 500 && response.code() >= 400) {
                                       try {
                                         Log.d(TAG, response.errorBody().string());
                                       } catch (IOException e) {
@@ -1721,7 +1722,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     }
     triage.setVisitId(visit.getId());
     Log.d(TAG, "output " + triage.toString());
-
     return triage;
   }
 
@@ -1732,6 +1732,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     consultation.setStartTime(date);
     consultation.setEndTime(date);
     if (pregnancy != null) {
+      consultation.setPregLmp(pregnancy.getLmdDate());
+      consultation.setPregCurrPreg(pregnancy.getCurrPreg());
+      if (consultation.getPregCurrPreg())
+        consultation.setPregGestation(pregnancy.getGestation());
       consultation.setPregBreastFeeding(pregnancy.getBreastFeeding());
       consultation.setPregContraceptive(pregnancy.getContraceptiveUse());
       consultation.setPregNumPreg(pregnancy.getNoOfPregnancy());
@@ -2101,7 +2105,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
           return allergyFragment;
         case 11:
           if (pregnancyFragment == null) {
-            pregnancyFragment = PregnancyFragment.newInstance("","");
+            pregnancyFragment = PregnancyFragment.newInstance(thisConsultation);
           }
           return pregnancyFragment;
         case 12:
