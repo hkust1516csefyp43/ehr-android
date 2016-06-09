@@ -91,7 +91,7 @@ public class DocumentFragment extends Fragment implements OnSendData {
 
       if (mEditor != null) {
         mEditor.setAlignCenter();
-        mEditor.setEditorFontSize(14);
+        mEditor.setEditorFontSize(18);
         mEditor.setEditorFontColor(Color.BLACK);
         mEditor.setPadding(8, 8, 8, 8);
         mEditor.setPlaceholder("Tap here and start typing");
