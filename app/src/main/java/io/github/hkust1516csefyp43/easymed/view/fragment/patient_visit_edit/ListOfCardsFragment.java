@@ -70,6 +70,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
 
   //prescription specific stuff
   private HashMap<String, String> medicationVsIdHM = new HashMap<>();
+  private HashMap<String, String> idVsMedicationHM = new HashMap<>();
   private boolean inMedicationPage = false;
 
   public static ListOfCardsFragment newInstance(String title) {
@@ -235,6 +236,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
               for (Medication k : response.body()) {
                 keywordArrayList.add(k.getMedication());
                 medicationVsIdHM.put(k.getMedication(), k.getMedicationId());
+                idVsMedicationHM.put(k.getMedicationId(), k.getMedication());
               }
               Log.d("qqq11", keywordArrayList.toString());
               final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), keywordArrayList, title, null, null, false);
@@ -290,8 +292,12 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                     List<Prescription> prescriptions = response.body();
 //                    ArrayList<Card> cards = new ArrayList<>();
                     for (Prescription p: prescriptions) {
-                      p.setMedicationName(medicationVsIdHM.get(p.getMedicationId()));
-                      Card card = new Card(p.getMedicationName(), p.getDetail());
+                      p.setMedicationName(idVsMedicationHM.get(p.getMedicationId()));
+                      Card card;
+                      if (p.getMedicationName() == null || p.getMedicationName().isEmpty())
+                        card = new Card("Medication ID: " + p.getMedicationId(), p.getDetail());
+                      else
+                        card = new Card(p.getMedicationName(), p.getDetail());
                       cardList.add(card);
                     }
                     adapter = new FragRecyclerViewAdapter(getContext(), false, finalKeywordArrayList, title);
@@ -527,6 +533,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
               for (Medication m:response.body()) {
                 Log.d(TAG, "qqq300" + m.getMedication() + "/" + m.getMedicationId());
                 medicationVsIdHM.put(m.getMedication(), m.getMedicationId());
+                idVsMedicationHM.put(m.getMedicationId(), m.getMedication());
                 keywordArrayList.add(m.getMedication());
               }
               Log.d(TAG, "qqq6: " + keywordArrayList.toString());
