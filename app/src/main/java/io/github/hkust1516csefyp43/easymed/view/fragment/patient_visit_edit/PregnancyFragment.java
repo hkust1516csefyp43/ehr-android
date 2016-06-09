@@ -108,10 +108,10 @@ public class PregnancyFragment extends Fragment implements OnSendData{
       if (isPregnant != null) {
         if (thisConsultation.getPregCurrPreg() != null) {
           isPregnant.setChecked(thisConsultation.getPregCurrPreg());
-          if (thisConsultation.getPregGestation() != null) {
-            gestation.setText(thisConsultation.getPregGestation());
-          }
         }
+      }
+      if (thisConsultation.getPregGestation() != null) {
+        gestation.setText(String.valueOf(thisConsultation.getPregGestation()));
       }
       if (isBreastFeeding != null) {
         if (thisConsultation.getPregBreastFeeding() != null) {
@@ -225,14 +225,14 @@ public class PregnancyFragment extends Fragment implements OnSendData{
     }
     if (isPregnant != null) {
       p.setCurrPreg(isPregnant.isChecked());
-      if (gestation != null) {
-        try {
-          p.setGestation(Integer.parseInt(gestation.getText().toString()));
-        } catch (NumberFormatException e) {
-          e.printStackTrace();
-          gestation.setError("This is not a number");
-          return new Throwable("No. of Gestation is not a number");
-        }
+    }
+    if (gestation != null && !gestation.getText().toString().isEmpty()) {
+      try {
+        p.setGestation(Integer.parseInt(gestation.getText().toString()));
+      } catch (NumberFormatException e) {
+        e.printStackTrace();
+        gestation.setError("This is not a number");
+        return new Throwable("No. of Gestation is not a number");
       }
     }
     if (noPregnancy != null && !noPregnancy.getText().toString().isEmpty()) {
