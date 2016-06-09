@@ -353,7 +353,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       notificationList.enqueue(new Callback<List<Notification>>() {
         @Override
         public void onResponse(Call<List<Notification>> call, Response<List<Notification>> response) {
-          Log.d(TAG, response.body().toString());
+//          Log.d(TAG, response.body().toString());
           Cache.CurrentUser.setNotifications(getBaseContext(), response.body());
         }
 
