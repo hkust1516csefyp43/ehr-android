@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -161,13 +162,17 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                   }
                   ArrayList<String> data = tetdcv.getData();
                   tetdcv.clearData();
-                  Log.d(TAG, data.toString());
-                  if (data.get(0) != null && data.get(1) != null) {
-                    cardList.add(new Card(data.get(0), data.get(1)));
-                    if (adapter != null)
-                      adapter.notifyDataSetChanged();
-                    else
-                      Log.d(TAG, "opps");
+                  if (data != null) {
+                    Log.d(TAG, data.toString());
+                    if (data.get(0) != null && data.get(1) != null) {
+                      cardList.add(new Card(data.get(0), data.get(1)));
+                      if (adapter != null)
+                        adapter.notifyDataSetChanged();
+                      else
+                        Log.d(TAG, "opps");
+                    }
+                  } else {
+                    Toast.makeText(getContext(), "Something is wrong. ", Toast.LENGTH_SHORT).show();
                   }
                 }
               }
@@ -813,9 +818,15 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                       ArrayList<String> data = twoEditTextDialogCustomView.getData();
                       twoEditTextDialogCustomView.clearData();
-                      Log.d("qqq141", data.toString());
-                      cardList.set(holder.getAdapterPosition(), new Card(data.get(0), data.get(1)));      //TODO crash @ PE
-                      adapter.notifyDataSetChanged();
+                      if (data == null) {
+
+                      } else {
+                        Log.d("qqq141", data.toString());
+                        if (holder != null && cardList != null && adapter != null) {
+                          cardList.set(holder.getAdapterPosition(), new Card(data.get(0), data.get(1)));      //TODO crash @ PE
+                          adapter.notifyDataSetChanged();
+                        }
+                      }
                     }
                   })
                   .onNegative(new MaterialDialog.SingleButtonCallback() {
