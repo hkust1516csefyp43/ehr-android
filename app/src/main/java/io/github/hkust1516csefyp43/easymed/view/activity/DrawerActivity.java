@@ -229,7 +229,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
       @Override
       public void onFailure(Call<List<Medication>> call, Throwable t) {
-        Toast.makeText(context, "Cannot get medication list...", Toast.LENGTH_SHORT).show();
+        t.printStackTrace();
+        Toast.makeText(context, "Cannot get medication list..." + t.toString(), Toast.LENGTH_SHORT).show();
       }
     });
   }

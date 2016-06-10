@@ -162,13 +162,17 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                   }
                   ArrayList<String> data = tetdcv.getData();
                   tetdcv.clearData();
-                  Log.d(TAG, data.toString());
-                  if (data.get(0) != null && data.get(1) != null) {
-                    cardList.add(new Card(data.get(0), data.get(1)));
-                    if (adapter != null)
-                      adapter.notifyDataSetChanged();
-                    else
-                      Log.d(TAG, "opps");
+                  if (data != null) {
+                    Log.d(TAG, data.toString());
+                    if (data.get(0) != null && data.get(1) != null) {
+                      cardList.add(new Card(data.get(0), data.get(1)));
+                      if (adapter != null)
+                        adapter.notifyDataSetChanged();
+                      else
+                        Log.d(TAG, "opps");
+                    }
+                  } else {
+                    Toast.makeText(getContext(), "Something is wrong. ", Toast.LENGTH_SHORT).show();
                   }
                 }
               }
