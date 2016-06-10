@@ -35,6 +35,8 @@ public class User {
 
   @SerializedName("phone_number")       private String phoneNumber;
 
+  @SerializedName("password")           private String password;  //for creating new patient
+
   public User() {
   }
 

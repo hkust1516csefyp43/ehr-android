@@ -23,6 +23,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.ServerStatus;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Suitcase;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Visit;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -666,7 +667,23 @@ public interface v2API {
   }
 
   interface users {
+    //TODO fill me up
+    @GET("users")
+    Call<List<User>> getUsers(
+        @Header("token") String token
+    );
 
+    @GET("users/{id}")
+    Call<User> getUser(
+        @Header("token")  String token,
+        @Path("id")       String id
+    );
+
+    @POST("users")
+    Call<User> addUser(
+        @Header("token")  String token,
+        @Body             User user
+    );
   }
 
   interface suitcases {

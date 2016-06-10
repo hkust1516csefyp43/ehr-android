@@ -71,6 +71,7 @@ public class Const {
     public static final String CHIEF_COMPLAINT_DATA = "h8NQHFfjSJ6MjKNd";
     public static final String MAYBE_EMPTY = "Wx3DNVZrG5w1FqgX";
     public static final String WHICH_STATIC_DATA = "UE1y13vaS5P4ThvF";
+    public static final String IS_QR = "Wfm7PkzNxB4PpWQ1";
   }
 
   public class CacheKey {

@@ -80,7 +80,16 @@
                     android:maxLines="1"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
-
+            <ImageView
+                android:id="@+id/ivRole"
+                android:layout_columnSpan="1"/>
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/sRole"
+                android:layout_width="match_parent"
+                android:layout_columnSpan="11"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:visibility="gone"/>
         </GridLayout>
 
     </ScrollView>
