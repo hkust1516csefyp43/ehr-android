@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -799,35 +800,43 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
               }
             });
           }
-          final TwoEditTextDialogCustomView twoEditTextDialogCustomView = new TwoEditTextDialogCustomView(getContext(), suggestions, title, cardList.get(holder.getAdapterPosition()).getCardTitle(), cardList.get(holder.getAdapterPosition()).getCardDescription(), displaySwitch);
-          holder.thisWholeCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              MaterialDialog.Builder b = new MaterialDialog.Builder(getContext())
-                  .customView(twoEditTextDialogCustomView, true)
-                  .title("Modify")
-                  .positiveText("Confirm")
-                  .negativeText("Cancel")
-                  .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                      ArrayList<String> data = twoEditTextDialogCustomView.getData();
-                      twoEditTextDialogCustomView.clearData();
-                      Log.d("qqq141", data.toString());
-                      cardList.set(holder.getAdapterPosition(), new Card(data.get(0), data.get(1)));      //TODO crash @ PE
-                      adapter.notifyDataSetChanged();
-                    }
-                  })
-                  .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                      twoEditTextDialogCustomView.clearData();
-                      dialog.dismiss();
-                    }
-                  });
-              b.show();
-            }
-          });
+
+          final int pos = holder.getAdapterPosition();
+          if (pos >= 0 && pos < cardList.size()) {
+            final TwoEditTextDialogCustomView twoEditTextDialogCustomView = new TwoEditTextDialogCustomView(getContext(), suggestions, title, cardList.get(pos).getCardTitle(), cardList.get(pos).getCardDescription(), displaySwitch);
+            holder.thisWholeCard.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                MaterialDialog.Builder b = new MaterialDialog.Builder(getContext())
+                        .customView(twoEditTextDialogCustomView, true)
+                        .title("Modify")
+                        .positiveText("Confirm")
+                        .negativeText("Cancel")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                          @Override
+                          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            ArrayList<String> data = twoEditTextDialogCustomView.getData();
+                            twoEditTextDialogCustomView.clearData();
+                            if (data != null && cardList != null && adapter != null) {
+                              Log.d("qqq141", data.toString());
+                              cardList.set(pos, new Card(data.get(0), data.get(1)));      //TODO crash @ PE
+                              adapter.notifyDataSetChanged();
+                            } else {
+                              Toast.makeText(getContext(), "Empty data. Please seek tech support", Toast.LENGTH_LONG);
+                            }
+                          }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                          @Override
+                          public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            twoEditTextDialogCustomView.clearData();
+                            dialog.dismiss();
+                          }
+                        });
+                b.show();
+              }
+            });
+          }
         } else
           Log.d(TAG, "empty cardList");
       } else
