@@ -191,7 +191,7 @@ public class LoginActivity extends AppCompatActivity{
   }
 
   private boolean isPasswordValid(String password) {
-    return password.length() > 4;
+    return password.length() > 0;
   }
 
   private void showProgress(final boolean show) {
@@ -231,9 +231,11 @@ public class LoginActivity extends AppCompatActivity{
         Response<Object> response = objectCall.execute();
         if (response == null) {
 //          onFailure(call, new Throwable("Something's wrong. Please try again."));
+          Log.d(TAG, "Null response");
           return false;
-        } else if (response.code() >= 300 || response.code() <200) {
+        } else if (response.code() >= 300 || response.code() < 200) {
 //          onFailure(call, new Throwable("Username or password is wrong"));
+          Log.d(TAG, "Null error from server");
           return false;
         } else {    //successful
           return true;

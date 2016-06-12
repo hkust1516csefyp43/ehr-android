@@ -3,7 +3,6 @@ package io.github.hkust1516csefyp43.easymed.utility;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -249,18 +248,15 @@ public class Util {
     if (isMale) { //male
       for (int i = 0; i < 5; i++) {
         list[i] = BMI.weightForAgeBoyUnder5[i][ageMonths];
-        Log.d("qqq290", "" + list[i]);
       }
     } else {    //female
       for (int i = 0; i < 5; i++) {
         list[i] = BMI.weightForAgeGirlUnder5[i][ageMonths];
-        Log.d("qqq290", "" + list[i]);
       }
     }
     int j = 4;
     int position = -1;
     while (j >= 0 && position == -1) {
-      Log.d("qqq292", "" + list[j] + " vs " + weight);
       if (weight >= list[j])
         position = j;
       else
@@ -362,7 +358,6 @@ public class Util {
     TimeZone timeZone = gregorianCalendar.getTimeZone();
     String date = todayString() + "T00:00:00.000";
     date = date + createGmtOffsetString(false, false, timeZone.getOffset(gregorianCalendar.getTimeInMillis()));
-    Log.d(TAG, "qqq: " + date);
     return date;
   }
 

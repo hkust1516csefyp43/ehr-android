@@ -200,7 +200,7 @@ public class SyncActivity extends AppCompatActivity {
                 final ProgressDialog progressDialog = new ProgressDialog(SyncActivity.this);
                 progressDialog.setMessage("Uploading");
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setIndeterminate(true);
+                progressDialog.setIndeterminate(false);
                 progressDialog.setProgress(0);
                 progressDialog.setMax(queryList.size());
                 progressDialog.show();
@@ -441,7 +441,7 @@ public class SyncActivity extends AppCompatActivity {
         try {
           Response<Query> queryResponse = queryCall.execute();
           Log.d(TAG, "in progress: " + i + "/" + new GsonBuilder().create().toJson(queryResponse));
-          publishProgress(progressDialog.getProgress() + 1);
+          publishProgress(i);
         } catch (IOException e) {
           e.printStackTrace();
         }

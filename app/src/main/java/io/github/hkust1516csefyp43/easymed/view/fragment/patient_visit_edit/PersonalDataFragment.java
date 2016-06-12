@@ -282,44 +282,47 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
 
     sGender = (Spinner) view.findViewById(R.id.sGender);
     final List<Gender> genders = Cache.DatabaseData.getGenders(getContext());
-    genderArray = new String[genders.size()];
-    final HashMap<String, String> genderHM = new HashMap<>(genders.size());
-    final HashMap<String, String> rGenderHM = new HashMap<>(genders.size());
-    for (int i = 0; i < genders.size(); i++) {
-      genderArray[i] = genders.get(i).getGender();
-      genderHM.put(genders.get(i).getGender(), genders.get(i).getId());
-      rGenderHM.put(genders.get(i).getId(), genders.get(i).getGender());
-    }
+    if (genders != null) {
+      genderArray = new String[genders.size()];
+      final HashMap<String, String> genderHM = new HashMap<>(genders.size());
+      final HashMap<String, String> rGenderHM = new HashMap<>(genders.size());
+      for (int i = 0; i < genders.size(); i++) {
+        genderArray[i] = genders.get(i).getGender();
+        genderHM.put(genders.get(i).getGender(), genders.get(i).getId());
+        rGenderHM.put(genders.get(i).getId(), genders.get(i).getGender());
+      }
 
-    ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, genderArray);
-    sGender.setAdapter(adapter1);
+      ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, genderArray);
+      sGender.setAdapter(adapter1);
 
-    if (patient != null && patient.getGenderId() != null) {
-      int index;
-      Log.d(TAG, "Gender needs to be filled");
-      for (int i = 0; i < genders.size(); i++){
-        if (rGenderHM.get(patient.getGenderId()).equals(genderArray[i])){
-          index = i;
-          Log.d(TAG, "Found gender: " + index + rGenderHM.get(patient.getGenderId()));
-          sGender.setSelection(index);
+      if (patient != null && patient.getGenderId() != null) {
+        int index;
+        Log.d(TAG, "Gender needs to be filled");
+        for (int i = 0; i < genders.size(); i++){
+          if (rGenderHM.get(patient.getGenderId()).equals(genderArray[i])){
+            index = i;
+            Log.d(TAG, "Found gender: " + index + rGenderHM.get(patient.getGenderId()));
+            sGender.setSelection(index);
+          }
         }
       }
-    }
 //    if(patient != null && patient.getGenderId() != null){
 //
 //    }
-    sGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-      @Override
-      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String a = (String) parent.getItemAtPosition(position);
-        currentGenderId = genderHM.get(a);
-      }
+      sGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+          String a = (String) parent.getItemAtPosition(position);
+          currentGenderId = genderHM.get(a);
+        }
 
-      @Override
-      public void onNothingSelected(AdapterView<?> parent) {
-        currentGenderId = genders.get(0).getId();
-      }
-    });
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+          currentGenderId = genders.get(0).getId();
+        }
+      });
+    } else
+    sGender.setVisibility(View.GONE);
 
     //TODO from keywords
     sStatus = (Spinner) view.findViewById(R.id.sStatus);
@@ -456,7 +459,6 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
           byte[] byteArray = byteArrayOutputStream .toByteArray();
           profilePicBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
         } else {
-          Log.d("qqq811", "umm the image is null");
         }
       } else {
         new MaterialDialog.Builder(getContext())

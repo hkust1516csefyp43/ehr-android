@@ -525,7 +525,6 @@ public class PharmacyActivity extends AppCompatActivity {
 
     @Override
     public int getItemCount() {
-      Log.d("qqq370", String.valueOf(prescriptions.size()));
       return prescriptions.size();
     }
   }

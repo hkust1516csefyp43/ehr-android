@@ -191,7 +191,6 @@ public class PatientListFragment extends Fragment{
               onFailure(call, new Throwable("empty response"));
             } else {
               patients = response.body();
-              Log.d(TAG, "qqqqq" + call.request().toString() + "/" + response.body().size() + ": " + response.body().toString());
               Collections.sort(patients);
               if (numberListener != null) {
                 Log.d(TAG, "post triage counter update triggered: " + patients.size());

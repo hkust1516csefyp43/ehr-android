@@ -285,7 +285,6 @@ public class VitalSignFragment extends Fragment implements OnSendData{
 
       @Override
       public void afterTextChanged(Editable s) {
-        Log.d("qqq151", s.toString());
         try {
           dHeight = Double.parseDouble(s.toString());
           if (tvBMI != null)

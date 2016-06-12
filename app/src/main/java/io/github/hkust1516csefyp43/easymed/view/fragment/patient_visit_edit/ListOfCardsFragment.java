@@ -73,6 +73,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
   private HashMap<String, String> medicationVsIdHM = new HashMap<>();
   private HashMap<String, String> idVsMedicationHM = new HashMap<>();
   private boolean inMedicationPage = false;
+  private String[] shortcutsArray = {"po", "sid", "bid", "tid", "mg", "ml", "/7", "/52", "/12"};
 
   public static ListOfCardsFragment newInstance(String title) {
     ListOfCardsFragment fragment = new ListOfCardsFragment();
@@ -87,7 +88,6 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
     Bundle args = new Bundle();
     args.putString(Const.BundleKey.KEY_TITLE, title);
     args.putInt(Const.BundleKey.RELATED_DATA_CATEGORY, category);
-    Log.d(TAG, "qqq4: " + category);
     args.putString(Const.BundleKey.CONSULTATION_ID, consultationId);
     fragment.setArguments(args);
     return fragment;
@@ -243,12 +243,10 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 medicationVsIdHM.put(k.getMedication(), k.getMedicationId());
                 idVsMedicationHM.put(k.getMedicationId(), k.getMedication());
               }
-              Log.d("qqq11", keywordArrayList.toString());
-              final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), keywordArrayList, title, null, null, false);
+              final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), keywordArrayList, title, null, null, false, shortcutsArray);
               fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  Log.d("qqq12", "yes?");
                   new MaterialDialog.Builder(getContext())
                       .title("Add")
                       .customView(tetdcv, true)
@@ -400,7 +398,6 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 fab.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                    Log.d("qqq12", "yes?");
                     new MaterialDialog.Builder(getContext())
                         .title("Add")
                         .customView(tetdcv, true)
@@ -523,30 +520,24 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
       recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
     } else if (category > 0) {                                                                      //TODO create a blank page w/ keywords
       if (category == 6) {
-        Log.d(TAG, "qqq1");
         inMedicationPage = true;
         v2API.medications medicationService = retrofit.create(v2API.medications.class);
         Call<List<Medication>> medicationsCall = medicationService.getMedications("1", null, null, null, null, null, null);
-        Log.d(TAG, "qqq2");
         medicationsCall.enqueue(new Callback<List<Medication>>() {
           @Override
           public void onResponse(Call<List<Medication>> call, Response<List<Medication>> response) {
-            Log.d(TAG, "qqq3");
             if (response != null && response.code() >= 200 && response.code() < 300 && response.body() != null && response.body().size() > 0) {
               Log.d(TAG, response.body().toString());
               ArrayList<String> keywordArrayList = new ArrayList<>();
               for (Medication m:response.body()) {
-                Log.d(TAG, "qqq300" + m.getMedication() + "/" + m.getMedicationId());
                 medicationVsIdHM.put(m.getMedication(), m.getMedicationId());
                 idVsMedicationHM.put(m.getMedicationId(), m.getMedication());
                 keywordArrayList.add(m.getMedication());
               }
-              Log.d(TAG, "qqq6: " + keywordArrayList.toString());
-              final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), keywordArrayList, title, null, null, false);
+              final TwoEditTextDialogCustomView tetdcv = new TwoEditTextDialogCustomView(getContext(), keywordArrayList, title, null, null, false, shortcutsArray);
               fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  Log.d("qqq12", "yes?");
                   new MaterialDialog.Builder(getContext())
                       .title("Add")
                       .customView(tetdcv, true)
@@ -642,7 +633,6 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 fab.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                    Log.d("qqq12", "yes?");
                     new MaterialDialog.Builder(getContext())
                         .title("Add")
                         .customView(tetdcv, true)
@@ -725,16 +715,12 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
 
   @Override
   public Serializable onSendData() {
-    Log.d(TAG, "qqq0" + title);
     if (adapter != null) {
       if (inMedicationPage) {         //translate medication name into id
-        Log.d(TAG, "qqq1" + title);
         //TODO 2 array list, 1 with medication_id, one with just names of the medication (POST medication)
         ArrayList<Card> newMedicationList = new ArrayList<>();
         ArrayList<Card> newCardList = new ArrayList<>();
         for (Card c:cardList) {
-          Log.d(TAG, "qqq2" + title + c.toString());
-          Log.d(TAG, "qqq21 " + title + medicationVsIdHM.toString());
           String mId = medicationVsIdHM.get(c.getCardTitle());
           Card newCard;
           if (mId != null) {
@@ -743,10 +729,8 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
             newMedicationList.add(new Card(c.getCardTitle(), c.getCardDescription()));
           }
         }
-        Log.d(TAG, "qqq3" + title + newCardList.size());
         return new ListOfCards(newCardList, newMedicationList);
       } else{
-        Log.d(TAG, "qqq4" + title);
         return new ListOfCards(cardList);
       }
     }
@@ -821,8 +805,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                       if (data == null) {
 
                       } else {
-                        Log.d("qqq141", data.toString());
-                        if (holder != null && cardList != null && adapter != null) {
+                        if (cardList != null && adapter != null) {
                           cardList.set(holder.getAdapterPosition(), new Card(data.get(0), data.get(1)));      //TODO crash @ PE
                           adapter.notifyDataSetChanged();
                         }
