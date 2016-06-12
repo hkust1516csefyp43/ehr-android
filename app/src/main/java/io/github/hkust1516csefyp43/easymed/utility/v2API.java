@@ -20,6 +20,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Role;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.ServerStatus;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Suitcase;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Triage;
@@ -664,6 +665,13 @@ public interface v2API {
 
   interface signup {
 
+  }
+
+  interface roles{
+    @GET("roles")
+    Call<List<Role>> getRoles(
+            @Header("token") String token
+    );
   }
 
   interface users {

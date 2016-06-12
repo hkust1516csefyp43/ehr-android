@@ -17,10 +17,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -32,12 +36,18 @@ import com.mikepenz.iconics.IconicsDrawable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.Role;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -46,9 +56,13 @@ public class SignUpActivity extends AppCompatActivity {
 
   //view
   private TextInputEditText tietUsername;
+  private TextInputEditText tiYourName;
   private TextInputEditText tietPassword1;
   private TextInputEditText tietPassword2;
+  private ProgressBar progressBar;
   private AppCompatSpinner acsRole;
+
+  private Role role;
 
   private boolean isQr;
   @Override
@@ -74,9 +88,61 @@ public class SignUpActivity extends AppCompatActivity {
 
     findViewsById();
 
+
+
+    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    httpClient.readTimeout(1, TimeUnit.MINUTES);
+    httpClient.connectTimeout(1, TimeUnit.MINUTES);
+    final Retrofit retrofit = new Retrofit
+            .Builder()
+            .baseUrl(Const.Database.getCurrentAPI())
+            .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+            .client(httpClient.build())
+            .build();
+
+
     if (acsRole != null && !isQr) {
       acsRole.setVisibility(View.VISIBLE);
+      if (progressBar != null) {
+        progressBar.setVisibility(View.VISIBLE);
+      }
       //TODO call API, get list of roles, display name of each role
+      v2API.roles rolesService = retrofit.create(v2API.roles.class);
+      Call<List<Role>> rolesCall = rolesService.getRoles("1");
+      rolesCall.enqueue(new Callback<List<Role>>() {
+        @Override
+        public void onResponse(Call<List<Role>> call, final Response<List<Role>> response) {
+          if (response.body() != null && response.body().size() > 0) {
+            acsRole.setVisibility(View.VISIBLE);
+            Log.d(TAG, "list of roles: " + response.body().toString());
+            if (progressBar != null) {
+              progressBar.setVisibility(View.GONE);
+            }
+            ArrayAdapter<Role> roleArrayAdapter = new ArrayAdapter<Role>(getApplicationContext(), android.R.layout.simple_list_item_1, response.body());
+            acsRole.setAdapter(roleArrayAdapter);
+            acsRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+              @Override
+              public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "Role: " + response.body().get(position).getName());
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+                role = response.body().get(position);
+              }
+
+              @Override
+              public void onNothingSelected(AdapterView<?> parent) {
+                Log.d(TAG, "?");
+              }
+            });
+          } else{
+            Log.d(TAG, "Something wrong: " + response.code());
+          }
+        }
+
+        @Override
+        public void onFailure(Call<List<Role>> call, Throwable t) {
+          Log.d(TAG, "received nothing");
+        }
+      });
     }
 
     final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -124,27 +190,55 @@ public class SignUpActivity extends AppCompatActivity {
           }
         });
       } else {
-        if (isEveryBoxValid()) {
-          OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-          ohc1.readTimeout(1, TimeUnit.MINUTES);
-          ohc1.connectTimeout(1, TimeUnit.MINUTES);
-          Retrofit retrofit = new Retrofit
-              .Builder()
-              .baseUrl(Const.Database.getCurrentAPI())
-              .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-              .client(ohc1.build())
-              .build();
-          v2API.users userService = retrofit.create(v2API.users.class);
-//          userService.addUser("1")
-        }
+        fab.setImageDrawable(new IconicsDrawable(this).actionBar().color(Color.WHITE).icon(CommunityMaterial.Icon.cmd_check));
+        fab.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            if (isEveryBoxValid()) {
+              if (role != null){
+                User newUser = new User();
+                newUser.setFirstName(tiYourName.getText().toString());
+                newUser.setUsername(tietUsername.getText().toString());
+                newUser.setPassword(tietPassword2.getText().toString());
+                newUser.setRole(role);
+                v2API.users userService = retrofit.create(v2API.users.class);
+                Call<User> userCall = userService.addUser("1", newUser);
+                userCall.enqueue(new Callback<User>() {
+                  @Override
+                  public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.body() != null){
+                      if (response.code() >= 200 && response.code() < 300) {
+                        Toast.makeText(getApplicationContext(), "Successfully created the user!", Toast.LENGTH_LONG);
+                        finish();
+                      }else {
+                        onFailure(call, new Throwable("Some error: " + response.code()));
+                        Toast.makeText(getApplicationContext(), "Some error: " + response.code(), Toast.LENGTH_LONG);
+                      }
+                    }
+                  }
+
+                  @Override
+                  public void onFailure(Call<User> call, Throwable t) {
+                    t.printStackTrace();
+                  }
+                });
+              }
+
+            }
+          }
+        });
+
+
       }
     }
   }
 
   private void findViewsById() {
     tietUsername = (TextInputEditText) findViewById(R.id.etUsername);
+    tiYourName = (TextInputEditText) findViewById(R.id.etFirstname);
     tietPassword1 = (TextInputEditText) findViewById(R.id.etPassword1);
     tietPassword2 = (TextInputEditText) findViewById(R.id.etPassword2);
+    progressBar = (ProgressBar) findViewById(R.id.sign_up_progress);
     acsRole = (AppCompatSpinner) findViewById(R.id.sRole);
   }
 
@@ -202,5 +296,11 @@ public class SignUpActivity extends AppCompatActivity {
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+    finish();
   }
 }

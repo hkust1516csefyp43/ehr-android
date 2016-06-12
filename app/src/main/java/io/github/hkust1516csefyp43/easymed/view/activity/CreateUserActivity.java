@@ -1,5 +1,6 @@
 package io.github.hkust1516csefyp43.easymed.view.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -14,6 +15,7 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.utility.Const;
 
 public class CreateUserActivity extends AppCompatActivity {
   public static final String TAG = CreateUserActivity.class.getSimpleName();
@@ -49,6 +51,9 @@ public class CreateUserActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
           Log.d(TAG, "start from scratch");
+          Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+          intent.putExtra(Const.BundleKey.IS_QR, false);
+          startActivity(intent);
         }
       });
     }

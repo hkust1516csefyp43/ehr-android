@@ -30,8 +30,23 @@
 
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:columnCount="12">
+
+            <ImageView
+                android:id="@+id/ivFirstName"
+                android:layout_columnSpan="1"/>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="11">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etFirstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/your_name"/>
+            </android.support.design.widget.TextInputLayout>
+
 
             <ImageView
                 android:id="@+id/ivUsername"
@@ -80,6 +95,7 @@
                     android:maxLines="1"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
+
             <ImageView
                 android:id="@+id/ivRole"
                 android:layout_columnSpan="1"/>
@@ -89,6 +105,15 @@
                 android:layout_columnSpan="11"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
+                android:visibility="gone"
+                android:popupBackground="@android:color/black"/>
+            <ProgressBar
+                android:id="@+id/sign_up_progress"
+                android:layout_columnSpan="11"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:visibility="gone"/>
         </GridLayout>
 
