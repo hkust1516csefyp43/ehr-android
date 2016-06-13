@@ -42,7 +42,7 @@ public class Consultation implements Serializable{
   @SerializedName("rf_circulation")           String rfCirculation;
   @SerializedName("rf_defg")                  String rfDefg;
   @SerializedName("rf_dehydration")           String rfDehydration;
-  @SerializedName("ros_eent")                 String rosEent;
+  @SerializedName("ros_general")              String rosGeneral;
   @SerializedName("ros_respi")                String rosRespi;
   @SerializedName("ros_cardio")               String rosCardio;
   @SerializedName("ros_gastro")               String rosGastro;
@@ -51,6 +51,7 @@ public class Consultation implements Serializable{
   @SerializedName("ros_skin")                 String rosSkin;
   @SerializedName("ros_locomotor")            String rosLocomotor;
   @SerializedName("ros_neurology")            String rosNeruology;
+  @SerializedName("ros_other")                String rosOther;
 
   public Consultation() {
   }
@@ -303,12 +304,12 @@ public class Consultation implements Serializable{
     this.rfDehydration = rfDehydration;
   }
 
-  public String getRosEent() {
-    return rosEent;
+  public String getRosGeneral() {
+    return rosGeneral;
   }
 
-  public void setRosEent(String rosEent) {
-    this.rosEent = rosEent;
+  public void setRosGeneral(String rosGeneral) {
+    this.rosGeneral = rosGeneral;
   }
 
   public String getRosRespi() {
@@ -375,6 +376,14 @@ public class Consultation implements Serializable{
     this.rosNeruology = rosNeruology;
   }
 
+  public String getRosOther() {
+    return rosOther;
+  }
+
+  public void setRosOther(String rosOther) {
+    this.rosOther = rosOther;
+  }
+
   @Override
   public String toString() {
     return "Consultation{" +
@@ -409,7 +418,7 @@ public class Consultation implements Serializable{
         ", rfCirculation='" + rfCirculation + '\'' +
         ", rfDefg='" + rfDefg + '\'' +
         ", rfDehydration='" + rfDehydration + '\'' +
-        ", rosEent='" + rosEent + '\'' +
+        ", rosGeneral='" + rosGeneral + '\'' +
         ", rosRespi='" + rosRespi + '\'' +
         ", rosCardio='" + rosCardio + '\'' +
         ", rosGastro='" + rosGastro + '\'' +
@@ -417,7 +426,8 @@ public class Consultation implements Serializable{
         ", rosEnt='" + rosEnt + '\'' +
         ", rosSkin='" + rosSkin + '\'' +
         ", rosLocomotor='" + rosLocomotor + '\'' +
-        ", rosNeurology='" + rosNeruology + '\'' +
+        ", rosNeruology='" + rosNeruology + '\'' +
+        ", rosOther='" + rosOther + '\'' +
         '}';
   }
 }

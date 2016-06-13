@@ -82,7 +82,7 @@ public class SignUpActivity extends AppCompatActivity {
     final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     if (fab != null) {
       if (isQr) {
-        fab.setImageDrawable(new IconicsDrawable(this).actionBar().color(Color.WHITE).icon(CommunityMaterial.Icon.cmd_check));
+        fab.setImageDrawable(new IconicsDrawable(this).actionBar().color(Color.WHITE).icon(CommunityMaterial.Icon.cmd_qrcode));
         fab.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -125,17 +125,23 @@ public class SignUpActivity extends AppCompatActivity {
         });
       } else {
         if (isEveryBoxValid()) {
-          OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
-          ohc1.readTimeout(1, TimeUnit.MINUTES);
-          ohc1.connectTimeout(1, TimeUnit.MINUTES);
-          Retrofit retrofit = new Retrofit
-              .Builder()
-              .baseUrl(Const.Database.getCurrentAPI())
-              .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-              .client(ohc1.build())
-              .build();
-          v2API.users userService = retrofit.create(v2API.users.class);
+          fab.setImageDrawable(new IconicsDrawable(this).actionBar().color(Color.WHITE).icon(CommunityMaterial.Icon.cmd_check));
+          fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+              ohc1.readTimeout(1, TimeUnit.MINUTES);
+              ohc1.connectTimeout(1, TimeUnit.MINUTES);
+              Retrofit retrofit = new Retrofit
+                  .Builder()
+                  .baseUrl(Const.Database.getCurrentAPI())
+                  .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+                  .client(ohc1.build())
+                  .build();
+              v2API.users userService = retrofit.create(v2API.users.class);
 //          userService.addUser("1")
+            }
+          });
         }
       }
     }

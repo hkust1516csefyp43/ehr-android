@@ -175,8 +175,8 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
 
     //Input shortcuts
     if (shortcuts != null && shortcuts.length > 0) {
-//      GridLayout gridLayout = new GridLayout(context);
       HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);
+      horizontalScrollView.setPadding(0, 0, 0, 16);
       LinearLayout linearLayout = new LinearLayout(context);
       linearLayout.setOrientation(HORIZONTAL);
       for (final String s:shortcuts) {
@@ -191,7 +191,6 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
           });
         }
         linearLayout.addView(button);
-//        gridLayout.addView(button);
       }
       horizontalScrollView.addView(linearLayout);
       this.addView(horizontalScrollView);

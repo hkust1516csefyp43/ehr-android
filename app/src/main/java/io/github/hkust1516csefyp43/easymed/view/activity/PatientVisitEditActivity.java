@@ -80,8 +80,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PatientVisitEditActivity extends AppCompatActivity implements OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener{
   private static final String TAG = PatientVisitEditActivity.class.getSimpleName();
-  public static final String[] DEFAULT_PHYSICAL_EXAMINATION = {"General Appearance", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Other"};
-  public static final String[] DEFAULT_REVIEW_OF_SYSTEM = {"EENT", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Locomotor", "Neurology"};
+  public static final String[] DEFAULT_PHYSICAL_EXAMINATION = {"General Appearance", "ENT", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "Skin", "Other"};
+  public static final String[] DEFAULT_REVIEW_OF_SYSTEM = {"General", "Respiratory", "Cardiovascular", "Gastrointestinal", "Genital/Urinary", "ENT", "Skin", "Locomotor", "Neurology", "Other"};
   public static final String[] DEFAULT_RED_FLAG = {"Alertness", "Breathing", "Circulation", "Dehydration", "DEFG"};
 
   private PersonalDataFragment personalDataFragment;
@@ -501,6 +501,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
               pregnancy = (Pregnancy) serializable;
             } else if (serializable instanceof Throwable) {
               Log.d(TAG, "Is throwable");
+              errorInAnyPage = true;
               viewPager.setCurrentItem(11);
             }
           }
@@ -656,7 +657,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                   //PUT triage
                                   Log.d(TAG, "Editing triage: " + thisTriage);
                                   Triage triage = generateTriage(response.body(), vs, cc, tr);
-                                  Log.d(TAG, "qqq" + triage.toString());
                                   Call<Triage> triageCall = triageService.editTriage("1", triage, thisTriage.getId());
                                   triageCall.enqueue(new Callback<Triage>() {
                                     @Override
@@ -1719,7 +1719,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
               //POST patient
               Log.d(TAG, "New patient new visit new triage");
               Patient patient = generatePatient(personalData);
-              if (patient!= null){
+              if (patient != null){
                 Call<Patient> patientCall = patientService.addPatient("1", patient);
                 patientCall.enqueue(new Callback<Patient>() {
                   @Override
@@ -2073,20 +2073,23 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
   }
 
   private Patient generatePatient(PersonalData personalData) {
-    Patient patient = new Patient();
-    patient.setAddress(personalData.getAddress());
-    patient.setBirthDate(personalData.getBirthDate());
-    patient.setBirthMonth(personalData.getBirthMonth());
-    patient.setBirthYear(personalData.getBirthYear());
-    patient.setFirstName(personalData.getFirstName());
-    patient.setMiddleName(personalData.getMiddleName());
-    patient.setLastName(personalData.getLastName());
-    patient.setNativeName(personalData.getNativeName());
-    patient.setPhoneNumber(personalData.getPhoneNumber());
-    patient.setClinicId(Cache.CurrentUser.getClinic(getBaseContext()).getClinicId());
-    patient.setGenderId(personalData.getGenderId());
-    Log.d(TAG, "output " + patient.toString());
-    return patient;
+    if (personalData != null) {
+      Patient patient = new Patient();
+      patient.setAddress(personalData.getAddress());
+      patient.setBirthDate(personalData.getBirthDate());
+      patient.setBirthMonth(personalData.getBirthMonth());
+      patient.setBirthYear(personalData.getBirthYear());
+      patient.setFirstName(personalData.getFirstName());
+      patient.setMiddleName(personalData.getMiddleName());
+      patient.setLastName(personalData.getLastName());
+      patient.setNativeName(personalData.getNativeName());
+      patient.setPhoneNumber(personalData.getPhoneNumber());
+      patient.setClinicId(Cache.CurrentUser.getClinic(getBaseContext()).getClinicId());
+      patient.setGenderId(personalData.getGenderId());
+      Log.d(TAG, "output " + patient.toString());
+      return patient;
+    } else
+      return null;
   }
 
   private Visit generateVisit(Patient patient, PersonalData personalData, int nextStation){
@@ -2158,7 +2161,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       for (Card c:ros.getCardArrayList()) {
         cardHM.put(c.getCardTitle(), c.getCardDescription());
       }
-      consultation.setRosEent(cardHM.get("EENT"));
+      consultation.setRosGeneral(cardHM.get("General"));
       consultation.setRosRespi(cardHM.get("Respiratory"));
       consultation.setRosGastro(cardHM.get("Gastrointestinal"));
       consultation.setRosGenital(cardHM.get("Genital/Urinary"));
@@ -2166,6 +2169,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
       consultation.setRosSkin(cardHM.get("Skin"));
       consultation.setRosLocomotor(cardHM.get("Locomotor"));
       consultation.setRosNeruology(cardHM.get("Neruology"));
+      consultation.setRosOther(cardHM.get("Other"));
     }
     if (rf != null  && rf.getCardArrayList() != null && rf.getCardArrayList().size() > 0 ) {
       HashMap<String, String> cardHM = new HashMap<>();
@@ -2312,7 +2316,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             aPrescription.setPrescribed(false);
             aPrescription.setDetail(c.getCardDescription());
             aPrescription.setMedicationId(c.getCardTitle());
-            Log.d(TAG, "qqq a prescriptions = " + aPrescription.toString());
             prescriptionArrayList.add(aPrescription);
           }
         } else {
@@ -2324,7 +2327,6 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     } else {
       Log.d(TAG, "null presc");
     }
-    Log.d(TAG, "qqq the whole list of prescriptions = " + prescriptionArrayList);
     return prescriptionArrayList;
   }
 

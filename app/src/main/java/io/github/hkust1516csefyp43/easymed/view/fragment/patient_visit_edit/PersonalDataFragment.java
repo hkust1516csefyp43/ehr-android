@@ -247,7 +247,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
       public void afterTextChanged(Editable s) {
         if (s.toString().length() < 1) {
           anyError = true;
-          etFirstName.setError("Patient must have a first name");
+          etFirstName.setError("Patient must have a given name");
         } else {
           anyError = false;
         }
@@ -459,6 +459,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
           byte[] byteArray = byteArrayOutputStream .toByteArray();
           profilePicBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
         } else {
+
         }
       } else {
         new MaterialDialog.Builder(getContext())
@@ -553,9 +554,9 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     }
     if (etFirstName != null) {
       if (etFirstName.getText() == null || etFirstName.getText().length() <= 0) {
-        etFirstName.setError("First name must not be empty");
+        etFirstName.setError("Given name must not be empty");
         focusOnView(etFirstName);
-        return new Throwable("Null first name");
+        return new Throwable("Null given name");
       } else
        pd.setFirstName(etFirstName.getText().toString());
     }

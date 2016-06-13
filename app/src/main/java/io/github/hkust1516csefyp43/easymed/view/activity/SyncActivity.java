@@ -196,18 +196,9 @@ public class SyncActivity extends AppCompatActivity {
               List<Query> queryList = Cache.Synchronisation.getPullFromCloudData(getBaseContext());
               if (queryList != null && queryList.size() > 0) {
 
-                //TODO change to material dialog
-                final ProgressDialog progressDialog = new ProgressDialog(SyncActivity.this);
-                progressDialog.setMessage("Uploading");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setIndeterminate(false);
-                progressDialog.setProgress(0);
-                progressDialog.setMax(queryList.size());
-                progressDialog.show();
-
                 pushTotal = queryList.size();
 
-                PushToServer pushToServer = new PushToServer(queryList, Const.Database.LOCAL_API_BASE_URL_121_dev, progressDialog, tvPushToLocal);
+                PushToServer pushToServer = new PushToServer(queryList, Const.Database.LOCAL_API_BASE_URL_121_dev, tvPushToLocal);
                 pushToServer.execute();
 
               } else {  //nothing to push
@@ -300,19 +291,9 @@ public class SyncActivity extends AppCompatActivity {
               List<Query> queryList = Cache.Synchronisation.getPullFromLocalData(getBaseContext());
               if (queryList != null && queryList.size() > 0) {
 
-                //TODO change to material dialog
-                final ProgressDialog progressDialog = new ProgressDialog(SyncActivity.this);
-                progressDialog.setMessage("Uploading");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                progressDialog.setIndeterminate(true);
-                progressDialog.setProgress(0);
-                progressDialog.setMax(queryList.size());
-                progressDialog.show();
-
                 pushTotal = queryList.size();
 
-                //TODO just for loop + async >> OOM; sync >> cannot be on main thread
-                PushToServer pushToServer = new PushToServer(queryList, Const.Database.CLOUD_API_BASE_URL_121_dev, progressDialog, tvPushToCloud);
+                PushToServer pushToServer = new PushToServer(queryList, Const.Database.CLOUD_API_BASE_URL_121_dev, tvPushToCloud);
                 pushToServer.execute();
 
               } else {  //nothing to push
@@ -415,11 +396,30 @@ public class SyncActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     TextView textView;
 
+    public PushToServer(List<Query> queries, String baseUrl, TextView textView) {
+      this.queries = queries;
+      this.textView = textView;
+      this.baseUrl = baseUrl;
+      this.progressDialog = new ProgressDialog(SyncActivity.this);
+    }
+
     public PushToServer(List<Query> queries, String baseUrl, ProgressDialog progressDialog, TextView textView) {
       this.queries = queries;
+      this.textView = textView;
       this.baseUrl = baseUrl;
       this.progressDialog = progressDialog;
-      this.textView = textView;
+    }
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      if (progressDialog != null) {
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setIndeterminate(false);
+        progressDialog.setProgress(0);
+        progressDialog.setMax(queries.size());
+        progressDialog.show();
+      }
     }
 
     @Override

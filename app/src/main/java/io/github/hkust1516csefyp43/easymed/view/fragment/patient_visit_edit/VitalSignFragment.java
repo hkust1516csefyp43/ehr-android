@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -65,6 +66,8 @@ public class VitalSignFragment extends Fragment implements OnSendData{
 
   private boolean tempIsCelsius = true;
   private boolean weightIsKg = true;
+
+  private ColorStateList defaultTextColor;
 
   public VitalSignFragment() {
     // Required empty public constructor
@@ -190,6 +193,114 @@ public class VitalSignFragment extends Fragment implements OnSendData{
           if (etWeight != null && !etWeight.getText().toString().equals("")) {
             etWeight.setText(String.valueOf(Util.roundDouble(Util.lbToKg(Double.parseDouble(etWeight.getText().toString())), 2)));
           }
+        }
+      }
+    });
+
+    defaultTextColor = etSystolic.getTextColors();
+    etSystolic.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        try {
+          int systolic = Integer.parseInt(s.toString());
+          if (systolic > 140 || systolic < 80) {
+            etSystolic.setTextColor(Color.RED);
+          } else {
+            etSystolic.setTextColor(defaultTextColor);
+          }
+        } catch (NumberFormatException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+
+    etDiastolic.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        try {
+          int diastolic = Integer.parseInt(s.toString());
+          if (diastolic > 90 || diastolic < 60) {
+            etDiastolic.setTextColor(Color.RED);
+          } else {
+            etDiastolic.setTextColor(defaultTextColor);
+          }
+        } catch (NumberFormatException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+
+    etBloodSugar.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        try {
+          double bs = Double.parseDouble(s.toString());
+          if (bs > 200 || bs < 70) {
+            etBloodSugar.setTextColor(Color.RED);
+          } else {
+            etBloodSugar.setTextColor(defaultTextColor);
+          }
+        } catch (NumberFormatException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+
+    etTemperature.addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        try {
+          double bs = Double.parseDouble(s.toString());
+          if (!tempIsCelsius) {
+            bs = Util.fahrenheitToCelsius(bs);
+          }
+          if (bs > 38 || bs < 36) {
+            etTemperature.setTextColor(Color.RED);
+          } else {
+            etTemperature.setTextColor(defaultTextColor);
+          }
+        } catch (NumberFormatException e) {
+          e.printStackTrace();
         }
       }
     });

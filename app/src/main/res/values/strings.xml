@@ -98,7 +98,7 @@
     <string name="gestation">Gestation</string>
     <string name="remove">Remove</string>
     <string name="click_to_select_date">Click to select date</string>
-    <string name="first_name">First name</string>
+    <string name="first_name">Given name</string>
     <string name="native_name">Native name</string>
     <string name="gender">Gender</string>
     <string name="age">Age</string>
@@ -111,7 +111,7 @@
     <string name="click_the_button_to_retry">Click the button to retry.</string>
     <string name="click_the_button_to_report_back">Click the button to report back.</string>
     <string name="sync">Sync</string>
-    <string name="last_name">Last name</string>
+    <string name="last_name">Family name</string>
     <string name="middle_name">Middle name</string>
     <string name="empty">Empty</string>
     <string name="description">description</string>

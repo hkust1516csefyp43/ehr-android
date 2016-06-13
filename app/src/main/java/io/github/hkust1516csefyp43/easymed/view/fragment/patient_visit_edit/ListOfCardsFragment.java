@@ -209,7 +209,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
         cardList.add(new Card("Skin", consultation.getPeSkin()));
         cardList.add(new Card("Other", consultation.getPeOther()));
       } else if (title.compareTo("Review of System") == 0) {
-        cardList.add(new Card("EENT", consultation.getRosEent()));
+        cardList.add(new Card("General", consultation.getRosGeneral()));
         cardList.add(new Card("Respiratory", consultation.getRosRespi()));
         cardList.add(new Card("Cardiovascular", consultation.getRosCardio()));
         cardList.add(new Card("Gastrointestinal", consultation.getRosGastro()));
@@ -218,6 +218,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
         cardList.add(new Card("Skin", consultation.getRosSkin()));
         cardList.add(new Card("Locomotor", consultation.getRosLocomotor()));
         cardList.add(new Card("Neurology", consultation.getRosNeruology()));
+        cardList.add(new Card("Other", consultation.getRosOther()));
       } else if (title.compareTo("Red Flags") == 0) {
         cardList.add(new Card("Alertness", consultation.getRfAlertness()));
         cardList.add(new Card("Breathing", consultation.getRfBreathing()));
@@ -717,7 +718,6 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
   public Serializable onSendData() {
     if (adapter != null) {
       if (inMedicationPage) {         //translate medication name into id
-        //TODO 2 array list, 1 with medication_id, one with just names of the medication (POST medication)
         ArrayList<Card> newMedicationList = new ArrayList<>();
         ArrayList<Card> newCardList = new ArrayList<>();
         for (Card c:cardList) {

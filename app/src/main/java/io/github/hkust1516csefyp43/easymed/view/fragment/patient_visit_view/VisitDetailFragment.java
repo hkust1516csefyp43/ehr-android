@@ -456,11 +456,6 @@ public class VisitDetailFragment extends Fragment {
                                             textView31.setText("RF Dehydration: " + consultation.getRfDehydration());
                                             linearLayout.addView(textView31);
                                         }
-                                        if (consultation.getRosEent() != null) {
-                                            TextView textView32 = new TextView(context);
-                                            textView32.setText("ROS Eent: " + consultation.getRosEent());
-                                            linearLayout.addView(textView32);
-                                        }
                                         if (consultation.getRosRespi() != null) {
                                             TextView textView33 = new TextView(context);
                                             textView33.setText("ROS respi: " + consultation.getRosRespi());
