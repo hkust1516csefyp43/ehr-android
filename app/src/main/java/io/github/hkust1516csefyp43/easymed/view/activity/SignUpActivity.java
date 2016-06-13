@@ -55,8 +55,8 @@ public class SignUpActivity extends AppCompatActivity {
   public static final String TAG = SignUpActivity.class.getSimpleName();
 
   //view
+  private TextInputEditText tietFirstname;
   private TextInputEditText tietUsername;
-  private TextInputEditText tiYourName;
   private TextInputEditText tietPassword1;
   private TextInputEditText tietPassword2;
   private ProgressBar progressBar;
@@ -80,7 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
       setSupportActionBar(toolbar);
       ActionBar actionBar = getSupportActionBar();
       if (actionBar != null) {
-        actionBar.setTitle("Sigh up");
+        actionBar.setTitle(R.string.sign_up);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
       }
@@ -114,13 +114,13 @@ public class SignUpActivity extends AppCompatActivity {
             if (progressBar != null) {
               progressBar.setVisibility(View.GONE);
             }
-            ArrayAdapter<Role> roleArrayAdapter = new ArrayAdapter<Role>(getApplicationContext(), android.R.layout.simple_list_item_1, response.body());
+            ArrayAdapter<Role> roleArrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, response.body());
             acsRole.setAdapter(roleArrayAdapter);
             acsRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
               @Override
               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "Role: " + response.body().get(position).getName());
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+//                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
                 role = response.body().get(position);
               }
 
@@ -193,7 +193,7 @@ public class SignUpActivity extends AppCompatActivity {
             if (isEveryBoxValid()) {
               if (role != null){
                 User newUser = new User();
-                newUser.setFirstName(tiYourName.getText().toString());
+                newUser.setFirstName(tietFirstname.getText().toString());
                 newUser.setUsername(tietUsername.getText().toString());
                 newUser.setPassword(tietPassword2.getText().toString());
                 newUser.setRole(role);
@@ -230,8 +230,8 @@ public class SignUpActivity extends AppCompatActivity {
   }
 
   private void findViewsById() {
+    tietFirstname = (TextInputEditText) findViewById(R.id.etFirstName);
     tietUsername = (TextInputEditText) findViewById(R.id.etUsername);
-    tiYourName = (TextInputEditText) findViewById(R.id.etFirstname);
     tietPassword1 = (TextInputEditText) findViewById(R.id.etPassword1);
     tietPassword2 = (TextInputEditText) findViewById(R.id.etPassword2);
     progressBar = (ProgressBar) findViewById(R.id.sign_up_progress);

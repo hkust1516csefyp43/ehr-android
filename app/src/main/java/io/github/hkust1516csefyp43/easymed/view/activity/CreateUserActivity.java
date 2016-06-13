@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -39,6 +40,7 @@ public class CreateUserActivity extends AppCompatActivity {
       fabScan.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+          Toast.makeText(getBaseContext(), "Coming soon", Toast.LENGTH_SHORT).show();
           Log.d(TAG, "scan qr code");
         }
       });
@@ -51,14 +53,18 @@ public class CreateUserActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
           Log.d(TAG, "start from scratch");
-          Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
-          intent.putExtra(Const.BundleKey.IS_QR, false);
-          startActivity(intent);
+          openNewUserActivity();
         }
       });
     }
 
 //    FloatingActionsMenu fab = (FloatingActionsMenu) findViewById(R.id.fab);
+  }
+
+  private void openNewUserActivity() {
+    Intent intent = new Intent(CreateUserActivity.this, SignUpActivity.class);
+    intent.putExtra(Const.BundleKey.IS_QR, false);
+    startActivity(intent);
   }
 
   @Override

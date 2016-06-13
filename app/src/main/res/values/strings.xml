@@ -149,4 +149,5 @@
     <string name="title_activity_inventory_add">InventoryAddActivity</string>
     <string name="global">Global</string>
     <string name="Description">Description</string>
+    <string name="sign_up">Sign up</string>
 </resources>
