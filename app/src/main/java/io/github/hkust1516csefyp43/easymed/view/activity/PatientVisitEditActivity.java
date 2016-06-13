@@ -1164,7 +1164,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                       @Override
                       public void onResponse(Call<Patient> call, Response<Patient> response) {
                         if (response  == null || response.code() < 200 || response.code() >= 300 || response.body() == null) {
-                          onFailure(call, new Throwable("sth wrong"));
+                          onFailure(call, new Throwable("sth wrong: " + response.code()));
                         } else {                                                          //PUT visit (iff tag number have been modified?)
                           //TODO edit documents
                           Call<Document> hpiCall = documentService.editDocument("1", finalHPI.getDocID(), new Document(finalHPI.getDocHTML()));
@@ -1428,6 +1428,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                       @Override
                       public void onFailure(Call<Patient> call, Throwable t) {
                         progressDialog.dismiss();
+                        t.printStackTrace();
                       }
                     });
                   }
@@ -1695,6 +1696,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                               @Override
                               public void onFailure(Call<Visit> call, Throwable t) {
+                                t.printStackTrace();
                                 progressDialog.dismiss();
                                 //TODO error dialog
                               }
@@ -1707,6 +1709,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                       @Override
                       public void onFailure(Call<Patient> call, Throwable t) {
+                        t.printStackTrace();
                         progressDialog.dismiss();
                       }
                     });
@@ -1749,7 +1752,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                             }
 
                             @Override
-                            public void onFailure(Call<Document> call, Throwable t) {
+                            public void onFailure(Call<Document> call, Throwable t) { //TODO check if we need to dismiss the pd
                               t.printStackTrace();
                             }
                           });
@@ -1789,6 +1792,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                                     @Override
                                     public void onFailure(Call<Triage> call, Throwable t) {
                                       progressDialog.dismiss();
+                                      t.printStackTrace();
                                     }
                                   });
                                 }
@@ -1853,7 +1857,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                           }
 
                           @Override
-                          public void onFailure(Call<Document> call, Throwable t) {
+                          public void onFailure(Call<Document> call, Throwable t) { //TODO pd.dismiss?
                             t.printStackTrace();
                           }
                         });
@@ -1900,6 +1904,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                                 @Override
                                 public void onFailure(Call<Triage> call, Throwable t) {
+                                  t.printStackTrace();
                                   progressDialog.dismiss();
                                   //TODO error dialog
                                 }
@@ -2057,6 +2062,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                   @Override
                   public void onFailure(Call<Patient> call, Throwable t) {
+                    t.printStackTrace();
                     progressDialog.dismiss();
                   }
                 });
