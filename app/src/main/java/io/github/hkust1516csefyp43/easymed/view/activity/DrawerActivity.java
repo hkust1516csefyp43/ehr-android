@@ -151,6 +151,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     Log.d(TAG, "before");
     new ThingsToDoInBackground().execute();
     Log.d(TAG, "after");
+    //TODO check if time is right
+
   }
 
   private void cacheData(final Context context) {
@@ -395,7 +397,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       });
 
       cacheData(getBaseContext());
-
       return null;
     }
 
