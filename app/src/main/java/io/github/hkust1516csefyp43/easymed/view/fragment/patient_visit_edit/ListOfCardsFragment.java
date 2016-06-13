@@ -810,7 +810,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                               cardList.set(pos, new Card(data.get(0), data.get(1)));      //TODO crash @ PE
                               adapter.notifyDataSetChanged();
                             } else {
-                              Toast.makeText(getContext(), "Empty data. Please seek tech support", Toast.LENGTH_LONG);
+                              Toast.makeText(getContext(), "Empty data. Please seek tech support", Toast.LENGTH_LONG).show();
                             }
                           }
                         })

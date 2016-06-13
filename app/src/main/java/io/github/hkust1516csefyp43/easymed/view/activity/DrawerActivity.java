@@ -390,7 +390,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
         @Override
         public void onFailure(Call<List<Notification>> call, Throwable t) {
-          Toast.makeText(getApplicationContext(), "Cannot get notification list...", Toast.LENGTH_SHORT);
+          Toast.makeText(getApplicationContext(), "Cannot get notification list...", Toast.LENGTH_SHORT).show();
         }
       });
 

@@ -204,11 +204,11 @@ public class SignUpActivity extends AppCompatActivity {
                   public void onResponse(Call<User> call, Response<User> response) {
                     if (response.body() != null){
                       if (response.code() >= 200 && response.code() < 300) {
-                        Toast.makeText(getApplicationContext(), "Successfully created the user!", Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(), "Successfully created the user!", Toast.LENGTH_LONG).show();
                         finish();
                       }else {
                         onFailure(call, new Throwable("Some error: " + response.code()));
-                        Toast.makeText(getApplicationContext(), "Some error: " + response.code(), Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(), "Some error: " + response.code(), Toast.LENGTH_LONG).show();
                       }
                     }
                   }
@@ -219,12 +219,9 @@ public class SignUpActivity extends AppCompatActivity {
                   }
                 });
               }
-
             }
           }
         });
-
-
       }
     }
   }
