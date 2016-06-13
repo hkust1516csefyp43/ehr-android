@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="2.0.4" versioncode="35">
+        <change>FIX: Replace EENT with General and Other</change>
+        <change>ADD: Warning for temperature, blood sugar and blood pressure</change>
+        <change>ADD: Interface for Sign up</change>
+        <change>FIX: No more SIGH UP</change>
+        <change>ADD: Medication description input shortcut</change>
+        <change>FIX: Sort by tag number if possible</change>
+        <change>FIX: Minor bug fixes</change>
+        <change>FIX: minor UI changes</change>
+    </release>
     <release version="2.0.3" versioncode="34">
         <chagen>FIX: save document</chagen>
         <change>FIX: display of everything while editing patient</change>
