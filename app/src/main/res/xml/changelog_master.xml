@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="2.0.5" versioncode="36">
+        <change>ADD: Ability to change system clock</change>
+    </release>
     <release version="2.0.4" versioncode="35">
         <change>FIX: Replace EENT with General and Other</change>
         <change>ADD: Warning for temperature, blood sugar and blood pressure</change>
