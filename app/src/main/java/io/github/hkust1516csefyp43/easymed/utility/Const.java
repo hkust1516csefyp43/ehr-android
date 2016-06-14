@@ -3,6 +3,9 @@ package io.github.hkust1516csefyp43.easymed.utility;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 /**
  * Created by Louis on 20/4/16.
  */
@@ -10,11 +13,14 @@ public class Const {
   //not inner class >> other
   public final static int SPLASH_DISPLAY_LENGTH = 4000;       //4 seconds of Splash Screen
   public final static int TOKEN_LENGTH = 16;                  //TODO make it programmable >> easier to scale up/down
-  public final static Gson GsonParserThatWorksWithPGTimestamp = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
+  public final static String PG_DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+  public final static SimpleDateFormat SDF_PG_DATE_TIME = new SimpleDateFormat(PG_DATE_TIME_PATTERN, Locale.US);
+  public final static Gson GsonParserThatWorksWithPGTimestamp = new GsonBuilder().setDateFormat(PG_DATE_TIME_PATTERN).create();
   public final static String EMPTY_STRING = "wqpU5NYWMEw57bjRWZgxCwdSe8YC1FNTqE5GhKHmc6qnyzHZkR2ehkfvWuNdBZCd";    //if I find this in a string, it means it is empty (the possibility of sth having this name is super small)
   public static final int ACTION_TAKE_PICTURE = 0;
   public static final int ACTION_SELECT_PICTURE = 1;
   public static final int ACTION_REMOVE_PICTURE = 2;
+  public static final long MAX_TIME_DIFF = 900000;      //15 minutes
 
   public class SignUp {
     public static final String USERNAME = "username";

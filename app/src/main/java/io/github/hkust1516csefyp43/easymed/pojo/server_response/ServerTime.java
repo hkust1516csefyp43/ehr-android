@@ -14,6 +14,10 @@ public class ServerTime implements Serializable {
   public ServerTime() {
   }
 
+  public ServerTime(Date time) {
+    this.time = time;
+  }
+
   public Date getTime() {
     return time;
   }

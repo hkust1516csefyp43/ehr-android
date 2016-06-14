@@ -715,7 +715,7 @@ public interface v2API {
     @GET("static/clock")
     Call<ServerTime> getServerTime();
 
-    @POST("static/clock")
+    @PUT("static/clock")
     Call<ServerTime> setServerTime(
         @Header("token")  String token,
         @Body ServerTime serverTime

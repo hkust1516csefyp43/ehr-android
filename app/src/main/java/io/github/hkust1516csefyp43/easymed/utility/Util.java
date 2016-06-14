@@ -277,6 +277,20 @@ public class Util {
     }
   }
 
+  public static Date dateForPutClock() {
+    GregorianCalendar gc = new GregorianCalendar();
+    TimeZone timeZone = gc.getTimeZone();
+    Date d = new Date();
+    d.setTime(d.getTime()-timeZone.getRawOffset());
+    return d;
+  }
+
+  public static Calendar DateToCalendar(Date date){
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    return cal;
+  }
+
   public static String dateInStringOrToday(Date date) {
     GregorianCalendar gc = new GregorianCalendar();
     gc.setTime(date);

@@ -35,7 +35,10 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.context.IconicsLayoutInflater;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import de.cketti.library.changelog.ChangeLog;
@@ -46,9 +49,11 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.DocumentType;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Gender;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Medication;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Notification;
+import io.github.hkust1516csefyp43.easymed.pojo.server_response.ServerTime;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.AdminFragment;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.ConsultationFragment;
@@ -152,7 +157,96 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     new ThingsToDoInBackground().execute();
     Log.d(TAG, "after");
     //TODO check if time is right
+    if (Const.Database.currentServerType == Const.Database.LOCAL) {
+      Log.d(TAG, "Local server");
+      OkHttpClient.Builder ohc1 = new OkHttpClient.Builder();
+      ohc1.readTimeout(1, TimeUnit.MINUTES);
+      ohc1.connectTimeout(1, TimeUnit.MINUTES);
+      final Retrofit retrofit = new Retrofit
+          .Builder()
+          .baseUrl(Const.Database.getCurrentAPI())
+          .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+          .client(ohc1.build())
+          .build();
+      final v2API.staticAPI staticService = retrofit.create(v2API.staticAPI.class);
+      Call<ServerTime> serverTimeCall = staticService.getServerTime();
+      serverTimeCall.enqueue(new Callback<ServerTime>() {
+        @Override
+        public void onResponse(Call<ServerTime> call, Response<ServerTime> response) {
+          if (response == null) {
+            onFailure(call, new Throwable("Empty response"));
+          } else if (response.code() >= 300 || response.code() < 200) {
+            onFailure(call, new Throwable("Error from server"));
+          } else {
+            if (response.body() != null)
+              Log.d(TAG, response.body().toString());
+            GregorianCalendar gc = new GregorianCalendar();
+            TimeZone timeZone = gc.getTimeZone();
+            Date d = new Date();
+            d.setTime(d.getTime()-timeZone.getRawOffset());
+            gc.setTime(d);
+            final Date serverTime = response.body().getTime();
+            long diff = Math.abs(serverTime.getTime() - gc.getTime().getTime());
+            Log.d(TAG, "qqq" + String.valueOf(diff));
+            if (diff >= Const.MAX_TIME_DIFF) {
+              new MaterialDialog.Builder(DrawerActivity.this)
+                  .title("Which has the wrong time?")
+                  .content("The local server thinks that it's now " + serverTime.toString() + ", which is quite different from the time of the phone. Which one is incorrect?")
+                  .positiveText("Server")
+                  .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull final MaterialDialog dialog, @NonNull DialogAction which) {
+                      ServerTime newST = new ServerTime(Util.dateForPutClock());
+                      Log.d(TAG, newST.toString());   //What i need is sth like '2016-06-14T00:15:10.987Z' for 0710 @ Phnom Penh
+                      Call<ServerTime> serverTimeCall2 = staticService.setServerTime("1", newST);
+                      serverTimeCall2.enqueue(new Callback<ServerTime>() {
+                        @Override
+                        public void onResponse(Call<ServerTime> call, Response<ServerTime> response) {
+                          if (response == null) {
+                            onFailure(call, new Throwable("Empty response"));
+                          } else if (response.code() >= 300 || response.code() < 200) {
+                            onFailure(call, new Throwable("Error from server: " + response.code()));
+                          } else {
+                            dialog.dismiss();
+                          }
+                        }
 
+                        @Override
+                        public void onFailure(Call<ServerTime> call, Throwable t) {
+                          t.printStackTrace();
+                          dialog.dismiss();
+                          Toast.makeText(getBaseContext(), t.toString(), Toast.LENGTH_LONG).show();
+                        }
+                      });
+                    }
+                  })
+                  .negativeText("This phone")
+                  .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                      startActivityForResult(new Intent(android.provider.Settings.ACTION_DATE_SETTINGS), 0);
+                    }
+                  })
+                  .neutralText("Ignore")
+                  .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                      dialog.dismiss();
+                    }
+                  })
+                  .show();
+            }
+          }
+        }
+
+        @Override
+        public void onFailure(Call<ServerTime> call, Throwable t) {
+
+        }
+      });
+    } else {
+      Log.d(TAG, "Cloud server");
+    }
   }
 
   private void cacheData(final Context context) {
