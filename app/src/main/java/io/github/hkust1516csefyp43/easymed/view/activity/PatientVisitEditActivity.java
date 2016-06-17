@@ -1167,54 +1167,62 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                           onFailure(call, new Throwable("sth wrong: " + response.code()));
                         } else {                                                          //PUT visit (iff tag number have been modified?)
                           //TODO edit documents
-                          Call<Document> hpiCall = documentService.editDocument("1", finalHPI.getDocID(), new Document(finalHPI.getDocHTML()));
-                          Call<Document> shCall = documentService.editDocument("1", finalSH.getDocID(), new Document(finalSH.getDocHTML()));
-                          Call<Document> fhCall = documentService.editDocument("1", finalFH.getDocID(), new Document(finalFH.getDocHTML()));
-                          Call<Document> pmhCall = documentService.editDocument("1", finalPMH.getDocID(), new Document(finalPMH.getDocHTML()));
-                          hpiCall.enqueue(new Callback<Document>() {
-                            @Override
-                            public void onResponse(Call<Document> call, Response<Document> response) {
+                          if (finalHPI != null) {
+                            Call<Document> hpiCall = documentService.editDocument("1", finalHPI.getDocID(), new Document(finalHPI.getDocHTML()));
+                            hpiCall.enqueue(new Callback<Document>() {
+                              @Override
+                              public void onResponse(Call<Document> call, Response<Document> response) {
 
-                            }
+                              }
 
-                            @Override
-                            public void onFailure(Call<Document> call, Throwable t) {
-                              t.printStackTrace();
-                            }
-                          });
-                          shCall.enqueue(new Callback<Document>() {
-                            @Override
-                            public void onResponse(Call<Document> call, Response<Document> response) {
+                              @Override
+                              public void onFailure(Call<Document> call, Throwable t) {
+                                t.printStackTrace();
+                              }
+                            });
+                          }
+                          if (finalSH != null) {
+                            Call<Document> shCall = documentService.editDocument("1", finalSH.getDocID(), new Document(finalSH.getDocHTML()));
+                            shCall.enqueue(new Callback<Document>() {
+                              @Override
+                              public void onResponse(Call<Document> call, Response<Document> response) {
 
-                            }
+                              }
 
-                            @Override
-                            public void onFailure(Call<Document> call, Throwable t) {
-                              t.printStackTrace();
-                            }
-                          });
-                          fhCall.enqueue(new Callback<Document>() {
-                            @Override
-                            public void onResponse(Call<Document> call, Response<Document> response) {
+                              @Override
+                              public void onFailure(Call<Document> call, Throwable t) {
+                                t.printStackTrace();
+                              }
+                            });
+                          }
+                          if (finalFH != null) {
+                            Call<Document> fhCall = documentService.editDocument("1", finalFH.getDocID(), new Document(finalFH.getDocHTML()));
+                            fhCall.enqueue(new Callback<Document>() {
+                              @Override
+                              public void onResponse(Call<Document> call, Response<Document> response) {
 
-                            }
+                              }
 
-                            @Override
-                            public void onFailure(Call<Document> call, Throwable t) {
-                              t.printStackTrace();
-                            }
-                          });
-                          pmhCall.enqueue(new Callback<Document>() {
-                            @Override
-                            public void onResponse(Call<Document> call, Response<Document> response) {
+                              @Override
+                              public void onFailure(Call<Document> call, Throwable t) {
+                                t.printStackTrace();
+                              }
+                            });
+                          }
+                          if (finalPMH != null) {
+                            Call<Document> pmhCall = documentService.editDocument("1", finalPMH.getDocID(), new Document(finalPMH.getDocHTML()));
+                            pmhCall.enqueue(new Callback<Document>() {
+                              @Override
+                              public void onResponse(Call<Document> call, Response<Document> response) {
 
-                            }
+                              }
 
-                            @Override
-                            public void onFailure(Call<Document> call, Throwable t) {
-                              t.printStackTrace();
-                            }
-                          });
+                              @Override
+                              public void onFailure(Call<Document> call, Throwable t) {
+                                t.printStackTrace();
+                              }
+                            });
+                          }
 
                           Visit visit;
                           if (finalMedication.getCardArrayList().size() > 0 || finalMedication.getCardArrayList2().size() > 0) {
