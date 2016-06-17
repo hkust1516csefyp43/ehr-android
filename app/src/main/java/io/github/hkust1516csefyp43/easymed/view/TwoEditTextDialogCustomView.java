@@ -36,7 +36,7 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
    * @param title       of the
    */
   public TwoEditTextDialogCustomView(Context context, @Nullable ArrayList<String> suggestions, @Nullable String title) {
-    super(context, null, R.style.AppTheme);
+    super(context);
     this.setOrientation(VERTICAL);
 
     TextInputLayout til = new TextInputLayout(context);
@@ -83,7 +83,7 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
    * @param displaySwitch
    */
   public TwoEditTextDialogCustomView(Context context, @Nullable ArrayList<String> suggestions, @Nullable String title, @Nullable String text1, @Nullable String text2, boolean displaySwitch) {
-    super(context, null, R.style.AppTheme);
+    super(context);
     this.setOrientation(VERTICAL);
 
     if (!displaySwitch) {
@@ -130,7 +130,7 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
   }
 
   public TwoEditTextDialogCustomView(Context context, @Nullable ArrayList<String> suggestions, @Nullable String title, @Nullable String text1, @Nullable String text2, boolean displaySwitch, String[] shortcuts) {
-    super(context, null, R.style.AppTheme);
+    super(context);
     this.setOrientation(VERTICAL);
 
     if (!displaySwitch) {
