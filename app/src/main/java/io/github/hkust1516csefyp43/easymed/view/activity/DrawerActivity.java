@@ -186,22 +186,29 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     if (navigationView != null) {
-      TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvUsername);
-      TextView uName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvName);
-      if (uEmail != null)
-        uEmail.setText(currentUser.getUsername());
-      if (uName != null)
-        uName.setText(currentUser.getFirstName());
-      ImageView uProPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
-      uProPic.setImageDrawable(TextDrawable.builder().buildRound(currentUser.getFirstName().substring(0,1), ColorGenerator.MATERIAL.getColor("Louis Tsai")));    //TODO real data needed
-      navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
-          //TODO put user in extra
-          startActivity(intent);
+      if (currentUser != null) {
+        TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvUsername);
+        TextView uName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvName);
+        ImageView uProPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
+        String username = currentUser.getUsername();
+        String firstname = currentUser.getFirstName();
+        if (uEmail != null && username != null) {
+          uEmail.setText(currentUser.getUsername());
         }
-      });
+        if (uName != null && firstname != null) {
+          uName.setText(currentUser.getFirstName());
+        }
+        if (firstname != null)
+          uProPic.setImageDrawable(TextDrawable.builder().buildRound(firstname.substring(0,1), ColorGenerator.MATERIAL.getColor(firstname)));
+        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+            //TODO put user in extra
+            startActivity(intent);
+          }
+        });
+      }
     }
 
     navigationView.setNavigationItemSelectedListener(this);

@@ -298,6 +298,8 @@ public class LoginActivity extends AppCompatActivity{
               for (User u:response.body()) {
                 if (u.getUsername().compareTo(mUsername) == 0) {
                   Cache.CurrentUser.setUser(getApplicationContext(), u);
+                  openEverything();
+                  finish();
                 }
               }
             }
@@ -307,12 +309,12 @@ public class LoginActivity extends AppCompatActivity{
           public void onFailure(Call<List<User>> call, Throwable t) {
             t.printStackTrace();
             Toast.makeText(getApplicationContext(), "Failed to fetch user info: " + t.toString(), Toast.LENGTH_LONG).show();
+            openEverything();
+            finish();
           }
         });
         Cache.CurrentUser.setClinic(getApplicationContext(), currentClinic);
         Cache.CurrentUser.setUser(getApplicationContext(), user);
-        openEverything();
-        finish();
       } else {
         Answers.getInstance().logLogin(new LoginEvent().putSuccess(false));
         mPasswordView.setError(getString(R.string.error_incorrect_password));

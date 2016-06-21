@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="2.0.7" versioncode="38">
+        <change>FIX: Show your name instead of 'Louis Tsai'</change>
+    </release>
     <release version="2.0.6" versioncode="37">
         <change>Minor bug fix</change>
     </release>
