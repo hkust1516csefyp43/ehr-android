@@ -83,71 +83,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (cl.isFirstRun()) {
       cl.getLogDialog().show();
     }
-
-    currentUser = Cache.CurrentUser.getUser(getApplicationContext());
-
-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    if (navigationView != null) {
-      TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView);
-      if (uEmail != null)
-        uEmail.setText(currentUser.getEmail());
-      ImageView uProPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
-      uProPic.setImageDrawable(TextDrawable.builder().buildRound("LT", ColorGenerator.MATERIAL.getColor("Louis Tsai")));    //TODO real data needed
-      navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
-          //TODO put user in extra
-          startActivity(intent);
-        }
-      });
-    }
-
-
-    navigationView.setNavigationItemSelectedListener(this);
-    Menu menu = navigationView.getMenu();
-    MenuItem menuItem = menu.findItem(R.id.nav_triage);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_consultation);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_pharmacy);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_inventory);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_medkit).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_reports);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_file_chart).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_admin);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_male).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-//    menuItem = menu.findItem(R.id.nav_settings);
-//    if (menuItem != null) {
-//      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).actionBar().paddingDp(2));
-//    }
-    menuItem = menu.findItem(R.id.nav_about);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_info).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_logout);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_exit_to_app).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-
-    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
-    if (frameLayout != null) {
-      TriageFragment triageFragment = new TriageFragment();
-      getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, triageFragment).commit();
-    }
   }
 
   @Override
@@ -247,6 +182,72 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     } else {
       Log.d(TAG, "Cloud server");
     }
+    currentUser = Cache.CurrentUser.getUser(getApplicationContext());
+
+    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+    if (navigationView != null) {
+      TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvUsername);
+      TextView uName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvName);
+      if (uEmail != null)
+        uEmail.setText(currentUser.getUsername());
+      if (uName != null)
+        uName.setText(currentUser.getFirstName());
+      ImageView uProPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
+      uProPic.setImageDrawable(TextDrawable.builder().buildRound(currentUser.getFirstName().substring(0,1), ColorGenerator.MATERIAL.getColor("Louis Tsai")));    //TODO real data needed
+      navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+          //TODO put user in extra
+          startActivity(intent);
+        }
+      });
+    }
+
+    navigationView.setNavigationItemSelectedListener(this);
+    Menu menu = navigationView.getMenu();
+    MenuItem menuItem = menu.findItem(R.id.nav_triage);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_consultation);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_pharmacy);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_inventory);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_medkit).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_reports);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_file_chart).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_admin);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_male).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+//    menuItem = menu.findItem(R.id.nav_settings);
+//    if (menuItem != null) {
+//      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).actionBar().paddingDp(2));
+//    }
+    menuItem = menu.findItem(R.id.nav_about);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_info).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_logout);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_exit_to_app).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+
+    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
+    if (frameLayout != null) {
+      TriageFragment triageFragment = new TriageFragment();
+      getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, triageFragment).commit();
+    }
   }
 
   private void cacheData(final Context context) {
@@ -305,7 +306,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       }
     });
 
-    //3. Cache Blood Types
+    //3. TODO Cache Blood Types
     //4. Cache Medications
     v2API.medications medicationsService = retrofit.create(v2API.medications.class);
     Call<List<Medication>> medicationsCall = medicationsService.getMedications("1", null, null, null, null, null, null);

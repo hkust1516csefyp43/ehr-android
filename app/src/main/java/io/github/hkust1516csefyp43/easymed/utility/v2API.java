@@ -679,7 +679,8 @@ public interface v2API {
     //TODO fill me up
     @GET("users")
     Call<List<User>> getUsers(
-        @Header("token") String token
+        @Header("token") String token,
+        @Query("username") String username
     );
 
     @GET("users/{id}")

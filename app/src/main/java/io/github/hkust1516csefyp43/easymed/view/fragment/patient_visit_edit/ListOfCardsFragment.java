@@ -73,7 +73,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
   private HashMap<String, String> medicationVsIdHM = new HashMap<>();
   private HashMap<String, String> idVsMedicationHM = new HashMap<>();
   private boolean inMedicationPage = false;
-  private String[] shortcutsArray = {"po", "sid", "bid", "tid", "mg", "ml", "/7", "/52", "/12"};
+  private String[] shortcutsArray = {"po", "od", "bid", "tid", "mg", "ml", "/7", "/52", "/12"};
 
   public static ListOfCardsFragment newInstance(String title) {
     ListOfCardsFragment fragment = new ListOfCardsFragment();

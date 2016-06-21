@@ -44,7 +44,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity{
 
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity{
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
-    mUsername = (TextInputEditText) findViewById(R.id.email);
+    mUsername = (TextInputEditText) findViewById(R.id.username);
 
     mPasswordView = (EditText) findViewById(R.id.password);
     mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -78,9 +78,9 @@ public class LoginActivity extends AppCompatActivity{
       }
     });
 
-    Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-    if (mEmailSignInButton != null) {
-      mEmailSignInButton.setOnClickListener(new OnClickListener() {
+    Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
+    if (mSignInButton != null) {
+      mSignInButton.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View view) {
           attemptLogin();
@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity{
 
   /**
    * Attempts to sign in or register the account specified by the login form.
-   * If there are form errors (invalid email, missing fields, etc.), the
+   * If there are form errors (invalid username, missing fields, etc.), the
    * errors are presented and no actual login attempt is made.
    */
   private void attemptLogin() {
@@ -206,11 +206,11 @@ public class LoginActivity extends AppCompatActivity{
 
   public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-    private final String mEmail;
+    private final String mUsername;
     private final String mPassword;
 
-    UserLoginTask(String email, String password) {
-      mEmail = email;
+    UserLoginTask(String username, String password) {
+      mUsername = username;
       mPassword = password;
     }
 
@@ -226,7 +226,7 @@ public class LoginActivity extends AppCompatActivity{
           .client(httpClient.build())
           .build();
       v2API.login loginService = retrofit.create(v2API.login.class);
-      Call<Object> objectCall = loginService.login(new LoginCredentials(mEmail, mPassword, Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)));
+      Call<Object> objectCall = loginService.login(new LoginCredentials(mUsername, mPassword, Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)));
       try {
         Response<Object> response = objectCall.execute();
         if (response == null) {
@@ -254,17 +254,17 @@ public class LoginActivity extends AppCompatActivity{
       if (success) {
         //TODO get the actual user json
         User user = new User();
-        user.setEmail(mEmail);
+        user.setUsername(mUsername);
         Answers.getInstance().logLogin(new LoginEvent().putSuccess(true));
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.readTimeout(1, TimeUnit.MINUTES);
         httpClient.connectTimeout(1, TimeUnit.MINUTES);
         Retrofit retrofit = new Retrofit
-                .Builder()
-                .baseUrl(Const.Database.getCurrentAPI())
-                .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
-                .client(httpClient.build())
-                .build();
+            .Builder()
+            .baseUrl(Const.Database.getCurrentAPI())
+            .addConverterFactory(GsonConverterFactory.create(Const.GsonParserThatWorksWithPGTimestamp))
+            .client(httpClient.build())
+            .build();
         v2API.clinics clinicsService = retrofit.create(v2API.clinics.class);
         Call<Clinic> clinicCall = clinicsService.getClinic("1", currentClinic.getClinicId());
         clinicCall.enqueue(new Callback<Clinic>() {
@@ -282,6 +282,31 @@ public class LoginActivity extends AppCompatActivity{
           @Override
           public void onFailure(Call<Clinic> call, Throwable t) {
             t.printStackTrace();
+          }
+        });
+        v2API.users userService = retrofit.create(v2API.users.class);
+        Call<List<User>> usersCall = userService.getUsers("1", null);
+        usersCall.enqueue(new Callback<List<User>>() {
+          @Override
+          public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            if (response == null) {
+              onFailure(call, new Throwable("Empty response"));
+            } else if (response.code() < 200 || response.code() >= 300) {
+              onFailure(call, new Throwable("Error from server: " + response.code()));
+            } else {
+              //TODO manual search -_- because i have forgot to do that in API -_-
+              for (User u:response.body()) {
+                if (u.getUsername().compareTo(mUsername) == 0) {
+                  Cache.CurrentUser.setUser(getApplicationContext(), u);
+                }
+              }
+            }
+          }
+
+          @Override
+          public void onFailure(Call<List<User>> call, Throwable t) {
+            t.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Failed to fetch user info: " + t.toString(), Toast.LENGTH_LONG).show();
           }
         });
         Cache.CurrentUser.setClinic(getApplicationContext(), currentClinic);

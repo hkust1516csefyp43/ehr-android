@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/email"
+                    android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/username"
@@ -98,7 +98,7 @@
                 android:layout_marginTop="8dp">
 
                 <Button
-                    android:id="@+id/email_sign_in_button"
+                    android:id="@+id/sign_in_button"
                     style="?android:textAppearanceSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
