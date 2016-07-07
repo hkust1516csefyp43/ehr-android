@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,8 +18,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import io.github.hkust1516csefyp43.easymed.R;
@@ -27,11 +32,13 @@ import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListene
 import io.github.hkust1516csefyp43.easymed.view.activity.InventoryAddActivity;
 import io.github.hkust1516csefyp43.easymed.view.fragment.MedicationVariantListFragment;
 
+//import android.support.design.widget.FloatingActionButton;
+
 public class InventoryFragment extends Fragment {
   private String TAG = InventoryFragment.class.getSimpleName();
 
   private OnFragmentInteractionListener mListener;
-  private FloatingActionButton floatingActionButton;
+  //  private FloatingActionButton floatingActionButton;
   private TabLayout tabLayout;
   private ViewPager viewPager;
 
@@ -53,7 +60,7 @@ public class InventoryFragment extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
+    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fam, container, false);
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     toolbar.setTitle("Inventory");
     toolbar.setSubtitle("In this suitcase");
@@ -97,14 +104,43 @@ public class InventoryFragment extends Fragment {
       viewPager.setOffscreenPageLimit(3);
     }
 
-    floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
-    floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
-    floatingActionButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        showAddItemActivity();
-      }
-    });
+    //TODO change it to fab menu
+    final FloatingActionsMenu fab = (FloatingActionsMenu) view.findViewById(R.id.fab);
+    FloatingActionButton fabInventory = (FloatingActionButton) view.findViewById(R.id.fabInventory);
+    if (fabInventory != null) {
+      fabInventory.setIconDrawable(new IconicsDrawable(getContext()).icon(CommunityMaterial.Icon.cmd_basket).actionBar().color(Color.WHITE));
+      fabInventory.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Toast.makeText(getContext(), "Coming soon", Toast.LENGTH_SHORT).show();
+          fab.collapse();
+          new MaterialDialog.Builder(this)
+              .title("New Medicine")
+              .customView(, true)
+              .positiveText("Add")
+              .negativeText("Cancel")
+              .onNegative(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                }
+              })
+              .show();
+        }
+      });
+    }
+
+    FloatingActionButton fabMedicine = (FloatingActionButton) view.findViewById(R.id.fabMedicine);
+    if (fabMedicine != null) {
+      fabMedicine.setIconDrawable(new IconicsDrawable(getContext()).icon(CommunityMaterial.Icon.cmd_pill).actionBar().color(Color.WHITE));
+      fabMedicine.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          showAddItemActivity();
+          fab.collapse();
+        }
+      });
+    }
 
     return view;
   }

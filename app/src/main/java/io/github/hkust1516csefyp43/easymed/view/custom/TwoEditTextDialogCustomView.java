@@ -1,4 +1,4 @@
-package io.github.hkust1516csefyp43.easymed.view;
+package io.github.hkust1516csefyp43.easymed.view.custom;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +22,8 @@ import io.github.hkust1516csefyp43.easymed.R;
 
 
 /**
+ * Usage:
+ * 1) Add/Edit Card
  * Created by Louis on 11/3/16.
  */
 public class TwoEditTextDialogCustomView extends LinearLayout {

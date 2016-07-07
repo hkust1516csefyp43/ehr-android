@@ -150,4 +150,5 @@
     <string name="global">Global</string>
     <string name="Description">Description</string>
     <string name="sign_up">Sign up</string>
+    <string name="title_activity_add_edit_keyword">AddEditKeywordActivity</string>
 </resources>

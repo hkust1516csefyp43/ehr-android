@@ -2,8 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -17,42 +16,22 @@
             app:layout_scrollFlags="scroll|enterAlways"
             android:theme="@style/AppTheme.AppBarOverlay"/>
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
+            app:theme="@style/AppTheme.AppBarOverlay"/>
+
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textSize="18dp"
-                android:text="Visit count for the last 6 months"/>
-
-            <ProgressBar
-                android:id="@+id/pbLineChardView"
-                android:layout_margin="32dp"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"/>
-
-            <com.db.chart.view.LineChartView
-                android:id="@+id/linechart"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-    </ScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab"
@@ -65,17 +44,17 @@
         app:fab_addButtonColorNormal="@color/colorAccent">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabOne"
+            android:id="@+id/fabMedicine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_title="1 day"
+            app:fab_title="Medicine"
             app:fab_colorNormal="@color/colorAccent"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabRange"
+            android:id="@+id/fabInventory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_title="Multiple days"
+            app:fab_title="Inventory"
             app:fab_colorNormal="@color/colorAccent"/>
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>

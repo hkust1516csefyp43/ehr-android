@@ -42,7 +42,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Prescription;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.RelatedData;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
-import io.github.hkust1516csefyp43.easymed.view.TwoEditTextDialogCustomView;
+import io.github.hkust1516csefyp43.easymed.view.custom.TwoEditTextDialogCustomView;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;

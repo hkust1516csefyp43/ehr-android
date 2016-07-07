@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -337,6 +338,19 @@ public class SyncActivity extends AppCompatActivity {
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  @Override
+  public View onCreateView(String name, Context context, AttributeSet attrs) {
+    View view = super.onCreateView(name, context, attrs);
+    //TODO Dynamicbox
+    return view;
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    //TODO disable buttons according to network connection
   }
 
   private void setPushProgress(int i) {

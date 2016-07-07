@@ -1,6 +1,7 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment.static_data;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,7 @@ public class KeywordsFragment extends Fragment {
 
   DynamicBox box;
   RecyclerView recyclerView;
+  FloatingActionButton floatingActionButton;
 
   public KeywordsFragment() {
     Log.d(TAG, "empty constructor");
@@ -47,6 +49,14 @@ public class KeywordsFragment extends Fragment {
     Log.d(TAG, "ocv");
     View view =  inflater.inflate(R.layout.fragment_keywords, container, false);
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+    floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fabAdd);
+    floatingActionButton.setVisibility(View.GONE);
+    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //TODO add keyword
+      }
+    });
     box = new DynamicBox(getContext(), recyclerView);
     box.showLoadingLayout();
     Log.d(TAG, "loading");
@@ -82,6 +92,7 @@ public class KeywordsFragment extends Fragment {
             Log.d(TAG, "sth to show: " + keywordList.toString());
             recyclerView.setAdapter(new keywordsAdapter());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            floatingActionButton.setVisibility(View.VISIBLE);
             box.hideAll();
           }
         }

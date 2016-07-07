@@ -38,6 +38,15 @@
             android:rowCount="12">
 
             <TextView
+                android:text="Medication"
+                android:layout_columnSpan="6"
+                android:layout_rowSpan="2"
+                android:layout_gravity="center_vertical"/>
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/acs_medication"
+                android:layout_columnSpan="12"
+                android:layout_rowSpan="2"/>
+            <TextView
                 android:text="Name"
                 android:layout_columnSpan="6"
                 android:layout_rowSpan="2"
@@ -53,15 +62,6 @@
                     android:layout_height="wrap_content"
                     android:lines="1"/>
             </android.support.design.widget.TextInputLayout>
-            <TextView
-                android:text="Medication"
-                android:layout_columnSpan="6"
-                android:layout_rowSpan="2"
-                android:layout_gravity="center_vertical"/>
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/acs_medication"
-                android:layout_columnSpan="12"
-                android:layout_rowSpan="2"/>
             <TextView
                 android:text="Strength"
                 android:layout_columnSpan="6"

@@ -133,6 +133,11 @@
             android:label="@string/title_activity_inventory_add"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:name=".view.activity.AddEditKeywordActivity"
+            android:label="@string/title_activity_add_edit_keyword"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>
