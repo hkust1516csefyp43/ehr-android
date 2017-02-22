@@ -114,9 +114,9 @@ public class InventoryFragment extends Fragment {
         public void onClick(View v) {
           Toast.makeText(getContext(), "Coming soon", Toast.LENGTH_SHORT).show();
           fab.collapse();
-          new MaterialDialog.Builder(this)
+          new MaterialDialog.Builder(getActivity())
               .title("New Medicine")
-              .customView(, true)
+              //.customView(, true)
               .positiveText("Add")
               .negativeText("Cancel")
               .onNegative(new MaterialDialog.SingleButtonCallback() {
