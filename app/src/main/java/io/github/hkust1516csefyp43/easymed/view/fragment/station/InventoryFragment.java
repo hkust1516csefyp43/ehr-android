@@ -116,7 +116,7 @@ public class InventoryFragment extends Fragment {
           fab.collapse();
           new MaterialDialog.Builder(getActivity())
               .title("New Medicine")
-              //.customView(, true)
+              .customView(R.layout.md_dialog_custom, true)
               .positiveText("Add")
               .negativeText("Cancel")
               .onNegative(new MaterialDialog.SingleButtonCallback() {
