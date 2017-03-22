@@ -231,7 +231,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
 
     @Override
     public int getCount() {
-      return 2;
+      return 0;
     }
   }
 
