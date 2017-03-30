@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,12 +18,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -31,6 +39,7 @@ import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListene
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.PatientIdentifier;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
 import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
@@ -41,6 +50,8 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
   private TabLayout tabLayout;
   private ViewPager viewPager;
   private FloatingActionButton floatingActionButton;
+  private PatientIdentifier patientIdentifier;
+  private String TAG = TriageFragment.class.getSimpleName();
 
   public static TriageFragment newInstance() {
     TriageFragment fragment = new TriageFragment();
@@ -59,7 +70,9 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
+//    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
+    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fam_tricons, container, false);
+    patientIdentifier = PatientIdentifier.getPatientIdentifier(getContext(), getActivity());
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     toolbar.setTitle("Triage");
     Clinic thisClinic = Cache.CurrentUser.getClinic(getContext());
@@ -81,7 +94,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
 
     tabLayout.addTab(tabLayout.newTab().setText("After"));
     tabLayout.addTab(tabLayout.newTab().setText("Everyone else"));
-    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
       @Override
       public void onTabSelected(TabLayout.Tab tab) {
         viewPager.setCurrentItem(tab.getPosition());
@@ -102,14 +115,50 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
     viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     viewPager.setOffscreenPageLimit(2);
 
-    floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+   /* floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
     floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
     floatingActionButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         addPatientDialog();
       }
-    });
+    });*/
+
+    final FloatingActionsMenu fab = (FloatingActionsMenu) view.findViewById(R.id.fab);
+    com.getbase.floatingactionbutton.FloatingActionButton fabIris = (com.getbase.floatingactionbutton.FloatingActionButton) view.findViewById(R.id.fabIris);
+    if (fabIris != null) {
+      fabIris.setIconDrawable(new IconicsDrawable(getContext()).icon(GoogleMaterial.Icon.gmd_remove_red_eye).color(Color.WHITE));
+      fabIris.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          fab.collapse();
+
+          if (!patientIdentifier.isDeviceConnected()) {
+            Toast.makeText(getContext(), "No iris scanner connected, please connect one to continue.", Toast.LENGTH_LONG).show();
+
+          } else {
+            Toast.makeText(getContext(), "Iris scanner connected!", Toast.LENGTH_LONG).show();
+            String ID = patientIdentifier.identifyIris();
+//            Toast.makeText(getContext(), ID, Toast.LENGTH_LONG).show();
+//            Log.d(TAG, ID);
+          }
+
+        }
+      });
+    }
+
+
+    com.getbase.floatingactionbutton.FloatingActionButton fabAdd = (com.getbase.floatingactionbutton.FloatingActionButton) view.findViewById(R.id.fabAdd);
+    if (fabAdd != null) {
+      fabAdd.setIconDrawable(new IconicsDrawable(getContext()).icon(GoogleMaterial.Icon.gmd_add).actionBar().color(Color.WHITE));
+      fabAdd.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          fab.collapse();
+          addPatientDialog();
+        }
+      });
+    }
 
     return view;
   }
@@ -234,5 +283,8 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
       return 0;
     }
   }
+
+
+  //public class startIrisScan extends AsyncTask<Void, Void, String>{}
 
 }
