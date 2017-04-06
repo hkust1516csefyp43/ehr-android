@@ -79,7 +79,7 @@
             android:layout_toEndOf="@+id/imageButton20"
             android:layout_toRightOf="@+id/imageButton20"
             android:background="@drawable/button_rect_normal"
-            app:srcCompat="@drawable/medication_icon" />
+            app:srcCompat="@drawable/pharmacy_icon" />
 
     </RelativeLayout>
 
