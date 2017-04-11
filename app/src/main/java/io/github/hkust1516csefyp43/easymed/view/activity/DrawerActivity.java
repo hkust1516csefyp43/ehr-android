@@ -463,6 +463,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
   }
 
 
+  //Made this method for landing page
   public void listenIntentMethod() {
 
     if (intentData == null) {
