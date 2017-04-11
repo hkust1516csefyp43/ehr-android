@@ -107,28 +107,30 @@ public class InventoryFragment extends Fragment {
     //TODO change it to fab menu
     final FloatingActionsMenu fab = (FloatingActionsMenu) view.findViewById(R.id.fab);
     FloatingActionButton fabInventory = (FloatingActionButton) view.findViewById(R.id.fabInventory);
-    if (fabInventory != null) {
-      fabInventory.setIconDrawable(new IconicsDrawable(getContext()).icon(CommunityMaterial.Icon.cmd_basket).actionBar().color(Color.WHITE));
-      fabInventory.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Toast.makeText(getContext(), "Coming soon", Toast.LENGTH_SHORT).show();
-          fab.collapse();
-          new MaterialDialog.Builder(getActivity())
-              .title("New Medicine")
-              .customView(R.layout.md_dialog_custom, true)
-              .positiveText("Add")
-              .negativeText("Cancel")
-              .onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                }
-              })
-              .show();
-        }
-      });
-    }
+//    if (fabInventory != null) {
+//      fabInventory.setIconDrawable(new IconicsDrawable(getContext()).icon(CommunityMaterial.Icon.cmd_basket).actionBar().color(Color.WHITE));
+//      fabInventory.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//          Toast.makeText(getContext(), "Coming soon", Toast.LENGTH_SHORT).show();
+//          fab.collapse();
+//          new MaterialDialog.Builder(this)
+//              .title("New Medicine")
+//              .customView(, true)
+//              .positiveText("Add")
+//              .negativeText("Cancel")
+//              .onNegative(new MaterialDialog.SingleButtonCallback() {
+//                @Override
+//                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//
+//                }
+//              })
+//              .show();
+//        }
+//      });
+//    }
+
 
     FloatingActionButton fabMedicine = (FloatingActionButton) view.findViewById(R.id.fabMedicine);
     if (fabMedicine != null) {
