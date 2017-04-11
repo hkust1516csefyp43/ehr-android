@@ -72,6 +72,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, OnPatientsFetchedListener, MaterialDialog.SingleButtonCallback {
   public final static String TAG = DrawerActivity.class.getSimpleName();
   private User currentUser;
+  public Bundle intentData;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +84,93 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (cl.isFirstRun()) {
       cl.getLogDialog().show();
     }
+
+
+    intentData = getIntent().getExtras();
+    consultationMethod();
+
+
+    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+    if (navigationView != null) {
+      if (currentUser != null) {
+        TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvUsername);
+        TextView uName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvName);
+        ImageView uProPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
+        String username = currentUser.getUsername();
+        String firstname = currentUser.getFirstName();
+        if (uEmail != null && username != null) {
+          uEmail.setText(currentUser.getUsername());
+        }
+        if (uName != null && firstname != null) {
+          uName.setText(currentUser.getFirstName());
+        }
+        if (firstname != null)
+          uProPic.setImageDrawable(TextDrawable.builder().buildRound(firstname.substring(0,1), ColorGenerator.MATERIAL.getColor(firstname)));
+        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+            //TODO put user in extra
+            startActivity(intent);
+          }
+        });
+      }
+    }
+
+    navigationView.setNavigationItemSelectedListener(this);
+    Menu menu = navigationView.getMenu();
+    MenuItem menuItem = menu.findItem(R.id.nav_triage);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_consultation);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_pharmacy);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_inventory);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_medkit).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_reports);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_file_chart).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_admin);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_male).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+//    menuItem = menu.findItem(R.id.nav_settings);
+//    if (menuItem != null) {
+//      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).actionBar().paddingDp(2));
+//    }
+    menuItem = menu.findItem(R.id.nav_about);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_info).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_logout);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_exit_to_app).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+
+    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
+    if (frameLayout != null) {
+
+      TriageFragment triageFragment = new TriageFragment();
+      getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, triageFragment).commit();
+    }
+
+
+
   }
 
   @Override
   protected void onResume() {
+    intentData = getIntent().getExtras();
+    consultationMethod();
     super.onResume();
     Log.d(TAG, "before");
     new ThingsToDoInBackground().execute();
@@ -184,7 +268,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     }
     currentUser = Cache.CurrentUser.getUser(getApplicationContext());
 
-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+   /* NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     if (navigationView != null) {
       if (currentUser != null) {
         TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvUsername);
@@ -210,6 +294,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         });
       }
     }
+
 
     navigationView.setNavigationItemSelectedListener(this);
     Menu menu = navigationView.getMenu();
@@ -252,9 +337,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
     FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
     if (frameLayout != null) {
+
       TriageFragment triageFragment = new TriageFragment();
-      getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, triageFragment).commit();
-    }
+      getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, triageFragment).commit();
+    }*/
   }
 
   private void cacheData(final Context context) {
@@ -375,6 +461,21 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     }
     return super.onOptionsItemSelected(item);
   }
+
+
+  public void consultationMethod() {
+
+    if (intentData == null) {
+      return;
+    } else {
+      NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+      Menu menu = navigationView.getMenu();
+      MenuItem menuItemConsultationFragment = menu.findItem(R.id.nav_consultation);
+      onNavigationItemSelected(menuItemConsultationFragment);
+    }
+
+  }
+
 
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
