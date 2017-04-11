@@ -550,7 +550,9 @@ public class PatientListFragment extends Fragment{
         if (aPatient.getGenderId() != null) {
           subtitle.append(gendersHashMap.get(aPatient.getGenderId()));
         }
-        if (aPatient.getBirthYear() != null && aPatient.getBirthYear() != null && aPatient.getBirthMonth() != null) {
+
+        if (aPatient.getBirthYear() != null && aPatient.getBirthMonth() != null && aPatient.getBirthDate() != null) {
+
           String bdString = Util.birthdayToAgeString(aPatient.getBirthYear(), aPatient.getBirthMonth(), aPatient.getBirthDate());
           if (bdString != null) {
             if (subtitle.toString().length() > 0) {

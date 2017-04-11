@@ -105,6 +105,15 @@ public class ConsultationFragment extends Fragment {
 
     floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
     floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+
+    return view;
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+
+
     floatingActionButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -112,7 +121,7 @@ public class ConsultationFragment extends Fragment {
       }
     });
 
-    return view;
+
   }
 
   private void addPatientDialog() {
@@ -138,6 +147,7 @@ public class ConsultationFragment extends Fragment {
         Intent intent = new Intent(getContext(), SearchActivity.class);
         intent.putExtra(Const.BundleKey.IS_TRIAGE, false);
         startActivity(intent);
+        dialog.dismiss();
       }
     });
 
@@ -146,8 +156,10 @@ public class ConsultationFragment extends Fragment {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), SearchActivity.class);
-        //Also search, but maybe a extra + button for easier add new patient? (extra)
         startActivity(intent);
+        dialog.dismiss();
+          //Also search, but maybe a extra + button for easier add new patient? (extra)
+
       }
     });
 
@@ -159,6 +171,7 @@ public class ConsultationFragment extends Fragment {
         intent.putExtra(Const.BundleKey.IS_TRIAGE, false);
         //extra: isTriage=false
         startActivity(intent);
+        dialog.dismiss();
       }
     });
 
@@ -166,6 +179,7 @@ public class ConsultationFragment extends Fragment {
     llOpenSave.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        dialog.dismiss();
         //dialog shows list of saved stuff (can you show dialog on top of dialog? No >> dismiss this first)
       }
     });
