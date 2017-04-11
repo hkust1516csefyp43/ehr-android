@@ -20,9 +20,9 @@ public class LandingPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landingpage);
         ImageButton triageButton = (ImageButton) findViewById(R.id.triageButton);
-        ImageButton pharmacyButton = (ImageButton) findViewById(R.id.pharmacyButton);
+        ImageButton consultationButton = (ImageButton) findViewById(R.id.consultationButton);
         ImageButton faqButton = (ImageButton) findViewById(R.id.faqButton);
-        ImageButton consulatationButton = (ImageButton) findViewById(R.id.consultationButton);
+        ImageButton pharmacyButton = (ImageButton) findViewById(R.id.pharmacyButton);
 
         if (triageButton != null) {
             triageButton.setOnClickListener(new View.OnClickListener() {
@@ -34,11 +34,12 @@ public class LandingPageActivity extends AppCompatActivity {
             });
         }
 
-        if (pharmacyButton != null) {
-            pharmacyButton.setOnClickListener(new View.OnClickListener() {
+        if (consultationButton != null) {
+            consultationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(LandingPageActivity.this, PharmacyActivity.class);
+                    Intent intent = new Intent(LandingPageActivity.this, DrawerActivity.class);
+                    intent.putExtra("Consult", R.id.nav_consultation);
                     startActivity(intent);
                 }
             });
@@ -54,12 +55,11 @@ public class LandingPageActivity extends AppCompatActivity {
 //            });
 //        }
 
-        if (consulatationButton != null) {
+        if (pharmacyButton != null) {
             pharmacyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(LandingPageActivity.this, DrawerActivity.class);
-                    intent.putExtra("Consult", R.id.nav_consultation);
+                    Intent intent = new Intent(LandingPageActivity.this, PharmacyActivity.class);
                     startActivity(intent);
                 }
             });
