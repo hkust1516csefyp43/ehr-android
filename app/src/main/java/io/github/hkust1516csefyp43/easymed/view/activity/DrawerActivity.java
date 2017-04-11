@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -86,86 +85,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       cl.getLogDialog().show();
     }
 
-
     intentData = getIntent().getExtras();
     consultationMethod();
-
-
-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    if (navigationView != null) {
-      if (currentUser != null) {
-        TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvUsername);
-        TextView uName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvName);
-        ImageView uProPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
-        String username = currentUser.getUsername();
-        String firstname = currentUser.getFirstName();
-        if (uEmail != null && username != null) {
-          uEmail.setText(currentUser.getUsername());
-        }
-        if (uName != null && firstname != null) {
-          uName.setText(currentUser.getFirstName());
-        }
-        if (firstname != null)
-          uProPic.setImageDrawable(TextDrawable.builder().buildRound(firstname.substring(0,1), ColorGenerator.MATERIAL.getColor(firstname)));
-        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
-            //TODO put user in extra
-            startActivity(intent);
-          }
-        });
-      }
-    }
-
-    navigationView.setNavigationItemSelectedListener(this);
-    Menu menu = navigationView.getMenu();
-    MenuItem menuItem = menu.findItem(R.id.nav_triage);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_consultation);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_pharmacy);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_inventory);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_medkit).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_reports);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_file_chart).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_admin);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_male).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-//    menuItem = menu.findItem(R.id.nav_settings);
-//    if (menuItem != null) {
-//      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).actionBar().paddingDp(2));
-//    }
-    menuItem = menu.findItem(R.id.nav_about);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_info).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-    menuItem = menu.findItem(R.id.nav_logout);
-    if (menuItem != null) {
-      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_exit_to_app).color(Color.GRAY).actionBar().paddingDp(2));
-    }
-
-    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
-    if (frameLayout != null) {
-
-      TriageFragment triageFragment = new TriageFragment();
-      getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, triageFragment).commit();
-    }
-
-
-
   }
 
   @Override
@@ -269,7 +190,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     }
     currentUser = Cache.CurrentUser.getUser(getApplicationContext());
 
-   /* NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     if (navigationView != null) {
       if (currentUser != null) {
         TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvUsername);
@@ -338,10 +259,9 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
     FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
     if (frameLayout != null) {
-
       TriageFragment triageFragment = new TriageFragment();
-      getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, triageFragment).commit();
-    }*/
+      getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, triageFragment).commit();
+    }
   }
 
   private void cacheData(final Context context) {
@@ -528,7 +448,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             .content("Are you sure you want to logout?")
             .positiveText("Logout")
             //TODO icon?
-            .negativeColor(ResourcesCompat.getColor(getResources(),R.color.colorAccent,null)) //ResourcesCompat.getColor(getResources(), R.color.red, null)
+            .negativeColor(getResources().getColor(R.color.colorAccent))
+            .onPositive(this)
             .negativeText("Dismiss")
             .onNegative(new MaterialDialog.SingleButtonCallback() {
               @Override
