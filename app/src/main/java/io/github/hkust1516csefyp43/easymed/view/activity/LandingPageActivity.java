@@ -39,7 +39,7 @@ public class LandingPageActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(LandingPageActivity.this, DrawerActivity.class);
-                    intent.putExtra("Consult", R.id.nav_consultation);
+                    intent.putExtra("Consultation", R.id.nav_consultation);
                     startActivity(intent);
                 }
             });
@@ -59,7 +59,8 @@ public class LandingPageActivity extends AppCompatActivity {
             pharmacyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(LandingPageActivity.this, PharmacyActivity.class);
+                    Intent intent = new Intent(LandingPageActivity.this, DrawerActivity.class);
+                    intent.putExtra("Pharmacy", R.id.nav_pharmacy);
                     startActivity(intent);
                 }
             });

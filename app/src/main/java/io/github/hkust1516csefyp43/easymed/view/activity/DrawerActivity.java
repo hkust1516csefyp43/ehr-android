@@ -87,7 +87,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
 
     intentData = getIntent().getExtras();
-    consultationMethod();
+    listenIntentMethod();
 
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -170,7 +170,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
   @Override
   protected void onResume() {
     intentData = getIntent().getExtras();
-    consultationMethod();
+    listenIntentMethod();
     super.onResume();
     Log.d(TAG, "before");
     new ThingsToDoInBackground().execute();
@@ -463,16 +463,26 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
   }
 
 
-  public void consultationMethod() {
+  public void listenIntentMethod() {
 
     if (intentData == null) {
       return;
-    } else {
+    }
+
+    if(intentData.containsKey("Consultation")) {
       NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
       Menu menu = navigationView.getMenu();
       MenuItem menuItemConsultationFragment = menu.findItem(R.id.nav_consultation);
       onNavigationItemSelected(menuItemConsultationFragment);
     }
+
+    if(intentData.containsKey("Pharmacy")) {
+      NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+      Menu menu = navigationView.getMenu();
+      MenuItem menuItemPharmacyFragment = menu.findItem(R.id.nav_pharmacy);
+      onNavigationItemSelected(menuItemPharmacyFragment);
+    }
+
 
   }
 
