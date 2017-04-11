@@ -24,6 +24,7 @@ public class SearchActivity extends AppCompatActivity implements OnFragmentInter
   private MaterialSearchView searchView;
   private boolean isTriage;
 
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -31,6 +32,8 @@ public class SearchActivity extends AppCompatActivity implements OnFragmentInter
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     searchView = (MaterialSearchView) findViewById(R.id.search_view);
+
+
     if (searchView != null) {
       searchView.setOnQueryTextListener(this);
     }
@@ -48,7 +51,17 @@ public class SearchActivity extends AppCompatActivity implements OnFragmentInter
     Intent intent = getIntent();
     if (intent != null) {
       isTriage = intent.getBooleanExtra(Const.BundleKey.IS_TRIAGE, true);
+
+      if(intent.hasExtra("SearchName")){
+        PatientListFragment patientListFragment;
+
+        patientListFragment = PatientListFragment.newInstance(Const.PatientListPageId.TRIAGE_SEARCH, intent.getStringExtra("SearchName"));
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, patientListFragment).commit();
+      }
     }
+
 
 
     //triage or consultation

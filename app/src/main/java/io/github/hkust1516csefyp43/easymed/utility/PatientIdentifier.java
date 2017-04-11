@@ -2,6 +2,7 @@ package io.github.hkust1516csefyp43.easymed.utility;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.iritech.iddk.android.*;
 import java.util.ArrayList;
 
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
 
 /**
  * Created by Shayan on 27-Mar-17.
@@ -139,6 +141,16 @@ public class PatientIdentifier {
 
             } else if (mRes.getValue() == IddkResult.IDDK_DEV_IO_FAILED || mRes.getValue() == IddkResult.IDDK_DEVICE_IO_FAILED) {
                 Log.e(TAG, "Unable to initialize camera");
+
+                //mRes = iddkApi.recovery(mDeviceHandle, new IddkRecoveryCode(IddkRecoveryCode.IDDK_SOFT_RESET));
+
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mContext, "Please remove and reconnect the iris scanner", Toast.LENGTH_LONG).show();
+                    }
+                });
+
                 return "none_found";
             } else if (mRes.getValue() == IddkResult.IDDK_DEV_OUTOFMEMORY) {
                 Log.e(TAG, "Unable to init, device out of memory");
@@ -227,6 +239,14 @@ public class PatientIdentifier {
 
                     } else {
                         Log.e(TAG, "Unable to get template");
+
+
+                        mActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(mContext, "Scanning failed, please try again", Toast.LENGTH_LONG).show();
+                            }
+                        });
                         doneScanning = true;
                         success = false;
                         return;
@@ -279,14 +299,25 @@ public class PatientIdentifier {
                         Log.d(TAG, "EnrolleeID: " + resultId);
 
                         final String runId = resultId;
+                        final Intent in = new Intent(mContext, SearchActivity.class);
+                        in.putExtra("SearchName", runId);
 
                         mActivity.runOnUiThread(new Runnable() {
+
+
                             @Override
                             public void run() {
                                 new MaterialDialog.Builder(mContext)
                                         .theme(Theme.LIGHT)
                                         .title("The name of the user is:")
                                         .content(runId)
+                                        .positiveText("Get Patient Data")
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                mContext.startActivity(in);
+                                            }
+                                        })
                                         .negativeText("Dismiss")
                                         .onNegative(new MaterialDialog.SingleButtonCallback() {
                                             @Override
