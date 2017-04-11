@@ -122,7 +122,8 @@ public class SplashActivity extends AppCompatActivity {
         if (user == null){
           target = LoginActivity.class;
         }else{
-          target = DrawerActivity.class;
+          //target = DrawerActivity.class;
+          target = LandingPageActivity.class;
         }
         new Handler().postDelayed(new Runnable() {
           @Override

@@ -72,6 +72,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, OnPatientsFetchedListener, MaterialDialog.SingleButtonCallback {
   public final static String TAG = DrawerActivity.class.getSimpleName();
   private User currentUser;
+  public Bundle intentData;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (cl.isFirstRun()) {
       cl.getLogDialog().show();
     }
+
+
+    intentData = getIntent().getExtras();
+    consultationMethod();
 
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -160,11 +165,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
 
 
-
   }
 
   @Override
   protected void onResume() {
+    intentData = getIntent().getExtras();
+    consultationMethod();
     super.onResume();
     Log.d(TAG, "before");
     new ThingsToDoInBackground().execute();
@@ -288,6 +294,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         });
       }
     }
+
 
     navigationView.setNavigationItemSelectedListener(this);
     Menu menu = navigationView.getMenu();
@@ -454,6 +461,21 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     }
     return super.onOptionsItemSelected(item);
   }
+
+
+  public void consultationMethod() {
+
+    if (intentData == null) {
+      return;
+    } else {
+      NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+      Menu menu = navigationView.getMenu();
+      MenuItem menuItemConsultationFragment = menu.findItem(R.id.nav_consultation);
+      onNavigationItemSelected(menuItemConsultationFragment);
+    }
+
+  }
+
 
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
