@@ -200,7 +200,7 @@ public class LoginActivity extends AppCompatActivity{
   }
 
   private void openEverything() {
-    Intent intent = new Intent(this, DrawerActivity.class);
+    Intent intent = new Intent(this, LandingPageActivity.class);
     startActivity(intent);
   }
 
