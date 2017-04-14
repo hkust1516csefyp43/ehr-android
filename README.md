@@ -1,17 +1,24 @@
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/ehr-android/localized.svg)](https://crowdin.com/project/ehr-android)
+# hackSIGHT 2017
 
-#hackSIGHT 2017
 You need Github account and Android Studio (and all of its multifarious tools) to start working on this project.
+
 Fork this repo, git clone your forked repo into Android Studio to start working.
+
 Please read this before getting started: https://docs.google.com/document/d/1lUSrak2QK2b98u6sNYeuld0qSeWKvI5auOkvWeh_ips/edit?usp=sharing
 
-##WTF am I looking at?
+
+## WTF am I looking at?
+
 You are looking at a complex application structure.
 
-##Urm...can you at least tell me a bit what's going on?
+
+## Urm...can you at least tell me a bit what's going on?
+
 DrawerActivity.java calls on Triage and Consultation Fragment. We're not sure about Pharmacy. When you click on triage, triage fragment is loaded. When you click on Consultation, consultation fragment is called (see LandingPageActivity.java and DrawerActivity.java listenIntentMethod() )
 
-##What can I do?
+
+## What can I do?
+
 Here are three critical bugs:
 1. Code is not optimized, causing the app to crash when a mobile device uses up all its RAM i.e moving from fragment to fragment to quickly.
 2. Why the hell are we moving from Consultation to Pharmacy "Finished" tab, skipping medications?
@@ -21,11 +28,14 @@ You could try to fix them, or build a new app that takes on a basic form of curr
 
 Here's SIGHT team's vision of the app: https://assets.adobe.com/link/b70f77e2-464e-4f32-5c72-62114c3a50d1?section=activity_public&page=1
 
-###Iris Scanner? What's that about?
+
+### Iris Scanner? What's that about?
+
 We want to implement an automatic iris scanning process when we click on Triage button. If you are building a new app, try building with a facial recognition instead. If you're trying to fix the bug within existing app, you could look into how Iristech API could be written better.
 
 
-##Other information
+## Other information
+
 https://github.com/hkust1516csefyp43/ehr-server
 
 ```
