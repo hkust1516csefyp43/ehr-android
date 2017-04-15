@@ -104,7 +104,7 @@ public class ConsultationFragment extends Fragment {
     viewPager.setOffscreenPageLimit(2);
 
     floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
-    floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
+    floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_search).color(Color.WHITE).paddingDp(3).sizeDp(16));
 
     return view;
   }
@@ -117,7 +117,9 @@ public class ConsultationFragment extends Fragment {
     floatingActionButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        addPatientDialog();
+          Intent intent = new Intent(getContext(), SearchActivity.class);
+          intent.putExtra("consultation", "consultation");
+          startActivity(intent);
       }
     });
 
