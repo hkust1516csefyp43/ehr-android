@@ -329,7 +329,7 @@ public class PatientListFragment extends Fragment{
             recyclerView.setVisibility(View.VISIBLE);
             if (box != null) {
               if (patients.size() == 0) {
-                View emptyListView = getActivity().getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
+                View emptyListView = mActivity.getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
                 box.addCustomView(emptyListView, "emptyPatients");    //TODO put tag to Const.java
                 box.showCustomView("emptyPatients");
               } else {
