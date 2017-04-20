@@ -1,4 +1,4 @@
-# hackSIGHT 2017
+# Getting Started for debuggers and people working on this project
 
 You need Github account and Android Studio (and all of its multifarious tools) to start working on this project.
 
@@ -27,11 +27,6 @@ Here are three critical bugs:
 You could try to fix them, or build a new app that takes on a basic form of current app.
 
 Here's SIGHT team's vision of the app: https://assets.adobe.com/link/b70f77e2-464e-4f32-5c72-62114c3a50d1?section=activity_public&page=1
-
-
-### Iris Scanner? What's that about?
-
-We want to implement an automatic iris scanning process when we click on Triage button. If you are building a new app, try building with a facial recognition instead. If you're trying to fix the bug within existing app, you could look into how Iristech API could be written better.
 
 
 ## Other information
