@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -527,8 +528,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             .content("Are you sure you want to logout?")
             .positiveText("Logout")
             //TODO icon?
-            .negativeColor(getResources().getColor(R.color.colorAccent))
-            .onPositive(this)
+            .negativeColor(ResourcesCompat.getColor(getResources(),R.color.colorAccent,null)) //ResourcesCompat.getColor(getResources(), R.color.red, null)
             .negativeText("Dismiss")
             .onNegative(new MaterialDialog.SingleButtonCallback() {
               @Override

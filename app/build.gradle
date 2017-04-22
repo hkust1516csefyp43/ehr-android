@@ -86,4 +86,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
 
     compile files('libs/Iddk2000-android-v3.4.0.jar')
+
 }
