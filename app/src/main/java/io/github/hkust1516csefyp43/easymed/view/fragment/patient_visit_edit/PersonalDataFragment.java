@@ -216,7 +216,8 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
                       pickImage();
                       break;
                     case Const.ACTION_REMOVE_PICTURE:
-                      ivProfilePic.setImageDrawable(getResources().getDrawable(R.drawable.easymed));
+                      ivProfilePic.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.easymed, null));
+                      // original above: getResources().getDrawable(R.drawable.easymed)
                       //save as default
                     default:
                   }

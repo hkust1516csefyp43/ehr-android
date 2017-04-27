@@ -65,6 +65,7 @@ public class PharmacyFragment extends Fragment {
     tabLayout.addTab(tabLayout.newTab().setText("Finished"));
     viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
+
     //where to removeOnTabSelectedListener??
     tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
       @Override

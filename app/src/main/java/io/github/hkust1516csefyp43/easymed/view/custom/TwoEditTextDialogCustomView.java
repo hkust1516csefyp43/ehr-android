@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -43,7 +44,7 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
 
     TextInputLayout til = new TextInputLayout(context);
     actv = new AutoCompleteTextView(context);
-    actv.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_text_color)));
+    actv.setDropDownBackgroundDrawable(new ColorDrawable(ResourcesCompat.getColor(getResources(),R.color.primary_text_color,null))); //lol
     actv.setHint(title);
     if (suggestions != null) {
       String[] list = new String[suggestions.size()];

@@ -73,7 +73,7 @@ public class ConsultationFragment extends Fragment {
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     if (drawer != null) {
-      drawer.setDrawerListener(toggle);
+      drawer.addDrawerListener(toggle); //here
       toggle.syncState();
     }
 
@@ -82,7 +82,7 @@ public class ConsultationFragment extends Fragment {
     tabLayout.addTab(tabLayout.newTab().setText("After"));
     viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {//and here
       @Override
       public void onTabSelected(TabLayout.Tab tab) {
         viewPager.setCurrentItem(tab.getPosition());

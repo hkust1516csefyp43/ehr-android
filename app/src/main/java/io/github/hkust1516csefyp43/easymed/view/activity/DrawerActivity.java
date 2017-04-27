@@ -85,7 +85,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       cl.getLogDialog().show();
     }
 
-
     intentData = getIntent().getExtras();
     listenIntentMethod();
 
@@ -162,8 +161,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       TriageFragment triageFragment = new TriageFragment();
       getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, triageFragment).commit();
     }
-
-
 
   }
 
@@ -268,7 +265,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     }
     currentUser = Cache.CurrentUser.getUser(getApplicationContext());
 
-   /* NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     if (navigationView != null) {
       if (currentUser != null) {
         TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvUsername);
@@ -337,10 +334,9 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
     FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
     if (frameLayout != null) {
-
       TriageFragment triageFragment = new TriageFragment();
-      getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, triageFragment).commit();
-    }*/
+      getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, triageFragment).commit();
+    }
   }
 
   private void cacheData(final Context context) {
