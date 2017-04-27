@@ -295,7 +295,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       }
     }
 
-
+/*
     navigationView.setNavigationItemSelectedListener(this);
     Menu menu = navigationView.getMenu();
     MenuItem menuItem = menu.findItem(R.id.nav_triage);
@@ -339,7 +339,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (frameLayout != null) {
       TriageFragment triageFragment = new TriageFragment();
       getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, triageFragment).commit();
-    }
+    }*/
   }
 
   private void cacheData(final Context context) {
