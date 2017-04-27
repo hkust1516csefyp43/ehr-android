@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -73,6 +75,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
   public final static String TAG = DrawerActivity.class.getSimpleName();
   private User currentUser;
   public Bundle intentData;
+  private Context context;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -480,6 +483,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       onNavigationItemSelected(menuItemPharmacyFragment);
     }
 
+    //Demo: FAQ
+
 
   }
 
@@ -534,7 +539,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             .content("Are you sure you want to logout?")
             .positiveText("Logout")
             //TODO icon?
-            .negativeColor(getResources().getColor(R.color.colorAccent))
+            .negativeColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent,null))
             .onPositive(this)
             .negativeText("Dismiss")
             .onNegative(new MaterialDialog.SingleButtonCallback() {
