@@ -1,5 +1,6 @@
 package io.github.hkust1516csefyp43.easymed.view.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -65,6 +66,7 @@ public class PatientListFragment extends Fragment{
   private RecyclerView recyclerView;
   private SwipeRefreshLayout swipeRefreshLayout;
   private DynamicBox box;
+  private Activity mActivity;
 
   public static PatientListFragment newInstance(int whichPage, String nameSearchString) {
     PatientListFragment fragment = new PatientListFragment();
@@ -87,6 +89,7 @@ public class PatientListFragment extends Fragment{
       whichPage = bundle.getInt(Const.BundleKey.WHICH_PATIENT_LIST_ID);
       nameSearchName = bundle.getString(Const.BundleKey.NAME_SEARCH_NAME);
     }
+    mActivity = this.getActivity();
   }
 
   @Override
@@ -290,7 +293,7 @@ public class PatientListFragment extends Fragment{
             recyclerView.setVisibility(View.VISIBLE);
             if (box != null) {
               if (patients.size() == 0) {
-                View emptyListView = getActivity().getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
+                View emptyListView = mActivity.getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
                 box.addCustomView(emptyListView, "emptyPatients");    //TODO put tag to Const.java
                 box.showCustomView("emptyPatients");
               } else {
@@ -326,7 +329,7 @@ public class PatientListFragment extends Fragment{
             recyclerView.setVisibility(View.VISIBLE);
             if (box != null) {
               if (patients.size() == 0) {
-                View emptyListView = getActivity().getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
+                View emptyListView = mActivity.getLayoutInflater().inflate(R.layout.exception_patients_empty, null, false);
                 box.addCustomView(emptyListView, "emptyPatients");    //TODO put tag to Const.java
                 box.showCustomView("emptyPatients");
               } else {
@@ -550,9 +553,7 @@ public class PatientListFragment extends Fragment{
         if (aPatient.getGenderId() != null) {
           subtitle.append(gendersHashMap.get(aPatient.getGenderId()));
         }
-
-        if (aPatient.getBirthYear() != null && aPatient.getBirthMonth() != null && aPatient.getBirthDate() != null) {
-
+        if (aPatient.getBirthYear() != null && aPatient.getBirthYear() != null && aPatient.getBirthMonth() != null) {
           String bdString = Util.birthdayToAgeString(aPatient.getBirthYear(), aPatient.getBirthMonth(), aPatient.getBirthDate());
           if (bdString != null) {
             if (subtitle.toString().length() > 0) {

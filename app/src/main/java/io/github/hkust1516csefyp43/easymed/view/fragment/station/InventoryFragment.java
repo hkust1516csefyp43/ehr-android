@@ -109,7 +109,6 @@ public class InventoryFragment extends Fragment {
     //TODO change it to fab menu
     final FloatingActionsMenu fab = (FloatingActionsMenu) view.findViewById(R.id.fab);
     FloatingActionButton fabInventory = (FloatingActionButton) view.findViewById(R.id.fabInventory);
-
 //    if (fabInventory != null) {
 //      fabInventory.setIconDrawable(new IconicsDrawable(getContext()).icon(CommunityMaterial.Icon.cmd_basket).actionBar().color(Color.WHITE));
 //      fabInventory.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +131,6 @@ public class InventoryFragment extends Fragment {
 //        }
 //      });
 //    }
-
 
     FloatingActionButton fabMedicine = (FloatingActionButton) view.findViewById(R.id.fabMedicine);
     if (fabMedicine != null) {
