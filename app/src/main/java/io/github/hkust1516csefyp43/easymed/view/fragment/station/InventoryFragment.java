@@ -70,7 +70,7 @@ public class InventoryFragment extends Fragment {
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     if (drawer != null) {
-      drawer.setDrawerListener(toggle);
+      drawer.addDrawerListener(toggle); //hello its me
       toggle.syncState();
     }
 
@@ -82,7 +82,7 @@ public class InventoryFragment extends Fragment {
       tabLayout.addTab(tabLayout.newTab().setText("Out of stock"));
       tabLayout.addTab(tabLayout.newTab().setText("Inadequate"));
       tabLayout.addTab(tabLayout.newTab().setText("Enough"));
-      tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+      tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
           viewPager.setCurrentItem(tab.getPosition());

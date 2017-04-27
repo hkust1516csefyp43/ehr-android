@@ -55,7 +55,7 @@ public class PharmacyFragment extends Fragment {
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     if (drawer != null) {
-      drawer.setDrawerListener(toggle);
+      drawer.addDrawerListener(toggle);
       toggle.syncState();
     }
 
@@ -64,7 +64,7 @@ public class PharmacyFragment extends Fragment {
     tabLayout.addTab(tabLayout.newTab().setText("Finished"));
     viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
       @Override
       public void onTabSelected(TabLayout.Tab tab) {
         viewPager.setCurrentItem(tab.getPosition());
