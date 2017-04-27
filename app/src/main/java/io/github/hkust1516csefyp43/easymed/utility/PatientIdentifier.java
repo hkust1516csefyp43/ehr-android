@@ -14,6 +14,7 @@ import com.afollestad.materialdialogs.Theme;
 import com.iritech.iddk.android.*;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
@@ -302,6 +303,7 @@ public class PatientIdentifier {
                         final Intent in = new Intent(mContext, SearchActivity.class);
                         in.putExtra("SearchName", runId);
 
+
                         mActivity.runOnUiThread(new Runnable() {
 
 
@@ -334,8 +336,6 @@ public class PatientIdentifier {
                     } else if (mResCap.getValue() == IddkResult.IDDK_OK) {
                         Log.d(TAG, "Id not enrolled");
 
-                        String enterId;
-
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -347,6 +347,7 @@ public class PatientIdentifier {
                                         .input("Name", "", new MaterialDialog.InputCallback() {
                                             @Override
                                             public void onInput(MaterialDialog dialog, CharSequence input) {
+                                                String id = UUID.randomUUID().toString();
                                                 mResCap = iddkApi.enrollCapture(mDeviceHandle, input.toString());
 
                                                 if (mResCap.getValue() == IddkResult.IDDK_OK) {

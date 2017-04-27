@@ -50,16 +50,10 @@ public class SearchActivity extends AppCompatActivity implements OnFragmentInter
 
     Intent intent = getIntent();
     if (intent != null) {
-      isTriage = intent.getBooleanExtra(Const.BundleKey.IS_TRIAGE, true);
+      if(intent.hasExtra("triage")){
+          isTriage = true;
+      } else isTriage = false;
 
-      if(intent.hasExtra("SearchName")){
-        PatientListFragment patientListFragment;
-
-        patientListFragment = PatientListFragment.newInstance(Const.PatientListPageId.TRIAGE_SEARCH, intent.getStringExtra("SearchName"));
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, patientListFragment).commit();
-      }
     }
 
 

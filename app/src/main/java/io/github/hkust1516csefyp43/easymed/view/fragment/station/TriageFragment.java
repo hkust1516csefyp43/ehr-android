@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -22,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -43,14 +46,16 @@ import io.github.hkust1516csefyp43.easymed.utility.PatientIdentifier;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
 import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_view.VisitDetailFragment;
 
 public class TriageFragment extends Fragment implements OnFragmentInteractionListener {
 
   private OnFragmentInteractionListener mListener;
-  private TabLayout tabLayout;
-  private ViewPager viewPager;
+//  private TabLayout tabLayout;
+//  private ViewPager viewPager;
   private FloatingActionButton floatingActionButton;
   private PatientIdentifier patientIdentifier;
+  private FrameLayout list;
   private String TAG = TriageFragment.class.getSimpleName();
 
   public static TriageFragment newInstance() {
@@ -75,6 +80,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
     patientIdentifier = PatientIdentifier.getPatientIdentifier(getContext(), getActivity());
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     toolbar.setTitle("Triage");
+    list = (FrameLayout) view.findViewById(R.id.list);
     Clinic thisClinic = Cache.CurrentUser.getClinic(getContext());
     if (thisClinic != null) {
       toolbar.setSubtitle(thisClinic.getEnglishName());
@@ -89,31 +95,38 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
       toggle.syncState();
     }
 
-    tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-    viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+//    if(list != null) {
+//        PatientListFragment triageList = PatientListFragment.newInstance(Const.PatientListPageId.TRIAGE_SEARCH, null);
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//        transaction.add(R.id.list, triageList);
+//        transaction.commit();
+//    }
 
-    tabLayout.addTab(tabLayout.newTab().setText("After"));
-    tabLayout.addTab(tabLayout.newTab().setText("Everyone else"));
-    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-      @Override
-      public void onTabSelected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
-      }
-
-      @Override
-      public void onTabUnselected(TabLayout.Tab tab) {
-
-      }
-
-      @Override
-      public void onTabReselected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
-      }
-    });
-
-    viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
-    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-    viewPager.setOffscreenPageLimit(2);
+//    tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+//    viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+//
+//    tabLayout.addTab(tabLayout.newTab().setText("Incoming"));
+//    tabLayout.addTab(tabLayout.newTab().setText("Outgoing"));
+//    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//      @Override
+//      public void onTabSelected(TabLayout.Tab tab) {
+//        viewPager.setCurrentItem(tab.getPosition());
+//      }
+//
+//      @Override
+//      public void onTabUnselected(TabLayout.Tab tab) {
+//
+//      }
+//
+//      @Override
+//      public void onTabReselected(TabLayout.Tab tab) {
+//        viewPager.setCurrentItem(tab.getPosition());
+//      }
+//    });
+//
+//    viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
+//    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//    viewPager.setOffscreenPageLimit(2);
 
    /* floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
     floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
@@ -155,10 +168,26 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
         @Override
         public void onClick(View v) {
           fab.collapse();
-          addPatientDialog();
+          Intent intent = new Intent(getContext(), PatientVisitEditActivity.class);
+          startActivity(intent);
         }
       });
     }
+
+    com.getbase.floatingactionbutton.FloatingActionButton fabSeach = (com.getbase.floatingactionbutton.FloatingActionButton) view.findViewById(R.id.fabSearch);
+      if (fabSeach != null) {
+          fabSeach.setIconDrawable(new IconicsDrawable(getContext()).icon(GoogleMaterial.Icon.gmd_search).actionBar().color(Color.WHITE));
+          fabSeach.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  fab.collapse();
+                  Intent intent = new Intent(getContext(), SearchActivity.class);
+                  intent.putExtra("triage","triage");
+                  //Also search, but maybe a extra + button for easier add new patient? (extra)
+                  startActivity(intent);
+              }
+          });
+      }
 
     return view;
   }
