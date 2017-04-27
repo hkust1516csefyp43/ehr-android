@@ -98,7 +98,8 @@ public class AdminFragment extends Fragment {
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     if (drawer != null) {
-      drawer.addDrawerListener(toggle); //lol
+        //removeDrawerListner?
+      drawer.addDrawerListener(toggle);
       toggle.syncState();
     }
 

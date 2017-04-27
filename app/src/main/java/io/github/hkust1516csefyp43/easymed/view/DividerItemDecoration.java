@@ -91,7 +91,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
   }
 
   @Override
-  public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {//here
+  public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) { //custom method overriding the library, no need to change.
     if (mOrientation == VERTICAL_LIST) {
       outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
     } else {

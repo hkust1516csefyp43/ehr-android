@@ -81,6 +81,7 @@ public class ReportsFragment extends Fragment {
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     if (drawer != null) {
+      //removeDrawerListner?
       drawer.addDrawerListener(toggle);
       toggle.syncState();
     }
@@ -130,7 +131,7 @@ public class ReportsFragment extends Fragment {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("LLL yy", Locale.US);
     int callsQueue = 6;
     while (callsQueue > 0) {
-      final String text = simpleDateFormat.format(new Date(year, month, 1)); //another one
+      final String text = simpleDateFormat.format(new Date(year, month, 1)); //will leave this in case it messes up database synchronization
       final int myPosition = callsQueue;
       Call<Count> countCall = visitService.getVisitCount("1", Util.getMonthEndDateStringWithTimeZone(year, month), Util.getMonthStartDateStringWithTimeZone(year, month));
       callsQueue--;

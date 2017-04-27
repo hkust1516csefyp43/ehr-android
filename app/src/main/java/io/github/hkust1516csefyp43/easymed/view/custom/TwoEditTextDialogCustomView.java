@@ -44,7 +44,7 @@ public class TwoEditTextDialogCustomView extends LinearLayout {
 
     TextInputLayout til = new TextInputLayout(context);
     actv = new AutoCompleteTextView(context);
-    actv.setDropDownBackgroundDrawable(new ColorDrawable(ResourcesCompat.getColor(getResources(),R.color.primary_text_color,null))); //lol
+    actv.setDropDownBackgroundDrawable(new ColorDrawable(ResourcesCompat.getColor(getResources(),R.color.primary_text_color,null)));
     actv.setHint(title);
     if (suggestions != null) {
       String[] list = new String[suggestions.size()];

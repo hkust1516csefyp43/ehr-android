@@ -352,7 +352,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
           } catch (NumberFormatException e) {
             e.printStackTrace();
             //e.g. "?", "Please input sth"
-            tvBMI.setTextColor(ResourcesCompat.getColor(getResources(),R.color.primary_text_color,null));//no prob llama
+            tvBMI.setTextColor(ResourcesCompat.getColor(getResources(),R.color.primary_text_color,null));
           }
         }
       }

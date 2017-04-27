@@ -269,6 +269,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             //viewpager need to set page adapter first
             //tabLayout.setupWithViewPager(viewPager);
 
+            //removeOnTabSelectedListener?
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
@@ -286,7 +287,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
                 }
             });
-        }//should remove the listener when you're done with it, with removeOnTabSelectedListener?
+        }
 
         setSupportActionBar(toolbar);
         supportActionBar = getSupportActionBar();
@@ -299,6 +300,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             }
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             if (drawerLayout != null) {
+                //removeDrawerListener
                 drawerLayout.addDrawerListener(toggle);
                 toggle.syncState();
             }
@@ -1857,7 +1859,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
 
 
                             } else {
-                                Log.d(TAG, "What the heck? generate patient generate empty patient?");
+                                Log.d(TAG, "What the hack? generate patient generate empty patient?");
                                 //TODO
                             }
 
