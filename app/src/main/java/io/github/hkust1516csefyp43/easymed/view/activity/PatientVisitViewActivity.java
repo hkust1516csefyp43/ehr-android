@@ -180,7 +180,8 @@ public class PatientVisitViewActivity extends AppCompatActivity implements OnFra
               viewPager.setOffscreenPageLimit(visits.size());
             else
               viewPager.setOffscreenPageLimit(20);
-            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            //removeOnTabSelectedListener?
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
               @Override
               public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());

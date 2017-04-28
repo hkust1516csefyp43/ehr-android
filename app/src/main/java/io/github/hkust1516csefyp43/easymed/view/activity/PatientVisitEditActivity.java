@@ -251,7 +251,9 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             viewPager.setOffscreenPageLimit(tabs.size());
             //viewpager need to set page adapter first
             //tabLayout.setupWithViewPager(viewPager);
-            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            //removeOnTabSelectedListener?
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     viewPager.setCurrentItem(tab.getPosition());
@@ -281,7 +283,8 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             }
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             if (drawerLayout != null) {
-                drawerLayout.setDrawerListener(toggle);
+                //removeDrawerListener
+                drawerLayout.addDrawerListener(toggle);
                 toggle.syncState();
             }
         }

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -312,7 +313,7 @@ public class DocumentFragment extends Fragment implements OnSendData {
 
   private void addButton(Context context, IIcon icon, View.OnClickListener onClickListener) {
     ImageView ivBold = new ImageView(context);
-    ivBold.setImageDrawable(new IconicsDrawable(getContext(), icon).color(getResources().getColor(R.color.primary_text_color)).sizeDp(48).paddingDp(12));
+    ivBold.setImageDrawable(new IconicsDrawable(getContext(), icon).color(ResourcesCompat.getColor(getResources(),R.color.primary_text_color,null)).sizeDp(48).paddingDp(12));
     ivBold.setOnClickListener(onClickListener);
     hsvLL.addView(ivBold);
   }

@@ -70,7 +70,8 @@ public class InventoryFragment extends Fragment {
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     if (drawer != null) {
-      drawer.setDrawerListener(toggle);
+      //removeDrawerListener?
+      drawer.addDrawerListener(toggle);
       toggle.syncState();
     }
 
@@ -82,7 +83,8 @@ public class InventoryFragment extends Fragment {
       tabLayout.addTab(tabLayout.newTab().setText("Out of stock"));
       tabLayout.addTab(tabLayout.newTab().setText("Inadequate"));
       tabLayout.addTab(tabLayout.newTab().setText("Enough"));
-      tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+      //removeOnTabSelectedListener?
+      tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
           viewPager.setCurrentItem(tab.getPosition());
@@ -107,7 +109,6 @@ public class InventoryFragment extends Fragment {
     //TODO change it to fab menu
     final FloatingActionsMenu fab = (FloatingActionsMenu) view.findViewById(R.id.fab);
     FloatingActionButton fabInventory = (FloatingActionButton) view.findViewById(R.id.fabInventory);
-
 //    if (fabInventory != null) {
 //      fabInventory.setIconDrawable(new IconicsDrawable(getContext()).icon(CommunityMaterial.Icon.cmd_basket).actionBar().color(Color.WHITE));
 //      fabInventory.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +131,6 @@ public class InventoryFragment extends Fragment {
 //        }
 //      });
 //    }
-
 
     FloatingActionButton fabMedicine = (FloatingActionButton) view.findViewById(R.id.fabMedicine);
     if (fabMedicine != null) {

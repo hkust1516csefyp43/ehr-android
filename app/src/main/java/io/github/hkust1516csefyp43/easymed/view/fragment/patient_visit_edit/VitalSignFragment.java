@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -351,7 +352,7 @@ public class VitalSignFragment extends Fragment implements OnSendData{
           } catch (NumberFormatException e) {
             e.printStackTrace();
             //e.g. "?", "Please input sth"
-            tvBMI.setTextColor(getResources().getColor(R.color.primary_text_color));
+            tvBMI.setTextColor(ResourcesCompat.getColor(getResources(),R.color.primary_text_color,null));
           }
         }
       }

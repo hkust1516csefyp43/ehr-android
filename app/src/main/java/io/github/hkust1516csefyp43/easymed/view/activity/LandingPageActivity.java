@@ -20,9 +20,9 @@ public class LandingPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landingpage);
         ImageButton triageButton = (ImageButton) findViewById(R.id.triageButton);
-        ImageButton consultationButton = (ImageButton) findViewById(R.id.consultationButton);
-        ImageButton faqButton = (ImageButton) findViewById(R.id.faqButton);
         ImageButton pharmacyButton = (ImageButton) findViewById(R.id.pharmacyButton);
+        ImageButton faqButton = (ImageButton) findViewById(R.id.faqButton);
+        ImageButton consultationButton = (ImageButton) findViewById(R.id.consultationButton);
 
         if (triageButton != null) {
             triageButton.setOnClickListener(new View.OnClickListener() {
@@ -34,12 +34,13 @@ public class LandingPageActivity extends AppCompatActivity {
             });
         }
 
-        if (consultationButton != null) {
-            consultationButton.setOnClickListener(new View.OnClickListener() {
+        if (pharmacyButton != null) {
+            pharmacyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(LandingPageActivity.this, DrawerActivity.class);
-                    intent.putExtra("Consultation", R.id.nav_consultation);
+                    intent.putExtra("Pharmacy", R.id.nav_pharmacy);
+
                     startActivity(intent);
                 }
             });
@@ -55,12 +56,12 @@ public class LandingPageActivity extends AppCompatActivity {
 //            });
 //        }
 
-        if (pharmacyButton != null) {
-            pharmacyButton.setOnClickListener(new View.OnClickListener() {
+        if (consultationButton != null) {
+            consultationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(LandingPageActivity.this, DrawerActivity.class);
-                    intent.putExtra("Pharmacy", R.id.nav_pharmacy);
+                    intent.putExtra("Consultation", R.id.nav_consultation);
                     startActivity(intent);
                 }
             });
