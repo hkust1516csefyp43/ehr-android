@@ -39,6 +39,7 @@ public class PatientIdentifier {
     private CaptureProc mCaptureProc;
     private static Context mContext;
     private static Activity mActivity;
+    private MaterialDialog scanningDialog;
 
     private IddkTemplateInfo mTemplateInfo;
 
@@ -103,6 +104,12 @@ public class PatientIdentifier {
 
         System.out.println(mDeviceHandle.getHandle());
         mRes = iddkApi.openDevice(connectedDevices.get(0), mDeviceHandle);
+
+        scanningDialog = new MaterialDialog.Builder(mContext)
+                .theme(Theme.LIGHT)
+                .title("Detecting, hold scanner up to iris")
+                .progress(true, 0)
+        .build();
 
         if (mRes.getValue() == IddkResult.IDDK_OK || mRes.getValue() == IddkResult.IDDK_DEVICE_ALREADY_OPEN) {
             mRes = iddkApi.initCamera(mDeviceHandle, new IddkInteger(), new IddkInteger());
@@ -245,6 +252,9 @@ public class PatientIdentifier {
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(scanningDialog.isShowing()){
+                                    scanningDialog.dismiss();
+                                }
                                 Toast.makeText(mContext, "Scanning failed, please try again", Toast.LENGTH_LONG).show();
                             }
                         });
@@ -309,6 +319,10 @@ public class PatientIdentifier {
 
                             @Override
                             public void run() {
+                                if(scanningDialog.isShowing()){
+                                    scanningDialog.dismiss();
+                                }
+
                                 new MaterialDialog.Builder(mContext)
                                         .theme(Theme.LIGHT)
                                         .title("The name of the user is:")
@@ -339,6 +353,9 @@ public class PatientIdentifier {
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(scanningDialog.isShowing()){
+                                    scanningDialog.dismiss();
+                                }
                                 new MaterialDialog.Builder(mContext)
                                         .theme(Theme.LIGHT)
                                         .title("Unregistered user")
@@ -377,28 +394,6 @@ public class PatientIdentifier {
                                         .show();
                             }
                         });
-
-
-
-                        /*mResCap = iddkApi.enrollCapture(mDeviceHandle, "Shayan");
-
-                        if (mResCap.getValue() == IddkResult.IDDK_OK) {
-                            Log.d(TAG, "ID enrolled successfully");
-
-                            mResCap = iddkApi.commitGallery(mDeviceHandle);
-
-                            if(mResCap.getValue() == IddkResult.IDDK_OK){
-                                Log.d(TAG, "Gallery successfully committed");
-                            }
-                            else{
-                                Log.e(TAG + " gallery commit", mResCap.toString());
-                            }
-
-                        } else {
-                            Log.e(TAG + "ID enrollment", mResCap.toString());
-                        }*/
-
-
                     }
 
                 } else if (iddkCaptureStatus.getValue() == IddkCaptureStatus.IDDK_CAPTURING) {
@@ -407,14 +402,29 @@ public class PatientIdentifier {
 
                 } else if (iddkCaptureStatus.getValue() == IddkCaptureStatus.IDDK_ABORT) {
                     /** capture has been aborted **/
-
-
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(scanningDialog.isShowing()){
+                                scanningDialog.dismiss();
+                            }
+                            Toast.makeText(mContext, "Scanning unsuccessful, try again", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             }
 
             if (arrayList != null) {
                 /** show image on its GUI control **/
                 Log.e(TAG, "Images detected");
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(scanningDialog.isCancelled() || !scanningDialog.isShowing()){
+                            scanningDialog.show();
+                        }
+                    }
+                });
             }
         }
 

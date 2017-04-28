@@ -138,31 +138,14 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(3);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         irisScanFAB = (FloatingActionButton) findViewById(R.id.irisScanFab);
         patientIdentifier = PatientIdentifier.getPatientIdentifier(this, PatientVisitEditActivity.this);
 
         irisScanFAB.setImageDrawable(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_remove_red_eye).color(Color.WHITE).actionBar());
-
-
-        //Temp fab to scan iris
-        irisScanFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!patientIdentifier.isDeviceConnected()) {
-                    Toast.makeText(PatientVisitEditActivity.this, "No iris scanner connected, please connect one to continue.", Toast.LENGTH_LONG).show();
-
-                } else {
-                    Toast.makeText(PatientVisitEditActivity.this, "Iris scanner connected!", Toast.LENGTH_LONG).show();
-                    patientIdentifier.identifyIris();
-                }
-            }
-        });
-
         irisScanFAB.setVisibility(View.GONE);
-
-
         //get extra
         Intent intent = getIntent();
         if (intent != null) {
