@@ -95,7 +95,7 @@ public class DocumentFragment extends Fragment implements OnSendData {
         mEditor.setEditorFontSize(18);
         mEditor.setEditorFontColor(Color.BLACK);
         mEditor.setPadding(8, 8, 8, 8);
-        mEditor.setPlaceholder("Tap here and start typing");
+        mEditor.setPlaceholder("Write about HPI, Past Medical History, Family History and Social History");
         if (document != null && document.getDocumentInHtml() != null) {
           mEditor.setHtml(document.getDocumentInHtml());
         }
