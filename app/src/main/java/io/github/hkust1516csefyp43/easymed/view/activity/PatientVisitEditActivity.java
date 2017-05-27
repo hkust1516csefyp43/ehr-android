@@ -282,11 +282,12 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                 navigationView.setNavigationItemSelectedListener(this);
             }
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            if (drawerLayout != null) {
+            /*if (drawerLayout != null) {
                 //removeDrawerListener
                 drawerLayout.addDrawerListener(toggle);
                 toggle.syncState();
-            }
+            }*/
+            toggle.setDrawerIndicatorEnabled(false);
         }
 
         //if patient comes with visit_id >> get triage or both triage and consultation if exist

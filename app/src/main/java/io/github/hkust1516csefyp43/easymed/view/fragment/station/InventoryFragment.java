@@ -69,12 +69,12 @@ public class InventoryFragment extends Fragment {
 
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    if (drawer != null) {
+    /*if (drawer != null) {
       //removeDrawerListener?
       drawer.addDrawerListener(toggle);
       toggle.syncState();
-    }
-
+    }*/
+    toggle.setDrawerIndicatorEnabled(false);
 
     tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
     viewPager = (ViewPager) view.findViewById(R.id.viewPager);

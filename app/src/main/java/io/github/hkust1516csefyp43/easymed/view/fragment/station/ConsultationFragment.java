@@ -39,7 +39,6 @@ public class ConsultationFragment extends Fragment {
   private OnFragmentInteractionListener mListener;
   private TabLayout tabLayout;
   private ViewPager viewPager;
-  private FloatingActionButton floatingActionButton;
 
 //  public static ConsultationFragment newInstance(String param1, String param2) {
 //    ConsultationFragment fragment = new ConsultationFragment();
@@ -72,11 +71,12 @@ public class ConsultationFragment extends Fragment {
 
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    if (drawer != null) {
+    /*if (drawer != null) {
       //removeDrawerListener?
       drawer.addDrawerListener(toggle);
       toggle.syncState();
-    }
+    }*/
+    toggle.setDrawerIndicatorEnabled(false);
 
     tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
     tabLayout.addTab(tabLayout.newTab().setText("Before"));
@@ -105,8 +105,6 @@ public class ConsultationFragment extends Fragment {
     viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     viewPager.setOffscreenPageLimit(2);
 
-    floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
-    floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_search).color(Color.WHITE).paddingDp(3).sizeDp(16));
 
     return view;
   }
@@ -115,15 +113,6 @@ public class ConsultationFragment extends Fragment {
   public void onStart() {
     super.onStart();
 
-
-    floatingActionButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-          Intent intent = new Intent(getContext(), SearchActivity.class);
-          intent.putExtra("consultation", "consultation");
-          startActivity(intent);
-      }
-    });
 
 
   }

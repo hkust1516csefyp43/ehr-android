@@ -39,6 +39,7 @@
     <string name="error_field_required">This field is required</string>
     <string name="confirm">Confirm</string>
     <string name="notification">Notification</string>
+    <string name="homeland">Homeland</string>
     <string name="history">History</string>
     <string name="report">Report</string>
 

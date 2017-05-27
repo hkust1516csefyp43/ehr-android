@@ -458,6 +458,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       startActivity(i);
       return true;
     }
+    if(id == R.id.homeland) {
+        Intent intent = new Intent(DrawerActivity.this, LandingPageActivity.class);
+        startActivity(intent);
+    }
     return super.onOptionsItemSelected(item);
   }
 
@@ -470,22 +474,59 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     }
 
     if(intentData.containsKey("Consultation")) {
-      NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+      /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
       Menu menu = navigationView.getMenu();
       MenuItem menuItemConsultationFragment = menu.findItem(R.id.nav_consultation);
-      onNavigationItemSelected(menuItemConsultationFragment);
+      onNavigationItemSelected(menuItemConsultationFragment);*/
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        ConsultationFragment consultationFragment = new ConsultationFragment();
+        fragmentTransaction.replace(R.id.fragment_container, consultationFragment).commit();
     }
 
     if(intentData.containsKey("Pharmacy")) {
-      NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+      /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
       Menu menu = navigationView.getMenu();
       MenuItem menuItemPharmacyFragment = menu.findItem(R.id.nav_pharmacy);
-      onNavigationItemSelected(menuItemPharmacyFragment);
+      onNavigationItemSelected(menuItemPharmacyFragment);*/
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        PharmacyFragment pharmacyFragment = new PharmacyFragment();
+        fragmentTransaction.replace(R.id.fragment_container, pharmacyFragment).commit();
     }
 
+    if(intentData.containsKey("Settings")) {
+      /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+      Menu menu = navigationView.getMenu();
+      MenuItem menuItemConsultationFragment = menu.findItem(R.id.nav_admin);
+      onNavigationItemSelected(menuItemConsultationFragment);*/
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        AdminFragment adminFragment = new AdminFragment();
+        fragmentTransaction.replace(R.id.fragment_container, adminFragment).commit();
+    }
+
+      if(intentData.containsKey("Logout")) {
+          /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+          Menu menu = navigationView.getMenu();
+          MenuItem menuItemConsultationFragment = menu.findItem(R.id.nav_logout);
+          onNavigationItemSelected(menuItemConsultationFragment);*/
+          new MaterialDialog.Builder(this)
+                  .theme(Theme.LIGHT)
+                  .autoDismiss(true)
+                  .content("Are you sure you want to logout?")
+                  .positiveText("Logout")
+                  //TODO icon?
+                  .negativeColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent,null))
+                  .onPositive(this)
+                  .negativeText("Dismiss")
+                  .onNegative(new MaterialDialog.SingleButtonCallback() {
+                      @Override
+                      public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                          dialog.dismiss();
+                      }
+                  })
+                  .show();
+      }
+
     //Demo: FAQ
-
-
   }
 
 
@@ -620,5 +661,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       super.onPostExecute(aVoid);
       Log.d(TAG, "ope");
     }
+
   }
 }

@@ -28,6 +28,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -86,15 +90,17 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
       toolbar.setSubtitle(thisClinic.getEnglishName());
     }
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+      drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    if (drawer != null) {
+    /*if (drawer != null) {
       //removeDrawerListener?
       drawer.addDrawerListener(toggle);
       toggle.syncState();
-    }
+    }*/
+    toggle.setDrawerIndicatorEnabled(false);
 
 //    if(list != null) {
 //        PatientListFragment triageList = PatientListFragment.newInstance(Const.PatientListPageId.TRIAGE_SEARCH, null);
@@ -192,6 +198,7 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
 
     return view;
   }
+
 
   private void addPatientDialog() {
     final Dialog dialog = new Dialog(getContext(), R.style.AppTheme);
