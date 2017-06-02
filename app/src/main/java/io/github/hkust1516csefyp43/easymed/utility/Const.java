@@ -111,7 +111,7 @@ public class Const {
     public static String getCurrentAPI() {
       return currentAPI;
     }
-    public static final int LOCAL = 1;
+    public static final int LOCAL = 0;
     public static final int CLOUD = 1;
     public static int currentServerType = CLOUD;
   }

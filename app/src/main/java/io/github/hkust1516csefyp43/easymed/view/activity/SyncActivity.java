@@ -189,7 +189,7 @@ public class SyncActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         final ProgressDialog searchingServerDialog = ProgressDialog.show(c, "Loading", "Please wait");
-        CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("192.168.0.194", 3000, new AsyncResponse() {
+        CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("192.168.0.2", 3000, new AsyncResponse() {
           @Override
           public void processFinish(String output, Boolean successful) {
             if (successful) {
@@ -234,7 +234,7 @@ public class SyncActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         final ProgressDialog progressDialog = ProgressDialog.show(c, "Loading", "Please wait");
-        CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("192.168.0.194", 3000, 10000, new AsyncResponse() {
+        CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("192.168.0.2", 3000, 10000, new AsyncResponse() {
           @Override
           public void processFinish(String output, Boolean successful) {
             if (successful) {
