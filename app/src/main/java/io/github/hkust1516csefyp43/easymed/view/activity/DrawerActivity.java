@@ -161,7 +161,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
     FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
     if (frameLayout != null) {
-
       TriageFragment triageFragment = new TriageFragment();
       getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, triageFragment).commit();
     }

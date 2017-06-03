@@ -19,7 +19,7 @@ public class IrisManagement extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iris_management);
 
-        saveButton = (Button) findViewById(R.id.save_iris_to_phone);
+        saveButton = (Button) findViewById(R.id.save_iris_to_phone1);
         pi = PatientIdentifier.getPatientIdentifier(this, IrisManagement.this);
 
         saveButton.setOnClickListener(new View.OnClickListener() {

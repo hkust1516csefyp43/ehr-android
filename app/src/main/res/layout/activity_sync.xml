@@ -88,6 +88,13 @@
             android:text="timestamp"
             android:layout_height="wrap_content"/>
 
+        <Button
+            android:id="@+id/save_iris_to_phone"
+            android:text="Save Iris Data To Phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

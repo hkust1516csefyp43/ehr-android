@@ -7,7 +7,7 @@
     tools:context="io.github.hkust1516csefyp43.easymed.view.activity.IrisManagement">
 
     <Button
-        android:id="@+id/save_iris_to_phone"
+        android:id="@+id/save_iris_to_phone1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save Iris Data To Phone"
