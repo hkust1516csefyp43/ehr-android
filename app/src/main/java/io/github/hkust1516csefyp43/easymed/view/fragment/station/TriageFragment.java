@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,12 +20,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -31,16 +46,21 @@ import io.github.hkust1516csefyp43.easymed.listener.OnFragmentInteractionListene
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.Clinic;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.PatientIdentifier;
 import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
 import io.github.hkust1516csefyp43.easymed.view.fragment.PatientListFragment;
+import io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_view.VisitDetailFragment;
 
 public class TriageFragment extends Fragment implements OnFragmentInteractionListener {
 
   private OnFragmentInteractionListener mListener;
-  private TabLayout tabLayout;
-  private ViewPager viewPager;
+//  private TabLayout tabLayout;
+//  private ViewPager viewPager;
   private FloatingActionButton floatingActionButton;
+  private PatientIdentifier patientIdentifier;
+  private FrameLayout list;
+  private String TAG = TriageFragment.class.getSimpleName();
 
   public static TriageFragment newInstance() {
     TriageFragment fragment = new TriageFragment();
@@ -59,60 +79,126 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
+//    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fab, container, false);
+    View view = inflater.inflate(R.layout.fragment_toolbar_tablayout_viewpager_fam_tricons, container, false);
+    patientIdentifier = PatientIdentifier.getPatientIdentifier(getContext(), getActivity());
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     toolbar.setTitle("Triage");
+    list = (FrameLayout) view.findViewById(R.id.list);
     Clinic thisClinic = Cache.CurrentUser.getClinic(getContext());
     if (thisClinic != null) {
       toolbar.setSubtitle(thisClinic.getEnglishName());
     }
     DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+      drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    if (drawer != null) {
-      drawer.setDrawerListener(toggle);
+    /*if (drawer != null) {
+      //removeDrawerListener?
+      drawer.addDrawerListener(toggle);
       toggle.syncState();
-    }
+    }*/
+    toggle.setDrawerIndicatorEnabled(false);
 
-    tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
-    viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+//    if(list != null) {
+//        PatientListFragment triageList = PatientListFragment.newInstance(Const.PatientListPageId.TRIAGE_SEARCH, null);
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//        transaction.add(R.id.list, triageList);
+//        transaction.commit();
+//    }
 
-    tabLayout.addTab(tabLayout.newTab().setText("After"));
-    tabLayout.addTab(tabLayout.newTab().setText("Everyone else"));
-    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-      @Override
-      public void onTabSelected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
-      }
+//    tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+//    viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+//
+//    tabLayout.addTab(tabLayout.newTab().setText("Incoming"));
+//    tabLayout.addTab(tabLayout.newTab().setText("Outgoing"));
+//    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//      @Override
+//      public void onTabSelected(TabLayout.Tab tab) {
+//        viewPager.setCurrentItem(tab.getPosition());
+//      }
+//
+//      @Override
+//      public void onTabUnselected(TabLayout.Tab tab) {
+//
+//      }
+//
+//      @Override
+//      public void onTabReselected(TabLayout.Tab tab) {
+//        viewPager.setCurrentItem(tab.getPosition());
+//      }
+//    });
+//
+//    viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
+//    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//    viewPager.setOffscreenPageLimit(2);
 
-      @Override
-      public void onTabUnselected(TabLayout.Tab tab) {
-
-      }
-
-      @Override
-      public void onTabReselected(TabLayout.Tab tab) {
-        viewPager.setCurrentItem(tab.getPosition());
-      }
-    });
-
-    viewPager.setAdapter(new TwoPagesAdapter(getFragmentManager()));
-    viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-    viewPager.setOffscreenPageLimit(2);
-
-    floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+   /* floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
     floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
     floatingActionButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         addPatientDialog();
       }
-    });
+    });*/
+
+    final FloatingActionsMenu fab = (FloatingActionsMenu) view.findViewById(R.id.fab);
+    com.getbase.floatingactionbutton.FloatingActionButton fabIris = (com.getbase.floatingactionbutton.FloatingActionButton) view.findViewById(R.id.fabIris);
+    if (fabIris != null) {
+      fabIris.setIconDrawable(new IconicsDrawable(getContext()).icon(GoogleMaterial.Icon.gmd_remove_red_eye).color(Color.WHITE));
+      fabIris.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          fab.collapse();
+
+          if (!patientIdentifier.isDeviceConnected()) {
+            Toast.makeText(getContext(), "No iris scanner connected, please connect one to continue.", Toast.LENGTH_LONG).show();
+
+          } else {
+            Toast.makeText(getContext(), "Iris scanner connected!", Toast.LENGTH_LONG).show();
+            String ID = patientIdentifier.identifyIris();
+//            Toast.makeText(getContext(), ID, Toast.LENGTH_LONG).show();
+//            Log.d(TAG, ID);
+          }
+
+        }
+      });
+    }
+
+
+    com.getbase.floatingactionbutton.FloatingActionButton fabAdd = (com.getbase.floatingactionbutton.FloatingActionButton) view.findViewById(R.id.fabAdd);
+    if (fabAdd != null) {
+      fabAdd.setIconDrawable(new IconicsDrawable(getContext()).icon(GoogleMaterial.Icon.gmd_add).actionBar().color(Color.WHITE));
+      fabAdd.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          fab.collapse();
+          Intent intent = new Intent(getContext(), PatientVisitEditActivity.class);
+          startActivity(intent);
+        }
+      });
+    }
+
+    com.getbase.floatingactionbutton.FloatingActionButton fabSeach = (com.getbase.floatingactionbutton.FloatingActionButton) view.findViewById(R.id.fabSearch);
+      if (fabSeach != null) {
+          fabSeach.setIconDrawable(new IconicsDrawable(getContext()).icon(GoogleMaterial.Icon.gmd_search).actionBar().color(Color.WHITE));
+          fabSeach.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  fab.collapse();
+                  Intent intent = new Intent(getContext(), SearchActivity.class);
+                  intent.putExtra("triage","triage");
+                  //Also search, but maybe a extra + button for easier add new patient? (extra)
+                  startActivity(intent);
+              }
+          });
+      }
 
     return view;
   }
+
 
   private void addPatientDialog() {
     final Dialog dialog = new Dialog(getContext(), R.style.AppTheme);
@@ -231,8 +317,11 @@ public class TriageFragment extends Fragment implements OnFragmentInteractionLis
 
     @Override
     public int getCount() {
-      return 2;
+      return 0;
     }
   }
+
+
+  //public class startIrisScan extends AsyncTask<Void, Void, String>{}
 
 }

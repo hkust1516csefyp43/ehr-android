@@ -3,6 +3,7 @@ package io.github.hkust1516csefyp43.easymed.view.activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -32,6 +34,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Query;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Connectivity;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.PatientIdentifier;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import okhttp3.OkHttpClient;
@@ -52,6 +55,7 @@ public class SyncActivity extends AppCompatActivity {
   private TextView tvPullFromLocal;
   private Button bPushToCloud;
   private TextView tvPushToCloud;
+  private Button saveIris;
 
   private int pushProgress = 0;
   private int pushTotal;
@@ -69,6 +73,7 @@ public class SyncActivity extends AppCompatActivity {
     tvPullFromLocal = (TextView) findViewById(R.id.tvPullFromLocal);
     bPushToCloud = (Button) findViewById(R.id.bPushToCloud);
     tvPushToCloud = (TextView) findViewById(R.id.tvPushToCloud);
+    saveIris = (Button) findViewById(R.id.save_iris_to_phone);
 
     if (toolbar != null) {
       toolbar.setTitle(R.string.synchronization);
@@ -113,6 +118,7 @@ public class SyncActivity extends AppCompatActivity {
         tvPushToCloud.setText("Last push: Never");
       }
     }
+
 
     final Context c = this;
     bPullFromCloud.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +195,7 @@ public class SyncActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         final ProgressDialog searchingServerDialog = ProgressDialog.show(c, "Loading", "Please wait");
-        CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("192.168.0.194", 3000, new AsyncResponse() {
+        CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("192.168.0.2", 3000, new AsyncResponse() {
           @Override
           public void processFinish(String output, Boolean successful) {
             if (successful) {
@@ -234,7 +240,7 @@ public class SyncActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         final ProgressDialog progressDialog = ProgressDialog.show(c, "Loading", "Please wait");
-        CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("192.168.0.194", 3000, 10000, new AsyncResponse() {
+        CheckIfServerIsAvailable checkIfServerIsAvailable = new CheckIfServerIsAvailable("192.168.0.2", 3000, 10000, new AsyncResponse() {
           @Override
           public void processFinish(String output, Boolean successful) {
             if (successful) {
@@ -322,6 +328,18 @@ public class SyncActivity extends AppCompatActivity {
           }
         });
         checkIfServerIsAvailable.execute();
+      }
+    });
+
+    saveIris.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if(PatientIdentifier.getPatientIdentifier(c, SyncActivity.this).isDeviceConnected()){
+          startActivity(new Intent(c, IrisManagement.class));
+        }
+        else{
+          Toast.makeText(c, "Please connect Iris Scanner first", Toast.LENGTH_LONG).show();
+        }
       }
     });
   }

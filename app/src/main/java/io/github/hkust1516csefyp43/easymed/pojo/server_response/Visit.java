@@ -75,6 +75,8 @@ public class Visit implements Serializable{
 
   @Override
   public String toString() {
+
+    //exception case for null
     return "Visit{" +
         "id='" + id + '\'' +
         ", tag=" + tag +

@@ -2,6 +2,7 @@ package io.github.hkust1516csefyp43.easymed.view.fragment.patient_visit_edit;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -152,7 +154,8 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
             .title("Add")
             .customView(tetdcv, true)
             .positiveText("Confirm")
-            .negativeText("Cancel")
+            .neutralText("Cancel")
+            .negativeText("Delete")
             .onPositive(new MaterialDialog.SingleButtonCallback() {
               @Override
               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -177,7 +180,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 }
               }
             })
-            .onNegative(new MaterialDialog.SingleButtonCallback() {
+            .onNeutral(new MaterialDialog.SingleButtonCallback() {
               @Override
               public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 if (adapter != null && cardList != null && cardList.size() <= 0 && tvAssistance != null) {
@@ -187,6 +190,30 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                 dialog.dismiss();
               }
             })
+           .onNegative(new MaterialDialog.SingleButtonCallback() {
+             @Override
+             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+               if (adapter != null) {
+                 if (tvAssistance != null) {
+                   tvAssistance.setVisibility(View.GONE);
+                 }
+                 ArrayList<String> data = tetdcv.getData();
+                 tetdcv.clearData();
+                 if (data != null) {
+                   Log.d(TAG, data.toString());
+                   if (data.get(0) != null && data.get(1) != null) {
+                     cardList.remove(new Card(data.get(0), data.get(1)));
+                     if (adapter != null)
+                       adapter.notifyDataSetChanged();
+                     else
+                       Log.d(TAG, "opps..sth wrong trying to delete?");
+                   }
+                 } else {
+                   Toast.makeText(getContext(), "Something is wrong...trying to delete? ", Toast.LENGTH_SHORT).show();
+                 }
+               }
+             }
+           })
             .show();
       }
     });
@@ -252,7 +279,8 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                       .title("Add")
                       .customView(tetdcv, true)
                       .positiveText("Confirm")
-                      .negativeText("Cancel")
+                      .neutralText("Cancel")
+                      .negativeText("Delete")
                       .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -273,7 +301,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                           }
                         }
                       })
-                      .onNegative(new MaterialDialog.SingleButtonCallback() {
+                      .onNeutral(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                           if (adapter != null && cardList != null && cardList.size() <= 0 && tvAssistance != null) {
@@ -283,6 +311,30 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                           dialog.dismiss();
                         }
                       })
+                          .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                              if (adapter != null) {
+                                if (tvAssistance != null) {
+                                  tvAssistance.setVisibility(View.GONE);
+                                }
+                                ArrayList<String> data = tetdcv.getData();
+                                tetdcv.clearData();
+                                if (data != null) {
+                                  Log.d(TAG, data.toString());
+                                  if (data.get(0) != null && data.get(1) != null) {
+                                    cardList.remove(new Card(data.get(0), data.get(1)));
+                                    if (adapter != null)
+                                      adapter.notifyDataSetChanged();
+                                    else
+                                      Log.d(TAG, "opps..sth wrong trying to delete?");
+                                  }
+                                } else {
+                                  Toast.makeText(getContext(), "Something is wrong...trying to delete? ", Toast.LENGTH_SHORT).show();
+                                }
+                              }
+                            }
+                          })
                       .show();
                 }
               });
@@ -403,7 +455,8 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                         .title("Add")
                         .customView(tetdcv, true)
                         .positiveText("Confirm")
-                        .negativeText("Cancel")
+                        .neutralText("Cancel")
+                        .negativeText("Delete")
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                           @Override
                           public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -424,7 +477,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                             }
                           }
                         })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
                           @Override
                           public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             if (adapter != null && cardList != null && cardList.size() <= 0 && tvAssistance != null) {
@@ -434,6 +487,30 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                             dialog.dismiss();
                           }
                         })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                              @Override
+                              public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                if (adapter != null) {
+                                  if (tvAssistance != null) {
+                                    tvAssistance.setVisibility(View.GONE);
+                                  }
+                                  ArrayList<String> data = tetdcv.getData();
+                                  tetdcv.clearData();
+                                  if (data != null) {
+                                    Log.d(TAG, data.toString());
+                                    if (data.get(0) != null && data.get(1) != null) {
+                                      cardList.remove(new Card(data.get(0), data.get(1)));
+                                      if (adapter != null)
+                                        adapter.notifyDataSetChanged();
+                                      else
+                                        Log.d(TAG, "opps..sth wrong trying to delete?");
+                                    }
+                                  } else {
+                                    Toast.makeText(getContext(), "Something is wrong...trying to delete? ", Toast.LENGTH_SHORT).show();
+                                  }
+                                }
+                              }
+                            })
                         .show();
                   }
                 });
@@ -543,7 +620,8 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                       .title("Add")
                       .customView(tetdcv, true)
                       .positiveText("Confirm")
-                      .negativeText("Cancel")
+                      .neutralText("Cancel")
+                      .negativeText("Delete")
                       .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -564,7 +642,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                           }
                         }
                       })
-                      .onNegative(new MaterialDialog.SingleButtonCallback() {
+                      .onNeutral(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                           if (adapter != null && cardList != null && cardList.size() <= 0 && tvAssistance != null) {
@@ -574,6 +652,30 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                           dialog.dismiss();
                         }
                       })
+                          .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                              if (adapter != null) {
+                                if (tvAssistance != null) {
+                                  tvAssistance.setVisibility(View.GONE);
+                                }
+                                ArrayList<String> data = tetdcv.getData();
+                                tetdcv.clearData();
+                                if (data != null) {
+                                  Log.d(TAG, data.toString());
+                                  if (data.get(0) != null && data.get(1) != null) {
+                                    cardList.remove(new Card(data.get(0), data.get(1)));
+                                    if (adapter != null)
+                                      adapter.notifyDataSetChanged();
+                                    else
+                                      Log.d(TAG, "opps..sth wrong trying to delete?");
+                                  }
+                                } else {
+                                  Toast.makeText(getContext(), "Something is wrong...trying to delete? ", Toast.LENGTH_SHORT).show();
+                                }
+                              }
+                            }
+                          })
                       .show();
                 }
               });
@@ -638,7 +740,8 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                         .title("Add")
                         .customView(tetdcv, true)
                         .positiveText("Confirm")
-                        .negativeText("Cancel")
+                        .neutralText("Cancel")
+                        .negativeText("Delete")
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                           @Override
                           public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -659,7 +762,7 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                             }
                           }
                         })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
                           @Override
                           public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             if (adapter != null && cardList != null && cardList.size() <= 0 && tvAssistance != null) {
@@ -669,6 +772,30 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                             dialog.dismiss();
                           }
                         })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                              @Override
+                              public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                if (adapter != null) {
+                                  if (tvAssistance != null) {
+                                    tvAssistance.setVisibility(View.GONE);
+                                  }
+                                  ArrayList<String> data = tetdcv.getData();
+                                  tetdcv.clearData();
+                                  if (data != null) {
+                                    Log.d(TAG, data.toString());
+                                    if (data.get(0) != null && data.get(1) != null) {
+                                      cardList.remove(new Card(data.get(0), data.get(1)));
+                                      if (adapter != null)
+                                        adapter.notifyDataSetChanged();
+                                      else
+                                        Log.d(TAG, "opps..sth wrong trying to delete?");
+                                    }
+                                  } else {
+                                    Toast.makeText(getContext(), "Something is wrong...trying to delete? ", Toast.LENGTH_SHORT).show();
+                                  }
+                                }
+                              }
+                            })
                         .show();
                   }
                 });
@@ -799,7 +926,8 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                         .customView(twoEditTextDialogCustomView, true)
                         .title("Modify")
                         .positiveText("Confirm")
-                        .negativeText("Cancel")
+                        .neutralText("Cancel")
+                        .negativeText("Delete")
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                           @Override
                           public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -814,7 +942,8 @@ public class ListOfCardsFragment extends Fragment implements OnFragmentInteracti
                             }
                           }
                         })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        //onNegative?
+                        .onNeutral(new MaterialDialog.SingleButtonCallback() {
                           @Override
                           public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             twoEditTextDialogCustomView.clearData();

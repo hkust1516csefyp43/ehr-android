@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -53,6 +55,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.ServerTime;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.PatientIdentifier;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.AdminFragment;
@@ -72,6 +75,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, OnPatientsFetchedListener, MaterialDialog.SingleButtonCallback {
   public final static String TAG = DrawerActivity.class.getSimpleName();
   private User currentUser;
+  public Bundle intentData;
+  private Context context;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +88,89 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (cl.isFirstRun()) {
       cl.getLogDialog().show();
     }
+
+    intentData = getIntent().getExtras();
+    listenIntentMethod();
+
+
+    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+    if (navigationView != null) {
+      if (currentUser != null) {
+        TextView uEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvUsername);
+        TextView uName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvName);
+        ImageView uProPic = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
+        String username = currentUser.getUsername();
+        String firstname = currentUser.getFirstName();
+        if (uEmail != null && username != null) {
+          uEmail.setText(currentUser.getUsername());
+        }
+        if (uName != null && firstname != null) {
+          uName.setText(currentUser.getFirstName());
+        }
+        if (firstname != null)
+          uProPic.setImageDrawable(TextDrawable.builder().buildRound(firstname.substring(0,1), ColorGenerator.MATERIAL.getColor(firstname)));
+        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+            //TODO put user in extra
+            startActivity(intent);
+          }
+        });
+      }
+    }
+
+    navigationView.setNavigationItemSelectedListener(this);
+    Menu menu = navigationView.getMenu();
+    MenuItem menuItem = menu.findItem(R.id.nav_triage);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_thermometer).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_consultation);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_hospital).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_pharmacy);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_pharmacy).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_inventory);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_medkit).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_reports);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_file_chart).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_admin);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_male).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+//    menuItem = menu.findItem(R.id.nav_settings);
+//    if (menuItem != null) {
+//      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_settings).color(Color.GRAY).actionBar().paddingDp(2));
+//    }
+    menuItem = menu.findItem(R.id.nav_about);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_info).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+    menuItem = menu.findItem(R.id.nav_logout);
+    if (menuItem != null) {
+      menuItem.setIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_exit_to_app).color(Color.GRAY).actionBar().paddingDp(2));
+    }
+
+    FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment_container);
+    if (frameLayout != null) {
+      TriageFragment triageFragment = new TriageFragment();
+      getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, triageFragment).commit();
+    }
+
   }
 
   @Override
   protected void onResume() {
+    intentData = getIntent().getExtras();
+    listenIntentMethod();
     super.onResume();
     Log.d(TAG, "before");
     new ThingsToDoInBackground().execute();
@@ -211,6 +295,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       }
     }
 
+/*
     navigationView.setNavigationItemSelectedListener(this);
     Menu menu = navigationView.getMenu();
     MenuItem menuItem = menu.findItem(R.id.nav_triage);
@@ -254,7 +339,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     if (frameLayout != null) {
       TriageFragment triageFragment = new TriageFragment();
       getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, triageFragment).commit();
-    }
+    }*/
   }
 
   private void cacheData(final Context context) {
@@ -373,8 +458,83 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       startActivity(i);
       return true;
     }
+    if(id == R.id.homeland) {
+        Intent intent = new Intent(DrawerActivity.this, LandingPageActivity.class);
+        startActivity(intent);
+    }
     return super.onOptionsItemSelected(item);
   }
+
+
+  //Made this method for landing page
+  public void listenIntentMethod() {
+
+    if (intentData == null) {
+      return;
+    }
+
+    if(intentData.containsKey("Triage")) {
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      TriageFragment triageFragment = new TriageFragment();
+      fragmentTransaction.replace(R.id.fragment_container, triageFragment).commit();
+    }
+
+    if(intentData.containsKey("Consultation")) {
+      /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+      Menu menu = navigationView.getMenu();
+      MenuItem menuItemConsultationFragment = menu.findItem(R.id.nav_consultation);
+      onNavigationItemSelected(menuItemConsultationFragment);*/
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        ConsultationFragment consultationFragment = new ConsultationFragment();
+        fragmentTransaction.replace(R.id.fragment_container, consultationFragment).commit();
+    }
+
+    if(intentData.containsKey("Pharmacy")) {
+      /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+      Menu menu = navigationView.getMenu();
+      MenuItem menuItemPharmacyFragment = menu.findItem(R.id.nav_pharmacy);
+      onNavigationItemSelected(menuItemPharmacyFragment);*/
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        PharmacyFragment pharmacyFragment = new PharmacyFragment();
+        fragmentTransaction.replace(R.id.fragment_container, pharmacyFragment).commit();
+    }
+
+    if(intentData.containsKey("Settings")) {
+      /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+      Menu menu = navigationView.getMenu();
+      MenuItem menuItemConsultationFragment = menu.findItem(R.id.nav_admin);
+      onNavigationItemSelected(menuItemConsultationFragment);*/
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        AdminFragment adminFragment = new AdminFragment();
+        fragmentTransaction.replace(R.id.fragment_container, adminFragment).commit();
+    }
+
+      if(intentData.containsKey("Logout")) {
+          /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+          Menu menu = navigationView.getMenu();
+          MenuItem menuItemConsultationFragment = menu.findItem(R.id.nav_logout);
+          onNavigationItemSelected(menuItemConsultationFragment);*/
+          new MaterialDialog.Builder(this)
+                  .theme(Theme.LIGHT)
+                  .autoDismiss(true)
+                  .content("Are you sure you want to logout?")
+                  .positiveText("Logout")
+                  //TODO icon?
+                  .negativeColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent,null))
+                  .onPositive(this)
+                  .negativeText("Dismiss")
+                  .onNegative(new MaterialDialog.SingleButtonCallback() {
+                      @Override
+                      public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                          dialog.dismiss();
+                      }
+                  })
+                  .show();
+      }
+
+    //Demo: FAQ
+  }
+
 
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
@@ -401,6 +561,14 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         ReportsFragment reportsFragment = new ReportsFragment();
         fragmentTransaction.replace(R.id.fragment_container, reportsFragment).commit();
         break;
+      case R.id.nav_iris:
+        if(PatientIdentifier.getPatientIdentifier(this, DrawerActivity.this).isDeviceConnected()){
+          startActivity(new Intent(this, IrisManagement.class));
+        }
+        else{
+          Toast.makeText(this, "Please connect Iris Scanner first", Toast.LENGTH_LONG).show();
+        }
+        break;
       case R.id.nav_admin:
         AdminFragment adminFragment = new AdminFragment();
         fragmentTransaction.replace(R.id.fragment_container, adminFragment).commit();
@@ -426,7 +594,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             .content("Are you sure you want to logout?")
             .positiveText("Logout")
             //TODO icon?
-            .negativeColor(getResources().getColor(R.color.colorAccent))
+            .negativeColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent,null))
             .onPositive(this)
             .negativeText("Dismiss")
             .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -507,5 +675,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       super.onPostExecute(aVoid);
       Log.d(TAG, "ope");
     }
+
   }
 }

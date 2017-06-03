@@ -25,6 +25,9 @@
         <item
             android:id="@+id/nav_admin"
             android:title="@string/admin"/>
+        <item
+            android:id="@+id/nav_iris"
+            android:title="@string/iris"/>
     </group>
 
     <group

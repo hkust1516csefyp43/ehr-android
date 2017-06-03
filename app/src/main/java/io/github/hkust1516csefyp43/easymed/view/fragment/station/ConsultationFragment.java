@@ -39,7 +39,6 @@ public class ConsultationFragment extends Fragment {
   private OnFragmentInteractionListener mListener;
   private TabLayout tabLayout;
   private ViewPager viewPager;
-  private FloatingActionButton floatingActionButton;
 
 //  public static ConsultationFragment newInstance(String param1, String param2) {
 //    ConsultationFragment fragment = new ConsultationFragment();
@@ -72,17 +71,20 @@ public class ConsultationFragment extends Fragment {
 
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    if (drawer != null) {
-      drawer.setDrawerListener(toggle);
+    /*if (drawer != null) {
+      //removeDrawerListener?
+      drawer.addDrawerListener(toggle);
       toggle.syncState();
-    }
+    }*/
+    toggle.setDrawerIndicatorEnabled(false);
 
     tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
     tabLayout.addTab(tabLayout.newTab().setText("Before"));
     tabLayout.addTab(tabLayout.newTab().setText("After"));
     viewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+    //removeOnTabSelectedListener?
+    tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
       @Override
       public void onTabSelected(TabLayout.Tab tab) {
         viewPager.setCurrentItem(tab.getPosition());
@@ -103,16 +105,16 @@ public class ConsultationFragment extends Fragment {
     viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     viewPager.setOffscreenPageLimit(2);
 
-    floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
-    floatingActionButton.setImageDrawable(new IconicsDrawable(getContext(), GoogleMaterial.Icon.gmd_add).color(Color.WHITE).paddingDp(3).sizeDp(16));
-    floatingActionButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        addPatientDialog();
-      }
-    });
 
     return view;
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+
+
+
   }
 
   private void addPatientDialog() {
@@ -138,6 +140,7 @@ public class ConsultationFragment extends Fragment {
         Intent intent = new Intent(getContext(), SearchActivity.class);
         intent.putExtra(Const.BundleKey.IS_TRIAGE, false);
         startActivity(intent);
+        dialog.dismiss();
       }
     });
 
@@ -146,8 +149,10 @@ public class ConsultationFragment extends Fragment {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), SearchActivity.class);
-        //Also search, but maybe a extra + button for easier add new patient? (extra)
         startActivity(intent);
+        dialog.dismiss();
+          //Also search, but maybe a extra + button for easier add new patient? (extra)
+
       }
     });
 
@@ -159,6 +164,7 @@ public class ConsultationFragment extends Fragment {
         intent.putExtra(Const.BundleKey.IS_TRIAGE, false);
         //extra: isTriage=false
         startActivity(intent);
+        dialog.dismiss();
       }
     });
 
@@ -166,6 +172,7 @@ public class ConsultationFragment extends Fragment {
     llOpenSave.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        dialog.dismiss();
         //dialog shows list of saved stuff (can you show dialog on top of dialog? No >> dismiss this first)
       }
     });

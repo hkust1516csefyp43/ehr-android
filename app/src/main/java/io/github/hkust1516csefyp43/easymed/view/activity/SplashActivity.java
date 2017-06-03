@@ -52,7 +52,7 @@ public class SplashActivity extends AppCompatActivity {
         }
       }
     });
-    CheckIfServerIsAvailable task1 = new CheckIfServerIsAvailable(this, "Local", Const.Database.LOCAL, "192.168.0.194", 3000, 3000, Const.Database.LOCAL_API_BASE_URL_121_dev, new AsyncResponse() {
+    CheckIfServerIsAvailable task1 = new CheckIfServerIsAvailable(this, "Local", Const.Database.LOCAL, "192.168.0.2", 3000, 3000, Const.Database.LOCAL_API_BASE_URL_121_dev, new AsyncResponse() {
       @Override
       public void processFinish(String output, Boolean successful) {
         if (!successful)
@@ -122,7 +122,8 @@ public class SplashActivity extends AppCompatActivity {
         if (user == null){
           target = LoginActivity.class;
         }else{
-          target = DrawerActivity.class;
+          //target = DrawerActivity.class;
+          target = LandingPageActivity.class;
         }
         new Handler().postDelayed(new Runnable() {
           @Override

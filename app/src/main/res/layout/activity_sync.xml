@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            android:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -87,6 +87,13 @@
             android:layout_width="wrap_content"
             android:text="timestamp"
             android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/save_iris_to_phone"
+            android:text="Save Iris Data To Phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
 

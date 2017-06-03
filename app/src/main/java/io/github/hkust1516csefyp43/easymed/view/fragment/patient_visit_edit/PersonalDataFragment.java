@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -54,8 +55,10 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.Patient;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
 import io.github.hkust1516csefyp43.easymed.utility.ImageTransformer;
+import io.github.hkust1516csefyp43.easymed.utility.PatientIdentifier;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
+import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,6 +70,10 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   public final static String TAG = PersonalDataFragment.class.getSimpleName();
 
   private static Patient patient;
+
+
+  private boolean isNewPatientFromIris = false;
+  private String name;
 
   private ScrollView scrollView;
   private ImageView ivProfilePic;
@@ -106,11 +113,17 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Bundle bundle = getArguments();
+    if(bundle != null) {
+      isNewPatientFromIris = bundle.getBoolean("isNewPatientFromIris");
+      name = bundle.getString("nameOfNewPatientFromIris");
+    }
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_personal_data, container, false);
+
     inflateEveryBoxes(view);
 
     scrollView = (ScrollView) view.findViewById(R.id.scrollView);
@@ -151,6 +164,11 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
     etNativeName = (EditText) view.findViewById(R.id.native_name);
     etAddress = (EditText) view.findViewById(R.id.etAddress);
     etPhoneNumber = (EditText) view.findViewById(R.id.etPhoneNumber);
+
+    if(isNewPatientFromIris){
+      etFirstName.setText(name, TextView.BufferType.SPANNABLE);
+    }
+
 
     if (ivProfilePic != null) {
       if (patient != null) {
@@ -211,7 +229,7 @@ public class PersonalDataFragment extends Fragment implements OnSendData{
                       pickImage();
                       break;
                     case Const.ACTION_REMOVE_PICTURE:
-                      ivProfilePic.setImageDrawable(getResources().getDrawable(R.drawable.easymed));
+                      ivProfilePic.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.easymed, null));
                       //save as default
                     default:
                   }
