@@ -80,11 +80,12 @@ public class ReportsFragment extends Fragment {
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    if (drawer != null) {
+    /*if (drawer != null) {
       //removeDrawerListner?
       drawer.addDrawerListener(toggle);
       toggle.syncState();
-    }
+    }*/
+    toggle.setDrawerIndicatorEnabled(false);
 
     FloatingActionButton fabOne = (FloatingActionButton) view.findViewById(R.id.fabOne);
     fabOne.setIconDrawable(new IconicsDrawable(getContext()).color(Color.WHITE).actionBar().icon(CommunityMaterial.Icon.cmd_calendar));
