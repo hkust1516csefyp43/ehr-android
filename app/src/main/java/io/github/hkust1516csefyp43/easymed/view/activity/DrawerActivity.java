@@ -473,6 +473,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       return;
     }
 
+    if(intentData.containsKey("Triage")) {
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      TriageFragment triageFragment = new TriageFragment();
+      fragmentTransaction.replace(R.id.fragment_container, triageFragment).commit();
+    }
+
     if(intentData.containsKey("Consultation")) {
       /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
       Menu menu = navigationView.getMenu();

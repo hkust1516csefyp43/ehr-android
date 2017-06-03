@@ -32,6 +32,7 @@ public class LandingPageActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(LandingPageActivity.this, DrawerActivity.class);
+                    intent.putExtra("Triage", R.id.nav_triage);
                     startActivity(intent);
                 }
             });

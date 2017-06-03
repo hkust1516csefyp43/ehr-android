@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import io.github.hkust1516csefyp43.easymed.R;
+import io.github.hkust1516csefyp43.easymed.view.activity.PatientVisitEditActivity;
 import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
 
 /**
@@ -42,6 +43,9 @@ public class PatientIdentifier {
     private MaterialDialog scanningDialog;
 
     private IddkTemplateInfo mTemplateInfo;
+
+    public static boolean isNewPatient;
+    public static String newPatientName;
 
     public PatientIdentifier() {
 
@@ -358,8 +362,8 @@ public class PatientIdentifier {
                                 }
                                 new MaterialDialog.Builder(mContext)
                                         .theme(Theme.LIGHT)
-                                        .title("Unregistered user")
-                                        .content("Enter name to register new user")
+                                        .title("Unregistered patient")
+                                        .content("Enter given name to register new patient")
                                         .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE)
                                         .input("Name", "", new MaterialDialog.InputCallback() {
                                             @Override
@@ -370,6 +374,7 @@ public class PatientIdentifier {
                                                 if (mResCap.getValue() == IddkResult.IDDK_OK) {
                                                     Log.d(TAG, "ID enrolled successfully");
 
+
                                                     mResCap = iddkApi.commitGallery(mDeviceHandle);
 
                                                     if(mResCap.getValue() == IddkResult.IDDK_OK){
@@ -378,6 +383,11 @@ public class PatientIdentifier {
                                                     else{
                                                         Log.e(TAG + " gallery commit", mResCap.toString());
                                                     }
+
+                                                    final Intent newPatientIntent = new Intent(mContext, PatientVisitEditActivity.class);
+                                                    newPatientIntent.putExtra("newPatientName", input.toString());
+                                                    mContext.startActivity(newPatientIntent);
+
 
                                                 } else {
                                                     Log.e(TAG + "ID enrollment", mResCap.toString());

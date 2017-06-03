@@ -118,6 +118,11 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
     private boolean isTriage = true;
     private boolean showHistoryButton = true;
 
+    private boolean isNewPatientFromIris = false;
+    private String nameOfNewPatientFromIris = null;
+
+
+
     private ArrayList<String> tabs = new ArrayList<>();
 
     private TabLayout tabLayout;
@@ -148,10 +153,12 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
         irisScanFAB.setVisibility(View.GONE);
         //get extra
         Intent intent = getIntent();
+
         if (intent != null) {
             Serializable serializable;
             //isTriage
             isTriage = intent.getBooleanExtra(Const.BundleKey.IS_TRIAGE, true);
+
             //patient
             serializable = intent.getSerializableExtra(Const.BundleKey.EDIT_PATIENT);
             if (serializable instanceof Patient) {
@@ -172,6 +179,14 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             if (serializable instanceof Consultation) {
                 thisConsultation = (Consultation) serializable;
             }
+
+            if(intent.hasExtra("newPatientName")) {
+                isNewPatientFromIris = true;
+                nameOfNewPatientFromIris = intent.getStringExtra("newPatientName");
+            }
+
+
+
         }
 
         if (thisPatient != null && thisPatient.getClinicId() != null) {
@@ -2470,6 +2485,12 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                 case 0:
                     if (personalDataFragment == null) {
                         personalDataFragment = PersonalDataFragment.newInstance(thisPatient);
+                        if(isNewPatientFromIris) {
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean("isNewPatientFromIris", isNewPatientFromIris);
+                            bundle.putString("nameOfNewPatientFromIris", nameOfNewPatientFromIris);
+                            personalDataFragment.setArguments(bundle);
+                        }
                     }
                     return personalDataFragment;
                 case 1:
@@ -2615,7 +2636,14 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                     }
                     return consultationRemarkFragment;
                 default:
-                    return PersonalDataFragment.newInstance(thisPatient);
+                    personalDataFragment = PersonalDataFragment.newInstance(thisPatient);
+                    if(isNewPatientFromIris) {
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("isNewPatientFromIris", isNewPatientFromIris);
+                        bundle.putString("nameOfNewPatientFromIris", nameOfNewPatientFromIris);
+                        personalDataFragment.setArguments(bundle);
+                    }
+                    return personalDataFragment;
             }
         }
 
