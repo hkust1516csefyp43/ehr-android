@@ -25,6 +25,7 @@
     <string name="inventory">Inventory</string>
     <string name="reports">Reports</string>
     <string name="admin">Admin</string>
+    <string name="iris">Iris Management</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="logout">Logout</string>

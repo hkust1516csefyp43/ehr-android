@@ -55,6 +55,7 @@ import io.github.hkust1516csefyp43.easymed.pojo.server_response.ServerTime;
 import io.github.hkust1516csefyp43.easymed.pojo.server_response.User;
 import io.github.hkust1516csefyp43.easymed.utility.Cache;
 import io.github.hkust1516csefyp43.easymed.utility.Const;
+import io.github.hkust1516csefyp43.easymed.utility.PatientIdentifier;
 import io.github.hkust1516csefyp43.easymed.utility.Util;
 import io.github.hkust1516csefyp43.easymed.utility.v2API;
 import io.github.hkust1516csefyp43.easymed.view.fragment.station.AdminFragment;
@@ -513,6 +514,14 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
       case R.id.nav_reports:
         ReportsFragment reportsFragment = new ReportsFragment();
         fragmentTransaction.replace(R.id.fragment_container, reportsFragment).commit();
+        break;
+      case R.id.nav_iris:
+        if(PatientIdentifier.getPatientIdentifier(this, DrawerActivity.this).isDeviceConnected()){
+          startActivity(new Intent(this, IrisManagement.class));
+        }
+        else{
+          Toast.makeText(this, "Please connect Iris Scanner first", Toast.LENGTH_LONG).show();
+        }
         break;
       case R.id.nav_admin:
         AdminFragment adminFragment = new AdminFragment();

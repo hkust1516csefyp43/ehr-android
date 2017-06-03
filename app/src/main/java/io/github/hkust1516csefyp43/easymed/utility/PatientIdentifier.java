@@ -13,11 +13,21 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.iritech.iddk.android.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.UUID;
 
 import io.github.hkust1516csefyp43.easymed.R;
 import io.github.hkust1516csefyp43.easymed.view.activity.SearchActivity;
+
+import static android.os.ParcelFileDescriptor.MODE_APPEND;
 
 /**
  * Created by Shayan on 27-Mar-17.
@@ -213,6 +223,61 @@ public class PatientIdentifier {
             Log.e(TAG, "Error while trying to enroll");
             return false;
         }
+    }
+
+
+
+    public boolean saveIrisToPhone(){
+
+        ArrayList<String> idList = new ArrayList<>();
+        IddkInteger numUsedSlots =  new IddkInteger();
+        IddkInteger numMaxSlots = new IddkInteger();
+        IddkInteger idCount = new IddkInteger();
+
+        iddkApi.commitGallery(mDeviceHandle);
+        iddkApi.loadGallery(mDeviceHandle, idList, idCount, numUsedSlots, numMaxSlots);
+
+        ArrayList<IddkDataBuffer> templates = new ArrayList<>();
+        for(int i = 0; i < idList.size(); i++) {
+            IddkDataBuffer tmp = new IddkDataBuffer();
+            iddkApi.getEnrolleeTemplate(mDeviceHandle, idList.get(i), tmp);
+            templates.add(tmp);
+        }
+
+        try {
+            FileOutputStream fou = mContext.openFileOutput("irises.ser", MODE_APPEND);
+            ObjectOutputStream out = new ObjectOutputStream(fou);
+            out.writeObject(templates);
+            out.close();
+            return true;
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+            return false;
+        }
+    }
+
+    private boolean loadIrisesFromPhone(){
+
+        ArrayList<IddkDataBuffer> templates = new ArrayList<>();
+
+        try {
+            FileInputStream in = new FileInputStream("irises.ser");
+            ObjectInputStream reader = new ObjectInputStream(in);
+            templates = (ArrayList<IddkDataBuffer>) reader.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return  false;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+
+        return true;
     }
 
     public class CaptureProc implements IddkCaptureProc {

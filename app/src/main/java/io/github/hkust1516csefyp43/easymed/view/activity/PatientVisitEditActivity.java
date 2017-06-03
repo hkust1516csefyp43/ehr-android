@@ -362,7 +362,7 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
             case R.id.chief_complaint:
                 if (thisTriage != null && thisTriage.getChiefComplaints() != null) {
                     new MaterialDialog.Builder(this)
-                            .title("Chief Complain")
+                            .title("Chief Complaint")
                             .content(thisTriage.getChiefComplaints())
                             .autoDismiss(true)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -376,10 +376,10 @@ public class PatientVisitEditActivity extends AppCompatActivity implements OnFra
                             .show();
                 } else {
                     if (viewPager != null) {
-                        Snackbar.make(viewPager, "No Chief Complain", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(viewPager, "No Chief Complaint", Snackbar.LENGTH_LONG).show();
                     } else {
                         new MaterialDialog.Builder(this)
-                                .content("No Chief Complain")
+                                .content("No Chief Complaint")
                                 .autoDismiss(true)
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
